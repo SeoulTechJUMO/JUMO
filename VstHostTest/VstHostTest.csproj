@@ -106,6 +106,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HostCommandStub.cs" />
     <Compile Include="PluginEditorHost.cs" />
     <Compile Include="PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
