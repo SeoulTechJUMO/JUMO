@@ -13,6 +13,7 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 
 namespace VstHostTest
@@ -27,13 +28,12 @@ namespace VstHostTest
             InitializeComponent();
         }
 
-        public IVstPluginCommandStub VstPluginCommandStub { get; set; }
+        public IVstPluginCommandStub PluginCmdStub { get; set; }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            host.Child = new PluginEditorHost(VstPluginCommandStub);
-            Title = $"플러그인 편집기: {VstPluginCommandStub.GetEffectName()}";
-
+            host.Child = new PluginEditorHost(PluginCmdStub);
+            Title = $"플러그인 편집기: {PluginCmdStub.GetEffectName()}";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

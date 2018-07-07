@@ -45,7 +45,7 @@ namespace VstHostTest
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             PluginEditorWindow editorWindow = new PluginEditorWindow();
-            editorWindow.VstPluginCommandStub = (pluginListView.SelectedItem as VstPluginContext).PluginCommandStub;
+            editorWindow.PluginCmdStub = (pluginListView.SelectedItem as VstPluginContext).PluginCommandStub;
             editorWindow.Show();
         }
     }
