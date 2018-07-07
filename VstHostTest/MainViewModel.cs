@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,6 +73,27 @@ namespace VstHostTest
         public MainViewModel()
         {
             Plugins = new ListCollectionView(_plugins);
+        }
+    }
+
+    [ValueConversion(typeof(VstPluginContext), typeof(string))]
+    class PluginListItemConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is VstPluginContext)
+            {
+                return (value as VstPluginContext).PluginCommandStub.GetEffectName();
+            }
+            else
+            {
+                return value;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
         }
     }
 
