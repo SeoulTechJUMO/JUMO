@@ -47,7 +47,11 @@ namespace VstHostTest
         public IAudioOutputDevice SelectedAudioOutputDevice
         {
             get => AudioManager.Instance.SelectedOutputDevice;
-            set => AudioManager.Instance.SelectedOutputDevice = value;
+            set
+            {
+                AudioManager.Instance.SelectedOutputDevice = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAudioOutputDevice)));
+            }
         }
 
         public void AddPlugin(string pluginPath)

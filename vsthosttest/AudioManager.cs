@@ -10,7 +10,7 @@ using NAudio.Wave;
 
 namespace VstHostTest
 {
-    sealed class AudioManager
+    sealed class AudioManager : INotifyPropertyChanged
     {
         #region Singleton
 
@@ -24,9 +24,20 @@ namespace VstHostTest
         #endregion
 
         private ObservableCollection<IAudioOutputDevice> _outputDevices;
+        private IAudioOutputDevice _selectedOutputDevice = null;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public ICollectionView OutputDevices { get; private set; }
-        public IAudioOutputDevice SelectedOutputDevice { get; set; } = null;
+        public IAudioOutputDevice SelectedOutputDevice
+        {
+            get => _selectedOutputDevice;
+            set
+            {
+                _selectedOutputDevice = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedOutputDevice)));
+            }
+        }
 
         private void PopulateAudioOutputDevices()
         {
