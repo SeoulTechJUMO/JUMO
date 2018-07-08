@@ -29,7 +29,7 @@ namespace VstHostTest
             {
                 _selectedPlugin = value;
                 CanOpenPluginEditor = _selectedPlugin != null;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedPlugin)));
+                OnPropertyChanged(nameof(SelectedPlugin));
             }
         }
 
@@ -39,7 +39,7 @@ namespace VstHostTest
             private set
             {
                 _canOpenPluginEditor = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOpenPluginEditor)));
+                OnPropertyChanged(nameof(CanOpenPluginEditor));
             }
         }
 
@@ -51,7 +51,7 @@ namespace VstHostTest
             private set
             {
                 AudioManager.Instance.CurrentOutputDevice = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentAudioOutputDevice)));
+                OnPropertyChanged(nameof(CurrentAudioOutputDevice));
             }
         }
 
@@ -88,6 +88,9 @@ namespace VstHostTest
                 return null;
             }
         }
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public MainViewModel()
         {

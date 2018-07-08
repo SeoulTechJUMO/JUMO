@@ -38,7 +38,7 @@ namespace VstHostTest
                 _currentOutputDevice = value;
                 outputEngine?.Dispose();
                 outputEngine = value == null ? null : new AudioOutputEngine(value);
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentOutputDevice)));
+                OnPropertyChanged(nameof(CurrentOutputDevice));
             }
         }
 
@@ -67,5 +67,8 @@ namespace VstHostTest
 
             OutputDevices = CollectionViewSource.GetDefaultView(_outputDevices);
         }
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
