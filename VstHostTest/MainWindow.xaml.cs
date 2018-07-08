@@ -48,5 +48,10 @@ namespace VstHostTest
             editorWindow.PluginCmdStub = (pluginListView.SelectedItem as VstPluginContext).PluginCommandStub;
             editorWindow.Show();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            (DataContext as MainViewModel).ChangeCurrentAudioOutputDevice();
+        }
     }
 }

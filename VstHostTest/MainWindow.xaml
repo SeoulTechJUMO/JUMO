@@ -47,13 +47,19 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Content="출력 장치" Margin="0,0,10,0" FontWeight="Bold" />
-                        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding AudioOutputDevices}" SelectedItem="{Binding SelectedAudioOutputDevice, Mode=TwoWay}" />
+                        <Label Grid.Row="0" Grid.Column="0" Content="현재 출력 장치" Margin="0,0,10,0" FontWeight="bold" />
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentAudioOutputDevice, Mode=OneWay, TargetNullValue='(선택되지 않음)'}" />
+                        <Label Grid.Row="1" Grid.Column="0" Content="출력 장치 변경" Margin="0,0,10,0" FontWeight="Bold" />
+                        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+                            <ComboBox ItemsSource="{Binding AudioOutputDevices}" SelectedItem="{Binding SelectedAudioOutputDevice, Mode=TwoWay}" />
+                            <Button Content="적용" HorizontalAlignment="Right" Padding="10,3" Margin="5" Click="Button_Click_2" />
+                        </StackPanel>
                     </Grid>
                 </StackPanel>
             </TabItem>
