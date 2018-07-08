@@ -44,21 +44,29 @@ namespace VstHostTest
         }
 
         public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
-        public IAudioOutputDevice SelectedAudioOutputDevice
+
+        public IAudioOutputDevice CurrentAudioOutputDevice
         {
-            get => AudioManager.Instance.SelectedOutputDevice;
-            set
+            get => AudioManager.Instance.CurrentOutputDevice;
+            private set
             {
-                AudioManager.Instance.SelectedOutputDevice = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedAudioOutputDevice)));
+                AudioManager.Instance.CurrentOutputDevice = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentAudioOutputDevice)));
             }
         }
+
+        public IAudioOutputDevice SelectedAudioOutputDevice { get; set; }
 
         public void AddPlugin(string pluginPath)
         {
             VstPluginContext ctx = OpenPlugin(pluginPath);
             _plugins.Add(ctx);
             ctx.PluginCommandStub.MainsChanged(true);
+        }
+
+        public void ChangeCurrentAudioOutputDevice()
+        {
+            CurrentAudioOutputDevice = SelectedAudioOutputDevice;
         }
 
         private VstPluginContext OpenPlugin(string pluginPath)

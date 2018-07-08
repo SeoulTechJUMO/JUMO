@@ -24,18 +24,21 @@ namespace VstHostTest
         #endregion
 
         private ObservableCollection<IAudioOutputDevice> _outputDevices;
-        private IAudioOutputDevice _selectedOutputDevice = null;
+        private IAudioOutputDevice _currentOutputDevice = null;
+        private AudioOutputEngine outputEngine = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICollectionView OutputDevices { get; private set; }
-        public IAudioOutputDevice SelectedOutputDevice
+        public IAudioOutputDevice CurrentOutputDevice
         {
-            get => _selectedOutputDevice;
+            get => _currentOutputDevice;
             set
             {
-                _selectedOutputDevice = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedOutputDevice)));
+                _currentOutputDevice = value;
+                outputEngine?.Dispose();
+                outputEngine = value == null ? null : new AudioOutputEngine(value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentOutputDevice)));
             }
         }
 
