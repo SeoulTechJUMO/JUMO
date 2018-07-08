@@ -9,33 +9,54 @@
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
-    <Grid Margin="5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Label Content="플러그인 목록" VerticalAlignment="Center" FontWeight="Bold" />
-            <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                <Button Content="추가" Padding="10,3" Click="Button_Click" />
-                <Button Content="에디터 열기" Padding="10,3" Margin="5,0,0,0" Click="Button_Click_1" IsEnabled="{Binding CanOpenPluginEditor}" />
-            </StackPanel>
-        </Grid>
+    <TabControl>
+        <TabControl.Items>
+            <TabItem Header="VST 플러그인">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
 
-        <ListView Name="pluginListView" Grid.Row="1" ItemsSource="{Binding Plugins}" SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}">
-            <ListView.Resources>
-                <local:PluginListItemConverter x:Key="PluginListItemConverter" />
-            </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Label Content="{Binding Converter={StaticResource PluginListItemConverter}}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </Grid>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="플러그인 목록" VerticalAlignment="Center" FontWeight="Bold" />
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Content="추가" Padding="10,3" Click="Button_Click" />
+                            <Button Content="에디터 열기" Padding="10,3" Margin="5,0,0,0" Click="Button_Click_1" IsEnabled="{Binding CanOpenPluginEditor}" />
+                        </StackPanel>
+                    </Grid>
+
+                    <ListView Name="pluginListView" Grid.Row="1" ItemsSource="{Binding Plugins}" SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}">
+                        <ListView.Resources>
+                            <local:PluginListItemConverter x:Key="PluginListItemConverter" />
+                        </ListView.Resources>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Converter={StaticResource PluginListItemConverter}}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem Header="오디오 출력">
+                <StackPanel Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Content="출력 장치" Margin="0,0,10,0" FontWeight="Bold" />
+                        <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding AudioOutputDevices}" SelectedItem="{Binding SelectedAudioOutputDevice, Mode=TwoWay}" />
+                    </Grid>
+                </StackPanel>
+            </TabItem>
+        </TabControl.Items>
+    </TabControl>
 </Window>

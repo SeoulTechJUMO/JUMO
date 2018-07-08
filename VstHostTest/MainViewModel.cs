@@ -21,6 +21,7 @@ namespace VstHostTest
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CollectionView Plugins { get; }
+
         public VstPluginContext SelectedPlugin
         {
             get => _selectedPlugin;
@@ -31,6 +32,7 @@ namespace VstHostTest
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedPlugin)));
             }
         }
+
         public bool CanOpenPluginEditor
         {
             get => _canOpenPluginEditor;
@@ -39,6 +41,13 @@ namespace VstHostTest
                 _canOpenPluginEditor = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanOpenPluginEditor)));
             }
+        }
+
+        public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
+        public IAudioOutputDevice SelectedAudioOutputDevice
+        {
+            get => AudioManager.Instance.SelectedOutputDevice;
+            set => AudioManager.Instance.SelectedOutputDevice = value;
         }
 
         public void AddPlugin(string pluginPath)
