@@ -78,20 +78,9 @@ namespace VstHostTest
     class PluginListItemConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is VstPluginContext)
-            {
-                return (value as VstPluginContext).PluginCommandStub.GetEffectName();
-            }
-            else
-            {
-                return value;
-            }
-        }
+            => (value is VstPluginContext) ? (value as VstPluginContext).PluginCommandStub.GetEffectName() : value;
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
+            => null;
     }
 }
