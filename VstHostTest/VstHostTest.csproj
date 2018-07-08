@@ -100,6 +100,7 @@
     </Compile>
     <Compile Include="AudioManager.cs" />
     <Compile Include="AudioOutputDevice.cs" />
+    <Compile Include="AudioOutputEngine.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
