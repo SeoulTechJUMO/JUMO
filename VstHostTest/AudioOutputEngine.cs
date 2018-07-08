@@ -18,6 +18,7 @@ namespace VstHostTest
 
         public AudioOutputEngine(IAudioOutputDevice device)
         {
+            System.Diagnostics.Debug.WriteLine($"Initializing a new audio output engine with {device.FriendlyName}");
             switch (device.Type)
             {
                 case AudioOutputDeviceType.WaveOut:
@@ -48,6 +49,7 @@ namespace VstHostTest
 
         public void Dispose()
         {
+            System.Diagnostics.Debug.WriteLine("Disposing the current audio output engine");
             outputDevice.Stop();
             outputDevice.Dispose();
         }
