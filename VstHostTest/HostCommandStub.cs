@@ -80,7 +80,7 @@ namespace VstHostTest
 
         public VstTimeInfo GetTimeInfo(VstTimeInfoFlags filterFlags)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public string GetVendorString()
