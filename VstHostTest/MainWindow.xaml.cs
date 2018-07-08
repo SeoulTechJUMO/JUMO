@@ -38,7 +38,7 @@ namespace VstHostTest
 
             if (fileDialog.ShowDialog() == true)
             {
-                viewModel.AddPlugin(fileDialog.FileName);
+                viewModel.AddPlugin(fileDialog.FileName, null);
             }
         }
 

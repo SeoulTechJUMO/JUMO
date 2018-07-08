@@ -14,13 +14,12 @@ namespace VstHostTest
 {
     class MainViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<VstPluginContext> _plugins = new ObservableCollection<VstPluginContext>();
         private VstPluginContext _selectedPlugin = null;
         private bool _canOpenPluginEditor = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public CollectionView Plugins { get; }
+        public ICollectionView Plugins => PluginManager.Instance.Plugins;
 
         public VstPluginContext SelectedPlugin
         {
@@ -43,6 +42,9 @@ namespace VstHostTest
             }
         }
 
+        public bool AddPlugin(string pluginPath, Action<Exception> onError)
+            => PluginManager.Instance.AddPlugin(pluginPath, onError);
+
         public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
 
         public IAudioOutputDevice CurrentAudioOutputDevice
@@ -57,36 +59,9 @@ namespace VstHostTest
 
         public IAudioOutputDevice SelectedAudioOutputDevice { get; set; }
 
-        public void AddPlugin(string pluginPath)
-        {
-            VstPluginContext ctx = OpenPlugin(pluginPath);
-            _plugins.Add(ctx);
-            ctx.PluginCommandStub.MainsChanged(true);
-        }
-
         public void ChangeCurrentAudioOutputDevice()
         {
             CurrentAudioOutputDevice = SelectedAudioOutputDevice;
-        }
-
-        private VstPluginContext OpenPlugin(string pluginPath)
-        {
-            try
-            {
-                HostCommandStub hostCmdStub = new HostCommandStub();
-                VstPluginContext ctx = VstPluginContext.Create(pluginPath, hostCmdStub);
-
-                ctx.Set("PluginPath", pluginPath);
-                ctx.Set("HostCmdStub", hostCmdStub);
-
-                ctx.PluginCommandStub.Open();
-
-                return ctx;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -94,7 +69,6 @@ namespace VstHostTest
 
         public MainViewModel()
         {
-            Plugins = new ListCollectionView(_plugins);
         }
     }
 
