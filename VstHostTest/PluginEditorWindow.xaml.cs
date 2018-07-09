@@ -43,5 +43,47 @@ namespace VstHostTest
                 (host.Child as PluginEditorHost).Dispose();
             }
         }
+
+        private void MiddleCMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            PluginCmdStub.StartProcess();
+            PluginCmdStub.ProcessEvents(new VstEvent[] {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, 0x3c, 0x40, 0x00 }, 0, 127)
+            });
+            PluginCmdStub.StopProcess();
+        }
+
+        private void MiddleCMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            PluginCmdStub.StartProcess();
+            PluginCmdStub.ProcessEvents(new VstEvent[] {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, 0x3c, 0x40, 0x00 }, 0, 127)
+            });
+            PluginCmdStub.StopProcess();
+        }
+
+        private void CMaj7MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            PluginCmdStub.StartProcess();
+            PluginCmdStub.ProcessEvents(new VstEvent[] {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, 0x3c, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, 0x40, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, 0x43, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, 0x47, 0x40, 0x00 }, 0, 127)
+            });
+            PluginCmdStub.StopProcess();
+        }
+
+        private void CMaj7MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            PluginCmdStub.StartProcess();
+            PluginCmdStub.ProcessEvents(new VstEvent[] {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, 0x3c, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, 0x40, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, 0x43, 0x40, 0x00 }, 0, 127),
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, 0x47, 0x40, 0x00 }, 0, 127)
+            });
+            PluginCmdStub.StopProcess();
+        }
     }
 }

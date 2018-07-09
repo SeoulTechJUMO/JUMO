@@ -18,6 +18,8 @@
         <Border Name="host" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="3" />
         <StackPanel Orientation="Horizontal">
             <Label Content="호롤롤로로" />
+            <Button Content="Middle C" Margin="5,0,0,0" Padding="10,3" PreviewMouseDown="MiddleCMouseDown" PreviewMouseUp="MiddleCMouseUp" />
+            <Button Content="C Major 7" Margin="5,0,0,0" Padding="10,3" PreviewMouseDown="CMaj7MouseDown" PreviewMouseUp="CMaj7MouseUp" />
         </StackPanel>
     </StackPanel>
 </Window>
