@@ -32,6 +32,9 @@ namespace VstHostTest
                 buffer[i] = outBuf[0][i];
             }
 
+            inBufMgr.Dispose();
+            outBufMgr.Dispose();
+
             return count;
         }
     }
