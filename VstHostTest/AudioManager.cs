@@ -28,6 +28,7 @@ namespace VstHostTest
         private AudioOutputEngine outputEngine = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler OutputDeviceChanged;
 
         public ICollectionView OutputDevices { get; private set; }
         public IAudioOutputDevice CurrentOutputDevice
@@ -35,12 +36,19 @@ namespace VstHostTest
             get => _currentOutputDevice;
             set
             {
-                _currentOutputDevice = value;
-                outputEngine?.Dispose();
-                outputEngine = value == null ? null : new AudioOutputEngine(value);
-                OnPropertyChanged(nameof(CurrentOutputDevice));
+                if (!Equals(_currentOutputDevice, value))
+                {
+                    _currentOutputDevice = value;
+                    outputEngine?.Dispose();
+                    outputEngine = value == null ? null : new AudioOutputEngine(value);
+                    OnPropertyChanged(nameof(CurrentOutputDevice));
+                    OutputDeviceChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
+
+        public void AddMixerInput(ISampleProvider input)
+            => outputEngine?.AddMixerInput(input);
 
         private void PopulateAudioOutputDevices()
         {

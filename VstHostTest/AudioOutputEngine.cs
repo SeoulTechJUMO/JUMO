@@ -41,7 +41,6 @@ namespace VstHostTest
             outputDevice.Play();
         }
 
-        // WIP
         public void AddMixerInput(ISampleProvider input)
         {
             mixer.AddMixerInput(input);

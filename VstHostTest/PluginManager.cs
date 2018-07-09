@@ -20,6 +20,7 @@ namespace VstHostTest
         {
             _plugins = new ObservableCollection<IVstPluginContext>();
             Plugins = CollectionViewSource.GetDefaultView(_plugins);
+            AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
         public static PluginManager Instance => _instance.Value;
 
@@ -35,11 +36,13 @@ namespace VstHostTest
             {
                 HostCommandStub hostCmdStub = new HostCommandStub();
                 VstPluginContext ctx = VstPluginContext.Create(pluginPath, hostCmdStub);
+                IVstPluginCommandStub pluginCmdStub = ctx.PluginCommandStub;
 
-                ctx.PluginCommandStub.Open();
-                ctx.PluginCommandStub.SetSampleRate(44100.0f);
-                ctx.PluginCommandStub.SetBlockSize(2048);
-                ctx.PluginCommandStub.MainsChanged(true);
+                pluginCmdStub.Open();
+                pluginCmdStub.SetSampleRate(44100.0f);
+                pluginCmdStub.SetBlockSize(2048);
+                pluginCmdStub.MainsChanged(true);
+                AudioManager.Instance.AddMixerInput(new VSTSampleProvider(pluginCmdStub));
 
                 _plugins.Add(ctx);
 
@@ -59,6 +62,21 @@ namespace VstHostTest
             {
                 plugin.PluginCommandStub.MainsChanged(false);
                 plugin.PluginCommandStub.Close();
+            }
+        }
+
+        private void AudioOutputDeviceChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
+
+            if (AudioManager.Instance.CurrentOutputDevice == null)
+            {
+                return;
+            }
+
+            foreach (var plugin in _plugins)
+            {
+                AudioManager.Instance.AddMixerInput(new VSTSampleProvider(plugin.PluginCommandStub));
             }
         }
     }
