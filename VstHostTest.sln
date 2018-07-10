@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VstHostTest", "VstHostTest\VstHostTest.csproj", "{46AA49F2-B0A3-4B0D-8A4B-D37D5228AB1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO.Media", "JUMO.Media\JUMO.Media.csproj", "{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{46AA49F2-B0A3-4B0D-8A4B-D37D5228AB1B}.Release|x64.Build.0 = Release|x64
 		{46AA49F2-B0A3-4B0D-8A4B-D37D5228AB1B}.Release|x86.ActiveCfg = Release|x86
 		{46AA49F2-B0A3-4B0D-8A4B-D37D5228AB1B}.Release|x86.Build.0 = Release|x86
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Debug|x64.ActiveCfg = Debug|x64
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Debug|x64.Build.0 = Debug|x64
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Debug|x86.ActiveCfg = Debug|x86
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Debug|x86.Build.0 = Debug|x86
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x64.ActiveCfg = Release|x64
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x64.Build.0 = Release|x64
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x86.ActiveCfg = Release|x86
+		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
