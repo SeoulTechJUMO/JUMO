@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VstHostTest", "VstHostTest\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO.Media", "JUMO.Media\JUMO.Media.csproj", "{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "메인창", "메인창\메인창.csproj", "{E197E618-10B5-4376-9DC6-B779FA208170}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x64.Build.0 = Release|x64
 		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x86.ActiveCfg = Release|x86
 		{52B76347-0E14-4D40-AC6B-53CC63CEAFBE}.Release|x86.Build.0 = Release|x86
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Debug|x64.ActiveCfg = Debug|x64
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Debug|x64.Build.0 = Debug|x64
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Debug|x86.ActiveCfg = Debug|x86
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Debug|x86.Build.0 = Debug|x86
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Release|x64.ActiveCfg = Release|x64
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Release|x64.Build.0 = Release|x64
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Release|x86.ActiveCfg = Release|x86
+		{E197E618-10B5-4376-9DC6-B779FA208170}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

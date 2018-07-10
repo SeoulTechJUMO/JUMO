@@ -1,0 +1,73 @@
+﻿<Window x:Class="메인창.Patten"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:메인창"
+        mc:Ignorable="d"
+        Title="PianoRollForm" Height="450" Width="800">
+    <Grid>
+        <CheckBox Name="activation1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,50,0,0" RenderTransformOrigin="0.5,0.5">
+            <CheckBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                </TransformGroup>
+            </CheckBox.RenderTransform>
+        </CheckBox>
+        <CheckBox Name="activation2" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,125,0,0" RenderTransformOrigin="0.5,0.5">
+            <CheckBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                </TransformGroup>
+            </CheckBox.RenderTransform>
+        </CheckBox>
+        <CheckBox Name="activation3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,200,0,0" RenderTransformOrigin="0.5,0.5">
+            <CheckBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleY="2" ScaleX="2"/>
+                </TransformGroup>
+            </CheckBox.RenderTransform>
+        </CheckBox>
+        <CheckBox Name="activation4" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,275,0,0" RenderTransformOrigin="0.5,0.5">
+            <CheckBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                </TransformGroup>
+            </CheckBox.RenderTransform>
+        </CheckBox>
+        <CheckBox Name="activation5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="36,350,0,0" RenderTransformOrigin="0.5,0.5">
+            <CheckBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="2" ScaleY="2"/>
+                </TransformGroup>
+            </CheckBox.RenderTransform>
+        </CheckBox>
+        <ComboBox Name="MixerN1" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="85,45,0,0"/>
+        <ComboBox Name="MixerN2" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="85,121,0,0"/>
+        <ComboBox Name="MixerN3" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="85,197,0,0"/>
+        <ComboBox Name="MixerN4" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="85,272,0,0"/>
+        <ComboBox Name="MixerN5" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="85,347,0,0"/>
+
+        <Button Name="VSTbtn1" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Button" Width="120" Height="25" Margin="190,43,0,0"/>
+        <Button Name="VSTbtn2" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Button" Width="120" Height="25" Margin="190,120,0,0"/>
+        <Button Name="VSTbtn3" HorizontalAlignment="Left" VerticalAlignment="Top" Content="VST LOAD" Width="120" Height="25" Margin="190,195,0,0"/>
+        <Button Name="VSTbtn4" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Button" Width="120" Height="25" Margin="190,270,0,0"/>
+        <Button Name="VSTbtn5" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Button" Width="120" Height="25" Margin="190,345,0,0"/>
+
+        <Button HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Margin="344,27,0,0" Background="{x:Null}" Click="PianoLoll_Click">
+            <Rectangle Name="rac1" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Stroke="Black"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Margin="344,105,0,0" Background="{x:Null}" Click="PianoLoll_Click">
+            <Rectangle Name="rac2" HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Stroke="Black" />
+        </Button>
+        <Button HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Margin="344,180,0,0" Background="{x:Null}" Click="PianoLoll_Click">
+            <Rectangle Name="rac3" HorizontalAlignment="Left" Height="57" Stroke="Black" VerticalAlignment="Top" Width="418"/>
+        </Button>
+        <Button HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Margin="344,254,0,0" Background="{x:Null}" Click="PianoLoll_Click">
+            <Rectangle Name="rac4" HorizontalAlignment="Left" Height="57" Stroke="Black" VerticalAlignment="Top" Width="418" />
+        </Button>
+        <Button HorizontalAlignment="Left" Height="57" VerticalAlignment="Top" Width="418" Margin="344,329,0,0" Background="{x:Null}" Click="PianoLoll_Click">
+            <Rectangle Name="rac5" HorizontalAlignment="Left" Height="57" Stroke="Black" VerticalAlignment="Top" Width="418" />
+        </Button>
+    </Grid>
+</Window>

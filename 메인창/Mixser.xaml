@@ -1,0 +1,139 @@
+﻿<Window x:Class="메인창.Mixser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:메인창"
+        mc:Ignorable="d"
+        Title="믹서" Height="450" Width="800">
+    <Grid RenderTransformOrigin="0.5,0.5">
+        <Grid.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform/>
+                <TranslateTransform X="2" Y="2"/>
+            </TransformGroup>
+        </Grid.RenderTransform>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="88*"></ColumnDefinition>
+            <ColumnDefinition Width="2" MinWidth="8"></ColumnDefinition>
+            <ColumnDefinition Width="88*"></ColumnDefinition>
+            <ColumnDefinition Width="2" MinWidth="9"></ColumnDefinition>
+            <ColumnDefinition Width="88*"></ColumnDefinition>
+            <ColumnDefinition Width="2" MinWidth="10"></ColumnDefinition>
+            <ColumnDefinition Width="88*"></ColumnDefinition>
+            <ColumnDefinition Width="10"></ColumnDefinition>
+            <ColumnDefinition Width="88*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <TextBlock x:Name="text1" Width="40" Height="20" HorizontalAlignment="Left" Margin="2,0,0,399" ><Run Text="마스터"/></TextBlock>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="34,38,0,0"/>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="90,38,0,0"/>
+            <Button Content="음량" Margin="34,310,32,84" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="팬" Margin="34,346,32,48" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="효과" Margin="34,382,32,12" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+        </Grid>
+
+        <GridSplitter Width="9" Grid.Column="1" Background="#FFF7B4B4"></GridSplitter>
+
+        <Grid Grid.Column="2">
+            <TextBlock x:Name="text2" Width="40" Height="30" HorizontalAlignment="Left" Margin="2,0,0,389" ><Run Text="채널1"/></TextBlock>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="34,38,0,0"/>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="90,38,0,0"/>
+            <CheckBox Content="Mute" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,254,29,0" Height="25" Width="70" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <CheckBox Content="Solo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="46,281,0,0" Height="15" Width="45" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <Button Content="음량" Margin="34,310,32,84" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="팬" Margin="34,346,32,48" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="효과" Margin="34,382,32,12" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+        </Grid>
+
+        <GridSplitter Width="10" Grid.Column="3" Background="#FFF7B4B4"></GridSplitter>
+
+        <Grid Grid.Column="4">
+            <TextBlock x:Name="text3" Width="40" Height="30" HorizontalAlignment="Left" Margin="2,-2,0,391" ><Run Text="채널2"/></TextBlock>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="34,38,0,0"/>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="90,38,0,0"/>
+            <CheckBox Content="Mute" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,254,29,0" Height="25" Width="70" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <CheckBox Content="Solo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="46,281,0,0" Height="15" Width="45" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <Button Content="음량" Margin="34,310,32,84" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="팬" Margin="34,346,32,48" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="효과" Margin="34,382,32,12" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+        </Grid>
+
+        <GridSplitter Width="10" Grid.Column="5" Background="#FFF7B4B4"></GridSplitter>
+
+        <Grid Grid.Column="6">
+            <TextBlock x:Name="text4" Width="40" Height="30" HorizontalAlignment="Left" Margin="2,-2,0,391" ><Run Text="채널3"/></TextBlock>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="34,38,0,0"/>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="90,38,0,0"/>
+            <CheckBox Content="Mute" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,254,29,0" Height="25" Width="70" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <CheckBox Content="Solo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="46,281,0,0" Height="15" Width="45" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <Button Content="음량" Margin="34,310,32,84" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="팬" Margin="34,346,32,48" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="효과" Margin="34,382,32,12" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+        </Grid>
+
+        <GridSplitter Width="10" Grid.Column="7" Background="#FFF7B4B4"></GridSplitter>
+
+        <Grid Grid.Column="8">
+            <TextBlock x:Name="text5" Width="40" Height="30" HorizontalAlignment="Left" Margin="2,-2,0,391" ><Run Text="채널4"/></TextBlock>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="34,38,0,0"/>
+            <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="205" VerticalAlignment="Top" Width="29" Margin="90,38,0,0"/>
+            <CheckBox Content="Mute" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,254,29,0" Height="25" Width="70" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <CheckBox Content="Solo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="46,281,0,0" Height="15" Width="45" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <Button Content="음량" Margin="34,310,32,84" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="팬" Margin="34,346,32,48" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+            <Button Content="효과" Margin="34,382,32,12" RenderTransformOrigin="0.172,-0.277" FontSize="14"></Button>
+        </Grid>
+    </Grid>
+</Window>

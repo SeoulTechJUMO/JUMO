@@ -1,0 +1,25 @@
+﻿<Window x:Class="메인창.PlayList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:메인창"
+        mc:Ignorable="d"
+        Title="PlayList" Height="600" Width="1200">
+    <Grid>
+        <Grid Margin="0,0,0,507" HorizontalAlignment="Left" Width="1192">
+            <TextBlock x:Name="text1" Width="40" Height="20" HorizontalAlignment="Left" ><Run Text="포인터"/></TextBlock>
+            <Button Content="선택" Height="20" Width="30" Margin="41,13,1121,17"/>
+            <Button Name="instBtn" Content="삽입" Height="20" Width="30" Margin="81,13,1081,17" Click="PattenOpen_Click"/>
+            <Button Content="옵션" Height="20" Width="30" Margin="121,13,1041,17"/>
+            <TextBlock x:Name="text2" Width="25" Height="20" HorizontalAlignment="Left" Margin="166,15,0,15" ><Run Text="격자"/></TextBlock>
+            <ComboBox HorizontalAlignment="Left" Height="20" Width="80" Margin="198,13,0,17">
+                <ComboBoxItem>4분음</ComboBoxItem>
+                <ComboBoxItem>8분음</ComboBoxItem>
+                <ComboBoxItem>16분음</ComboBoxItem>
+            </ComboBox>
+            <Button Content="확대" Height="20" Width="30" Margin="289,13,873,17"/>
+            <Button Content="축소" Height="20" Width="30" Margin="327,13,835,17"/>
+        </Grid>
+    </Grid>
+</Window>

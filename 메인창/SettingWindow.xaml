@@ -1,0 +1,66 @@
+﻿<Window x:Class="메인창.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:메인창"
+        mc:Ignorable="d"
+        Title="SettingWindow" Height="650" Width="800" Keyboard.KeyDown="Window_Keyvoard_keyDown" KeyDown="Window_KeyDown">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" MinWidth="12"></ColumnDefinition>
+            <ColumnDefinition Width="553"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="10">
+            <ListBox>
+                <ListBoxItem FontSize="14">프로젝트 정보</ListBoxItem>
+                <ListBoxItem FontSize="14">기본 설정</ListBoxItem>
+                <ListBoxItem FontSize="14">항목1</ListBoxItem>
+                <ListBoxItem FontSize="14">항목2</ListBoxItem>
+                <ListBoxItem FontSize="14">항목3</ListBoxItem>
+            </ListBox>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" Width="11"></GridSplitter>
+
+        <Grid Grid.Column="2" OpacityMask="Black" >
+            <TextBlock x:Name="text1" Width="159" HorizontalAlignment="Left" Margin="14,16,0,571" ><Run Text="프로젝트 정보" FontSize="24" FontWeight="Bold"/></TextBlock>
+            <TextBlock x:Name="text2" Width="51" HorizontalAlignment="Left" Margin="14,82,0,485" FontSize="16" ><Run Text="제목"/></TextBlock>
+            <TextBlock x:Name="text3" Width="51" HorizontalAlignment="Left" Margin="14,134,0,438" FontSize="16" ><Run Text="작곡가"/></TextBlock>
+            <TextBlock x:Name="text4" Width="51" HorizontalAlignment="Left" Margin="14,186,0,383" FontSize="16" ><Run Text="장르"/></TextBlock>
+            <TextBlock x:Name="text5" Width="40" HorizontalAlignment="Left" Margin="14,278,0,276" ><Run Text="설명" FontSize="16"/></TextBlock>
+            <TextBlock x:Name="text6" Width="40" HorizontalAlignment="Left" Margin="14,396,0,175" ><Run Text="템포" FontSize="16"/></TextBlock>
+            <TextBlock x:Name="text7" Width="40" HorizontalAlignment="Left" Margin="14,480,0,76" ><Run Text="박자" FontSize="16"/></TextBlock>
+
+            <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="447" Margin="96,82,0,0"/>
+            <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="447" Margin="96,131,0,0"/>
+            <TextBox HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="447" Margin="96,186,0,0"/>
+            <TextBox HorizontalAlignment="Left" Height="124" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="447" Margin="96,238,0,0"/>
+
+            <Image Width="40" Margin="96,374,417,189" Source="음표.png"/>
+            <Image Width="40" Margin="136,376,377,187" Source="등호.png"/>
+
+            <ComboBox IsEditable="True" Width="100" Margin="198,391,255,202" Height="26" RenderTransformOrigin="0.536,0.875">
+                <ComboBoxItem>100</ComboBoxItem>
+                <ComboBoxItem>120</ComboBoxItem>
+                <ComboBoxItem>140</ComboBoxItem>
+            </ComboBox>
+            <ComboBox IsEditable="True" Width="200" Margin="96,463,257,126" Height="30">
+                <ComboBoxItem>100</ComboBoxItem>
+                <ComboBoxItem>120</ComboBoxItem>
+                <ComboBoxItem>140</ComboBoxItem>
+            </ComboBox>
+
+            <Button Background="Gray" Width="80" Margin="463,390,10,199" BorderBrush="Gray" Content="템포 계산" FontSize="16"/>
+            <Button Background="Gray" Width="30" Margin="96,507,427,82" BorderBrush="Gray" Content="2" FontSize="16"/>
+            <Button Background="Gray" Width="30" Margin="152,507,371,82" BorderBrush="Gray" Content="4" FontSize="16" RenderTransformOrigin="-1.783,1.886"/>
+            <Button Background="Gray" Width="30" Margin="266,507,257,82" BorderBrush="Gray" Content="8" FontSize="16"/>
+            <Button Background="Gray" Width="30" Margin="208,507,315,82" BorderBrush="Gray" Content="16" FontSize="16"/>
+            <Button Background="Gray" Width="80" Margin="266,579,207,10" BorderBrush="Gray" Content="확인" FontSize="16"/>
+            <Button Background="Gray" Width="80" Margin="366,579,107,10" BorderBrush="Gray" Content="취소" FontSize="16"/>
+            <Button Background="Gray" Width="80" Margin="463,579,10,10" BorderBrush="Gray" Content="적용" FontSize="16"/>
+        </Grid>
+    </Grid>
+</Window>

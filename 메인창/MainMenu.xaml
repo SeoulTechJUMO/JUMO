@@ -1,0 +1,49 @@
+﻿<Window x:Class="메인창.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:메인창"
+        mc:Ignorable="d"
+        Title="JUMO Uncomplicated Music Studio" Height="800" Width="1200">
+    <StackPanel>
+        <Menu>
+            <MenuItem Header="파일(F)">
+                <MenuItem Header="저장"/>
+                <MenuItem Header="열기"/>
+                <MenuItem Header="설정" Click="Setting_Click"/>
+            </MenuItem>
+            <MenuItem Header=" 편집(E)"/>
+            <MenuItem Header=" 보기(V)"/>
+            <MenuItem Header=" 도구(T)"/>
+            <MenuItem Header=" 도움말(H)"/>
+        </Menu>
+        <StackPanel Height="756">
+            <ToolBarTray>
+                <ToolBar Height="35">
+                    <ComboBox IsEditable="True" Width="45">
+                        <ComboBoxItem>100</ComboBoxItem>
+                        <ComboBoxItem>120</ComboBoxItem>
+                        <ComboBoxItem>140</ComboBoxItem>
+                    </ComboBox>
+                    <TextBox Name="watch" Margin="5,0,5,0" Width="250"/>
+                    <Button Name="btnStart" Background="Gray" Width="20" Height="20" Margin="0,0,0,5" VerticalAlignment="Bottom">
+                        <Image Source="플레이 버튼.png"/>
+                    </Button>
+                    <Button Background="Gray" Width="20" Height="20" Margin="10,0,10,0"/>
+                    <Slider Width="250" Margin="0,6,5,0">
+                    </Slider>
+                    <ComboBox Width="100">
+                        <ComboBoxItem>패턴1</ComboBoxItem>
+                        <ComboBoxItem>패턴2</ComboBoxItem>
+                        <ComboBoxItem>패턴3</ComboBoxItem>
+                    </ComboBox>
+                    <Button Name="MixerOpen" Background="Gray" Width="30" Height="20" Margin="10,0,0,0" BorderBrush="Gray" Content="MX" Click="Mixser_Click"/>
+                    <Button Name="PlayListOpen" Background="Gray" Width="30" Height="20" Margin="10,0,0,0" BorderBrush="Gray" Click="PlayListOpen_Click" Content="PL"/>
+                </ToolBar>
+            </ToolBarTray>
+            <StackPanel Height="680" />
+            <ProgressBar Width="100" Height="25" Margin="848,6,244,0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>
