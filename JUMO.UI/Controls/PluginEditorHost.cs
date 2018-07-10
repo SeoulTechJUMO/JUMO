@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Interop;
 using Jacobi.Vst.Core.Host;
 
-namespace VstHostTest
+namespace JUMO.UI.Controls
 {
-    class PluginEditorHost : HwndHost
+    public class PluginEditorHost : HwndHost
     {
         private IVstPluginCommandStub _pluginCmdStub;
 

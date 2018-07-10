@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
+using JUMO.UI.Controls;
 
 namespace VstHostTest
 {
