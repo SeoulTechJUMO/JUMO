@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using Jacobi.Vst.Interop.Host;
+using JUMO.Media.Audio;
 
 namespace VstHostTest
 {

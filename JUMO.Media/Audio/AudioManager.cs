@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using NAudio.Wave;
 
-namespace VstHostTest
+namespace JUMO.Media.Audio
 {
-    sealed class AudioManager : INotifyPropertyChanged
+    public sealed class AudioManager : INotifyPropertyChanged
     {
         #region Singleton
 

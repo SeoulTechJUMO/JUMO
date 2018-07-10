@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
+using JUMO.Media.Audio;
 
 namespace VstHostTest
 {

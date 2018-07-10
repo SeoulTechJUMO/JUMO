@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
-namespace VstHostTest
+namespace JUMO.Media.Audio
 {
-    class AudioOutputEngine : IDisposable
+    public class AudioOutputEngine : IDisposable
     {
         private const int SAMPLE_RATE = 44100;
         private const int NUM_CHANNEL = 2;

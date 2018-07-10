@@ -100,9 +100,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AudioManager.cs" />
-    <Compile Include="AudioOutputDevice.cs" />
-    <Compile Include="AudioOutputEngine.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -145,6 +142,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
+      <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
+      <Name>JUMO.Media</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

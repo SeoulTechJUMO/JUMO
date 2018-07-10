@@ -5,23 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using NAudio.Wave;
 
-namespace VstHostTest
+namespace JUMO.Media.Audio
 {
-    enum AudioOutputDeviceType
+    public enum AudioOutputDeviceType
     {
         WaveOut,
         DirectSound,
         ASIO
     }
 
-    interface IAudioOutputDevice
+    public interface IAudioOutputDevice
     {
         AudioOutputDeviceType Type { get; }
         string FriendlyName { get; }
         object Identifier { get; }
     }
 
-    class WaveOutDevice : IAudioOutputDevice
+    public class WaveOutDevice : IAudioOutputDevice
     {
         public AudioOutputDeviceType Type => AudioOutputDeviceType.WaveOut;
         public string FriendlyName { get; private set; }
@@ -36,7 +36,7 @@ namespace VstHostTest
         public override string ToString() => $"{Type}: {FriendlyName}";
     }
 
-    class DirectSoundOutputDevice : IAudioOutputDevice
+    public class DirectSoundOutputDevice : IAudioOutputDevice
     {
         public AudioOutputDeviceType Type => AudioOutputDeviceType.DirectSound;
         public string FriendlyName { get; private set; }
@@ -51,7 +51,7 @@ namespace VstHostTest
         public override string ToString() => $"{Type}: {FriendlyName}";
     }
 
-    class AsioOutputDevice : IAudioOutputDevice
+    public class AsioOutputDevice : IAudioOutputDevice
     {
         public AudioOutputDeviceType Type => AudioOutputDeviceType.ASIO;
         public string FriendlyName { get; private set; }
