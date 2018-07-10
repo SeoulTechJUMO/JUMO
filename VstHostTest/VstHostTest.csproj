@@ -91,7 +91,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VSTSampleProvider.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,12 +110,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HostCommandStub.cs" />
     <Compile Include="PluginEditorHost.cs" />
     <Compile Include="PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

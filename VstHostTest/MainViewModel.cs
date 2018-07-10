@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Media.Audio;
+using JUMO.Media.VstPlugin;
 
 namespace VstHostTest
 {

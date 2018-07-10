@@ -3,15 +3,15 @@ using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
 
-namespace VstHostTest
+namespace JUMO.Media.VstPlugin
 {
-    class VSTSampleProvider : ISampleProvider
+    class VstSampleProvider : ISampleProvider
     {
         private readonly IVstPluginCommandStub _cmdstub;
 
         public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
-        public VSTSampleProvider(IVstPluginCommandStub stub)
+        public VstSampleProvider(IVstPluginCommandStub stub)
         {
             _cmdstub = stub;
         }

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Media.Audio;
 
-namespace VstHostTest
+namespace JUMO.Media.VstPlugin
 {
-    sealed class PluginManager : IDisposable
+    public sealed class PluginManager : IDisposable
     {
         #region Singleton
 
@@ -43,7 +39,7 @@ namespace VstHostTest
                 pluginCmdStub.SetSampleRate(44100.0f);
                 pluginCmdStub.SetBlockSize(2048);
                 pluginCmdStub.MainsChanged(true);
-                AudioManager.Instance.AddMixerInput(new VSTSampleProvider(pluginCmdStub));
+                AudioManager.Instance.AddMixerInput(new VstSampleProvider(pluginCmdStub));
 
                 _plugins.Add(ctx);
 
@@ -77,7 +73,7 @@ namespace VstHostTest
 
             foreach (var plugin in _plugins)
             {
-                AudioManager.Instance.AddMixerInput(new VSTSampleProvider(plugin.PluginCommandStub));
+                AudioManager.Instance.AddMixerInput(new VstSampleProvider(plugin.PluginCommandStub));
             }
         }
     }
