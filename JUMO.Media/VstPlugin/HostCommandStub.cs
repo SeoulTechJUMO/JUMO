@@ -80,7 +80,17 @@ namespace JUMO.Media.VstPlugin
 
         public VstTimeInfo GetTimeInfo(VstTimeInfoFlags filterFlags)
         {
-            return null;
+            // TODO
+            return new VstTimeInfo()
+            {
+                TimeSignatureNumerator = 4,
+                TimeSignatureDenominator = 4,
+                SampleRate = 44100.0,
+                Tempo = 120,
+                BarStartPosition = 0,
+                NanoSeconds = 0,
+                PpqPosition = 0.0
+            };
         }
 
         public string GetVendorString()
