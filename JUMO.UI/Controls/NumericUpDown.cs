@@ -18,19 +18,19 @@ namespace JUMO.UI.Controls
         public static readonly DependencyProperty MinValueProperty =
             DependencyProperty.Register(
                 "MinValue", typeof(double), typeof(NumericUpDown),
-                new PropertyMetadata(0.0)
+                new PropertyMetadata(0.0, MinValueChangedCallback)
             );
 
         public static readonly DependencyProperty MaxValueProperty =
             DependencyProperty.Register(
                 "MaxValue", typeof(double), typeof(NumericUpDown),
-                new PropertyMetadata(100.0)
+                new PropertyMetadata(100.0, MaxValueChangedCallback)
             );
 
         public static readonly DependencyProperty DeltaProperty =
             DependencyProperty.Register(
                 "Delta", typeof(double), typeof(NumericUpDown),
-                new PropertyMetadata(1.0)
+                new PropertyMetadata(1.0, DeltaChangedCallback)
             );
 
         #endregion
@@ -161,6 +161,30 @@ namespace JUMO.UI.Controls
             double newValue = (double)e.NewValue;
 
             ctrl.OnValueChanged(new ValueChangedEventArgs(ValueChangedEvent, newValue));
+        }
+
+        private static void MinValueChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            if ((double)e.NewValue >= (obj as NumericUpDown).MaxValue)
+            {
+                throw new InvalidOperationException("MinValue must be less than MaxValue.");
+            }
+        }
+
+        private static void MaxValueChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            if ((double)e.NewValue <= (obj as NumericUpDown).MinValue)
+            {
+                throw new InvalidOperationException("MaxValue must be greater than MinValue.");
+            }
+        }
+
+        private static void DeltaChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
+        {
+            if ((double)e.NewValue <= 0)
+            {
+                throw new InvalidOperationException("Delta must be greater than zero.");
+            }
         }
 
         private static object CoerceValue(DependencyObject obj, object baseValue)
