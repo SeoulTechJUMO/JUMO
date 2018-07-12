@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
@@ -11,7 +12,7 @@ namespace JUMO.UI.Controls
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
                 "Value", typeof(double), typeof(NumericUpDown),
-                new PropertyMetadata(0.0, ValueChangedCallback)
+                new PropertyMetadata(0.0, ValueChangedCallback, CoerceValue)
             );
 
         public static readonly DependencyProperty MinValueProperty =
@@ -128,17 +129,9 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void UpButtonElement_Click(object sender, RoutedEventArgs e)
-        {
-            double temp = Value + Delta;
-            Value = temp >= MaxValue ? MaxValue : temp;
-        }
+        private void UpButtonElement_Click(object sender, RoutedEventArgs e) => Value += Delta;
 
-        private void DownButtonElement_Click(object sender, RoutedEventArgs e)
-        {
-            double temp = Value - Delta;
-            Value = temp <= MinValue ? MinValue : temp;
-        }
+        private void DownButtonElement_Click(object sender, RoutedEventArgs e) => Value -= Delta;
 
         #endregion
 
@@ -160,14 +153,31 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        #region Dependency Property Changed Callbacks
+        #region Dependency Property Callbacks
 
         private static void ValueChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
             NumericUpDown ctrl = obj as NumericUpDown;
             double newValue = (double)e.NewValue;
 
-            ctrl.OnValueChanged(new ValueChangedEventArgs(NumericUpDown.ValueChangedEvent, newValue));
+            ctrl.OnValueChanged(new ValueChangedEventArgs(ValueChangedEvent, newValue));
+        }
+
+        private static object CoerceValue(DependencyObject obj, object baseValue)
+        {
+            NumericUpDown ctrl = obj as NumericUpDown;
+            double clamp(double val) => Math.Max(ctrl.MinValue, Math.Min(ctrl.MaxValue, val));
+
+            switch (baseValue)
+            {
+                case double d:
+                    return clamp(d);
+                case string s:
+                    double x;
+                    return double.TryParse(s, out x) ? clamp(x) : 0.0;
+                default:
+                    return 0.0;
+            }
         }
 
         #endregion
