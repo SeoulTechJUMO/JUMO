@@ -77,13 +77,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\NumericUpDown.cs" />
+    <Page Include="Layouts\PianoRollWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Controls\PianoRollViewport.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Layouts\PianoRollWindow.xaml.cs">
+      <DependentUpon>PianoRollWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
