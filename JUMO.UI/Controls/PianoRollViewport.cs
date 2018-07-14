@@ -8,27 +8,27 @@ using System.Windows.Media;
 
 namespace JUMO.UI.Controls
 {
-    class PianoRollViewport : FrameworkElement
+    class PianoRollViewport : MusicalElement
     {
-        #region Dependency Properties
-
-        public static readonly DependencyProperty NumeratorProperty =
-            DependencyProperty.Register(
-                "Numerator", typeof(int), typeof(PianoRollViewport),
+        static PianoRollViewport()
+        {
+            NumeratorProperty.OverrideMetadata(
+                typeof(PianoRollViewport),
                 new PropertyMetadata(4, PropertyChangedCallback)
             );
 
-        public static readonly DependencyProperty DenominatorProperty =
-            DependencyProperty.Register(
-                "Denominator", typeof(int), typeof(PianoRollViewport),
+            DenominatorProperty.OverrideMetadata(
+                typeof(PianoRollViewport),
                 new PropertyMetadata(4, PropertyChangedCallback)
             );
 
-        public static readonly DependencyProperty TimeResolutionProperty =
-            DependencyProperty.Register(
-                "TimeResolution", typeof(int), typeof(PianoRollViewport),
+            TimeResolutionProperty.OverrideMetadata(
+                typeof(PianoRollViewport),
                 new PropertyMetadata(480, PropertyChangedCallback)
             );
+        }
+
+        #region Dependency Properties
 
         public static readonly DependencyProperty ZoomFactorProperty =
             DependencyProperty.Register(
@@ -40,24 +40,6 @@ namespace JUMO.UI.Controls
 
         #region Properties
 
-        public int Numerator
-        {
-            get => (int)GetValue(NumeratorProperty);
-            set => SetValue(NumeratorProperty, value);
-        }
-
-        public int Denominator
-        {
-            get => (int)GetValue(DenominatorProperty);
-            set => SetValue(DenominatorProperty, value);
-        }
-
-        public int TimeResolution
-        {
-            get => (int)GetValue(TimeResolutionProperty);
-            set => SetValue(TimeResolutionProperty, value);
-        }
-
         public int ZoomFactor
         {
             get => (int)GetValue(ZoomFactorProperty);
@@ -66,23 +48,19 @@ namespace JUMO.UI.Controls
 
         public int GridUnit => 16;
 
-        private int PpqBase => (int)(TimeResolution / (Denominator / 4.0));
-
-        private int PpqBar => PpqBase * Numerator;
-
         private int PpqGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
 
         private int GridWidth => (int)(ZoomFactor * (16.0 / GridUnit));
 
-        private double UnitsPerBase => PpqBase / PpqGridUnit;
+        private double UnitsPerBase => TicksPerBeat / PpqGridUnit;
 
-        private double UnitsPerBar => PpqBar / PpqGridUnit;
+        private double UnitsPerBar => TicksPerBar / PpqGridUnit;
 
         #endregion
 
         protected override void OnRender(DrawingContext dc)
         {
-            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, PPQ Base = {PpqBase}, PPQ Bar = {PpqBar}, PPQ GridUnit = {PpqGridUnit}");
+            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, PPQ Base = {TicksPerBeat}, PPQ Bar = {TicksPerBar}, PPQ GridUnit = {PpqGridUnit}");
             System.Diagnostics.Debug.WriteLine($"GridWidth = {GridWidth}, UnitsPerBase = {UnitsPerBase}, UnitsPerBar = {UnitsPerBar}");
 
             SolidColorBrush normalBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
