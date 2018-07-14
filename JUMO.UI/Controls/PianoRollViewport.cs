@@ -58,16 +58,20 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        #region Drawing Resources
+
+        private static readonly SolidColorBrush normalBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+        private static readonly SolidColorBrush fadedBrush = new SolidColorBrush(Color.FromArgb(64, 0, 0, 0));
+        private static readonly Pen thickPen = new Pen(normalBrush, 2);
+        private static readonly Pen normalPen = new Pen(normalBrush, 1);
+        private static readonly Pen fadedPen = new Pen(fadedBrush, 1);
+
+        #endregion
+
         protected override void OnRender(DrawingContext dc)
         {
             System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, PPQ Base = {TicksPerBeat}, PPQ Bar = {TicksPerBar}, PPQ GridUnit = {PpqGridUnit}");
             System.Diagnostics.Debug.WriteLine($"GridWidth = {GridWidth}, UnitsPerBase = {UnitsPerBase}, UnitsPerBar = {UnitsPerBar}");
-
-            SolidColorBrush normalBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-            SolidColorBrush fadedBrush = new SolidColorBrush(Color.FromArgb(64, 0, 0, 0));
-            Pen thickPen = new Pen(normalBrush, 2);
-            Pen normalPen = new Pen(normalBrush, 1);
-            Pen fadedPen = new Pen(fadedBrush, 1);
 
             for (int i = 0; i < 100; i++)
             {
