@@ -76,6 +76,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\MusicalElement.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
