@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace JUMO.UI.Controls
@@ -28,6 +29,11 @@ namespace JUMO.UI.Controls
             );
         }
 
+        public PianoRollViewport()
+        {
+            ResizeContentBoundary();
+        }
+
         #region Dependency Properties
 
         public static readonly DependencyProperty ZoomFactorProperty =
@@ -35,6 +41,14 @@ namespace JUMO.UI.Controls
                 "ZoomFactor", typeof(int), typeof(PianoRollViewport),
                 new PropertyMetadata(24, PropertyChangedCallback)
             );
+
+        private static readonly DependencyPropertyKey ContentBoundaryKey =
+            DependencyProperty.RegisterReadOnly(
+                "ContentBoundary", typeof(Rect), typeof(PianoRollViewport),
+                new PropertyMetadata(default(Rect))
+            );
+
+        public static readonly DependencyProperty ContentBoundaryProperty = ContentBoundaryKey.DependencyProperty;
 
         #endregion
 
@@ -46,11 +60,15 @@ namespace JUMO.UI.Controls
             set => SetValue(ZoomFactorProperty, value);
         }
 
+        public Rect ContentBoundary => (Rect)GetValue(ContentBoundaryProperty);
+
         public int GridUnit => 16;
 
         private int PpqGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
 
-        private int GridWidth => (int)(ZoomFactor * (16.0 / GridUnit));
+        private double GridWidth => ZoomFactor * (16.0 / GridUnit);
+
+        private double BeatWidth => ZoomFactor * (16.0 / Denominator);
 
         private double UnitsPerBase => TicksPerBeat / PpqGridUnit;
 
@@ -72,18 +90,35 @@ namespace JUMO.UI.Controls
         {
             System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, PPQ Base = {TicksPerBeat}, PPQ Bar = {TicksPerBar}, PPQ GridUnit = {PpqGridUnit}");
             System.Diagnostics.Debug.WriteLine($"GridWidth = {GridWidth}, UnitsPerBase = {UnitsPerBase}, UnitsPerBar = {UnitsPerBar}");
+            System.Diagnostics.Debug.WriteLine($"Content Boundary = {ContentBoundary}");
 
-            for (int i = 0; i < 100; i++)
+            double cw = ContentBoundary.Width;
+            double ch = ContentBoundary.Height;
+
+            dc.DrawLine(fadedPen, new Point(0, 0.5), new Point(cw, 0.5));
+
+            for (double xpos = 0; xpos <= cw; xpos += GridWidth)
             {
-                Pen activePen = i % UnitsPerBar == 0 ? thickPen : (i % UnitsPerBase == 0 ? normalPen : fadedPen);
-                double x = i * GridWidth + 0.5;
-                dc.DrawLine(activePen, new Point(x, 0), new Point(x, ActualHeight));
+                dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
             }
+
+            for (double xpos = 0; xpos <= cw; xpos += BeatWidth)
+            {
+                dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
+            }
+
+            dc.DrawLine(thickPen, new Point(0.5, 0), new Point(0.5, ch));
+            dc.DrawLine(thickPen, new Point(cw + 0.5, 0), new Point(cw + 0.5, ch));
         }
+
+        private void ResizeContentBoundary() => SetValue(ContentBoundaryKey, new Rect(0, 0, BeatWidth * Numerator, 20));
 
         private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            (obj as PianoRollViewport).InvalidateVisual();
+            PianoRollViewport ctrl = obj as PianoRollViewport;
+
+            ctrl.ResizeContentBoundary();
+            ctrl.InvalidateVisual();
         }
     }
 }
