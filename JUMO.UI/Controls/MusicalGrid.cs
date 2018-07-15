@@ -9,27 +9,27 @@ using System.Windows.Media;
 
 namespace JUMO.UI.Controls
 {
-    class PianoRollViewport : MusicalElement
+    class MusicalGrid : MusicalElement
     {
-        static PianoRollViewport()
+        static MusicalGrid()
         {
             NumeratorProperty.OverrideMetadata(
-                typeof(PianoRollViewport),
+                typeof(MusicalGrid),
                 new PropertyMetadata(4, PropertyChangedCallback)
             );
 
             DenominatorProperty.OverrideMetadata(
-                typeof(PianoRollViewport),
+                typeof(MusicalGrid),
                 new PropertyMetadata(4, PropertyChangedCallback)
             );
 
             TimeResolutionProperty.OverrideMetadata(
-                typeof(PianoRollViewport),
+                typeof(MusicalGrid),
                 new PropertyMetadata(480, PropertyChangedCallback)
             );
         }
 
-        public PianoRollViewport()
+        public MusicalGrid()
         {
             ResizeContentBoundary();
         }
@@ -38,19 +38,19 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty ZoomFactorProperty =
             DependencyProperty.Register(
-                "ZoomFactor", typeof(int), typeof(PianoRollViewport),
+                "ZoomFactor", typeof(int), typeof(MusicalGrid),
                 new PropertyMetadata(24, PropertyChangedCallback)
             );
 
         private static readonly DependencyPropertyKey ContentBoundaryKey =
             DependencyProperty.RegisterReadOnly(
-                "ContentBoundary", typeof(Rect), typeof(PianoRollViewport),
+                "ContentBoundary", typeof(Rect), typeof(MusicalGrid),
                 new PropertyMetadata(default(Rect))
             );
 
         public static readonly DependencyProperty GridUnitProperty =
             DependencyProperty.Register(
-                "GridUnit", typeof(int), typeof(PianoRollViewport),
+                "GridUnit", typeof(int), typeof(MusicalGrid),
                 new PropertyMetadata(16, PropertyChangedCallback)
             );
 
@@ -125,7 +125,7 @@ namespace JUMO.UI.Controls
 
         private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
-            PianoRollViewport ctrl = obj as PianoRollViewport;
+            MusicalGrid ctrl = obj as MusicalGrid;
 
             ctrl.ResizeContentBoundary();
             ctrl.InvalidateVisual();
