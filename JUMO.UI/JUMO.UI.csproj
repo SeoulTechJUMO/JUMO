@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Controls\MusicalElement.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
+    <Compile Include="PrototypePianoRollViewModel.cs" />
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -5,9 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        xmlns:test="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
         Title="PianoRollWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <test:PrototypePianoRollViewModel />
+    </Window.DataContext>
     <Grid>
-        <ctrl:PianoRollViewport />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Numerator" />
+            <ctrl:NumericUpDown x:Name="NumeratorControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding Numerator, Mode=TwoWay}" />
+            <Label Content="Denominator" />
+            <ctrl:NumericUpDown x:Name="DenominatorControl" MinValue="2" MaxValue="64" Delta="2" Value="{Binding Denominator, Mode=TwoWay}" />
+            <Label Content="GridUnit" />
+            <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
+            <Label Content="ZoomFactor" />
+            <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
+            <Label Content="{Binding VerticalOffset, ElementName=Scroll}" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Row="1" Grid.Column="1" x:Name="Scroll" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                <Canvas Height="2560">
+                    <Canvas.Background>
+                        <VisualBrush x:Name="PianoRollBackgroundBrush" Viewport="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" Viewbox="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" ViewportUnits="Absolute" ViewboxUnits="Absolute" TileMode="Tile">
+                            <VisualBrush.Visual>
+                                <ctrl:MusicalGrid x:Name="PianoRollBackgroundVisual" Numerator="{Binding Numerator}" Denominator="{Binding Denominator}" GridUnit="{Binding GridUnit}" ZoomFactor="{Binding ZoomFactor}" />
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Canvas.Background>
+                    <Button Canvas.Top="80" Canvas.Left="96" Content="Hello, world!" Padding="10,3" />
+                </Canvas>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
