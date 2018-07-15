@@ -25,7 +25,7 @@
             <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
             <Label Content="ZoomFactor" />
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
-            <Label Content="{Binding VerticalOffset, ElementName=Scroll}" />
+            <Label Content="{Binding VerticalOffset, ElementName=MainScrollViewer}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -36,7 +36,10 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <ScrollViewer Grid.Row="1" Grid.Column="1" x:Name="Scroll" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
+                <ctrl:PianoRollKeyboard />
+            </ScrollViewer>
+            <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" ScrollChanged="OnScrollChanged">
                 <Canvas Height="2560">
                     <Canvas.Background>
                         <VisualBrush x:Name="PianoRollBackgroundBrush" Viewport="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" Viewbox="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" ViewportUnits="Absolute" ViewboxUnits="Absolute" TileMode="Tile">

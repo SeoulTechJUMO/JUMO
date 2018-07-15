@@ -23,5 +23,19 @@ namespace JUMO.UI.Layouts
         {
             InitializeComponent();
         }
+
+        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if (sender.Equals(MainScrollViewer))
+            {
+                KeyScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
+                KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
+            }
+            else
+            {
+                MainScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
+                MainScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
+            }
+        }
     }
 }

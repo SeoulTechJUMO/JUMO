@@ -42,4 +42,26 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type ctrl:PianoRollKeyboard}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrl:PianoRollKeyboard}">
+                    <ControlTemplate.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Button">
+                                <Setter Property="MinHeight" Value="20" />
+                                <Setter Property="MaxHeight" Value="20" />
+                                <Setter Property="Height" Value="20" />
+                                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                                <Setter Property="HorizontalContentAlignment" Value="Right" />
+                                <Setter Property="Padding" Value="5,0" />
+                            </Style>
+                        </ResourceDictionary>
+                    </ControlTemplate.Resources>
+                    <StackPanel x:Name="ButtonContainer" Width="100" Orientation="Vertical" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
