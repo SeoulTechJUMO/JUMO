@@ -54,6 +54,18 @@ namespace JUMO.UI.Controls
                 new PropertyMetadata(16, PropertyChangedCallback)
             );
 
+        public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
+            DependencyProperty.Register(
+                "ShouldDrawHorizontalGrid", typeof(bool), typeof(MusicalGrid),
+                new PropertyMetadata(true, PropertyChangedCallback)
+            );
+
+        public static readonly DependencyProperty GridHeightProperty =
+            DependencyProperty.Register(
+                "GridHeight", typeof(double), typeof(MusicalGrid),
+                new PropertyMetadata(20.0, PropertyChangedCallback)
+            );
+
         public static readonly DependencyProperty ContentBoundaryProperty = ContentBoundaryKey.DependencyProperty;
 
         #endregion
@@ -72,6 +84,18 @@ namespace JUMO.UI.Controls
         {
             get => (int)GetValue(GridUnitProperty);
             set => SetValue(GridUnitProperty, value);
+        }
+
+        public bool ShouldDrawHorizontalGrid
+        {
+            get => (bool)GetValue(ShouldDrawHorizontalGridProperty);
+            set => SetValue(ShouldDrawHorizontalGridProperty, value);
+        }
+
+        public double GridHeight
+        {
+            get => (double)GetValue(GridHeightProperty);
+            set => SetValue(GridHeightProperty, value);
         }
 
         private int PpqGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
@@ -105,7 +129,10 @@ namespace JUMO.UI.Controls
             double cw = ContentBoundary.Width;
             double ch = ContentBoundary.Height;
 
-            dc.DrawLine(fadedPen, new Point(0, 0.5), new Point(cw, 0.5));
+            if (ShouldDrawHorizontalGrid)
+            {
+                dc.DrawLine(fadedPen, new Point(0, 0.5), new Point(cw, 0.5));
+            }
 
             for (double xpos = 0; xpos <= cw; xpos += GridWidth)
             {
@@ -121,7 +148,7 @@ namespace JUMO.UI.Controls
             dc.DrawLine(thickPen, new Point(cw + 0.5, 0), new Point(cw + 0.5, ch));
         }
 
-        private void ResizeContentBoundary() => SetValue(ContentBoundaryKey, new Rect(0, 0, BeatWidth * Numerator, 20));
+        private void ResizeContentBoundary() => SetValue(ContentBoundaryKey, new Rect(0, 0, BeatWidth * Numerator, GridHeight));
 
         private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
         {
