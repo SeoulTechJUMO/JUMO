@@ -48,6 +48,12 @@ namespace JUMO.UI.Controls
                 new PropertyMetadata(default(Rect))
             );
 
+        public static readonly DependencyProperty GridUnitProperty =
+            DependencyProperty.Register(
+                "GridUnit", typeof(int), typeof(PianoRollViewport),
+                new PropertyMetadata(16, PropertyChangedCallback)
+            );
+
         public static readonly DependencyProperty ContentBoundaryProperty = ContentBoundaryKey.DependencyProperty;
 
         #endregion
@@ -62,7 +68,11 @@ namespace JUMO.UI.Controls
 
         public Rect ContentBoundary => (Rect)GetValue(ContentBoundaryProperty);
 
-        public int GridUnit => 16;
+        public int GridUnit
+        {
+            get => (int)GetValue(GridUnitProperty);
+            set => SetValue(GridUnitProperty, value);
+        }
 
         private int PpqGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
 
