@@ -25,6 +25,8 @@
             <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
             <Label Content="ZoomFactor" />
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
+            <Label Content="PPQN:" />
+            <Label Content="{Binding TimeResolution}" />
             <Label Content="{Binding VerticalOffset, ElementName=MainScrollViewer}" />
         </StackPanel>
         <Grid Grid.Row="1">
@@ -44,7 +46,7 @@
                     <Canvas.Background>
                         <VisualBrush x:Name="PianoRollBackgroundBrush" Viewport="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" Viewbox="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" ViewportUnits="Absolute" ViewboxUnits="Absolute" TileMode="Tile">
                             <VisualBrush.Visual>
-                                <ctrl:MusicalGrid x:Name="PianoRollBackgroundVisual" Numerator="{Binding Numerator}" Denominator="{Binding Denominator}" GridUnit="{Binding GridUnit}" ZoomFactor="{Binding ZoomFactor}" />
+                                <ctrl:MusicalGrid x:Name="PianoRollBackgroundVisual" Numerator="{Binding Numerator}" Denominator="{Binding Denominator}" TimeResolution="{Binding TimeResolution}" GridUnit="{Binding GridUnit}" ZoomFactor="{Binding ZoomFactor}" />
                             </VisualBrush.Visual>
                         </VisualBrush>
                     </Canvas.Background>

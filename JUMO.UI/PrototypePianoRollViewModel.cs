@@ -36,6 +36,8 @@ namespace JUMO.UI
             }
         }
 
+        public int TimeResolution => 480;
+
         public int ZoomFactor
         {
             get => _zoomFactor;

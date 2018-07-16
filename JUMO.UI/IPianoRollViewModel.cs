@@ -8,8 +8,10 @@ namespace JUMO.UI
 {
     public interface IPianoRollViewModel
     {
-        int Numerator { get; set; }
-        int Denominator { get; set; }
+        int Numerator { get; }
+        int Denominator { get; }
+        int TimeResolution { get; }
+
         int ZoomFactor { get; set; }
         int GridUnit { get; set; }
     }
