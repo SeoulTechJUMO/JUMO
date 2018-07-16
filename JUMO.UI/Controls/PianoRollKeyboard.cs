@@ -32,11 +32,38 @@ namespace JUMO.UI.Controls
 
         private void AddButtons()
         {
+            Style defaultKeyStyle = FindResource("PianoRollKeyStyle") as Style;
+            Style blackKeyStyle = FindResource("PianoRollBlackKeyStyle") as Style;
+            Style keyStyle;
+            string[] keyName = new string[]
+            {
+                "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"
+            };
+
             for (int i = 0; i < 128; i++)
             {
+                int keyNum = 127 - i;
+                int octave = keyNum / 12 - 1;
+                int n = keyNum % 12;
+
+                switch (n)
+                {
+                    case 1:
+                    case 3:
+                    case 6:
+                    case 8:
+                    case 10:
+                        keyStyle = blackKeyStyle;
+                        break;
+                    default:
+                        keyStyle = defaultKeyStyle;
+                        break;
+                }
+
                 Button btn = new Button
                 {
-                    Content = $"Key #{127 - i}"
+                    Content = keyName[n] + octave,
+                    Style = keyStyle
                 };
                 buttonContainerElement.Children.Add(btn);
             }

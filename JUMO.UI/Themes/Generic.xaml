@@ -49,13 +49,17 @@
                 <ControlTemplate TargetType="{x:Type ctrl:PianoRollKeyboard}">
                     <ControlTemplate.Resources>
                         <ResourceDictionary>
-                            <Style TargetType="Button">
+                            <Style x:Key="PianoRollKeyStyle" TargetType="Button">
                                 <Setter Property="MinHeight" Value="20" />
                                 <Setter Property="MaxHeight" Value="20" />
                                 <Setter Property="Height" Value="20" />
                                 <Setter Property="BorderThickness" Value="0,1,0,0" />
                                 <Setter Property="HorizontalContentAlignment" Value="Right" />
                                 <Setter Property="Padding" Value="5,0" />
+                                <Setter Property="Background" Value="WhiteSmoke" />
+                            </Style>
+                            <Style x:Key="PianoRollBlackKeyStyle" TargetType="Button" BasedOn="{StaticResource PianoRollKeyStyle}">
+                                <Setter Property="Background" Value="DarkGray" />
                             </Style>
                         </ResourceDictionary>
                     </ControlTemplate.Resources>
