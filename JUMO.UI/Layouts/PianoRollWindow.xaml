@@ -39,7 +39,7 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" ScrollChanged="OnScrollChanged">
+            <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" ScrollChanged="OnScrollChanged" PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
                 <Canvas Height="2560">
                     <Canvas.Background>
                         <VisualBrush x:Name="PianoRollBackgroundBrush" Viewport="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" Viewbox="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" ViewportUnits="Absolute" ViewboxUnits="Absolute" TileMode="Tile">

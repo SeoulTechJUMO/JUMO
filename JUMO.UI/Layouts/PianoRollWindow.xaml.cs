@@ -37,5 +37,14 @@ namespace JUMO.UI.Layouts
                 MainScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
             }
         }
+
+        private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            {
+                (DataContext as IPianoRollViewModel).ZoomFactor += e.Delta > 0 ? 1 : -1;
+                e.Handled = true;
+            }
+        }
     }
 }
