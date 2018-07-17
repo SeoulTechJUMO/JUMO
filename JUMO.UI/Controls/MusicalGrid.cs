@@ -98,15 +98,15 @@ namespace JUMO.UI.Controls
             set => SetValue(GridHeightProperty, value);
         }
 
-        private int PpqGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
+        private int TicksPerGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
 
         private double GridWidth => ZoomFactor * (16.0 / GridUnit);
 
         private double BeatWidth => ZoomFactor * (16.0 / Denominator);
 
-        private double UnitsPerBase => TicksPerBeat / PpqGridUnit;
+        private double UnitsPerBase => TicksPerBeat / TicksPerGridUnit;
 
-        private double UnitsPerBar => TicksPerBar / PpqGridUnit;
+        private double UnitsPerBar => TicksPerBar / TicksPerGridUnit;
 
         #endregion
 
@@ -122,7 +122,7 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, PPQ Base = {TicksPerBeat}, PPQ Bar = {TicksPerBar}, PPQ GridUnit = {PpqGridUnit}");
+            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, Ticks Per Base = {TicksPerBeat}, Ticks Per Bar = {TicksPerBar}, Ticks Per GridUnit = {TicksPerGridUnit}");
             System.Diagnostics.Debug.WriteLine($"GridWidth = {GridWidth}, UnitsPerBase = {UnitsPerBase}, UnitsPerBar = {UnitsPerBar}");
             System.Diagnostics.Debug.WriteLine($"Content Boundary = {ContentBoundary}");
 
