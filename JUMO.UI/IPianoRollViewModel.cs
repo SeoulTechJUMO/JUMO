@@ -14,5 +14,6 @@ namespace JUMO.UI
 
         int ZoomFactor { get; set; }
         int GridUnit { get; set; }
+        IEnumerable<INote> Notes { get; }
     }
 }

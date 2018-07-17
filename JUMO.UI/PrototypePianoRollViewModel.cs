@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace JUMO.UI
 {
@@ -59,6 +61,20 @@ namespace JUMO.UI
                 OnPropertyChanged(nameof(GridUnit));
             }
         }
+
+        public IEnumerable<INote> Notes { get; } = new ListCollectionView(new List<INote>()
+        {
+            new PrototypeNote(60, 64, 0, 480),
+            new PrototypeNote(62, 64, 480, 480),
+            new PrototypeNote(64, 64, 960, 480),
+            new PrototypeNote(65, 64, 1440, 480),
+            new PrototypeNote(67, 64, 1920, 1920),
+            new PrototypeNote(120, 64, 0, 480),
+            new PrototypeNote(122, 64, 480, 480),
+            new PrototypeNote(124, 64, 960, 480),
+            new PrototypeNote(125, 64, 1440, 480),
+            new PrototypeNote(127, 64, 1920, 1920)
+        }).OfType<INote>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
