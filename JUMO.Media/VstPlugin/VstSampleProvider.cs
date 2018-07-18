@@ -29,7 +29,7 @@ namespace JUMO.Media.VstPlugin
 
             for (int i = 0; i < count; i++)
             {
-                buffer[i] = outBuf[0][i];
+                buffer[i] = outBuf[i % 2][i];
             }
 
             inBufMgr.Dispose();
