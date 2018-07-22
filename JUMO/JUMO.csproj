@@ -64,6 +64,9 @@
     <Reference Include="Jacobi.Vst.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
       <HintPath>..\packages\VST.NET.x86.1.1\lib\net40\Jacobi.Vst.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="NAudio, Version=1.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.8.4\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
