@@ -16,14 +16,14 @@ namespace VstHostTest
 {
     class MainViewModel : INotifyPropertyChanged
     {
-        private VstPluginContext _selectedPlugin = null;
+        private Plugin _selectedPlugin = null;
         private bool _canOpenPluginEditor = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICollectionView Plugins => PluginManager.Instance.Plugins;
 
-        public VstPluginContext SelectedPlugin
+        public Plugin SelectedPlugin
         {
             get => _selectedPlugin;
             set
@@ -72,15 +72,5 @@ namespace VstHostTest
         public MainViewModel()
         {
         }
-    }
-
-    [ValueConversion(typeof(VstPluginContext), typeof(string))]
-    class PluginListItemConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            => (value is VstPluginContext) ? (value as VstPluginContext).PluginCommandStub.GetEffectName() : value;
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            => null;
     }
 }

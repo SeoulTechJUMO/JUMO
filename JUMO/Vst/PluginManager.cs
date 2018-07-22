@@ -15,7 +15,7 @@ namespace JUMO.Vst
         private static readonly Lazy<PluginManager> _instance = new Lazy<PluginManager>(() => new PluginManager());
         private PluginManager()
         {
-            _plugins = new ObservableCollection<IVstPluginContext>();
+            _plugins = new ObservableCollection<Plugin>();
             Plugins = CollectionViewSource.GetDefaultView(_plugins);
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
@@ -23,25 +23,19 @@ namespace JUMO.Vst
 
         #endregion
 
-        private readonly ObservableCollection<IVstPluginContext> _plugins;
+        private readonly ObservableCollection<Plugin> _plugins;
 
-        public ICollectionView Plugins { get; private set; }
+        public ICollectionView Plugins { get; }
 
         public bool AddPlugin(string pluginPath, Action<Exception> onError)
         {
             try
             {
-                HostCommandStub hostCmdStub = new HostCommandStub();
-                VstPluginContext ctx = VstPluginContext.Create(pluginPath, hostCmdStub);
-                IVstPluginCommandStub pluginCmdStub = ctx.PluginCommandStub;
+                HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
+                Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                pluginCmdStub.Open();
-                pluginCmdStub.SetSampleRate(44100.0f);
-                pluginCmdStub.SetBlockSize(2048);
-                pluginCmdStub.MainsChanged(true);
-                AudioManager.Instance.AddMixerInput(new VstSampleProvider(pluginCmdStub));
-
-                _plugins.Add(ctx);
+                AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
+                _plugins.Add(plugin);
 
                 return true;
             }
@@ -57,8 +51,7 @@ namespace JUMO.Vst
         {
             foreach (var plugin in _plugins)
             {
-                plugin.PluginCommandStub.MainsChanged(false);
-                plugin.PluginCommandStub.Close();
+                plugin.Dispose();
             }
         }
 
@@ -73,7 +66,7 @@ namespace JUMO.Vst
 
             foreach (var plugin in _plugins)
             {
-                AudioManager.Instance.AddMixerInput(new VstSampleProvider(plugin.PluginCommandStub));
+                AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
             }
         }
     }

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Win32;
-using Jacobi.Vst.Interop.Host;
+using JUMO.Vst;
 
 namespace VstHostTest
 {
@@ -45,7 +45,7 @@ namespace VstHostTest
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             PluginEditorWindow editorWindow = new PluginEditorWindow();
-            editorWindow.PluginCmdStub = (pluginListView.SelectedItem as VstPluginContext).PluginCommandStub;
+            editorWindow.PluginCmdStub = (pluginListView.SelectedItem as Plugin).PluginCommandStub;
             editorWindow.Show();
         }
 

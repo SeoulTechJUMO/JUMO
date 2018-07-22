@@ -31,12 +31,9 @@
                     </Grid>
 
                     <ListView Name="pluginListView" Grid.Row="1" ItemsSource="{Binding Plugins}" SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}">
-                        <ListView.Resources>
-                            <local:PluginListItemConverter x:Key="PluginListItemConverter" />
-                        </ListView.Resources>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Converter={StaticResource PluginListItemConverter}}" />
+                                <Label Content="{Binding Name}" />
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
