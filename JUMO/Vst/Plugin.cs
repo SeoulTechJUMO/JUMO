@@ -12,10 +12,10 @@ namespace JUMO.Vst
     public class Plugin : IDisposable
     {
         private readonly IVstPluginContext _ctx;
-        private readonly IVstPluginCommandStub _cmdstub;
 
         public string Name { get; set; }
         public string PluginPath { get; }
+        public IVstPluginCommandStub PluginCommandStub { get; }
         public ISampleProvider SampleProvider { get; }
 
         public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub)
@@ -23,20 +23,20 @@ namespace JUMO.Vst
             PluginPath = pluginPath;
 
             _ctx = VstPluginContext.Create(PluginPath, hostCmdStub);
-            _cmdstub = _ctx.PluginCommandStub;
-            _cmdstub.Open();
-            _cmdstub.SetSampleRate(44100.0f);
-            _cmdstub.SetBlockSize(2048);
-            _cmdstub.MainsChanged(true);
+            PluginCommandStub = _ctx.PluginCommandStub;
+            PluginCommandStub.Open();
+            PluginCommandStub.SetSampleRate(44100.0f);
+            PluginCommandStub.SetBlockSize(2048);
+            PluginCommandStub.MainsChanged(true);
 
-            Name = _cmdstub.GetEffectName();
-            SampleProvider = new VstSampleProvider(_cmdstub);
+            Name = PluginCommandStub.GetEffectName();
+            SampleProvider = new VstSampleProvider(PluginCommandStub);
         }
 
         public void Dispose()
         {
-            _cmdstub.MainsChanged(false);
-            _cmdstub.Close();
+            PluginCommandStub.MainsChanged(false);
+            PluginCommandStub.Close();
         }
     }
 }
