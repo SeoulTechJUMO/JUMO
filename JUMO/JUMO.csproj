@@ -94,6 +94,7 @@
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
+    <Compile Include="Vst\Plugin.cs" />
     <Compile Include="Vst\PluginManager.cs" />
     <Compile Include="Vst\VstSampleProvider.cs" />
     <Page Include="MainWindow.xaml">
