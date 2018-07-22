@@ -9,18 +9,28 @@ namespace JUMO
 {
     class Song
     {
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Genre { get; set; }
-        public string Description { get; set; }
-        public NameValueCollection MiscMetadata { get; set; }
+        private const int NumOfTracks = 64;
 
-        public int Tempo { get; set; } // In BPM
-        public int Numerator { get; set; }
-        public int Denominator { get; set; }
+        public string Title { get; set; } = "제목 없음";
+        public string Artist { get; set; } = "";
+        public string Genre { get; set; } = "";
+        public string Description { get; set; } = "";
+        public NameValueCollection MiscMetadata { get; set; } = new NameValueCollection() { };
 
-        public IEnumerable<Track> Tracks { get; }
+        public int Tempo { get; set; } = 120;
+        public int Numerator { get; set; } = 4;
+        public int Denominator { get; set; } = 4;
+
+        public Track[] Tracks { get; } = new Track[NumOfTracks];
 
         public int MidiTempo => (int)Math.Round(60_000_000.0 / Tempo);
+
+        public Song()
+        {
+            for (int i = 0; i < NumOfTracks; i++)
+            {
+                Tracks[i] = new Track($"트랙 {i + 1}");
+            }
+        }
     }
 }

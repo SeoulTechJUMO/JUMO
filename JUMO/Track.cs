@@ -9,6 +9,8 @@ namespace JUMO
     class Track
     {
         public string Name { get; set; }
-        public IEnumerable<PatternPlacement> Patterns { get; }
+        public IEnumerable<PatternPlacement> Patterns { get; } = new List<PatternPlacement>();
+
+        public Track(string name) => Name = name;
     }
 }

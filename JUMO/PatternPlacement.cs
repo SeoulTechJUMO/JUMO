@@ -9,6 +9,6 @@ namespace JUMO
     class PatternPlacement
     {
         public Pattern Pattern { get; }
-        public int Start { get; }
+        public int Start { get; set; }
     }
 }
