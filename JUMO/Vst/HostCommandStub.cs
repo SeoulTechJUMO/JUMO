@@ -2,7 +2,7 @@
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 
-namespace JUMO.Media.VstPlugin
+namespace JUMO.Vst
 {
     class HostCommandStub : IVstHostCommandStub
     {

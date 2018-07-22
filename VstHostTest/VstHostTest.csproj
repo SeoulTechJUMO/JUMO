@@ -148,6 +148,10 @@
       <Project>{b6171fe8-9e92-4b7a-80e6-59ccabd78cc4}</Project>
       <Name>JUMO.UI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JUMO\JUMO.csproj">
+      <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
+      <Name>JUMO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

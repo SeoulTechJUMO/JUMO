@@ -77,9 +77,6 @@
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VstPlugin\HostCommandStub.cs" />
-    <Compile Include="VstPlugin\PluginManager.cs" />
-    <Compile Include="VstPlugin\VstSampleProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

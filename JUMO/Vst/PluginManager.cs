@@ -6,7 +6,7 @@ using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Media.Audio;
 
-namespace JUMO.Media.VstPlugin
+namespace JUMO.Vst
 {
     public sealed class PluginManager : IDisposable
     {

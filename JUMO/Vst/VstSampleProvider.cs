@@ -3,7 +3,7 @@ using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
 
-namespace JUMO.Media.VstPlugin
+namespace JUMO.Vst
 {
     class VstSampleProvider : ISampleProvider
     {
