@@ -11,9 +11,9 @@ namespace JUMO.Vst
 
         public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
-        public VstSampleProvider(IVstPluginCommandStub stub)
+        public VstSampleProvider(Plugin plugin)
         {
-            _cmdstub = stub;
+            _cmdstub = plugin.PluginCommandStub;
         }
 
         public int Read(float[] buffer, int offset, int count)

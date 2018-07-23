@@ -30,7 +30,7 @@ namespace JUMO.Vst
             PluginCommandStub.MainsChanged(true);
 
             Name = PluginCommandStub.GetEffectName();
-            SampleProvider = new VstSampleProvider(PluginCommandStub);
+            SampleProvider = new VstSampleProvider(this);
         }
 
         public void Dispose()
