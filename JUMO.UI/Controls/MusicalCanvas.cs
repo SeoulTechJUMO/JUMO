@@ -15,37 +15,6 @@ namespace JUMO.UI.Controls
     {
         #region Dependency Properties
 
-        public static readonly DependencyProperty TimeResolutionProperty =
-            DependencyProperty.Register(
-                "TimeResolution", typeof(int), typeof(MusicalCanvas),
-                new FrameworkPropertyMetadata(
-                    480,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty GridUnitProperty =
-            DependencyProperty.Register(
-                "GridUnit", typeof(int), typeof(MusicalCanvas),
-                new FrameworkPropertyMetadata(
-                    16,
-                    FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty ZoomFactorProperty =
-            DependencyProperty.Register(
-                "ZoomFactor", typeof(int), typeof(MusicalCanvas),
-                new FrameworkPropertyMetadata(
-                    24,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
         public static readonly DependencyProperty NoteValueProperty =
             DependencyProperty.RegisterAttached(
                 "NoteValue", typeof(int), typeof(MusicalCanvas),
@@ -81,23 +50,9 @@ namespace JUMO.UI.Controls
 
         #region Dependency Property Accessors
 
-        public int TimeResolution
-        {
-            get => (int)GetValue(TimeResolutionProperty);
-            set => SetValue(TimeResolutionProperty, value);
-        }
-
-        public int ZoomFactor
-        {
-            get => (int)GetValue(ZoomFactorProperty);
-            set => SetValue(ZoomFactorProperty, value);
-        }
-
-        public int GridUnit
-        {
-            get => (int)GetValue(GridUnitProperty);
-            set => SetValue(GridUnitProperty, value);
-        }
+        private int TimeResolution => MusicalProps.GetTimeResolution(this);
+        private int GridUnit => MusicalProps.GetGridUnit(this);
+        private int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public static int GetNoteValue(UIElement target) => (int)target.GetValue(NoteValueProperty);
         public static void SetNoteValue(UIElement target, int value) => target.SetValue(NoteValueProperty, value);

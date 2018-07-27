@@ -78,10 +78,10 @@
                 </ItemsControl.Template>
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <ctrl:MusicalCanvas TimeResolution="{Binding TimeResolution}"
-                                            ZoomFactor="{Binding ZoomFactor}"
-                                            GridUnit="{Binding GridUnit}"
-                                            VirtualizingPanel.IsVirtualizing="False" />
+                        <ctrl:MusicalCanvas VirtualizingPanel.IsVirtualizing="False"
+                                            proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                            proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
+                                            proj:MusicalProps.GridUnit="{Binding GridUnit}" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemContainerStyle>
