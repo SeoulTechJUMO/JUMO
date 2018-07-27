@@ -9,61 +9,80 @@ using System.Windows.Media;
 
 namespace JUMO.UI.Controls
 {
-    class MusicalGrid : MusicalElement
+    class MusicalGrid : FrameworkElement
     {
-        static MusicalGrid()
-        {
-            NumeratorProperty.OverrideMetadata(
-                typeof(MusicalGrid),
-                new PropertyMetadata(4, PropertyChangedCallback)
-            );
-
-            DenominatorProperty.OverrideMetadata(
-                typeof(MusicalGrid),
-                new PropertyMetadata(4, PropertyChangedCallback)
-            );
-
-            TimeResolutionProperty.OverrideMetadata(
-                typeof(MusicalGrid),
-                new PropertyMetadata(480, PropertyChangedCallback)
-            );
-        }
-
-        public MusicalGrid()
-        {
-            ResizeContentBoundary();
-        }
-
         #region Dependency Properties
+
+        public static readonly DependencyProperty NumeratorProperty =
+            DependencyProperty.Register(
+                "Numerator", typeof(int), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    4,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
+        public static readonly DependencyProperty DenominatorProperty =
+            DependencyProperty.Register(
+                "Denominator", typeof(int), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    4,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
+        public static readonly DependencyProperty TimeResolutionProperty =
+            DependencyProperty.Register(
+                "TimeResolution", typeof(int), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    480,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
 
         public static readonly DependencyProperty ZoomFactorProperty =
             DependencyProperty.Register(
                 "ZoomFactor", typeof(int), typeof(MusicalGrid),
-                new PropertyMetadata(24, PropertyChangedCallback)
+                new FrameworkPropertyMetadata(
+                    24,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
             );
 
         private static readonly DependencyPropertyKey ContentBoundaryKey =
             DependencyProperty.RegisterReadOnly(
                 "ContentBoundary", typeof(Rect), typeof(MusicalGrid),
-                new PropertyMetadata(default(Rect))
+                new FrameworkPropertyMetadata(
+                    new Rect(),
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
             );
 
         public static readonly DependencyProperty GridUnitProperty =
             DependencyProperty.Register(
                 "GridUnit", typeof(int), typeof(MusicalGrid),
-                new PropertyMetadata(16, PropertyChangedCallback)
+                new FrameworkPropertyMetadata(
+                    16,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
             );
 
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
             DependencyProperty.Register(
                 "ShouldDrawHorizontalGrid", typeof(bool), typeof(MusicalGrid),
-                new PropertyMetadata(true, PropertyChangedCallback)
+                new FrameworkPropertyMetadata(
+                    true,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
             );
 
         public static readonly DependencyProperty GridHeightProperty =
             DependencyProperty.Register(
                 "GridHeight", typeof(double), typeof(MusicalGrid),
-                new PropertyMetadata(20.0, PropertyChangedCallback)
+                new FrameworkPropertyMetadata(
+                    20.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
             );
 
         public static readonly DependencyProperty ContentBoundaryProperty = ContentBoundaryKey.DependencyProperty;
@@ -71,6 +90,24 @@ namespace JUMO.UI.Controls
         #endregion
 
         #region Properties
+
+        public int Numerator
+        {
+            get => (int)GetValue(NumeratorProperty);
+            set => SetValue(NumeratorProperty, value);
+        }
+
+        public int Denominator
+        {
+            get => (int)GetValue(DenominatorProperty);
+            set => SetValue(DenominatorProperty, value);
+        }
+
+        public int TimeResolution
+        {
+            get => (int)GetValue(TimeResolutionProperty);
+            set => SetValue(TimeResolutionProperty, value);
+        }
 
         public int ZoomFactor
         {
@@ -119,6 +156,7 @@ namespace JUMO.UI.Controls
         protected override void OnRender(DrawingContext dc)
         {
             System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, Ticks Per GridUnit = {TicksPerGridUnit}, GridWidth = {GridWidth}, Content Boundary = {ContentBoundary}");
+            ResizeContentBoundary();
 
             double cw = ContentBoundary.Width;
             double ch = ContentBoundary.Height;
@@ -143,13 +181,5 @@ namespace JUMO.UI.Controls
         }
 
         private void ResizeContentBoundary() => SetValue(ContentBoundaryKey, new Rect(0, 0, BeatWidth * Numerator, GridHeight));
-
-        private static void PropertyChangedCallback(DependencyObject obj, DependencyPropertyChangedEventArgs e)
-        {
-            MusicalGrid ctrl = obj as MusicalGrid;
-
-            ctrl.ResizeContentBoundary();
-            ctrl.InvalidateVisual();
-        }
     }
 }
