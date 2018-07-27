@@ -47,13 +47,5 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
-
-        #region Properties
-
-        protected int TicksPerBeat => (int)(TimeResolution / (Denominator / 4.0));
-
-        protected int TicksPerBar => TicksPerBeat * Numerator;
-
-        #endregion
     }
 }

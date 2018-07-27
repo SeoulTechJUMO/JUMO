@@ -104,10 +104,6 @@ namespace JUMO.UI.Controls
 
         private double BeatWidth => ZoomFactor * (16.0 / Denominator);
 
-        private double UnitsPerBase => TicksPerBeat / TicksPerGridUnit;
-
-        private double UnitsPerBar => TicksPerBar / TicksPerGridUnit;
-
         #endregion
 
         #region Drawing Resources
@@ -122,9 +118,7 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, Ticks Per Base = {TicksPerBeat}, Ticks Per Bar = {TicksPerBar}, Ticks Per GridUnit = {TicksPerGridUnit}");
-            System.Diagnostics.Debug.WriteLine($"GridWidth = {GridWidth}, UnitsPerBase = {UnitsPerBase}, UnitsPerBar = {UnitsPerBar}");
-            System.Diagnostics.Debug.WriteLine($"Content Boundary = {ContentBoundary}");
+            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, Ticks Per GridUnit = {TicksPerGridUnit}, GridWidth = {GridWidth}, Content Boundary = {ContentBoundary}");
 
             double cw = ContentBoundary.Width;
             double ch = ContentBoundary.Height;
