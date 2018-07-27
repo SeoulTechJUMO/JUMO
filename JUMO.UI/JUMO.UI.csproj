@@ -83,6 +83,7 @@
     <Compile Include="INote.cs" />
     <Compile Include="IPianoRollViewModel.cs" />
     <Compile Include="MinusConverter.cs" />
+    <Compile Include="MusicalProps.cs" />
     <Compile Include="PrototypeNote.cs" />
     <Compile Include="PrototypePianoRollViewModel.cs" />
     <Page Include="Layouts\PianoRollWindow.xaml">
