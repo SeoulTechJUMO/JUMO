@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
-        xmlns:test="clr-namespace:JUMO.UI"
+        xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
         Title="PianoRollWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.DataContext>
-        <test:PrototypePianoRollViewModel />
+        <proj:PrototypePianoRollViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -47,6 +47,9 @@
                                       CanContentScroll="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible">
+                            <ScrollViewer.Resources>
+                                <proj:MinusConverter x:Key="MinusConverter" />
+                            </ScrollViewer.Resources>
                             <ScrollViewer.Background>
                                 <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
                                              Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
@@ -63,12 +66,9 @@
                                                           GridHeight="20.0" />
                                     </VisualBrush.Visual>
                                     <VisualBrush.Transform>
-                                        <TransformGroup>
-                                            <TranslateTransform
-                                                X="{Binding HorizontalOffset, ElementName=ScrollViewer}"
-                                                Y="{Binding VerticalOffset, ElementName=ScrollViewer}" />
-                                            <MatrixTransform Matrix="-1 0 0 -1 1 1" />
-                                        </TransformGroup>
+                                        <TranslateTransform
+                                            X="{Binding HorizontalOffset, ElementName=ScrollViewer, Converter={StaticResource MinusConverter}}"
+                                            Y="{Binding VerticalOffset, ElementName=ScrollViewer, Converter={StaticResource MinusConverter}}" />
                                     </VisualBrush.Transform>
                                 </VisualBrush>
                             </ScrollViewer.Background>
