@@ -58,11 +58,11 @@
                                              TileMode="Tile">
                                     <VisualBrush.Visual>
                                         <ctrl:MusicalGrid x:Name="MusicalGrid"
-                                                          Numerator="{Binding Numerator}"
-                                                          Denominator="{Binding Denominator}"
-                                                          TimeResolution="{Binding TimeResolution}"
-                                                          ZoomFactor="{Binding ZoomFactor}"
-                                                          GridUnit="{Binding GridUnit}"
+                                                          proj:MusicalProps.Numerator="{Binding Numerator}"
+                                                          proj:MusicalProps.Denominator="{Binding Denominator}"
+                                                          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                                          proj:MusicalProps.GridUnit="{Binding GridUnit}"
+                                                          proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
                                                           GridHeight="20.0" />
                                     </VisualBrush.Visual>
                                     <VisualBrush.Transform>
