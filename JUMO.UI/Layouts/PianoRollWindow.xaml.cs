@@ -19,23 +19,32 @@ namespace JUMO.UI.Layouts
     /// </summary>
     public partial class PianoRollWindow : Window
     {
+        private ScrollViewer MainScrollViewer;
+
         public PianoRollWindow()
         {
             InitializeComponent();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MainScrollViewer = MainViewport.Template.FindName("ScrollViewer", MainViewport) as ScrollViewer;
+            MainScrollViewer.ScrollChanged += OnScrollChanged;
+            MainScrollViewer.PreviewMouseWheel += MainScrollViewer_PreviewMouseWheel;
+        }
+
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            /*if (sender.Equals(MainScrollViewer))
+            if (sender.Equals(MainScrollViewer))
             {
                 KeyScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
                 KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
             }
             else
             {
-                MainScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
-                MainScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
-            }*/
+                MainScrollViewer?.ScrollToHorizontalOffset(e.HorizontalOffset);
+                MainScrollViewer?.ScrollToVerticalOffset(e.VerticalOffset);
+            }
         }
 
         private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:test="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="PianoRollWindow" Height="450" Width="800">
+        Title="PianoRollWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.DataContext>
         <test:PrototypePianoRollViewModel />
     </Window.DataContext>
@@ -40,10 +40,11 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Notes}">
+            <ItemsControl x:Name="MainViewport" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Notes}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer CanContentScroll="True"
+                        <ScrollViewer x:Name="ScrollViewer"
+                                      CanContentScroll="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible">
                             <ScrollViewer.Background>
@@ -64,8 +65,8 @@
                                     <VisualBrush.Transform>
                                         <TransformGroup>
                                             <TranslateTransform
-                                                X="{Binding HorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}"
-                                                Y="{Binding VerticalOffset, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}" />
+                                                X="{Binding HorizontalOffset, ElementName=ScrollViewer}"
+                                                Y="{Binding VerticalOffset, ElementName=ScrollViewer}" />
                                             <MatrixTransform Matrix="-1 0 0 -1 1 1" />
                                         </TransformGroup>
                                     </VisualBrush.Transform>
