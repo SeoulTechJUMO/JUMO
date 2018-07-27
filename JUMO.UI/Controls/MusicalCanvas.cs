@@ -207,16 +207,23 @@ namespace JUMO.UI.Controls
 
             Size newExtent = new Size(endTick * widthPerTick, 2560);
 
-            if (_extent != newExtent)
+            bool extentChanged = _extent != newExtent;
+            bool viewportChanged = _viewport != availableSize;
+
+            if (extentChanged)
             {
                 _extent = newExtent;
-                ScrollOwner?.InvalidateScrollInfo();
             }
 
-            if (_viewport != availableSize)
+            if (viewportChanged)
             {
                 _viewport = availableSize;
-                ScrollOwner?.InvalidateScrollInfo();
+            }
+
+            if (extentChanged || viewportChanged)
+            {
+                SetHorizontalOffset(HorizontalOffset);
+                SetVerticalOffset(VerticalOffset);
             }
 
             return availableSize;

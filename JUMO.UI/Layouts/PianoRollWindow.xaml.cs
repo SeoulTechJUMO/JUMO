@@ -37,12 +37,11 @@ namespace JUMO.UI.Layouts
         {
             if (sender.Equals(MainScrollViewer))
             {
-                KeyScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
+                KeyScrollViewer.ScrollToHorizontalOffset(0.0);
                 KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
             }
             else
             {
-                MainScrollViewer?.ScrollToHorizontalOffset(e.HorizontalOffset);
                 MainScrollViewer?.ScrollToVerticalOffset(e.VerticalOffset);
             }
         }
