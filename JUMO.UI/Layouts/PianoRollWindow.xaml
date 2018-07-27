@@ -27,7 +27,6 @@
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
             <Label Content="PPQN:" />
             <Label Content="{Binding TimeResolution}" />
-            <Label Content="{Binding VerticalOffset, ElementName=MainScrollViewer}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -41,18 +40,62 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ScrollViewer x:Name="MainScrollViewer" Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" ScrollChanged="OnScrollChanged" PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
-                <Canvas Height="2560">
-                    <Canvas.Background>
-                        <VisualBrush x:Name="PianoRollBackgroundBrush" Viewport="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" Viewbox="{Binding ContentBoundary, ElementName=PianoRollBackgroundVisual}" ViewportUnits="Absolute" ViewboxUnits="Absolute" TileMode="Tile">
-                            <VisualBrush.Visual>
-                                <ctrl:MusicalGrid x:Name="PianoRollBackgroundVisual" Numerator="{Binding Numerator}" Denominator="{Binding Denominator}" TimeResolution="{Binding TimeResolution}" GridUnit="{Binding GridUnit}" ZoomFactor="{Binding ZoomFactor}" />
-                            </VisualBrush.Visual>
-                        </VisualBrush>
-                    </Canvas.Background>
-                    <Button Canvas.Top="80" Canvas.Left="96" Content="Hello, world!" Padding="10,3" />
-                </Canvas>
-            </ScrollViewer>
+            <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Notes}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <ScrollViewer CanContentScroll="True"
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollBarVisibility="Visible">
+                            <ScrollViewer.Background>
+                                <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
+                                             Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
+                                             ViewportUnits="Absolute"
+                                             ViewboxUnits="Absolute"
+                                             TileMode="Tile">
+                                    <VisualBrush.Visual>
+                                        <ctrl:MusicalGrid x:Name="MusicalGrid"
+                                                          Numerator="{Binding Numerator}"
+                                                          Denominator="{Binding Denominator}"
+                                                          TimeResolution="{Binding TimeResolution}"
+                                                          ZoomFactor="{Binding ZoomFactor}"
+                                                          GridUnit="{Binding GridUnit}"
+                                                          GridHeight="20.0" />
+                                    </VisualBrush.Visual>
+                                    <VisualBrush.Transform>
+                                        <TransformGroup>
+                                            <TranslateTransform
+                                                X="{Binding HorizontalOffset, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}"
+                                                Y="{Binding VerticalOffset, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}" />
+                                            <MatrixTransform Matrix="-1 0 0 -1 1 1" />
+                                        </TransformGroup>
+                                    </VisualBrush.Transform>
+                                </VisualBrush>
+                            </ScrollViewer.Background>
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ctrl:MusicalCanvas TimeResolution="{Binding TimeResolution}"
+                                            ZoomFactor="{Binding ZoomFactor}"
+                                            GridUnit="{Binding GridUnit}"
+                                            VirtualizingPanel.IsVirtualizing="False" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="ctrl:MusicalCanvas.NoteValue" Value="{Binding Value}" />
+                        <Setter Property="ctrl:MusicalCanvas.Start" Value="{Binding Start}" />
+                        <Setter Property="ctrl:MusicalCanvas.Length" Value="{Binding Length}" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Value}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
     </Grid>
 </Window>
