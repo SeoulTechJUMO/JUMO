@@ -86,6 +86,7 @@
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PrototypeNote.cs" />
     <Compile Include="PrototypePianoRollViewModel.cs" />
+    <Compile Include="Data\Segment.cs" />
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
