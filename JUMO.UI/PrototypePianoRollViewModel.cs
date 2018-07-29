@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -62,7 +63,7 @@ namespace JUMO.UI
             }
         }
 
-        public IEnumerable<INote> Notes { get; } = new ListCollectionView(new List<INote>()
+        public ObservableCollection<INote> Notes { get; } = new ObservableCollection<INote>()
         {
             new PrototypeNote(60, 64, 0, 480),
             new PrototypeNote(62, 64, 480, 480),
@@ -74,7 +75,7 @@ namespace JUMO.UI
             new PrototypeNote(124, 64, 960, 480),
             new PrototypeNote(125, 64, 1440, 480),
             new PrototypeNote(127, 64, 1920, 1920)
-        }).OfType<INote>();
+        };
 
         public event PropertyChangedEventHandler PropertyChanged;
 

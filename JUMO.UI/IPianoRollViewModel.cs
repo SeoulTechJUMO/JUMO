@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,6 @@ namespace JUMO.UI
 
         int ZoomFactor { get; set; }
         int GridUnit { get; set; }
-        IEnumerable<INote> Notes { get; }
+        ObservableCollection<INote> Notes { get; }
     }
 }
