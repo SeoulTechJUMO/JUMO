@@ -15,6 +15,59 @@ using JUMO.UI.Data;
 
 namespace JUMO.UI.Controls
 {
+    delegate IVirtualElement VirtualElementActivator(object arg);
+
+    interface IVirtualElement
+    {
+        Segment Bounds { get; }
+        UIElement Visual { get; }
+        UIElement CreateVisual(MusicalCanvas parent);
+        void DisposeVisual();
+        event EventHandler BoundsChanged;
+    }
+
+    // TODO: 완성되면 별도의 파일로 분리할 것.
+    class VirtualNote : IVirtualElement
+    {
+        private readonly INote _note;
+
+        public VirtualNote(INote note)
+        {
+            _note = note;
+            Bounds = new Segment(_note.Start, _note.Length);
+        }
+
+        public Segment Bounds { get; }
+
+        public UIElement Visual { get; private set; }
+
+        public event EventHandler BoundsChanged;
+
+        public UIElement CreateVisual(MusicalCanvas parent)
+        {
+            if (Visual == null)
+            {
+                Rectangle r = new Rectangle()
+                {
+                    Fill = Brushes.MediumSpringGreen
+                };
+
+                MusicalCanvas.SetNoteValue(r, _note.Value);
+                MusicalCanvas.SetStart(r, _note.Start);
+                MusicalCanvas.SetLength(r, _note.Length);
+
+                Visual = r;
+            }
+
+            return Visual;
+        }
+
+        public void DisposeVisual()
+        {
+            Visual = null;
+        }
+    }
+
     class MusicalCanvas : FrameworkElement, IScrollInfo
     {
         #region Dependency Properties
@@ -172,7 +225,21 @@ namespace JUMO.UI.Controls
         #endregion
 
         private double _widthPerTick = 0;
-        private BinaryPartition<INote> _index;
+        private Segment _visibleTicks = Segment.Empty;
+        private BinaryPartition<IVirtualElement> _index;
+        private ObservableCollection<IVirtualElement> _virtualChildren;
+        private VirtualElementActivator _elementActivator;
+
+        // TODO: Refactor
+        public VirtualElementActivator ElementActivator
+        {
+            get => _elementActivator;
+            set
+            {
+                _elementActivator = value;
+                RefreshItems();
+            }
+        }
 
         private void CalculateExtent(bool force)
         {
@@ -187,15 +254,15 @@ namespace JUMO.UI.Controls
             if (_extent != newExtent)
             {
                 _extent = newExtent;
-                _index = new BinaryPartition<INote>()
+                _index = new BinaryPartition<IVirtualElement>()
                 {
                     Bounds = new Segment(0, totalLength)
                 };
 
                 // TODO: do we need to reload all items every time we calculate the extent?
-                foreach (INote note in Items)
+                foreach (IVirtualElement ve in _virtualChildren)
                 {
-                    _index.Insert(note, new Segment(note.Start, note.Length));
+                    _index.Insert(ve, ve.Bounds);
                 }
 
                 SetHorizontalOffset(HorizontalOffset);
@@ -226,7 +293,7 @@ namespace JUMO.UI.Controls
 
                 element.Measure(new Size(GetLength(element) * _widthPerTick, 20));
             }
-            
+
             return availableSize;
         }
 
@@ -257,7 +324,7 @@ namespace JUMO.UI.Controls
 
                 element.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
             }
-            
+
             return finalSize;
         }
 
@@ -319,8 +386,55 @@ namespace JUMO.UI.Controls
 
         private void OnScrollChanged()
         {
-            Segment visibleTicks = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
-            var visibleNotes = _index.GetItemsInside(visibleTicks);
+            IList<Segment> dirtyTicks = new List<Segment>();
+
+            /************************************************/
+
+            Segment dirty = _visibleTicks;
+            _visibleTicks = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+            Segment intersection = Segment.Intersect(dirty, _visibleTicks);
+
+            if (intersection.IsEmpty)
+            {
+                dirtyTicks.Add(dirty);
+            }
+            else
+            {
+                if (dirty.Start < intersection.Start)
+                {
+                    dirtyTicks.Add(new Segment(dirty.Start, intersection.Start - dirty.Start));
+                }
+
+                if (dirty.End > intersection.End)
+                {
+                    dirtyTicks.Add(new Segment(intersection.End, dirty.End - intersection.End));
+                }
+            }
+
+            // Eagarly create and destroy visuals (!!!)
+            foreach (var d in dirtyTicks)
+            {
+                var removedNotes = _index.GetItemsInside(d);
+                foreach (IVirtualElement ve in removedNotes)
+                {
+                    if (!ve.Bounds.IntersectsWith(_visibleTicks))
+                    {
+                        _children.Remove(ve.Visual);
+                        ve.DisposeVisual();
+                    }
+                }
+            }
+
+            var visibleNotes = _index.GetItemsInside(_visibleTicks);
+            foreach (IVirtualElement ve in visibleNotes)
+            {
+                if (ve.Visual == null)
+                {
+                    ve.CreateVisual(this);
+                    _children.Add(ve.Visual);
+                }
+            }
+            /*var visibleNotes = _index.GetItemsInside(_visibleTicks);
 
             _children.Clear();
             foreach (INote note in visibleNotes)
@@ -336,7 +450,7 @@ namespace JUMO.UI.Controls
                 SetStart(r, note.Start);
                 SetLength(r, note.Length);
                 _children.Add(r);
-            }
+            }*/
 
             InvalidateArrange();
 
@@ -386,7 +500,27 @@ namespace JUMO.UI.Controls
         private void RefreshItems()
         {
             System.Diagnostics.Debug.WriteLine("MusicalCanvas::RefreshItems called");
+
+            _virtualChildren = new ObservableCollection<IVirtualElement>();
+            if (ElementActivator != null)
+            {
+                foreach (INote note in Items)
+                {
+                    _virtualChildren.Add(ElementActivator(note));
+                }
+            }
+
             InvalidateArrange();
+        }
+
+        private static void VirtualElementTypePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            Type type = e.NewValue as Type;
+
+            if (!typeof(IVirtualElement).IsAssignableFrom(type))
+            {
+                throw new ArgumentException($"The type '{type.Name}' does not implement '{nameof(IVirtualElement)}' interface.");
+            }
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)

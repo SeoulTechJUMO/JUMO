@@ -73,7 +73,8 @@
                         </VisualBrush.Transform>
                     </VisualBrush>
                 </ScrollViewer.Background>
-                <ctrl:MusicalCanvas Items="{Binding Notes}"
+                <ctrl:MusicalCanvas x:Name="MainCanvas"
+                                    Items="{Binding Notes}"
                                     proj:MusicalProps.Numerator="{Binding Numerator}"
                                     proj:MusicalProps.Denominator="{Binding Denominator}"
                                     proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
