@@ -15,8 +15,6 @@ using JUMO.UI.Data;
 
 namespace JUMO.UI.Controls
 {
-    delegate IVirtualElement VirtualElementActivator(object arg);
-
     interface IVirtualElement
     {
         Segment Bounds { get; }

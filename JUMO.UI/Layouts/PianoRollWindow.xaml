@@ -75,6 +75,7 @@
                 </ScrollViewer.Background>
                 <ctrl:MusicalCanvas x:Name="MainCanvas"
                                     Items="{Binding Notes}"
+                                    ElementActivator="{x:Static proj:ElementActivators.VirtualNoteActivator}"
                                     proj:MusicalProps.Numerator="{Binding Numerator}"
                                     proj:MusicalProps.Denominator="{Binding Denominator}"
                                     proj:MusicalProps.TimeResolution="{Binding TimeResolution}"

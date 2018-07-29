@@ -23,10 +23,6 @@ namespace JUMO.UI.Layouts
         public PianoRollWindow()
         {
             InitializeComponent();
-
-            // TODO: Refactor
-            System.Linq.Expressions.Expression<VirtualElementActivator> veCtorExpr = (object arg) => new VirtualNote(arg as INote);
-            MainCanvas.ElementActivator = veCtorExpr.Compile();
         }
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
