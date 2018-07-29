@@ -23,7 +23,7 @@ namespace JUMO.UI.Controls
             DependencyProperty.Register(
                 "Items", typeof(ObservableCollection<INote>), typeof(MusicalCanvas),
                 new FrameworkPropertyMetadata(
-                    null,
+                    new ObservableCollection<INote>(),
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender,
@@ -251,7 +251,11 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                element.Arrange(new Rect(new Point(GetStart(element) * _widthPerTick, (127 - GetNoteValue(element)) * 20), new Size(GetLength(element) * _widthPerTick, 20)));
+                double x = GetStart(element) * _widthPerTick;
+                double y = (127 - GetNoteValue(element)) * 20;
+                double w = GetLength(element) * _widthPerTick;
+
+                element.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
             }
             
             return finalSize;
@@ -387,24 +391,20 @@ namespace JUMO.UI.Controls
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is MusicalCanvas ctrl))
+            if (d is MusicalCanvas ctrl)
             {
-                return;
+                ctrl.UnregisterItems(e.OldValue as INotifyCollectionChanged);
+                ctrl.RegisterItems(e.NewValue as INotifyCollectionChanged);
+                ctrl.RefreshItems();
             }
-
-            ctrl.UnregisterItems(e.OldValue as INotifyCollectionChanged);
-            ctrl.RegisterItems(e.NewValue as INotifyCollectionChanged);
-            ctrl.RefreshItems();
         }
 
         private static void MusicalPropertiesChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is MusicalCanvas ctrl))
+            if (d is MusicalCanvas ctrl)
             {
-                return;
+                ctrl._widthPerTick = (ctrl.ZoomFactor << 2) / (double)ctrl.TimeResolution;
             }
-
-            ctrl._widthPerTick = (ctrl.ZoomFactor << 2) / (double)ctrl.TimeResolution;
         }
 
         static MusicalCanvas()
@@ -432,9 +432,10 @@ namespace JUMO.UI.Controls
             );
         }
 
-        public MusicalCanvas()
+        public MusicalCanvas() : base()
         {
             _children = new VisualCollection(this);
+            Items = new ObservableCollection<INote>();
             RenderTransform = _transform;
         }
     }
