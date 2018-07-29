@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="PianoRollWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="PianoRollWindow" Height="450" Width="800">
     <Window.DataContext>
         <proj:PrototypePianoRollViewModel />
     </Window.DataContext>
@@ -40,63 +40,47 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ItemsControl x:Name="MainViewport" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Notes}">
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <ScrollViewer x:Name="ScrollViewer"
-                                      CanContentScroll="True"
-                                      HorizontalScrollBarVisibility="Visible"
-                                      VerticalScrollBarVisibility="Visible">
-                            <ScrollViewer.Resources>
-                                <proj:MinusConverter x:Key="MinusConverter" />
-                            </ScrollViewer.Resources>
-                            <ScrollViewer.Background>
-                                <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                             Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                             ViewportUnits="Absolute"
-                                             ViewboxUnits="Absolute"
-                                             TileMode="Tile">
-                                    <VisualBrush.Visual>
-                                        <ctrl:MusicalGrid x:Name="MusicalGrid"
-                                                          proj:MusicalProps.Numerator="{Binding Numerator}"
-                                                          proj:MusicalProps.Denominator="{Binding Denominator}"
-                                                          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
-                                                          proj:MusicalProps.GridUnit="{Binding GridUnit}"
-                                                          proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
-                                                          GridHeight="20.0" />
-                                    </VisualBrush.Visual>
-                                    <VisualBrush.Transform>
-                                        <TranslateTransform
-                                            X="{Binding HorizontalOffset, ElementName=ScrollViewer, Converter={StaticResource MinusConverter}}"
-                                            Y="{Binding VerticalOffset, ElementName=ScrollViewer, Converter={StaticResource MinusConverter}}" />
-                                    </VisualBrush.Transform>
-                                </VisualBrush>
-                            </ScrollViewer.Background>
-                            <ItemsPresenter />
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ctrl:MusicalCanvas VirtualizingPanel.IsVirtualizing="False"
-                                            proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
-                                            proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
-                                            proj:MusicalProps.GridUnit="{Binding GridUnit}" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="ContentPresenter">
-                        <Setter Property="ctrl:MusicalCanvas.NoteValue" Value="{Binding Value}" />
-                        <Setter Property="ctrl:MusicalCanvas.Start" Value="{Binding Start}" />
-                        <Setter Property="ctrl:MusicalCanvas.Length" Value="{Binding Length}" />
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding Value}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <ScrollViewer x:Name="MainScrollViewer"
+                          Grid.Row="1"
+                          Grid.Column="1"
+                          CanContentScroll="True"
+                          HorizontalScrollBarVisibility="Visible"
+                          VerticalScrollBarVisibility="Visible"
+                          ScrollChanged="OnScrollChanged"
+                          PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
+                <ScrollViewer.Resources>
+                    <proj:MinusConverter x:Key="MinusConverter" />
+                </ScrollViewer.Resources>
+                <ScrollViewer.Background>
+                    <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
+                                 Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
+                                 ViewportUnits="Absolute"
+                                 ViewboxUnits="Absolute"
+                                 TileMode="Tile">
+                        <VisualBrush.Visual>
+                            <ctrl:MusicalGrid x:Name="MusicalGrid"
+                                              proj:MusicalProps.Numerator="{Binding Numerator}"
+                                              proj:MusicalProps.Denominator="{Binding Denominator}"
+                                              proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                              proj:MusicalProps.GridUnit="{Binding GridUnit}"
+                                              proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
+                                              GridHeight="20.0" />
+                        </VisualBrush.Visual>
+                        <VisualBrush.Transform>
+                            <TranslateTransform
+                                X="{Binding HorizontalOffset, ElementName=MainScrollViewer, Converter={StaticResource MinusConverter}}"
+                                Y="{Binding VerticalOffset, ElementName=MainScrollViewer, Converter={StaticResource MinusConverter}}" />
+                        </VisualBrush.Transform>
+                    </VisualBrush>
+                </ScrollViewer.Background>
+                <ctrl:MusicalCanvas Items="{Binding Notes}"
+                                    proj:MusicalProps.Numerator="{Binding Numerator}"
+                                    proj:MusicalProps.Denominator="{Binding Denominator}"
+                                    proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                    proj:MusicalProps.GridUnit="{Binding GridUnit}"
+                                    proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
+                </ctrl:MusicalCanvas>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Window>
