@@ -11,6 +11,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using JUMO.UI.Data;
 
 namespace JUMO.UI.Controls
@@ -45,9 +46,14 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Rectangle r = new Rectangle()
+                /*Rectangle r = new Rectangle()
                 {
                     Fill = Brushes.MediumSpringGreen
+                };*/
+                Button r = new Button()
+                {
+                    Content = $"{_note.Value}",
+                    HorizontalContentAlignment = HorizontalAlignment.Left
                 };
 
                 MusicalCanvas.SetNoteValue(r, _note.Value);
@@ -223,12 +229,17 @@ namespace JUMO.UI.Controls
         #endregion
 
         private double _widthPerTick = 0;
-        private Segment _visibleTicks = Segment.Empty;
+        private Segment _visible = Segment.Empty;
+        private readonly IList<Segment> _visibleRegions = new List<Segment>();
+        private readonly IList<Segment> _dirtyRegions = new List<Segment>();
         private BinaryPartition<IVirtualElement> _index;
         private ObservableCollection<IVirtualElement> _virtualChildren;
         private VirtualElementActivator _elementActivator;
+        private DispatcherTimer _timer;
+        private readonly SelfThrottlingWorker _createWorker;
+        private readonly SelfThrottlingWorker _disposeWorker;
+        private bool _isAllCreated = true;
 
-        // TODO: Refactor
         public VirtualElementActivator ElementActivator
         {
             get => _elementActivator;
@@ -247,7 +258,7 @@ namespace JUMO.UI.Controls
             }
 
             long totalLength = Items?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
-            Size newExtent = new Size(totalLength * _widthPerTick, 2560);
+            Size newExtent = new Size((totalLength + (TimeResolution << 3)) * _widthPerTick, 2560);
 
             if (_extent != newExtent)
             {
@@ -328,46 +339,45 @@ namespace JUMO.UI.Controls
 
         private void OnScrollChanged()
         {
-            IList<Segment> dirtyTicks = new List<Segment>();
-
-            /************************************************/
-
-            Segment dirty = _visibleTicks;
-            _visibleTicks = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
-            Segment intersection = Segment.Intersect(dirty, _visibleTicks);
+            Segment dirty = _visible;
+            _visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+            _visibleRegions.Clear();
+            _visibleRegions.Add(_visible);
+            Segment intersection = Segment.Intersect(dirty, _visible);
 
             if (intersection.IsEmpty)
             {
-                dirtyTicks.Add(dirty);
+                _dirtyRegions.Add(dirty);
             }
             else
             {
                 if (dirty.Start < intersection.Start)
                 {
-                    dirtyTicks.Add(new Segment(dirty.Start, intersection.Start - dirty.Start));
+                    _dirtyRegions.Add(new Segment(dirty.Start, intersection.Start - dirty.Start));
                 }
 
                 if (dirty.End > intersection.End)
                 {
-                    dirtyTicks.Add(new Segment(intersection.End, dirty.End - intersection.End));
+                    _dirtyRegions.Add(new Segment(intersection.End, dirty.End - intersection.End));
                 }
             }
 
+            _timer.Start();
             // Eagarly create and destroy visuals (!!!)
-            foreach (var d in dirtyTicks)
+            /*foreach (var d in dirtyTicks)
             {
                 var removedNotes = _index.GetItemsInside(d);
                 foreach (IVirtualElement ve in removedNotes)
                 {
-                    if (!ve.Bounds.IntersectsWith(_visibleTicks))
+                    if (!ve.Bounds.IntersectsWith(_visible))
                     {
                         _children.Remove(ve.Visual);
                         ve.DisposeVisual();
                     }
                 }
-            }
+            }*/
 
-            var visibleNotes = _index.GetItemsInside(_visibleTicks);
+            /*var visibleNotes = _index.GetItemsInside(_visible);
             foreach (IVirtualElement ve in visibleNotes)
             {
                 if (ve.Visual == null)
@@ -375,28 +385,133 @@ namespace JUMO.UI.Controls
                     ve.CreateVisual(this);
                     _children.Add(ve.Visual);
                 }
-            }
-            /*var visibleNotes = _index.GetItemsInside(_visibleTicks);
-
-            _children.Clear();
-            foreach (INote note in visibleNotes)
-            {
-                Rectangle r = new Rectangle()
-                {
-                    Width = note.Length * _widthPerTick,
-                    Height = 20,
-                    Fill = Brushes.MediumSpringGreen
-                };
-
-                SetNoteValue(r, note.Value);
-                SetStart(r, note.Start);
-                SetLength(r, note.Length);
-                _children.Add(r);
             }*/
 
-            InvalidateArrange();
-
             ScrollOwner?.InvalidateScrollInfo();
+        }
+
+        private void OnDispatcherTimerTick(object sender, EventArgs e)
+        {
+            _timer.Stop();
+
+            _isAllCreated = true;
+            _createWorker.RunWorker();
+            _disposeWorker.RunWorker();
+
+            if (!_isAllCreated)
+            {
+                System.Diagnostics.Debug.WriteLine("not done yet. restarting the timer.");
+                _timer.Start();
+            }
+
+            InvalidateVisual();
+        }
+
+        private int CreateHandler(int quantum)
+        {
+            /*if (_index != null)
+            {
+                CalculateExtent(false);
+            }*/
+
+            if (_visible.IsEmpty)
+            {
+                _visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+                _visibleRegions.Add(_visible);
+                _isAllCreated = false;
+            }
+
+            int count = 0;
+            int regionCount = 0;
+
+            while (_visibleRegions.Count > 0 && count < quantum)
+            {
+                Segment s = _visibleRegions[0];
+                _visibleRegions.RemoveAt(0);
+                regionCount++;
+
+                var ves = _index.GetItemsInside(s);
+
+                foreach (IVirtualElement ve in ves)
+                {
+                    if (ve.Visual == null)
+                    {
+                        ve.CreateVisual(this);
+                        _children.Add(ve.Visual);
+                    }
+
+                    count++;
+
+                    if (count >= quantum)
+                    {
+                        if (regionCount == 1)
+                        {
+                            double half = s.Length / 2;
+                            _visibleRegions.Add(new Segment(s.Start, half + 24));
+                            _visibleRegions.Add(new Segment(s.Start + half, half + 24));
+                        }
+                        else
+                        {
+                            _visibleRegions.Add(s);
+                        }
+
+                        _isAllCreated = false;
+                        break;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        private int DisposeHandler(int quantum)
+        {
+            Segment visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+            int count = 0;
+            int regionCount = 0;
+
+            while (_dirtyRegions.Count > 0 && count < quantum)
+            {
+                int last = _dirtyRegions.Count - 1;
+                Segment dirty = _dirtyRegions[last];
+                _dirtyRegions.RemoveAt(last);
+                regionCount++;
+
+                var ves = _index.GetItemsInside(dirty);
+
+                foreach (IVirtualElement ve in ves)
+                {
+                    UIElement visual = ve.Visual;
+                    Segment bounds = ve.Bounds;
+
+                    if (visual != null && !bounds.IntersectsWith(visible))
+                    {
+                        _children.Remove(visual);
+                        ve.DisposeVisual();
+                    }
+
+                    count++;
+
+                    if (count >= quantum)
+                    {
+                        if (regionCount == 1)
+                        {
+                            double half = dirty.Length / 2;
+                            _dirtyRegions.Add(new Segment(dirty.Start, half + 24));
+                            _dirtyRegions.Add(new Segment(dirty.Start + half, half + 24));
+                        }
+                        else
+                        {
+                            _dirtyRegions.Add(dirty);
+                        }
+
+                        _isAllCreated = false;
+                        break;
+                    }
+                }
+            }
+
+            return count;
         }
 
         #region Visual Host Container Implementation
@@ -501,6 +616,10 @@ namespace JUMO.UI.Controls
         public MusicalCanvas() : base()
         {
             _children = new VisualCollection(this);
+            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Normal, OnDispatcherTimerTick, Dispatcher);
+            _createWorker = new SelfThrottlingWorker(1000, 50, CreateHandler);
+            _disposeWorker = new SelfThrottlingWorker(2000, 50, DisposeHandler);
+
             Items = new ObservableCollection<INote>();
             RenderTransform = _transform;
         }
