@@ -89,6 +89,7 @@
     <Compile Include="PrototypeNote.cs" />
     <Compile Include="PrototypePianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
+    <Compile Include="SelfThrottlingWorker.cs" />
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
