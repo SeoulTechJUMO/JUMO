@@ -326,62 +326,6 @@ namespace JUMO.UI.Controls
             return finalSize;
         }
 
-        /*protected override Size MeasureOverride(Size availableSize)
-        {
-            double widthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
-            long endTick = 0;
-
-            foreach (UIElement e in InternalChildren)
-            {
-                long start = GetStart(e);
-                long length = GetLength(e);
-                long end = start + length;
-
-                e.Measure(availableSize);
-
-                endTick = end > endTick ? end : endTick;
-            }
-
-            Size newExtent = new Size(endTick * widthPerTick, 2560);
-
-            bool extentChanged = _extent != newExtent;
-            bool viewportChanged = _viewport != availableSize;
-
-            if (extentChanged)
-            {
-                _extent = newExtent;
-            }
-
-            if (viewportChanged)
-            {
-                _viewport = availableSize;
-            }
-
-            if (extentChanged || viewportChanged)
-            {
-                SetHorizontalOffset(HorizontalOffset);
-                SetVerticalOffset(VerticalOffset);
-            }
-
-            return availableSize;
-        }*/
-
-        /*protected override Size ArrangeOverride(Size finalSize)
-        {
-            double widthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
-
-            foreach (UIElement e in InternalChildren)
-            {
-                double x = GetStart(e) * widthPerTick;
-                double y = (127 - GetNoteValue(e)) * 20;
-                double w = GetLength(e) * widthPerTick;
-
-                e.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
-            }
-
-            return finalSize;
-        }*/
-
         private void OnScrollChanged()
         {
             IList<Segment> dirtyTicks = new List<Segment>();
@@ -509,16 +453,6 @@ namespace JUMO.UI.Controls
             }
 
             InvalidateArrange();
-        }
-
-        private static void VirtualElementTypePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            Type type = e.NewValue as Type;
-
-            if (!typeof(IVirtualElement).IsAssignableFrom(type))
-            {
-                throw new ArgumentException($"The type '{type.Name}' does not implement '{nameof(IVirtualElement)}' interface.");
-            }
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
