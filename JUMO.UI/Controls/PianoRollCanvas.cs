@@ -54,5 +54,13 @@ namespace JUMO.UI.Controls
         public static void SetLength(UIElement target, long value) => target.SetValue(LengthProperty, value);
 
         #endregion
+
+        protected override double CalculateLogicalLength()
+        {
+            long length = Items.OfType<INote>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));
+
+            // 끝에 4분음표 8개 분량의 빈 공간을 둠
+            return length + (TimeResolution << 3);
+        }
     }
 }

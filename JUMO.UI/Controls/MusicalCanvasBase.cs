@@ -73,7 +73,7 @@ namespace JUMO.UI.Controls
         }
     }
 
-    class MusicalCanvasBase : FrameworkElement, IScrollInfo
+    abstract class MusicalCanvasBase : FrameworkElement, IScrollInfo
     {
         #region Dependency Properties
 
@@ -93,9 +93,9 @@ namespace JUMO.UI.Controls
 
         #region Dependency Property Accessors
 
-        private int TimeResolution => MusicalProps.GetTimeResolution(this);
-        private int GridUnit => MusicalProps.GetGridUnit(this);
-        private int ZoomFactor => MusicalProps.GetZoomFactor(this);
+        protected int TimeResolution => MusicalProps.GetTimeResolution(this);
+        protected int GridUnit => MusicalProps.GetGridUnit(this);
+        protected int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public IEnumerable Items
         {
@@ -203,6 +203,8 @@ namespace JUMO.UI.Controls
         private readonly SelfThrottlingWorker _disposeWorker;
         private bool _isAllCreated = true;
 
+        protected abstract double CalculateLogicalLength();
+
         public VirtualElementActivator ElementActivator
         {
             get => _elementActivator;
@@ -220,12 +222,21 @@ namespace JUMO.UI.Controls
                 _widthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
             }
 
-            long totalLength = (Items as IEnumerable<INote>)?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
-            Size newExtent = new Size((totalLength + (TimeResolution << 3)) * _widthPerTick, 2560);
+            // TODO: 스크롤하거나 확대/축소 비율을 변경하는 경우에는
+            //       논리 공간의 길이가 변하지 않으므로 매번 계산할 필요가 없음. (* 1)
+            //
+            //   논리 공간의 길이를 다시 계산해야 하는 경우:
+            //   1. 오른쪽 맨 끝에 항목이 추가될 때
+            //   2. 오른쪽 맨 끝에 있는 항목이 제거될 때
+            //   3. Items 속성이 다른 컬렉션의 인스턴스로 변경될 때
+            double totalLength = CalculateLogicalLength();
+            Size newExtent = new Size(totalLength * _widthPerTick, 2560);
 
             if (_extent != newExtent)
             {
                 _extent = newExtent;
+
+                // TODO: (* 1)
                 _index = new BinaryPartition<IVirtualElement>()
                 {
                     Bounds = new Segment(0, totalLength)
