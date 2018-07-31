@@ -73,7 +73,7 @@
                         </VisualBrush.Transform>
                     </VisualBrush>
                 </ScrollViewer.Background>
-                <ctrl:MusicalCanvasBase x:Name="MainCanvas"
+                <ctrl:PianoRollCanvas x:Name="MainCanvas"
                                     Items="{Binding Notes}"
                                     ElementActivator="{x:Static proj:ElementActivators.VirtualNoteActivator}"
                                     proj:MusicalProps.Numerator="{Binding Numerator}"
@@ -81,7 +81,7 @@
                                     proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
                                     proj:MusicalProps.GridUnit="{Binding GridUnit}"
                                     proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
-                </ctrl:MusicalCanvasBase>
+                </ctrl:PianoRollCanvas>
             </ScrollViewer>
         </Grid>
     </Grid>

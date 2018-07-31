@@ -56,9 +56,9 @@ namespace JUMO.UI.Controls
                     HorizontalContentAlignment = HorizontalAlignment.Left
                 };
 
-                MusicalCanvasBase.SetNoteValue(r, _note.Value);
-                MusicalCanvasBase.SetStart(r, _note.Start);
-                MusicalCanvasBase.SetLength(r, _note.Length);
+                PianoRollCanvas.SetNoteValue(r, _note.Value);
+                PianoRollCanvas.SetStart(r, _note.Start);
+                PianoRollCanvas.SetLength(r, _note.Length);
 
                 Visual = r;
             }
@@ -88,37 +88,6 @@ namespace JUMO.UI.Controls
                 )
             );
 
-        public static readonly DependencyProperty NoteValueProperty =
-            DependencyProperty.RegisterAttached(
-                "NoteValue", typeof(int), typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    0,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty StartProperty =
-            DependencyProperty.RegisterAttached(
-                "Start", typeof(long), typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    0L,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty LengthProperty =
-            DependencyProperty.RegisterAttached(
-                "Length", typeof(long), typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    0L,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
         #endregion
 
         #region Dependency Property Accessors
@@ -132,13 +101,6 @@ namespace JUMO.UI.Controls
             get => (ObservableCollection<INote>)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
-
-        public static int GetNoteValue(UIElement target) => (int)target.GetValue(NoteValueProperty);
-        public static void SetNoteValue(UIElement target, int value) => target.SetValue(NoteValueProperty, value);
-        public static long GetStart(UIElement target) => (long)target.GetValue(StartProperty);
-        public static void SetStart(UIElement target, long value) => target.SetValue(StartProperty, value);
-        public static long GetLength(UIElement target) => (long)target.GetValue(LengthProperty);
-        public static void SetLength(UIElement target, long value) => target.SetValue(LengthProperty, value);
 
         #endregion
 
@@ -300,7 +262,7 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                element.Measure(new Size(GetLength(element) * _widthPerTick, 20));
+                element.Measure(new Size(PianoRollCanvas.GetLength(element) * _widthPerTick, 20));
             }
 
             return availableSize;
@@ -327,9 +289,9 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                double x = GetStart(element) * _widthPerTick;
-                double y = (127 - GetNoteValue(element)) * 20;
-                double w = GetLength(element) * _widthPerTick;
+                double x = PianoRollCanvas.GetStart(element) * _widthPerTick;
+                double y = (127 - PianoRollCanvas.GetNoteValue(element)) * 20;
+                double w = PianoRollCanvas.GetLength(element) * _widthPerTick;
 
                 element.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
             }

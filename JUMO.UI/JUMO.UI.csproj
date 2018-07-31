@@ -76,6 +76,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Data\BinaryPartition.cs" />
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
