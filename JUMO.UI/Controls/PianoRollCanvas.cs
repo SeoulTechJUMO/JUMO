@@ -23,7 +23,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty StartProperty =
             DependencyProperty.RegisterAttached(
-                "Start", typeof(long), typeof(MusicalCanvasBase),
+                "Start", typeof(long), typeof(PianoRollCanvas),
                 new FrameworkPropertyMetadata(
                     0L,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -33,7 +33,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty LengthProperty =
             DependencyProperty.RegisterAttached(
-                "Length", typeof(long), typeof(MusicalCanvasBase),
+                "Length", typeof(long), typeof(PianoRollCanvas),
                 new FrameworkPropertyMetadata(
                     0L,
                     FrameworkPropertyMetadataOptions.AffectsArrange
