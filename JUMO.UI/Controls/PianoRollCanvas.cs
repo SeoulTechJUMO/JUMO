@@ -55,6 +55,11 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        protected override IVirtualElement CreateVirtualElementForItem(object item)
+        {
+            return new VirtualNote((INote)item);
+        }
+
         protected override double CalculateLogicalLength()
         {
             long length = Items.OfType<INote>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));

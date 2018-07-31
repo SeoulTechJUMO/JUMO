@@ -196,8 +196,7 @@ namespace JUMO.UI.Controls
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
 
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
-        private ObservableCollection<IVirtualElement> _virtualChildren;
-        private VirtualElementActivator _elementActivator;
+        private ObservableCollection<IVirtualElement> _virtualChildren = new ObservableCollection<IVirtualElement>();
 
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
@@ -206,19 +205,10 @@ namespace JUMO.UI.Controls
 
         protected double WidthPerTick { get; private set; } = 0;
 
+        protected abstract IVirtualElement CreateVirtualElementForItem(object item);
         protected abstract double CalculateLogicalLength();
         protected abstract Size CalculateSizeForElement(UIElement element);
         protected abstract Rect CalculateRectForElement(UIElement element);
-
-        public VirtualElementActivator ElementActivator
-        {
-            get => _elementActivator;
-            set
-            {
-                _elementActivator = value;
-                RefreshItems();
-            }
-        }
 
         private void CalculateExtent(bool force)
         {
@@ -515,12 +505,9 @@ namespace JUMO.UI.Controls
             System.Diagnostics.Debug.WriteLine("MusicalCanvas::RefreshItems called");
 
             _virtualChildren = new ObservableCollection<IVirtualElement>();
-            if (ElementActivator != null)
+            foreach (object item in Items)
             {
-                foreach (INote note in Items)
-                {
-                    _virtualChildren.Add(ElementActivator(note));
-                }
+                _virtualChildren.Add(CreateVirtualElementForItem(item));
             }
 
             InvalidateArrange();

@@ -81,7 +81,6 @@
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
-    <Compile Include="ElementActivators.cs" />
     <Compile Include="INote.cs" />
     <Compile Include="IPianoRollViewModel.cs" />
     <Compile Include="MinusConverter.cs" />
