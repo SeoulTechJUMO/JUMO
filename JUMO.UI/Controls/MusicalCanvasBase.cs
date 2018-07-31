@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -78,9 +79,9 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
-                "Items", typeof(ObservableCollection<INote>), typeof(MusicalCanvasBase),
+                "Items", typeof(IEnumerable), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
-                    new ObservableCollection<INote>(),
+                    Enumerable.Empty<object>(),
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender,
@@ -96,9 +97,9 @@ namespace JUMO.UI.Controls
         private int GridUnit => MusicalProps.GetGridUnit(this);
         private int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
-        public ObservableCollection<INote> Items
+        public IEnumerable Items
         {
-            get => (ObservableCollection<INote>)GetValue(ItemsProperty);
+            get => (IEnumerable)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
 
@@ -219,7 +220,7 @@ namespace JUMO.UI.Controls
                 _widthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
             }
 
-            long totalLength = Items?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
+            long totalLength = (Items as IEnumerable<INote>)?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
             Size newExtent = new Size((totalLength + (TimeResolution << 3)) * _widthPerTick, 2560);
 
             if (_extent != newExtent)
@@ -582,7 +583,6 @@ namespace JUMO.UI.Controls
             _createWorker = new SelfThrottlingWorker(1000, 50, CreateHandler);
             _disposeWorker = new SelfThrottlingWorker(2000, 50, DisposeHandler);
 
-            Items = new ObservableCollection<INote>();
             RenderTransform = _transform;
         }
     }
