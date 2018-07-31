@@ -207,6 +207,8 @@ namespace JUMO.UI.Controls
         protected double WidthPerTick { get; private set; } = 0;
 
         protected abstract double CalculateLogicalLength();
+        protected abstract Size CalculateSizeForElement(UIElement element);
+        protected abstract Rect CalculateRectForElement(UIElement element);
 
         public VirtualElementActivator ElementActivator
         {
@@ -264,9 +266,6 @@ namespace JUMO.UI.Controls
                 SetVerticalOffset(VerticalOffset);
             }
 
-            /*
-             * TODO: Measure children here.
-             */
             foreach (UIElement element in Children)
             {
                 if (element == null)
@@ -274,7 +273,7 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                element.Measure(new Size(PianoRollCanvas.GetLength(element) * WidthPerTick, 20));
+                element.Measure(CalculateSizeForElement(element));
             }
 
             return availableSize;
@@ -291,9 +290,6 @@ namespace JUMO.UI.Controls
                 SetVerticalOffset(VerticalOffset);
             }
 
-            /*
-             * TODO: Arrange children here.
-             */
             foreach (UIElement element in Children)
             {
                 if (element == null)
@@ -301,11 +297,7 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                double x = PianoRollCanvas.GetStart(element) * WidthPerTick;
-                double y = (127 - PianoRollCanvas.GetNoteValue(element)) * 20;
-                double w = PianoRollCanvas.GetLength(element) * WidthPerTick;
-
-                element.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
+                element.Arrange(CalculateRectForElement(element));
             }
 
             return finalSize;

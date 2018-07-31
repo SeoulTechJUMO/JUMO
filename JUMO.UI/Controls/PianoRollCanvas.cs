@@ -62,5 +62,19 @@ namespace JUMO.UI.Controls
             // 끝에 4분음표 8개 분량의 빈 공간을 둠
             return length + (TimeResolution << 3);
         }
+
+        protected override Size CalculateSizeForElement(UIElement element)
+        {
+            return new Size(GetLength(element) * WidthPerTick, 20);
+        }
+
+        protected override Rect CalculateRectForElement(UIElement element)
+        {
+            double x = GetStart(element) * WidthPerTick;
+            double y = (127 - GetNoteValue(element)) * 20;
+            double w = GetLength(element) * WidthPerTick;
+
+            return new Rect(new Point(x, y), new Size(w, 20));
+        }
     }
 }
