@@ -195,9 +195,11 @@ namespace JUMO.UI.Controls
         private Segment _visible = Segment.Empty;
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
+
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
         private ObservableCollection<IVirtualElement> _virtualChildren;
         private VirtualElementActivator _elementActivator;
+
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
         private readonly SelfThrottlingWorker _disposeWorker;
@@ -267,7 +269,7 @@ namespace JUMO.UI.Controls
             /*
              * TODO: Measure children here.
              */
-            foreach (UIElement element in _children)
+            foreach (UIElement element in Children)
             {
                 if (element == null)
                 {
@@ -294,7 +296,7 @@ namespace JUMO.UI.Controls
             /*
              * TODO: Arrange children here.
              */
-            foreach (UIElement element in _children)
+            foreach (UIElement element in Children)
             {
                 if (element == null)
                 {
@@ -388,7 +390,7 @@ namespace JUMO.UI.Controls
                     if (ve.Visual == null)
                     {
                         ve.CreateVisual(this);
-                        _children.Add(ve.Visual);
+                        Children.Add(ve.Visual);
                     }
 
                     count++;
@@ -437,7 +439,7 @@ namespace JUMO.UI.Controls
 
                     if (visual != null && !bounds.IntersectsWith(visible))
                     {
-                        _children.Remove(visual);
+                        Children.Remove(visual);
                         ve.DisposeVisual();
                     }
 
@@ -467,9 +469,22 @@ namespace JUMO.UI.Controls
 
         #region Visual Host Container Implementation
 
-        private readonly VisualCollection _children;
+        private VisualCollection _children;
 
-        protected override int VisualChildrenCount => _children.Count;
+        protected VisualCollection Children
+        {
+            get
+            {
+                if (_children == null)
+                {
+                    _children = new VisualCollection(this);
+                }
+
+                return _children;
+            }
+        }
+
+        protected override int VisualChildrenCount => Children.Count;
 
         protected override Visual GetVisualChild(int index)
         {
@@ -478,7 +493,7 @@ namespace JUMO.UI.Controls
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            return _children[index];
+            return Children[index];
         }
 
         #endregion
@@ -566,7 +581,6 @@ namespace JUMO.UI.Controls
 
         public MusicalCanvasBase() : base()
         {
-            _children = new VisualCollection(this);
             _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Normal, OnDispatcherTimerTick, Dispatcher);
             _createWorker = new SelfThrottlingWorker(1000, 50, CreateHandler);
             _disposeWorker = new SelfThrottlingWorker(2000, 50, DisposeHandler);
