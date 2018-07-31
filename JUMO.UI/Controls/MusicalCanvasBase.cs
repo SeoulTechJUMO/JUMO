@@ -191,7 +191,6 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        private double _widthPerTick = 0;
         private Segment _visible = Segment.Empty;
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
@@ -204,6 +203,8 @@ namespace JUMO.UI.Controls
         private readonly SelfThrottlingWorker _createWorker;
         private readonly SelfThrottlingWorker _disposeWorker;
         private bool _isAllCreated = true;
+
+        protected double WidthPerTick { get; private set; } = 0;
 
         protected abstract double CalculateLogicalLength();
 
@@ -219,11 +220,6 @@ namespace JUMO.UI.Controls
 
         private void CalculateExtent(bool force)
         {
-            if (_widthPerTick == 0)
-            {
-                _widthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
-            }
-
             // TODO: 스크롤하거나 확대/축소 비율을 변경하는 경우에는
             //       논리 공간의 길이가 변하지 않으므로 매번 계산할 필요가 없음. (* 1)
             //
@@ -232,7 +228,7 @@ namespace JUMO.UI.Controls
             //   2. 오른쪽 맨 끝에 있는 항목이 제거될 때
             //   3. Items 속성이 다른 컬렉션의 인스턴스로 변경될 때
             double totalLength = CalculateLogicalLength();
-            Size newExtent = new Size(totalLength * _widthPerTick, 2560);
+            Size newExtent = new Size(totalLength * WidthPerTick, 2560);
 
             if (_extent != newExtent)
             {
@@ -257,6 +253,8 @@ namespace JUMO.UI.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            WidthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
+
             CalculateExtent(false);
 
             if (_viewport != availableSize)
@@ -276,7 +274,7 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                element.Measure(new Size(PianoRollCanvas.GetLength(element) * _widthPerTick, 20));
+                element.Measure(new Size(PianoRollCanvas.GetLength(element) * WidthPerTick, 20));
             }
 
             return availableSize;
@@ -303,9 +301,9 @@ namespace JUMO.UI.Controls
                     continue;
                 }
 
-                double x = PianoRollCanvas.GetStart(element) * _widthPerTick;
+                double x = PianoRollCanvas.GetStart(element) * WidthPerTick;
                 double y = (127 - PianoRollCanvas.GetNoteValue(element)) * 20;
-                double w = PianoRollCanvas.GetLength(element) * _widthPerTick;
+                double w = PianoRollCanvas.GetLength(element) * WidthPerTick;
 
                 element.Arrange(new Rect(new Point(x, y), new Size(w, 20)));
             }
@@ -316,7 +314,7 @@ namespace JUMO.UI.Controls
         private void OnScrollChanged()
         {
             Segment dirty = _visible;
-            _visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+            _visible = new Segment(HorizontalOffset / WidthPerTick, ViewportWidth / WidthPerTick);
             _visibleRegions.Clear();
             _visibleRegions.Add(_visible);
             Segment intersection = Segment.Intersect(dirty, _visible);
@@ -369,7 +367,7 @@ namespace JUMO.UI.Controls
 
             if (_visible.IsEmpty)
             {
-                _visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+                _visible = new Segment(HorizontalOffset / WidthPerTick, ViewportWidth / WidthPerTick);
                 _visibleRegions.Add(_visible);
                 _isAllCreated = false;
             }
@@ -419,7 +417,7 @@ namespace JUMO.UI.Controls
 
         private int DisposeHandler(int quantum)
         {
-            Segment visible = new Segment(HorizontalOffset / _widthPerTick, ViewportWidth / _widthPerTick);
+            Segment visible = new Segment(HorizontalOffset / WidthPerTick, ViewportWidth / WidthPerTick);
             int count = 0;
             int regionCount = 0;
 
@@ -544,39 +542,6 @@ namespace JUMO.UI.Controls
                 ctrl.RegisterItems(e.NewValue as INotifyCollectionChanged);
                 ctrl.RefreshItems();
             }
-        }
-
-        private static void MusicalPropertiesChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is MusicalCanvasBase ctrl)
-            {
-                ctrl._widthPerTick = (ctrl.ZoomFactor << 2) / (double)ctrl.TimeResolution;
-            }
-        }
-
-        static MusicalCanvasBase()
-        {
-            MusicalProps.TimeResolutionProperty.OverrideMetadata(
-                typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    480,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender,
-                    MusicalPropertiesChangedCallback
-                )
-            );
-
-            MusicalProps.ZoomFactorProperty.OverrideMetadata(
-                typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    24,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender,
-                    MusicalPropertiesChangedCallback
-                )
-            );
         }
 
         public MusicalCanvasBase() : base()
