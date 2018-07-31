@@ -77,7 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\BinaryPartition.cs" />
-    <Compile Include="Controls\MusicalCanvas.cs" />
+    <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
     <Compile Include="ElementActivators.cs" />

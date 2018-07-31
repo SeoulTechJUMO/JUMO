@@ -20,7 +20,7 @@ namespace JUMO.UI.Controls
     {
         Segment Bounds { get; }
         UIElement Visual { get; }
-        UIElement CreateVisual(MusicalCanvas parent);
+        UIElement CreateVisual(MusicalCanvasBase parent);
         void DisposeVisual();
         event EventHandler BoundsChanged;
     }
@@ -42,7 +42,7 @@ namespace JUMO.UI.Controls
 
         public event EventHandler BoundsChanged;
 
-        public UIElement CreateVisual(MusicalCanvas parent)
+        public UIElement CreateVisual(MusicalCanvasBase parent)
         {
             if (Visual == null)
             {
@@ -56,9 +56,9 @@ namespace JUMO.UI.Controls
                     HorizontalContentAlignment = HorizontalAlignment.Left
                 };
 
-                MusicalCanvas.SetNoteValue(r, _note.Value);
-                MusicalCanvas.SetStart(r, _note.Start);
-                MusicalCanvas.SetLength(r, _note.Length);
+                MusicalCanvasBase.SetNoteValue(r, _note.Value);
+                MusicalCanvasBase.SetStart(r, _note.Start);
+                MusicalCanvasBase.SetLength(r, _note.Length);
 
                 Visual = r;
             }
@@ -72,13 +72,13 @@ namespace JUMO.UI.Controls
         }
     }
 
-    class MusicalCanvas : FrameworkElement, IScrollInfo
+    class MusicalCanvasBase : FrameworkElement, IScrollInfo
     {
         #region Dependency Properties
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
-                "Items", typeof(ObservableCollection<INote>), typeof(MusicalCanvas),
+                "Items", typeof(ObservableCollection<INote>), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     new ObservableCollection<INote>(),
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -90,7 +90,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty NoteValueProperty =
             DependencyProperty.RegisterAttached(
-                "NoteValue", typeof(int), typeof(MusicalCanvas),
+                "NoteValue", typeof(int), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     0,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -100,7 +100,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty StartProperty =
             DependencyProperty.RegisterAttached(
-                "Start", typeof(long), typeof(MusicalCanvas),
+                "Start", typeof(long), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     0L,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -110,7 +110,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty LengthProperty =
             DependencyProperty.RegisterAttached(
-                "Length", typeof(long), typeof(MusicalCanvas),
+                "Length", typeof(long), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     0L,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -232,7 +232,7 @@ namespace JUMO.UI.Controls
         private Segment _visible = Segment.Empty;
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
-        private BinaryPartition<IVirtualElement> _index;
+        private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
         private ObservableCollection<IVirtualElement> _virtualChildren;
         private VirtualElementActivator _elementActivator;
         private DispatcherTimer _timer;
@@ -572,7 +572,7 @@ namespace JUMO.UI.Controls
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is MusicalCanvas ctrl)
+            if (d is MusicalCanvasBase ctrl)
             {
                 ctrl.UnregisterItems(e.OldValue as INotifyCollectionChanged);
                 ctrl.RegisterItems(e.NewValue as INotifyCollectionChanged);
@@ -582,16 +582,16 @@ namespace JUMO.UI.Controls
 
         private static void MusicalPropertiesChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is MusicalCanvas ctrl)
+            if (d is MusicalCanvasBase ctrl)
             {
                 ctrl._widthPerTick = (ctrl.ZoomFactor << 2) / (double)ctrl.TimeResolution;
             }
         }
 
-        static MusicalCanvas()
+        static MusicalCanvasBase()
         {
             MusicalProps.TimeResolutionProperty.OverrideMetadata(
-                typeof(MusicalCanvas),
+                typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     480,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -602,7 +602,7 @@ namespace JUMO.UI.Controls
             );
 
             MusicalProps.ZoomFactorProperty.OverrideMetadata(
-                typeof(MusicalCanvas),
+                typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     24,
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -613,7 +613,7 @@ namespace JUMO.UI.Controls
             );
         }
 
-        public MusicalCanvas() : base()
+        public MusicalCanvasBase() : base()
         {
             _children = new VisualCollection(this);
             _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Normal, OnDispatcherTimerTick, Dispatcher);
