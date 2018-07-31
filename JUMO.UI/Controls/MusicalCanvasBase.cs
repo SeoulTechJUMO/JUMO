@@ -337,29 +337,6 @@ namespace JUMO.UI.Controls
             }
 
             _timer.Start();
-            // Eagarly create and destroy visuals (!!!)
-            /*foreach (var d in dirtyTicks)
-            {
-                var removedNotes = _index.GetItemsInside(d);
-                foreach (IVirtualElement ve in removedNotes)
-                {
-                    if (!ve.Bounds.IntersectsWith(_visible))
-                    {
-                        _children.Remove(ve.Visual);
-                        ve.DisposeVisual();
-                    }
-                }
-            }*/
-
-            /*var visibleNotes = _index.GetItemsInside(_visible);
-            foreach (IVirtualElement ve in visibleNotes)
-            {
-                if (ve.Visual == null)
-                {
-                    ve.CreateVisual(this);
-                    _children.Add(ve.Visual);
-                }
-            }*/
 
             ScrollOwner?.InvalidateScrollInfo();
         }
