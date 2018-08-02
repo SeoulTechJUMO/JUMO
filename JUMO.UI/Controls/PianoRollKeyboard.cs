@@ -67,12 +67,6 @@ namespace JUMO.UI.Controls
                 };
                 buttonContainerElement.Children.Add(btn);
             }
-
-            buttonContainerElement.Children.Add(new System.Windows.Controls.Primitives.ScrollBar()
-            {
-                Orientation = Orientation.Horizontal,
-                Visibility = Visibility.Hidden
-            });
         }
     }
 }

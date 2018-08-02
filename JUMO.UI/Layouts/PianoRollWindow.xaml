@@ -31,16 +31,20 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
+            <Rectangle Grid.Row="0" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
+            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ctrl:MusicalScrollViewer Grid.Row="1" Grid.Column="1"
+            <ctrl:MusicalScrollViewer Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                                       proj:MusicalProps.Numerator="{Binding Numerator}"
                                       proj:MusicalProps.Denominator="{Binding Denominator}"
                                       proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
