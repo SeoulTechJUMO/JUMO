@@ -44,7 +44,13 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ctrl:MusicalScrollViewer Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+            <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
+                                      Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollBarVisibility="Visible"
+                                      CanContentScroll="True"
+                                      ScrollChanged="OnScrollChanged"
+                                      PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel"
                                       proj:MusicalProps.Numerator="{Binding Numerator}"
                                       proj:MusicalProps.Denominator="{Binding Denominator}"
                                       proj:MusicalProps.TimeResolution="{Binding TimeResolution}"

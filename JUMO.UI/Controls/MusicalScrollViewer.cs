@@ -15,27 +15,9 @@ using System.Windows.Shapes;
 
 namespace JUMO.UI.Controls
 {
-    public class MusicalScrollViewer : ContentControl
+    public class MusicalScrollViewer : ScrollViewer
     {
         #region Dependency Properties
-
-        public static readonly DependencyProperty HorizontalScrollBarVisibilityProperty =
-            DependencyProperty.Register(
-                "HorizontalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(MusicalScrollViewer),
-                new FrameworkPropertyMetadata(
-                    ScrollBarVisibility.Visible,
-                    FrameworkPropertyMetadataOptions.AffectsMeasure
-                )
-            );
-
-        public static readonly DependencyProperty VerticalScrollBarVisibilityProperty =
-            DependencyProperty.Register(
-                "VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(MusicalScrollViewer),
-                new FrameworkPropertyMetadata(
-                    ScrollBarVisibility.Visible,
-                    FrameworkPropertyMetadataOptions.AffectsMeasure
-                )
-            );
 
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
             DependencyProperty.Register(
@@ -58,18 +40,6 @@ namespace JUMO.UI.Controls
         #endregion
 
         #region Dependency Property Accessors
-
-        public ScrollBarVisibility HorizontalScrollBarVisibility
-        {
-            get => (ScrollBarVisibility)GetValue(HorizontalScrollBarVisibilityProperty);
-            set => SetValue(HorizontalScrollBarVisibilityProperty, value);
-        }
-
-        public ScrollBarVisibility VerticalScrollBarVisibility
-        {
-            get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty);
-            set => SetValue(VerticalScrollBarVisibilityProperty, value);
-        }
 
         public bool ShouldDrawHorizontalGrid
         {
