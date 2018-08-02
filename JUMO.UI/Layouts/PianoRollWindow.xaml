@@ -40,48 +40,14 @@
             <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="1" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
-            <ScrollViewer x:Name="MainScrollViewer"
-                          Grid.Row="1"
-                          Grid.Column="1"
-                          CanContentScroll="True"
-                          HorizontalScrollBarVisibility="Visible"
-                          VerticalScrollBarVisibility="Visible"
-                          ScrollChanged="OnScrollChanged"
-                          PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
-                <ScrollViewer.Resources>
-                    <proj:MinusConverter x:Key="MinusConverter" />
-                </ScrollViewer.Resources>
-                <ScrollViewer.Background>
-                    <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                 Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                 ViewportUnits="Absolute"
-                                 ViewboxUnits="Absolute"
-                                 TileMode="Tile">
-                        <VisualBrush.Visual>
-                            <ctrl:MusicalGrid x:Name="MusicalGrid"
-                                              proj:MusicalProps.Numerator="{Binding Numerator}"
-                                              proj:MusicalProps.Denominator="{Binding Denominator}"
-                                              proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
-                                              proj:MusicalProps.GridUnit="{Binding GridUnit}"
-                                              proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}"
-                                              GridHeight="20.0" />
-                        </VisualBrush.Visual>
-                        <VisualBrush.Transform>
-                            <TranslateTransform
-                                X="{Binding HorizontalOffset, ElementName=MainScrollViewer, Converter={StaticResource MinusConverter}}"
-                                Y="{Binding VerticalOffset, ElementName=MainScrollViewer, Converter={StaticResource MinusConverter}}" />
-                        </VisualBrush.Transform>
-                    </VisualBrush>
-                </ScrollViewer.Background>
-                <ctrl:PianoRollCanvas x:Name="MainCanvas"
-                                    Items="{Binding Notes}"
-                                    proj:MusicalProps.Numerator="{Binding Numerator}"
-                                    proj:MusicalProps.Denominator="{Binding Denominator}"
-                                    proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
-                                    proj:MusicalProps.GridUnit="{Binding GridUnit}"
-                                    proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
-                </ctrl:PianoRollCanvas>
-            </ScrollViewer>
+            <ctrl:MusicalScrollViewer Grid.Row="1" Grid.Column="1"
+                                      proj:MusicalProps.Numerator="{Binding Numerator}"
+                                      proj:MusicalProps.Denominator="{Binding Denominator}"
+                                      proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                      proj:MusicalProps.GridUnit="{Binding GridUnit}"
+                                      proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
+                <ctrl:PianoRollCanvas Items="{Binding Notes}" />
+            </ctrl:MusicalScrollViewer>
         </Grid>
     </Grid>
 </Window>

@@ -27,7 +27,7 @@ namespace JUMO.UI.Layouts
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (sender.Equals(MainScrollViewer))
+            /*if (sender.Equals(MainScrollViewer))
             {
                 KeyScrollViewer.ScrollToHorizontalOffset(0.0);
                 KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
@@ -35,7 +35,7 @@ namespace JUMO.UI.Layouts
             else
             {
                 MainScrollViewer?.ScrollToVerticalOffset(e.VerticalOffset);
-            }
+            }*/
         }
 
         private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
