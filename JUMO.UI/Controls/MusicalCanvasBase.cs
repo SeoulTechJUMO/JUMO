@@ -89,6 +89,17 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty ExtentHeightOverrideProperty =
+            DependencyProperty.Register(
+                "ExtentHeightOverride", typeof(double), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(
+                    double.NaN,
+                    FrameworkPropertyMetadataOptions.AffectsArrange
+                    | FrameworkPropertyMetadataOptions.AffectsMeasure
+                    | FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
         #endregion
 
         #region Dependency Property Accessors
@@ -101,6 +112,12 @@ namespace JUMO.UI.Controls
         {
             get => (IEnumerable)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
+        }
+
+        public double ExtentHeightOverride
+        {
+            get => (double)GetValue(ExtentHeightOverrideProperty);
+            set => SetValue(ExtentHeightOverrideProperty, value);
         }
 
         #endregion
@@ -210,7 +227,7 @@ namespace JUMO.UI.Controls
         protected abstract Size CalculateSizeForElement(UIElement element);
         protected abstract Rect CalculateRectForElement(UIElement element);
 
-        private void CalculateExtent(bool force)
+        private void CalculateExtent(bool force, Size availableSize)
         {
             // TODO: 스크롤하거나 확대/축소 비율을 변경하는 경우에는
             //       논리 공간의 길이가 변하지 않으므로 매번 계산할 필요가 없음. (* 1)
@@ -220,7 +237,8 @@ namespace JUMO.UI.Controls
             //   2. 오른쪽 맨 끝에 있는 항목이 제거될 때
             //   3. Items 속성이 다른 컬렉션의 인스턴스로 변경될 때
             double totalLength = CalculateLogicalLength();
-            Size newExtent = new Size(totalLength * WidthPerTick, 2560);
+            double extentHeight = double.IsNaN(ExtentHeightOverride) ? availableSize.Height : ExtentHeightOverride;
+            Size newExtent = new Size(totalLength * WidthPerTick, extentHeight);
 
             if (_extent != newExtent)
             {
@@ -247,7 +265,7 @@ namespace JUMO.UI.Controls
         {
             WidthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
 
-            CalculateExtent(false);
+            CalculateExtent(false, availableSize);
 
             if (_viewport != availableSize)
             {
@@ -271,7 +289,7 @@ namespace JUMO.UI.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            CalculateExtent(false);
+            // CalculateExtent(false);
 
             if (_viewport != finalSize)
             {

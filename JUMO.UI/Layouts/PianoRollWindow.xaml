@@ -56,7 +56,7 @@
                                       proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
                                       proj:MusicalProps.GridUnit="{Binding GridUnit}"
                                       proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
-                <ctrl:PianoRollCanvas Items="{Binding Notes}" />
+                <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" />
             </ctrl:MusicalScrollViewer>
         </Grid>
     </Grid>
