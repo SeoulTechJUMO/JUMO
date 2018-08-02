@@ -10,6 +10,7 @@ namespace JUMO.UI
                 new FrameworkPropertyMetadata(
                     4,
                     FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.Inherits
                 )
             );
 
@@ -19,6 +20,7 @@ namespace JUMO.UI
                 new FrameworkPropertyMetadata(
                     4,
                     FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.Inherits
                 )
             );
 
@@ -30,6 +32,7 @@ namespace JUMO.UI
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.Inherits
                 )
             );
 
@@ -39,6 +42,7 @@ namespace JUMO.UI
                 new FrameworkPropertyMetadata(
                     16,
                     FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.Inherits
                 )
             );
 
@@ -50,6 +54,7 @@ namespace JUMO.UI
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.Inherits
                 )
             );
 
