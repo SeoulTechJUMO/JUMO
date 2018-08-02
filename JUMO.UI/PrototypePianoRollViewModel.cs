@@ -66,15 +66,15 @@ namespace JUMO.UI
         public ObservableCollection<INote> Notes { get; } = new ObservableCollection<INote>()
         {
             new PrototypeNote(60, 64, 0, 480),
-            new PrototypeNote(62, 64, 480, 480),
-            new PrototypeNote(64, 64, 960, 480),
-            new PrototypeNote(65, 64, 1440, 480),
-            new PrototypeNote(67, 64, 1920, 1920),
-            new PrototypeNote(120, 64, 0, 480),
-            new PrototypeNote(122, 64, 480, 480),
-            new PrototypeNote(124, 64, 960, 480),
-            new PrototypeNote(125, 64, 1440, 480),
-            new PrototypeNote(127, 64, 1920, 1920)
+            new PrototypeNote(62, 80, 480, 480),
+            new PrototypeNote(64, 96, 960, 480),
+            new PrototypeNote(65, 112, 1440, 480),
+            new PrototypeNote(67, 127, 1920, 1920),
+            new PrototypeNote(120, 60, 0, 480),
+            new PrototypeNote(122, 48, 480, 480),
+            new PrototypeNote(124, 36, 960, 480),
+            new PrototypeNote(125, 24, 1440, 480),
+            new PrototypeNote(127, 12, 1920, 1920)
         };
 
         public event PropertyChangedEventHandler PropertyChanged;

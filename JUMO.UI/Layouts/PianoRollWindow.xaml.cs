@@ -31,10 +31,16 @@ namespace JUMO.UI.Layouts
             {
                 KeyScrollViewer.ScrollToHorizontalOffset(0.0);
                 KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
+                VelocityScrollViewer.ScrollToVerticalOffset(0.0);
+                VelocityScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
             }
-            else
+            else if (sender.Equals(KeyScrollViewer))
             {
                 MainScrollViewer?.ScrollToVerticalOffset(e.VerticalOffset);
+            }
+            else if (sender.Equals(VelocityScrollViewer))
+            {
+                MainScrollViewer?.ScrollToHorizontalOffset(e.HorizontalOffset);
             }
         }
 
@@ -49,11 +55,11 @@ namespace JUMO.UI.Layouts
             {
                 if (e.Delta < 0)
                 {
-                    MainScrollViewer.LineRight();
+                    (sender as ScrollViewer)?.LineRight();
                 }
                 else
                 {
-                    MainScrollViewer.LineLeft();
+                    (sender as ScrollViewer)?.LineLeft();
                 }
                 e.Handled = true;
             }

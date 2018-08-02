@@ -33,6 +33,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition />
+                <RowDefinition Height="120" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
@@ -58,6 +59,23 @@
                                       proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
                 <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" />
             </ctrl:MusicalScrollViewer>
+            <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
+                <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
+                                          Grid.Row="3" Grid.Column="1"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Visible"
+                                          CanContentScroll="True"
+                                          ScrollChanged="OnScrollChanged"
+                                          PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel"
+                                          ShouldDrawHorizontalGrid="False"
+                                          proj:MusicalProps.Numerator="{Binding Numerator}"
+                                          proj:MusicalProps.Denominator="{Binding Denominator}"
+                                          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+                                          proj:MusicalProps.GridUnit="{Binding GridUnit}"
+                                          proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
+                    <ctrl:VelocityCanvas Items="{Binding Notes}" />
+                </ctrl:MusicalScrollViewer>
+            </Border>
         </Grid>
     </Grid>
 </Window>
