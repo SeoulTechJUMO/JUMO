@@ -139,8 +139,8 @@ namespace JUMO.UI.Controls
 
         public void LineUp() => SetVerticalOffset(VerticalOffset - 3);
         public void LineDown() => SetVerticalOffset(VerticalOffset + 3);
-        public void LineLeft() => SetHorizontalOffset(HorizontalOffset - 3);
-        public void LineRight() => SetHorizontalOffset(HorizontalOffset + 3);
+        public void LineLeft() => SetHorizontalOffset(HorizontalOffset - ZoomFactor);
+        public void LineRight() => SetHorizontalOffset(HorizontalOffset + ZoomFactor);
 
         public void PageUp() => SetVerticalOffset(VerticalOffset - ViewportHeight / 2);
         public void PageDown() => SetVerticalOffset(VerticalOffset + ViewportHeight / 2);

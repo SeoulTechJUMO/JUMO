@@ -45,6 +45,18 @@ namespace JUMO.UI.Layouts
                 (DataContext as IPianoRollViewModel).ZoomFactor += e.Delta > 0 ? 1 : -1;
                 e.Handled = true;
             }
+            else if (Keyboard.IsKeyDown(Key.LeftShift))
+            {
+                if (e.Delta < 0)
+                {
+                    MainScrollViewer.LineRight();
+                }
+                else
+                {
+                    MainScrollViewer.LineLeft();
+                }
+                e.Handled = true;
+            }
         }
     }
 }
