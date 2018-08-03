@@ -94,10 +94,12 @@
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
                         <Rectangle Grid.Row="0" Grid.Column="1"
                                    Fill="{x:Static SystemColors.ControlBrush}" />
-                        <Rectangle Grid.Row="1" Grid.Column="0"
-                                   Fill="{x:Static SystemColors.ControlBrush}"
-                                   Height="{x:Static SystemParameters.HorizontalScrollBarHeight}"
-                                   Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                        <ctrl:BarIndicator Grid.Row="1" Grid.Column="0"
+                                           ClipToBounds="True"
+                                           ScrollOffset="{TemplateBinding HorizontalOffset}"
+                                           Background="{x:Static SystemColors.ControlBrush}"
+                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                           Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
                         <ScrollBar x:Name="PART_VerticalScrollBar"
                                    Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
                                    Orientation="Vertical"

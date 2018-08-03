@@ -76,6 +76,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BarIndicator.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
