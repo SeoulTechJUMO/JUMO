@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Data;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Media.Audio;
@@ -15,17 +14,13 @@ namespace JUMO.Vst
         private static readonly Lazy<PluginManager> _instance = new Lazy<PluginManager>(() => new PluginManager());
         private PluginManager()
         {
-            _plugins = new ObservableCollection<Plugin>();
-            Plugins = CollectionViewSource.GetDefaultView(_plugins);
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
         public static PluginManager Instance => _instance.Value;
 
         #endregion
 
-        private readonly ObservableCollection<Plugin> _plugins;
-
-        public ICollectionView Plugins { get; }
+        public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
 
         public bool AddPlugin(string pluginPath, Action<Exception> onError)
         {
@@ -35,7 +30,7 @@ namespace JUMO.Vst
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
                 AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
-                _plugins.Add(plugin);
+                Plugins.Add(plugin);
 
                 return true;
             }
@@ -49,7 +44,7 @@ namespace JUMO.Vst
 
         public void Dispose()
         {
-            foreach (var plugin in _plugins)
+            foreach (var plugin in Plugins)
             {
                 plugin.Dispose();
             }
@@ -64,7 +59,7 @@ namespace JUMO.Vst
                 return;
             }
 
-            foreach (var plugin in _plugins)
+            foreach (var plugin in Plugins)
             {
                 AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
             }

@@ -21,7 +21,7 @@ namespace VstHostTest
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICollectionView Plugins => PluginManager.Instance.Plugins;
+        public IEnumerable<Plugin> Plugins => PluginManager.Instance.Plugins;
 
         public Plugin SelectedPlugin
         {
