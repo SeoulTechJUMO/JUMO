@@ -9,7 +9,7 @@ namespace JUMO
     /// <summary>
     /// 음악을 구성하는 각각의 패턴을 나타냅니다.
     /// </summary>
-    public class Pattern
+    class Pattern
     {
         /// <summary>
         /// 패턴의 이름을 가져오거나 설정합니다.

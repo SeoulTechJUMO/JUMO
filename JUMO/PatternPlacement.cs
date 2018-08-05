@@ -9,7 +9,7 @@ namespace JUMO
     /// <summary>
     /// 트랙 상에 배치된 패턴을 나타냅니다.
     /// </summary>
-    public class PatternPlacement
+    class PatternPlacement
     {
         /// <summary>
         /// 배치된 패턴 인스턴스를 가져옵니다.
