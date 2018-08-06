@@ -77,6 +77,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\NumericUpDown.cs" />
+    <Compile Include="PrototypeChannelRackViewModel.cs" />
     <Page Include="Layouts\ChannelRackWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +119,10 @@
     <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
       <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
       <Name>JUMO.Media</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JUMO\JUMO.csproj">
+      <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
+      <Name>JUMO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
