@@ -7,6 +7,7 @@ using Jacobi.Vst.Core.Host;
 
 namespace JUMO
 {
+    [Obsolete("JUMO.Vst.Plugin으로 대체될 예정")]
     class VstChannel
     {
         public string Name { get; set; }
