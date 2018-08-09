@@ -153,6 +153,7 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        private double _logicalLength = 0;
         private Segment _visible = Segment.Empty;
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
@@ -173,45 +174,32 @@ namespace JUMO.UI.Controls
         protected abstract Size CalculateSizeForElement(UIElement element);
         protected abstract Rect CalculateRectForElement(UIElement element);
 
-        private void CalculateExtent(bool force, Size availableSize)
+        private void CalculateLogicalLengthInternal()
         {
-            // TODO: 스크롤하거나 확대/축소 비율을 변경하는 경우에는
-            //       논리 공간의 길이가 변하지 않으므로 매번 계산할 필요가 없음. (* 1)
-            //
-            //   논리 공간의 길이를 다시 계산해야 하는 경우:
-            //   1. 오른쪽 맨 끝에 항목이 추가될 때
-            //   2. 오른쪽 맨 끝에 있는 항목이 제거될 때
-            //   3. Items 속성이 다른 컬렉션의 인스턴스로 변경될 때
-            double totalLength = CalculateLogicalLength();
-            double extentHeight = double.IsNaN(ExtentHeightOverride) ? availableSize.Height : ExtentHeightOverride;
-            Size newExtent = new Size(totalLength * WidthPerTick, extentHeight);
+            double newLogicalLength = CalculateLogicalLength();
 
-            if (_extent != newExtent)
+            if (_logicalLength != newLogicalLength)
             {
-                _extent = newExtent;
-
-                // TODO: (* 1)
-                /*_index = new BinaryPartition<IVirtualElement>()
-                {
-                    Bounds = new Segment(0, totalLength)
-                };
-
-                // TODO: do we need to reload all items every time we calculate the extent?
-                foreach (IVirtualElement ve in _table.Values)
-                {
-                    _index.Insert(ve, ve.Bounds);
-                }*/
-
-                SetHorizontalOffset(HorizontalOffset);
-                SetVerticalOffset(VerticalOffset);
+                _logicalLength = newLogicalLength;
+                _index.Bounds = new Segment(0, _logicalLength);
             }
+
+            InvalidateMeasure();
+        }
+
+        private void ScaleExtent()
+        {
+            _extent.Width = _logicalLength * WidthPerTick;
+            _extent.Height = double.IsNaN(ExtentHeightOverride) ? ActualHeight : ExtentHeightOverride;
+            SetHorizontalOffset(HorizontalOffset);
+            SetVerticalOffset(VerticalOffset);
         }
 
         protected override Size MeasureOverride(Size availableSize)
         {
             WidthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
 
-            CalculateExtent(false, availableSize);
+            ScaleExtent();
 
             if (_viewport != availableSize)
             {
@@ -235,8 +223,6 @@ namespace JUMO.UI.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            // CalculateExtent(false);
-
             if (_viewport != finalSize)
             {
                 SetViewport(finalSize);
@@ -306,11 +292,6 @@ namespace JUMO.UI.Controls
 
         private int CreateHandler(int quantum)
         {
-            /*if (_index != null)
-            {
-                CalculateExtent(false);
-            }*/
-
             if (_visible.IsEmpty)
             {
                 _visible = new Segment(HorizontalOffset / WidthPerTick, ViewportWidth / WidthPerTick);
@@ -453,6 +434,7 @@ namespace JUMO.UI.Controls
                         _table.Add(newItem, ve);
                         _index.Insert(ve, ve.Bounds);
                     }
+                    CalculateLogicalLengthInternal();
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
@@ -464,6 +446,7 @@ namespace JUMO.UI.Controls
                         _table.Remove(oldItem);
                         _index.Remove(ve);
                     }
+                    CalculateLogicalLengthInternal();
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
@@ -501,7 +484,7 @@ namespace JUMO.UI.Controls
                 _index.Insert(ve, ve.Bounds);
             }
 
-            InvalidateMeasure();
+            CalculateLogicalLengthInternal();
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
