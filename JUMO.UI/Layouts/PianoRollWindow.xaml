@@ -31,6 +31,8 @@
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
             <Label Content="PPQN:" />
             <Label Content="{Binding TimeResolution}" />
+            <Button Content="Add Note" Click="AddButton_Click" />
+            <Button Content="Remove Note" Click="RemoveButton_Click" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

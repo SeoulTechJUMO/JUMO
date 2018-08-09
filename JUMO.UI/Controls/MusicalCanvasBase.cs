@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -156,8 +157,9 @@ namespace JUMO.UI.Controls
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
 
+        private ICollectionView _itemsView;
+        private Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
-        private ObservableCollection<IVirtualElement> _virtualChildren = new ObservableCollection<IVirtualElement>();
 
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
@@ -189,16 +191,16 @@ namespace JUMO.UI.Controls
                 _extent = newExtent;
 
                 // TODO: (* 1)
-                _index = new BinaryPartition<IVirtualElement>()
+                /*_index = new BinaryPartition<IVirtualElement>()
                 {
                     Bounds = new Segment(0, totalLength)
                 };
 
                 // TODO: do we need to reload all items every time we calculate the extent?
-                foreach (IVirtualElement ve in _virtualChildren)
+                foreach (IVirtualElement ve in _table.Values)
                 {
                     _index.Insert(ve, ve.Bounds);
-                }
+                }*/
 
                 SetHorizontalOffset(HorizontalOffset);
                 SetVerticalOffset(VerticalOffset);
@@ -442,46 +444,71 @@ namespace JUMO.UI.Controls
 
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            //throw new NotImplementedException();
-            InvalidateArrange();
-        }
-
-        private void UnregisterItems(INotifyCollectionChanged collection)
-        {
-            if (collection != null)
+            switch (e.Action)
             {
-                collection.CollectionChanged -= OnItemsCollectionChanged;
+                case NotifyCollectionChangedAction.Add:
+                    foreach (object newItem in e.NewItems)
+                    {
+                        IVirtualElement ve = CreateVirtualElementForItem(newItem);
+                        _table.Add(newItem, ve);
+                        _index.Insert(ve, ve.Bounds);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    foreach (object oldItem in e.OldItems)
+                    {
+                        IVirtualElement ve = _table[oldItem];
+                        Children.Remove(ve.Visual);
+                        ve.DisposeVisual();
+                        _table.Remove(oldItem);
+                        _index.Remove(ve);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    break;
+
+                default:
+                    break;
             }
+
+            OnScrollChanged();
         }
 
-        private void RegisterItems(INotifyCollectionChanged collection)
-        {
-            if (collection != null)
-            {
-                collection.CollectionChanged += OnItemsCollectionChanged;
-            }
-        }
-
-        private void RefreshItems()
+        private void RefreshItems(IEnumerable newItems)
         {
             System.Diagnostics.Debug.WriteLine("MusicalCanvas::RefreshItems called");
 
-            _virtualChildren = new ObservableCollection<IVirtualElement>();
-            foreach (object item in Items)
+            if (_itemsView != null)
             {
-                _virtualChildren.Add(CreateVirtualElementForItem(item));
+                _itemsView.CollectionChanged -= OnItemsCollectionChanged;
             }
 
-            InvalidateArrange();
+            _itemsView = CollectionViewSource.GetDefaultView(newItems);
+
+            if (_itemsView != null)
+            {
+                _itemsView.CollectionChanged += OnItemsCollectionChanged;
+            }
+
+            _table = new Dictionary<object, IVirtualElement>();
+
+            foreach (object item in Items)
+            {
+                IVirtualElement ve = CreateVirtualElementForItem(item);
+                _table.Add(item, ve);
+                _index.Insert(ve, ve.Bounds);
+            }
+
+            InvalidateMeasure();
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is MusicalCanvasBase ctrl)
             {
-                ctrl.UnregisterItems(e.OldValue as INotifyCollectionChanged);
-                ctrl.RegisterItems(e.NewValue as INotifyCollectionChanged);
-                ctrl.RefreshItems();
+                ctrl.RefreshItems(e.NewValue as IEnumerable);
             }
         }
 

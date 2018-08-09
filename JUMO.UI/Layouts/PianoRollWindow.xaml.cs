@@ -64,5 +64,15 @@ namespace JUMO.UI.Layouts
                 e.Handled = true;
             }
         }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as IPianoRollViewModel).Notes.Add(new PrototypeNote(127, 64, 0, 480));
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as IPianoRollViewModel).Notes.RemoveAt(0);
+        }
     }
 }
