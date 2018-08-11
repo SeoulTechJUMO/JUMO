@@ -144,6 +144,7 @@ namespace JUMO.UI.Controls
             _offset.Y = offset;
             _transform.Y = -offset;
             ScrollOwner?.InvalidateScrollInfo();
+            InvalidateVisual();
         }
 
         public Rect MakeVisible(Visual visual, Rect rectangle)
@@ -192,7 +193,6 @@ namespace JUMO.UI.Controls
             _extent.Width = _logicalLength * WidthPerTick;
             _extent.Height = double.IsNaN(ExtentHeightOverride) ? ActualHeight : ExtentHeightOverride;
             SetHorizontalOffset(HorizontalOffset);
-            SetVerticalOffset(VerticalOffset);
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -205,7 +205,6 @@ namespace JUMO.UI.Controls
             {
                 SetViewport(availableSize);
                 SetHorizontalOffset(HorizontalOffset);
-                SetVerticalOffset(VerticalOffset);
             }
 
             foreach (UIElement element in Children)
@@ -227,7 +226,6 @@ namespace JUMO.UI.Controls
             {
                 SetViewport(finalSize);
                 SetHorizontalOffset(HorizontalOffset);
-                SetVerticalOffset(VerticalOffset);
             }
 
             foreach (UIElement element in Children)
@@ -390,6 +388,12 @@ namespace JUMO.UI.Controls
             }
 
             return count;
+        }
+
+        protected override void OnRender(DrawingContext dc)
+        {
+            Point pt = new Point(-_transform.X, -_transform.Y);
+            dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, RenderSize));
         }
 
         #region Visual Host Container Implementation

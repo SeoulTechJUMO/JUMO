@@ -74,5 +74,12 @@ namespace JUMO.UI.Layouts
         {
             (DataContext as IPianoRollViewModel).Notes.RemoveAt(0);
         }
+
+        private void PianoRollCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            UIElement ctrl = (UIElement)sender;
+            Point pt = e.GetPosition(ctrl);
+            System.Diagnostics.Debug.WriteLine($"MouseDown: {sender.GetType().Name} X={pt.X} Y={pt.Y} Value={127 - ((int)pt.Y / 20)}");
+        }
     }
 }

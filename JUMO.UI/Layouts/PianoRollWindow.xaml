@@ -58,7 +58,7 @@
                                       CanContentScroll="True"
                                       ScrollChanged="OnScrollChanged"
                                       PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
-                <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" />
+                <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" MouseDown="PianoRollCanvas_MouseDown" />
             </ctrl:MusicalScrollViewer>
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
                 <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
