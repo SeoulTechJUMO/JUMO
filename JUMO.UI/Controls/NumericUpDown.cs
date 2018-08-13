@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 
 namespace JUMO.UI.Controls
 {
@@ -12,7 +13,14 @@ namespace JUMO.UI.Controls
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
                 "Value", typeof(double), typeof(NumericUpDown),
-                new PropertyMetadata(0.0, ValueChangedCallback, CoerceValue)
+                new FrameworkPropertyMetadata(
+                    0.0,
+                    FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    ValueChangedCallback,
+                    CoerceValue,
+                    false,
+                    UpdateSourceTrigger.Explicit
+                )
             );
 
         public static readonly DependencyProperty MinValueProperty =
@@ -159,6 +167,8 @@ namespace JUMO.UI.Controls
         {
             NumericUpDown ctrl = obj as NumericUpDown;
             double newValue = (double)e.NewValue;
+
+            ctrl.GetBindingExpression(ValueProperty)?.UpdateSource();
 
             ctrl.OnValueChanged(new ValueChangedEventArgs(ValueChangedEvent, newValue));
         }

@@ -27,6 +27,9 @@ namespace VstHostTest
         public MainWindow()
         {
             InitializeComponent();
+
+            // TODO: Remove when you're done!!!
+            new JUMO.UI.Layouts.PianoRollWindow().Show();
         }
 
         // TODO: This is a prototype method. REPLACE WITH WPF COMMAND!
