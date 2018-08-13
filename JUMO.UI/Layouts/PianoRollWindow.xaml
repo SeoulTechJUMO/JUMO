@@ -1,0 +1,77 @@
+﻿<Window x:Class="JUMO.UI.Layouts.PianoRollWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Layouts"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        xmlns:proj="clr-namespace:JUMO.UI"
+        mc:Ignorable="d"
+        Title="PianoRollWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <proj:PrototypePianoRollViewModel />
+    </Window.DataContext>
+    <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
+          proj:MusicalProps.Denominator="{Binding Denominator}"
+          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+          proj:MusicalProps.GridUnit="{Binding GridUnit}"
+          proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Label Content="Numerator" />
+            <ctrl:NumericUpDown x:Name="NumeratorControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding Numerator, Mode=TwoWay}" />
+            <Label Content="Denominator" />
+            <ctrl:NumericUpDown x:Name="DenominatorControl" MinValue="2" MaxValue="64" Delta="2" Value="{Binding Denominator, Mode=TwoWay}" />
+            <Label Content="GridUnit" />
+            <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
+            <Label Content="ZoomFactor" />
+            <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
+            <Label Content="PPQN:" />
+            <Label Content="{Binding TimeResolution}" />
+            <Button Content="Add Note" Click="AddButton_Click" />
+            <Button Content="Remove Note" Click="RemoveButton_Click" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+                <RowDefinition Height="120" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Row="0" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
+            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
+                <ctrl:PianoRollKeyboard />
+            </ScrollViewer>
+            <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
+                                      Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollBarVisibility="Visible"
+                                      CanContentScroll="True"
+                                      ScrollChanged="OnScrollChanged"
+                                      PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
+                <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" MouseDown="PianoRollCanvas_MouseDown" />
+            </ctrl:MusicalScrollViewer>
+            <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
+                <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
+                                          Grid.Row="3" Grid.Column="1"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Visible"
+                                          CanContentScroll="True"
+                                          ScrollChanged="OnScrollChanged"
+                                          PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel"
+                                          ShouldDrawHorizontalGrid="False">
+                    <ctrl:VelocityCanvas Items="{Binding Notes}" />
+                </ctrl:MusicalScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
