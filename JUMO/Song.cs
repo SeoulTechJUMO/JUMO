@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JUMO
 {
-    sealed class Song
+    public sealed class Song
     {
         #region Singleton
 

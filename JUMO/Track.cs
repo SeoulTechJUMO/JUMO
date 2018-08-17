@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JUMO
 {
-    class Track
+    public class Track
     {
         public string Name { get; set; }
         public IEnumerable<PatternPlacement> Patterns { get; } = new List<PatternPlacement>();
