@@ -87,10 +87,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="VstChannel.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
-    <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
