@@ -21,6 +21,8 @@ namespace JUMO
             {
                 Tracks[i] = new Track($"트랙 {i + 1}");
             }
+
+            Patterns.Add(new Pattern("패턴 1"));
         }
 
         /// <summary>
