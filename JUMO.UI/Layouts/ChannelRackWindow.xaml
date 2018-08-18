@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="ChannelRack" Height="450" Width="500">
+        Title="{Binding Pattern.Name, StringFormat={}패턴: {0}}" Height="450" Width="500">
     <Window.DataContext>
         <proj:PrototypeChannelRackViewModel />
     </Window.DataContext>
@@ -24,9 +24,19 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <CheckBox Grid.Column="0" Margin="5,0" VerticalAlignment="Center" IsEnabled="False" />
-                        <Slider Grid.Column="1" Margin="5,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Volume}" />
+                        <Slider Grid.Column="1" Margin="5,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Key.Volume}" />
                         <ctrl:NumericUpDown Grid.Column="2" Width="50" Margin="5,0" />
-                        <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Name}" />
+                        <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}">
+                            <Button.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="{Binding Key.Name}" IsEnabled="False" />
+                                    <Separator />
+                                    <MenuItem Header="편집(_E)" FontWeight="Bold" />
+                                    <MenuItem Header="피아노 롤 열기(_P)" />
+                                    <MenuItem Header="제거(_D)" />
+                                </ContextMenu>
+                            </Button.ContextMenu>
+                        </Button>
                         <Rectangle Grid.Column="4" Stroke="Black" StrokeThickness="1" SnapsToDevicePixels="True" Margin="5,0" />
                     </Grid>
                 </DataTemplate>
