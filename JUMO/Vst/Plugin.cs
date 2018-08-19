@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,28 @@ using NAudio.Wave.SampleProviders;
 
 namespace JUMO.Vst
 {
-    public class Plugin : IDisposable
+    public class Plugin : IDisposable, INotifyPropertyChanged
     {
         private readonly IVstPluginContext _ctx;
         private readonly VolumeSampleProvider _volume;
+        private string _name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         // TODO: NAudio에서 제공하는 PanningSampleProvider는 Mono to Stereo 전용.
         //       Stereo to Stereo를 별도로 구현해야 함.
         // private readonly PanningSampleProvider _pan;
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+
         public string PluginPath { get; }
         public IVstPluginCommandStub PluginCommandStub { get; }
         public ISampleProvider SampleProvider { get; }
@@ -26,7 +40,11 @@ namespace JUMO.Vst
         public float Volume
         {
             get => _volume.Volume;
-            set => _volume.Volume = value;
+            set
+            {
+                _volume.Volume = value;
+                OnPropertyChanged(nameof(Volume));
+            }
         }
 
         public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub)
@@ -50,5 +68,8 @@ namespace JUMO.Vst
             PluginCommandStub.MainsChanged(false);
             PluginCommandStub.Close();
         }
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +10,24 @@ namespace JUMO
     /// <summary>
     /// 패턴을 배치할 수 있는 트랙을 나타냅니다.
     /// </summary>
-    public class Track
+    public class Track : INotifyPropertyChanged
     {
+        private string _name;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         /// 트랙의 이름을 가져오거나 설정합니다.
         /// </summary>
-        public string Name { get; set; }
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
 
         /// <summary>
         /// 트랙에 배치된 패턴을 저장하는 컬렉션을 가져옵니다.
@@ -31,5 +44,8 @@ namespace JUMO
         /// </summary>
         /// <param name="name">새 트랙의 이름</param>
         public Track(string name) => Name = name;
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

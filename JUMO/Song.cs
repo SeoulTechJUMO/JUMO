@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JUMO
 {
-    public sealed class Song
+    public sealed class Song : INotifyPropertyChanged
     {
         #region Singleton
 
@@ -35,26 +36,66 @@ namespace JUMO
         private const int NumOfTracks = 64;
 
         private int _tempo;
+        private string _title = "제목 없음";
+        private string _artist = "";
+        private string _genre = "";
+        private string _description = "";
+        private int _numerator = 4;
+        private int _denominator = 4;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// 음악 프로젝트의 제목을 가져오거나 설정합니다.
         /// </summary>
-        public string Title { get; set; } = "제목 없음";
+        public string Title
+        {
+            get => _title;
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
 
         /// <summary>
         /// 작곡가의 이름을 가져오거나 설정합니다.
         /// </summary>
-        public string Artist { get; set; } = "";
+        public string Artist
+        {
+            get => _artist;
+            set
+            {
+                _artist = value;
+                OnPropertyChanged(nameof(Artist));
+            }
+        }
 
         /// <summary>
         /// 장르 이름을 가져오거나 설정합니다.
         /// </summary>
-        public string Genre { get; set; } = "";
+        public string Genre
+        {
+            get => _genre;
+            set
+            {
+                _genre = value;
+                OnPropertyChanged(nameof(Genre));
+            }
+        }
 
         /// <summary>
         /// 프로젝트 설명 내용을 가져오거나 설정합니다.
         /// </summary>
-        public string Description { get; set; } = "";
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                _description = value;
+                OnPropertyChanged(nameof(Description));
+            }
+        }
 
         /// <summary>
         /// 제목, 작곡가, 장르, 설명 외에 추가적인 정보를 저장할 수 있는 이름-값 쌍의 컬렉션을 가져옵니다.
@@ -71,18 +112,36 @@ namespace JUMO
             {
                 _tempo = value;
                 MidiTempo = (int)Math.Round(60_000_000.0 / _tempo);
+                OnPropertyChanged(nameof(Tempo));
+                OnPropertyChanged(nameof(MidiTempo));
             }
         }
 
         /// <summary>
         /// 곡의 박자표 중 분자를 가져오거나 설정합니다.
         /// </summary>
-        public int Numerator { get; set; } = 4;
+        public int Numerator
+        {
+            get => _numerator;
+            set
+            {
+                _numerator = value;
+                OnPropertyChanged(nameof(Numerator));
+            }
+        }
 
         /// <summary>
         /// 곡의 박자표 중 분모를 가져오거나 설정합니다.
         /// </summary>
-        public int Denominator { get; set; } = 4;
+        public int Denominator
+        {
+            get => _denominator;
+            set
+            {
+                _denominator = value;
+                OnPropertyChanged(nameof(Denominator));
+            }
+        }
 
         /// <summary>
         /// 곡을 구성하는 트랙의 배열을 가져옵니다.
@@ -99,5 +158,8 @@ namespace JUMO
         /// 4분음표 하나가 연주되는 시간을 마이크로초 단위로 나타낸 값입니다.
         /// </summary>
         public int MidiTempo { get; private set; }
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

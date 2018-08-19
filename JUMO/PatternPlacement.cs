@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ namespace JUMO
     /// <summary>
     /// 트랙 상에 배치된 패턴을 나타냅니다.
     /// </summary>
-    public class PatternPlacement
+    public class PatternPlacement : INotifyPropertyChanged
     {
+        private long _start;
+
         /// <summary>
         /// 배치된 패턴 인스턴스를 가져옵니다.
         /// </summary>
@@ -19,7 +22,15 @@ namespace JUMO
         /// <summary>
         /// 배치된 패턴의 시작 시점을 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Start { get; set; }
+        public long Start
+        {
+            get => _start;
+            set
+            {
+                _start = value;
+                OnPropertyChanged(nameof(Start));
+            }
+        }
 
         /// <summary>
         /// 배치된 패턴의 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
@@ -36,5 +47,10 @@ namespace JUMO
             Pattern = pattern;
             Start = start;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
