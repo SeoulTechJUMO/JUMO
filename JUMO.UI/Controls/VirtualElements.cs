@@ -18,9 +18,9 @@ namespace JUMO.UI.Controls
 
     class VirtualNote : IVirtualElement
     {
-        private readonly INote _note;
+        private readonly Note _note;
 
-        public VirtualNote(INote note)
+        public VirtualNote(Note note)
         {
             _note = note;
             Bounds = new Segment(_note.Start, _note.Length);
@@ -60,9 +60,9 @@ namespace JUMO.UI.Controls
 
     class VirtualVelocityControl : IVirtualElement
     {
-        private readonly INote _note;
+        private readonly Note _note;
 
-        public VirtualVelocityControl(INote note)
+        public VirtualVelocityControl(Note note)
         {
             _note = note;
             Bounds = new Segment(_note.Start, _note.Length);

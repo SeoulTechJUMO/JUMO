@@ -57,12 +57,12 @@ namespace JUMO.UI.Controls
 
         protected override IVirtualElement CreateVirtualElementForItem(object item)
         {
-            return new VirtualVelocityControl((INote)item);
+            return new VirtualVelocityControl((Note)item);
         }
 
         protected override double CalculateLogicalLength()
         {
-            long length = Items.OfType<INote>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));
+            long length = Items.OfType<Note>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));
 
             // 끝에 4분음표 8개 분량의 빈 공간을 둠
             return length + (TimeResolution << 3);

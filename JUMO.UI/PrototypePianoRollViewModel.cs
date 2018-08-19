@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    class PrototypePianoRollViewModel : IPianoRollViewModel, INotifyPropertyChanged
+    class PrototypePianoRollViewModel : INotifyPropertyChanged
     {
         private int _numerator = 4;
         private int _denominator = 4;
@@ -63,18 +63,18 @@ namespace JUMO.UI
             }
         }
 
-        public ObservableCollection<INote> Notes { get; } = new ObservableCollection<INote>()
+        public ObservableCollection<Note> Notes { get; } = new ObservableCollection<Note>()
         {
-            new PrototypeNote(60, 64, 0, 480),
-            new PrototypeNote(62, 80, 480, 480),
-            new PrototypeNote(64, 96, 960, 480),
-            new PrototypeNote(65, 112, 1440, 480),
-            new PrototypeNote(67, 127, 1920, 1920),
-            new PrototypeNote(120, 60, 0, 480),
-            new PrototypeNote(122, 48, 480, 480),
-            new PrototypeNote(124, 36, 960, 480),
-            new PrototypeNote(125, 24, 1440, 480),
-            new PrototypeNote(127, 12, 1920, 1920)
+            new Note(60, 64, 0, 480),
+            new Note(62, 80, 480, 480),
+            new Note(64, 96, 960, 480),
+            new Note(65, 112, 1440, 480),
+            new Note(67, 127, 1920, 1920),
+            new Note(120, 60, 0, 480),
+            new Note(122, 48, 480, 480),
+            new Note(124, 36, 960, 480),
+            new Note(125, 24, 1440, 480),
+            new Note(127, 12, 1920, 1920)
         };
 
         public event PropertyChangedEventHandler PropertyChanged;

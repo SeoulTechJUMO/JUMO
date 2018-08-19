@@ -85,11 +85,8 @@
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
-    <Compile Include="INote.cs" />
-    <Compile Include="IPianoRollViewModel.cs" />
     <Compile Include="MinusConverter.cs" />
     <Compile Include="MusicalProps.cs" />
-    <Compile Include="PrototypeNote.cs" />
     <Compile Include="PrototypePianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />

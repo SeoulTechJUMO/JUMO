@@ -48,7 +48,7 @@ namespace JUMO.UI.Layouts
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                (DataContext as IPianoRollViewModel).ZoomFactor += e.Delta > 0 ? 1 : -1;
+                (DataContext as PrototypePianoRollViewModel).ZoomFactor += e.Delta > 0 ? 1 : -1;
                 e.Handled = true;
             }
             else if (Keyboard.IsKeyDown(Key.LeftShift))
@@ -67,24 +67,24 @@ namespace JUMO.UI.Layouts
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as IPianoRollViewModel).Notes.Add(new PrototypeNote(127, 64, 0, 480));
+            (DataContext as PrototypePianoRollViewModel).Notes.Add(new Note(127, 64, 0, 480));
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as IPianoRollViewModel).Notes.RemoveAt(0);
+            (DataContext as PrototypePianoRollViewModel).Notes.RemoveAt(0);
         }
 
         private void PianoRollCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            IPianoRollViewModel vm = (IPianoRollViewModel)DataContext;
+            PrototypePianoRollViewModel vm = (PrototypePianoRollViewModel)DataContext;
             Point pt = e.GetPosition((UIElement)sender);
-            int value = 127 - ((int)pt.Y / 20);
+            byte value = (byte)(127 - ((int)pt.Y / 20));
             int pos = (int)(pt.X * vm.TimeResolution / (vm.ZoomFactor << 2));
             int gridTick = (int)(vm.TimeResolution * (4.0 / vm.GridUnit));
             int snap = (int)(Math.Round((double)pos / gridTick) * gridTick);
 
-            vm.Notes.Add(new PrototypeNote(value, 64, snap, 480));
+            vm.Notes.Add(new Note(value, 64, snap, 480));
         }
     }
 }
