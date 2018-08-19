@@ -1,0 +1,12 @@
+﻿<Window x:Class="JUMO.UI.Layouts.PluginEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Layouts"
+        mc:Ignorable="d"
+        Title="PluginEditorWindow" Height="315.377" Width="453.556" Loaded="Window_Loaded" Closing="Window_Closing" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <StackPanel Orientation="Vertical">
+        <Border Name="host" HorizontalAlignment="Left" VerticalAlignment="Top" />
+    </StackPanel>
+</Window>

@@ -47,8 +47,7 @@ namespace VstHostTest
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            PluginEditorWindow editorWindow = new PluginEditorWindow();
-            editorWindow.PluginCmdStub = (pluginListView.SelectedItem as Plugin).PluginCommandStub;
+            JUMO.UI.Layouts.PluginEditorWindow editorWindow = new JUMO.UI.Layouts.PluginEditorWindow(pluginListView.SelectedItem as Plugin);
             editorWindow.Show();
         }
 

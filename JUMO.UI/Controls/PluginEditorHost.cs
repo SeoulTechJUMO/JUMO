@@ -7,13 +7,20 @@ using Jacobi.Vst.Core.Host;
 
 namespace JUMO.UI.Controls
 {
+    /// <summary>
+    /// VST 플러그인의 편집기 UI를 호스트하는 HwndHost입니다.
+    /// </summary>
     public class PluginEditorHost : HwndHost
     {
         private IVstPluginCommandStub _pluginCmdStub;
 
-        public PluginEditorHost(IVstPluginCommandStub pluginCmdStub)
+        /// <summary>
+        /// 새로운 PluginEditorHost 인스턴스를 생성합니다.
+        /// </summary>
+        /// <param name="plugin">편집기를 열 VST 플러그인</param>
+        public PluginEditorHost(Vst.Plugin plugin)
         {
-            _pluginCmdStub = pluginCmdStub;
+            _pluginCmdStub = plugin.PluginCommandStub;
         }
 
         protected override HandleRef BuildWindowCore(HandleRef hwndParent)
