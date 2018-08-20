@@ -26,19 +26,19 @@ namespace JUMO.UI.Layouts
     /// </summary>
     public partial class PluginEditorWindow : Window
     {
-        private Vst.Plugin _plugin;
+        public Vst.Plugin Plugin { get; }
 
         public PluginEditorWindow(Vst.Plugin plugin)
         {
-            _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+            Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
 
             InitializeComponent();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            host.Child = new PluginEditorHost(_plugin);
-            Title = $"플러그인 편집기: {_plugin.Name}";
+            host.Child = new PluginEditorHost(Plugin);
+            Title = $"플러그인 편집기: {Plugin.Name}";
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -29,7 +29,7 @@ namespace JUMO.UI.Layouts
 
         private void OpenPluginEditorExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            new PluginEditorWindow(e.Parameter as Vst.Plugin).Show();
+            PluginEditorManager.Instance.OpenEditor(e.Parameter as Vst.Plugin);
         }
     }
 }
