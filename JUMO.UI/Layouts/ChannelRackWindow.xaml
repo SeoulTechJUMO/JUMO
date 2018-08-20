@@ -7,10 +7,16 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="{Binding Pattern.Name, StringFormat={}패턴: {0}}" Height="450" Width="500">
+        Title="{Binding Pattern.Name, StringFormat={}패턴: {0}}" Height="450" Width="500"
+        FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}, Mode=OneTime}">
     <Window.DataContext>
         <proj:PrototypeChannelRackViewModel />
     </Window.DataContext>
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
+                        CanExecute="CanExecuteOpenPluginEditor"
+                        Executed="OpenPluginEditorExecuted" />
+    </Window.CommandBindings>
     <Grid Margin="5">
         <ItemsControl ItemsSource="{Binding Plugins}">
             <ItemsControl.ItemTemplate>
@@ -26,12 +32,17 @@
                         <CheckBox Grid.Column="0" Margin="5,0" VerticalAlignment="Center" IsEnabled="False" />
                         <Slider Grid.Column="1" Margin="5,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Key.Volume}" />
                         <ctrl:NumericUpDown Grid.Column="2" Width="50" Margin="5,0" />
-                        <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}">
+                        <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}"
+                                Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
+                                CommandParameter="{Binding Key}" >
                             <Button.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="{Binding Key.Name}" IsEnabled="False" />
                                     <Separator />
-                                    <MenuItem Header="편집(_E)" FontWeight="Bold" />
+                                    <MenuItem Header="편집(_E)"
+                                              FontWeight="Bold"
+                                              Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
+                                              CommandParameter="{Binding Key}" />
                                     <MenuItem Header="피아노 롤 열기(_P)" />
                                     <MenuItem Header="제거(_D)" />
                                 </ContextMenu>
