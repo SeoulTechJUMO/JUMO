@@ -44,8 +44,8 @@ namespace VstHostTest
             }
         }
 
-        public bool AddPlugin(string pluginPath, Action<Exception> onError)
-            => PluginManager.Instance.AddPlugin(pluginPath, onError);
+        public bool AddPlugin(Action<Exception> onError)
+            => PluginManager.Instance.AddPlugin(onError);
 
         public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
 

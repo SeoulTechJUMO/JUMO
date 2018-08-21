@@ -35,14 +35,7 @@ namespace VstHostTest
         // TODO: This is a prototype method. REPLACE WITH WPF COMMAND!
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MainViewModel viewModel = DataContext as MainViewModel;
-
-            fileDialog.Filter = "VST 플러그인 (*.dll)|*.dll";
-
-            if (fileDialog.ShowDialog() == true)
-            {
-                viewModel.AddPlugin(fileDialog.FileName, null);
-            }
+            (DataContext as MainViewModel)?.AddPlugin(null);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
