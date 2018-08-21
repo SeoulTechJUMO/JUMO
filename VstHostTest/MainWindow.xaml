@@ -5,40 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VstHostTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="459.414" Width="678.556">
+        Title="MainWindow" Height="240" Width="480">
     <Window.DataContext>
         <local:MainViewModel />
     </Window.DataContext>
     <TabControl>
         <TabControl.Items>
-            <TabItem Header="VST 플러그인">
-                <Grid Margin="5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Label Content="플러그인 목록" VerticalAlignment="Center" FontWeight="Bold" />
-                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                            <Button Content="추가" Padding="10,3" Click="Button_Click" />
-                            <Button Content="에디터 열기" Padding="10,3" Margin="5,0,0,0" Click="Button_Click_1" IsEnabled="{Binding CanOpenPluginEditor}" />
-                        </StackPanel>
-                    </Grid>
-
-                    <ListView Name="pluginListView" Grid.Row="1" ItemsSource="{Binding Plugins}" SelectedItem="{Binding SelectedPlugin, Mode=TwoWay}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding Name}" />
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </TabItem>
             <TabItem Header="오디오 출력">
                 <StackPanel Margin="5">
                     <Grid>

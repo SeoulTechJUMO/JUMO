@@ -22,26 +22,12 @@ namespace VstHostTest
     /// </summary>
     public partial class MainWindow : Window
     {
-        private OpenFileDialog fileDialog = new OpenFileDialog();
-
         public MainWindow()
         {
             InitializeComponent();
 
             // TODO: Remove when you're done!!!
             new JUMO.UI.Layouts.PianoRollWindow().Show();
-        }
-
-        // TODO: This is a prototype method. REPLACE WITH WPF COMMAND!
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as MainViewModel)?.AddPlugin(null);
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            JUMO.UI.Layouts.PluginEditorWindow editorWindow = new JUMO.UI.Layouts.PluginEditorWindow(pluginListView.SelectedItem as Plugin);
-            editorWindow.Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

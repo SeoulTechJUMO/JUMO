@@ -16,36 +16,7 @@ namespace VstHostTest
 {
     class MainViewModel : INotifyPropertyChanged
     {
-        private Plugin _selectedPlugin = null;
-        private bool _canOpenPluginEditor = false;
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public IEnumerable<Plugin> Plugins => PluginManager.Instance.Plugins;
-
-        public Plugin SelectedPlugin
-        {
-            get => _selectedPlugin;
-            set
-            {
-                _selectedPlugin = value;
-                CanOpenPluginEditor = _selectedPlugin != null;
-                OnPropertyChanged(nameof(SelectedPlugin));
-            }
-        }
-
-        public bool CanOpenPluginEditor
-        {
-            get => _canOpenPluginEditor;
-            private set
-            {
-                _canOpenPluginEditor = value;
-                OnPropertyChanged(nameof(CanOpenPluginEditor));
-            }
-        }
-
-        public bool AddPlugin(Action<Exception> onError)
-            => PluginManager.Instance.AddPlugin(onError);
 
         public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
 

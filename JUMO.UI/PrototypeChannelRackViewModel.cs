@@ -17,6 +17,8 @@ namespace JUMO.UI
         private ICollectionView _pluginsView;
         private Pattern _pattern;
 
+        private RelayCommand _addPluginCommand;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Pattern Pattern
@@ -41,6 +43,19 @@ namespace JUMO.UI
                         yield return new KeyValuePair<Plugin, IEnumerable<Note>>(p, _pattern[p]);
                     }
                 }
+            }
+        }
+
+        public RelayCommand AddPluginCommand
+        {
+            get
+            {
+                if (_addPluginCommand == null)
+                {
+                    _addPluginCommand = new RelayCommand(_ => PluginManager.Instance.AddPlugin(null));
+                }
+
+                return _addPluginCommand;
             }
         }
 
