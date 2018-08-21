@@ -15,6 +15,9 @@ namespace JUMO.UI
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
 
+        public Vst.Plugin Plugin { get; }
+        public Pattern Pattern { get; }
+
         public int Numerator => Song.Current.Numerator;
         public int Denominator => Song.Current.Denominator;
         public int TimeResolution => Song.Current.TimeResolution;
@@ -41,24 +44,14 @@ namespace JUMO.UI
             }
         }
 
-        public ObservableCollection<Note> Notes { get; } = new ObservableCollection<Note>()
-        {
-            new Note(60, 64, 0, 480),
-            new Note(62, 80, 480, 480),
-            new Note(64, 96, 960, 480),
-            new Note(65, 112, 1440, 480),
-            new Note(67, 127, 1920, 1920),
-            new Note(120, 60, 0, 480),
-            new Note(122, 48, 480, 480),
-            new Note(124, 36, 960, 480),
-            new Note(125, 24, 1440, 480),
-            new Note(127, 12, 1920, 1920)
-        };
+        public ObservableCollection<Note> Notes => Pattern[Plugin];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PrototypePianoRollViewModel()
+        public PrototypePianoRollViewModel(Vst.Plugin plugin, Pattern pattern)
         {
+            Plugin = plugin;
+            Pattern = pattern;
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
         }
 

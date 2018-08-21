@@ -8,9 +8,6 @@
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
         Title="PianoRollWindow" Height="450" Width="800">
-    <Window.DataContext>
-        <proj:PrototypePianoRollViewModel />
-    </Window.DataContext>
     <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
           proj:MusicalProps.Denominator="{Binding Denominator}"
           proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
