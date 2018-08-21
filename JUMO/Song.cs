@@ -42,6 +42,7 @@ namespace JUMO
         private string _description = "";
         private int _numerator = 4;
         private int _denominator = 4;
+        private int _timeResolution = 480;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -140,6 +141,19 @@ namespace JUMO
             {
                 _denominator = value;
                 OnPropertyChanged(nameof(Denominator));
+            }
+        }
+
+        /// <summary>
+        /// PPQN (Pulses Per Quarter Note) 값을 가져오거나 설정합니다.
+        /// </summary>
+        public int TimeResolution
+        {
+            get => _timeResolution;
+            set
+            {
+                _timeResolution = value;
+                OnPropertyChanged(nameof(TimeResolution));
             }
         }
 
