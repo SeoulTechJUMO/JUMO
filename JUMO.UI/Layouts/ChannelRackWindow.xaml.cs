@@ -31,5 +31,20 @@ namespace JUMO.UI.Layouts
         {
             PluginEditorManager.Instance.OpenEditor(e.Parameter as Vst.Plugin);
         }
+
+        private void CanExecuteOpenPianoRoll(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void OpenPianoRollExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Vst.Plugin plugin = e.Parameter as Vst.Plugin;
+            Pattern pattern = (DataContext as PrototypeChannelRackViewModel).Pattern;
+            PrototypePianoRollViewModel viewModel = new PrototypePianoRollViewModel(plugin, pattern);
+            PianoRollWindow window = new PianoRollWindow() { DataContext = viewModel };
+
+            window.Show();
+        }
     }
 }

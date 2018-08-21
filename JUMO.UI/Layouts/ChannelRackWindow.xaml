@@ -16,6 +16,9 @@
         <CommandBinding Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
                         CanExecute="CanExecuteOpenPluginEditor"
                         Executed="OpenPluginEditorExecuted" />
+        <CommandBinding Command="{x:Static proj:UICommands.OpenPianoRollCommand}"
+                        CanExecute="CanExecuteOpenPianoRoll"
+                        Executed="OpenPianoRollExecuted" />
     </Window.CommandBindings>
     <Grid Margin="5">
         <ItemsControl ItemsSource="{Binding Plugins}">
@@ -43,7 +46,9 @@
                                               FontWeight="Bold"
                                               Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
                                               CommandParameter="{Binding Key}" />
-                                    <MenuItem Header="피아노 롤 열기(_P)" />
+                                    <MenuItem Header="피아노 롤 열기(_P)"
+                                              Command="{x:Static proj:UICommands.OpenPianoRollCommand}"
+                                              CommandParameter="{Binding Key}" />
                                     <MenuItem Header="제거(_D)" />
                                 </ContextMenu>
                             </Button.ContextMenu>
