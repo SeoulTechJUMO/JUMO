@@ -21,16 +21,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Label Content="Numerator" />
-            <ctrl:NumericUpDown x:Name="NumeratorControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding Numerator, Mode=TwoWay}" />
-            <Label Content="Denominator" />
-            <ctrl:NumericUpDown x:Name="DenominatorControl" MinValue="2" MaxValue="64" Delta="2" Value="{Binding Denominator, Mode=TwoWay}" />
             <Label Content="GridUnit" />
             <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
             <Label Content="ZoomFactor" />
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
-            <Label Content="PPQN:" />
-            <Label Content="{Binding TimeResolution}" />
             <Button Content="Add Note" Click="AddButton_Click" />
             <Button Content="Remove Note" Click="RemoveButton_Click" />
         </StackPanel>

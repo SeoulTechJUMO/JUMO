@@ -12,34 +12,12 @@ namespace JUMO.UI
 {
     class PrototypePianoRollViewModel : INotifyPropertyChanged
     {
-        private int _numerator = 4;
-        private int _denominator = 4;
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
 
-        public int Numerator
-        {
-            get => _numerator;
-            set
-            {
-                System.Diagnostics.Debug.WriteLine($"Setting {nameof(Numerator)} to {value}");
-                _numerator = value;
-                OnPropertyChanged(nameof(Numerator));
-            }
-        }
-
-        public int Denominator
-        {
-            get => _denominator;
-            set
-            {
-                System.Diagnostics.Debug.WriteLine($"Setting {nameof(Denominator)} to {value}");
-                _denominator = value;
-                OnPropertyChanged(nameof(Denominator));
-            }
-        }
-
-        public int TimeResolution => 480;
+        public int Numerator => Song.Current.Numerator;
+        public int Denominator => Song.Current.Denominator;
+        public int TimeResolution => Song.Current.TimeResolution;
 
         public int ZoomFactor
         {
@@ -78,6 +56,14 @@ namespace JUMO.UI
         };
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public PrototypePianoRollViewModel()
+        {
+            Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
+        }
+
+        private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)
+            => OnPropertyChanged(e.PropertyName);
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
