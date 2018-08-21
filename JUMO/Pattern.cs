@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace JUMO
         private string _name;
         private long _length;
 
-        private IDictionary<Plugin, IEnumerable<Note>> _scores { get; } = new Dictionary<Plugin, IEnumerable<Note>>();
+        private IDictionary<Plugin, ObservableCollection<Note>> _scores { get; } = new Dictionary<Plugin, ObservableCollection<Note>>();
 
         /// <summary>
         /// 패턴의 이름을 가져오거나 설정합니다.
@@ -48,17 +49,17 @@ namespace JUMO
         /// 인덱스로 지정된 VST 플러그인에 대응하는 악보를 나타내는 컬렉션을 가져옵니다.
         /// </summary>
         /// <param name="p">VST 플러그인</param>
-        public IEnumerable<Note> this[Plugin p]
+        public ObservableCollection<Note> this[Plugin p]
         {
             get
             {
-                if (_scores.TryGetValue(p, out IEnumerable<Note> score))
+                if (_scores.TryGetValue(p, out ObservableCollection<Note> score))
                 {
                     return score;
                 }
                 else
                 {
-                    IEnumerable<Note> newScore = new List<Note>();
+                    var newScore = new ObservableCollection<Note>();
                     _scores.Add(p, newScore);
 
                     return newScore;
