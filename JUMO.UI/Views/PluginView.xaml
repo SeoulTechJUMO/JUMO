@@ -9,7 +9,7 @@
              mc:Ignorable="d"
              d:DesignWidth="450">
     <UserControl.Resources>
-        <proj:BindingProxy x:Key="Proxy" Data="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+        <proj:BindingProxy x:Key="Proxy" Data="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
     </UserControl.Resources>
     <Grid Margin="0,5">
         <Grid.ColumnDefinitions>

@@ -109,10 +109,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="ChannelRackViewModel.cs" />
-    <Page Include="Layouts\ChannelRackWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Layouts\PluginEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,9 +129,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Layouts\ChannelRackWindow.xaml.cs">
-      <DependentUpon>ChannelRackWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\PianoRollWindow.xaml.cs">
       <DependentUpon>PianoRollWindow.xaml</DependentUpon>
     </Compile>
