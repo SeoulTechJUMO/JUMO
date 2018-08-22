@@ -29,8 +29,8 @@ namespace JUMO.UI.Layouts
         private void OpenPianoRollExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             Vst.Plugin plugin = e.Parameter as Vst.Plugin;
-            Pattern pattern = (DataContext as PrototypeChannelRackViewModel).Pattern;
-            PrototypePianoRollViewModel viewModel = new PrototypePianoRollViewModel(plugin, pattern);
+            Pattern pattern = (DataContext as ChannelRackViewModel).Pattern;
+            PianoRollViewModel viewModel = new PianoRollViewModel(plugin, pattern);
             PianoRollWindow window = new PianoRollWindow() { DataContext = viewModel };
 
             window.Show();

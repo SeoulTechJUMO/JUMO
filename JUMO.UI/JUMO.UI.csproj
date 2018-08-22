@@ -92,7 +92,7 @@
     <Compile Include="MinusConverter.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
-    <Compile Include="PrototypePianoRollViewModel.cs" />
+    <Compile Include="PianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
@@ -101,7 +101,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="PrototypeChannelRackViewModel.cs" />
+    <Compile Include="ChannelRackViewModel.cs" />
     <Page Include="Layouts\ChannelRackWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

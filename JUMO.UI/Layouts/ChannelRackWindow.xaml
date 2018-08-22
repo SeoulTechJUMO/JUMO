@@ -10,7 +10,7 @@
         Title="{Binding Pattern.Name, StringFormat={}패턴: {0}}" Height="450" Width="500"
         FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}, Mode=OneTime}">
     <Window.DataContext>
-        <proj:PrototypeChannelRackViewModel />
+        <proj:ChannelRackViewModel />
     </Window.DataContext>
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static proj:UICommands.OpenPianoRollCommand}"

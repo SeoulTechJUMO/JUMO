@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    class PrototypePianoRollViewModel : INotifyPropertyChanged
+    class PianoRollViewModel : INotifyPropertyChanged
     {
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
@@ -48,7 +48,7 @@ namespace JUMO.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PrototypePianoRollViewModel(Vst.Plugin plugin, Pattern pattern)
+        public PianoRollViewModel(Vst.Plugin plugin, Pattern pattern)
         {
             Plugin = plugin;
             Pattern = pattern;
