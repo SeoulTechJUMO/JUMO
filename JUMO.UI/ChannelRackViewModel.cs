@@ -10,7 +10,7 @@ using JUMO.Vst;
 
 namespace JUMO.UI
 {
-    class ChannelRackViewModel : ViewModelBase
+    public class ChannelRackViewModel : ViewModelBase
     {
         // TODO: PluginsSource 속성을 만들어서 의존성 분리?
         private IEnumerable<Plugin> _plugins = PluginManager.Instance.Plugins;

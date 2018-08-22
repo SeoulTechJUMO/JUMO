@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    class PianoRollViewModel : ViewModelBase
+    public class PianoRollViewModel : ViewModelBase
     {
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
