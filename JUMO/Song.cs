@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
@@ -23,7 +24,11 @@ namespace JUMO
                 Tracks[i] = new Track($"트랙 {i + 1}");
             }
 
-            Patterns.Add(new Pattern("패턴 1"));
+            for (int i = 0; i < 16; i++)
+            {
+                Patterns.Add(new Pattern($"패턴 {i + 1}"));
+            }
+            CurrentPattern = Patterns[0];
         }
 
         /// <summary>
@@ -43,6 +48,7 @@ namespace JUMO
         private int _numerator = 4;
         private int _denominator = 4;
         private int _timeResolution = 480;
+        private Pattern _currentPattern;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -165,7 +171,20 @@ namespace JUMO
         /// <summary>
         /// 곡을 구성하는 패턴을 저장하는 컬렉션을 가져옵니다.
         /// </summary>
-        public ICollection<Pattern> Patterns { get; } = new List<Pattern>();
+        public ObservableCollection<Pattern> Patterns { get; } = new ObservableCollection<Pattern>();
+
+        /// <summary>
+        /// 현재 선택된 패턴을 가져오거나 설정합니다.
+        /// </summary>
+        public Pattern CurrentPattern
+        {
+            get => _currentPattern;
+            set
+            {
+                _currentPattern = value;
+                OnPropertyChanged(nameof(CurrentPattern));
+            }
+        }
 
         /// <summary>
         /// 곡의 템포를 MIDI 템포 형식으로 가져오거나 설정합니다.
