@@ -2,9 +2,14 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:JUMO.UI"
+    xmlns:view="clr-namespace:JUMO.UI.Views"
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls">
 
     <local:MinusConverter x:Key="MinusConverter" />
+
+    <DataTemplate DataType="{x:Type local:ChannelRackViewModel}">
+        <view:ChannelRackView />
+    </DataTemplate>
 
     <Style TargetType="{x:Type ctrl:NumericUpDown}">
         <Setter Property="Template">
