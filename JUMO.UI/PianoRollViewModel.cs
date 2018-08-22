@@ -18,7 +18,7 @@ namespace JUMO.UI
         public override string DisplayName => $"피아노 롤: {Plugin.Name}";
 
         public Vst.Plugin Plugin { get; }
-        public Pattern Pattern { get; }
+        public Pattern Pattern => Song.Current.CurrentPattern;
 
         public int Numerator => Song.Current.Numerator;
         public int Denominator => Song.Current.Denominator;
@@ -48,14 +48,20 @@ namespace JUMO.UI
 
         public ObservableCollection<Note> Notes => Pattern[Plugin];
 
-        public PianoRollViewModel(Vst.Plugin plugin, Pattern pattern)
+        public PianoRollViewModel(Vst.Plugin plugin)
         {
-            Plugin = plugin;
-            Pattern = pattern;
+            Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
         }
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)
-            => OnPropertyChanged(e.PropertyName);
+        {
+            OnPropertyChanged(e.PropertyName);
+
+            if (e.PropertyName.Equals(nameof(Song.CurrentPattern)))
+            {
+                OnPropertyChanged(nameof(Notes));
+            }
+        }
     }
 }
