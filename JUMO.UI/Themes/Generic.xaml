@@ -11,6 +11,10 @@
         <view:ChannelRackView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type local:PianoRollViewModel}">
+        <view:PianoRollView />
+    </DataTemplate>
+
     <Style TargetType="{x:Type ctrl:NumericUpDown}">
         <Setter Property="Template">
             <Setter.Value>
