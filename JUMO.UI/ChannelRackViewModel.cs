@@ -10,7 +10,7 @@ using JUMO.Vst;
 
 namespace JUMO.UI
 {
-    class ChannelRackViewModel : INotifyPropertyChanged
+    class ChannelRackViewModel : ViewModelBase
     {
         // TODO: PluginsSource 속성을 만들어서 의존성 분리?
         private IEnumerable<Plugin> _plugins = PluginManager.Instance.Plugins;
@@ -20,7 +20,7 @@ namespace JUMO.UI
         private RelayCommand _addPluginCommand;
         private RelayCommand _openPluginEditorCommand;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public override string DisplayName => $"패턴: {_pattern.Name}";
 
         public Pattern Pattern
         {
@@ -87,8 +87,5 @@ namespace JUMO.UI
         {
             OnPropertyChanged(nameof(Plugins));
         }
-
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

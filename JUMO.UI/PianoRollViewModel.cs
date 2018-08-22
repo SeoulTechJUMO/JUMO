@@ -10,10 +10,12 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    class PianoRollViewModel : INotifyPropertyChanged
+    class PianoRollViewModel : ViewModelBase
     {
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
+
+        public override string DisplayName => $"피아노 롤: {Plugin.Name}";
 
         public Vst.Plugin Plugin { get; }
         public Pattern Pattern { get; }
@@ -46,8 +48,6 @@ namespace JUMO.UI
 
         public ObservableCollection<Note> Notes => Pattern[Plugin];
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public PianoRollViewModel(Vst.Plugin plugin, Pattern pattern)
         {
             Plugin = plugin;
@@ -57,8 +57,5 @@ namespace JUMO.UI
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)
             => OnPropertyChanged(e.PropertyName);
-
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
