@@ -97,6 +97,9 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="UICommands.cs" />
+    <Compile Include="Views\PluginView.xaml.cs">
+      <DependentUpon>PluginView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -116,6 +119,10 @@
     </Page>
     <Compile Include="Controls\MusicalGrid.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
+    <Page Include="Views\PluginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Layouts\ChannelRackWindow.xaml.cs">

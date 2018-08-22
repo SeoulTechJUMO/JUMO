@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="JUMO.UI.Views.PluginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Views"
+             xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             xmlns:proj="clr-namespace:JUMO.UI"
+             mc:Ignorable="d"
+             d:DesignWidth="450">
+    <UserControl.Resources>
+        <proj:BindingProxy x:Key="Proxy" Data="{Binding DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" />
+    </UserControl.Resources>
+    <Grid Margin="0,5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <CheckBox Grid.Column="0" Margin="5,0" VerticalAlignment="Center" IsEnabled="False" />
+        <Slider Grid.Column="1" Margin="5,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Key.Volume}" />
+        <ctrl:NumericUpDown Grid.Column="2" Width="50" Margin="5,0" />
+        <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}"
+                Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
+                CommandParameter="{Binding Key}" >
+            <Button.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="{Binding Key.Name}" IsEnabled="False" />
+                    <Separator />
+                    <MenuItem Header="편집(_E)"
+                              FontWeight="Bold"
+                              Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
+                              CommandParameter="{Binding Key}" />
+                    <MenuItem Header="피아노 롤 열기(_P)"
+                              Command="{x:Static proj:UICommands.OpenPianoRollCommand}"
+                              CommandParameter="{Binding Key}" />
+                    <MenuItem Header="제거(_D)" />
+                </ContextMenu>
+            </Button.ContextMenu>
+        </Button>
+        <Rectangle Grid.Column="4" Stroke="Black" StrokeThickness="1" SnapsToDevicePixels="True" Margin="5,0" />
+    </Grid>
+</UserControl>
