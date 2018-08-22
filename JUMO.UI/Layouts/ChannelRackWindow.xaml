@@ -13,13 +13,13 @@
         <proj:PrototypeChannelRackViewModel />
     </Window.DataContext>
     <Window.CommandBindings>
-        <CommandBinding Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
-                        CanExecute="CanExecuteOpenPluginEditor"
-                        Executed="OpenPluginEditorExecuted" />
         <CommandBinding Command="{x:Static proj:UICommands.OpenPianoRollCommand}"
                         CanExecute="CanExecuteOpenPianoRoll"
                         Executed="OpenPianoRollExecuted" />
     </Window.CommandBindings>
+    <Window.Resources>
+        <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+    </Window.Resources>
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
             <Button Content="플러그인 추가" Margin="5" Padding="8,3" Command="{Binding AddPluginCommand}" />
@@ -40,7 +40,7 @@
                             <Slider Grid.Column="1" Margin="5,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Key.Volume}" />
                             <ctrl:NumericUpDown Grid.Column="2" Width="50" Margin="5,0" />
                             <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}"
-                                    Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
+                                    Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
                                     CommandParameter="{Binding Key}" >
                                 <Button.ContextMenu>
                                     <ContextMenu>
@@ -48,7 +48,7 @@
                                         <Separator />
                                         <MenuItem Header="편집(_E)"
                                                   FontWeight="Bold"
-                                                  Command="{x:Static proj:UICommands.OpenPluginEditorCommand}"
+                                                  Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
                                                   CommandParameter="{Binding Key}" />
                                         <MenuItem Header="피아노 롤 열기(_P)"
                                                   Command="{x:Static proj:UICommands.OpenPianoRollCommand}"

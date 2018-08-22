@@ -18,6 +18,7 @@ namespace JUMO.UI
         private Pattern _pattern;
 
         private RelayCommand _addPluginCommand;
+        private RelayCommand _openPluginEditorCommand;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -56,6 +57,22 @@ namespace JUMO.UI
                 }
 
                 return _addPluginCommand;
+            }
+        }
+
+        public RelayCommand OpenPluginEditorCommand
+        {
+            get
+            {
+                if (_openPluginEditorCommand == null)
+                {
+                    _openPluginEditorCommand = new RelayCommand(
+                        plugin => PluginEditorManager.Instance.OpenEditor(plugin as Plugin),
+                        plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
+                    );
+                }
+
+                return _openPluginEditorCommand;
             }
         }
 

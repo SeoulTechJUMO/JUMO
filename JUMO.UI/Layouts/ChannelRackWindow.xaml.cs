@@ -21,17 +21,6 @@ namespace JUMO.UI.Layouts
             InitializeComponent();
         }
 
-        private void CanExecuteOpenPluginEditor(object sender, CanExecuteRoutedEventArgs e)
-        {
-            // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
-            e.CanExecute = true;
-        }
-
-        private void OpenPluginEditorExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            PluginEditorManager.Instance.OpenEditor(e.Parameter as Vst.Plugin);
-        }
-
         private void CanExecuteOpenPianoRoll(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
