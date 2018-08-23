@@ -10,11 +10,12 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    public class PianoRollViewModel : ViewModelBase
+    public class PianoRollViewModel : WorkspaceViewModel
     {
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
 
+        public override WorkspaceKey Key { get; }
         public override string DisplayName => $"피아노 롤: {Plugin.Name}";
 
         public Vst.Plugin Plugin { get; }
@@ -51,6 +52,7 @@ namespace JUMO.UI
         public PianoRollViewModel(Vst.Plugin plugin)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+            Key = new PianoRollWorkspaceKey(plugin);
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
         }
 
