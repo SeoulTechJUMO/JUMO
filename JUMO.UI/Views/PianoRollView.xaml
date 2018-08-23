@@ -49,6 +49,7 @@
                                       Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
                                       proj:ScrollViewerHelper.SyncGroup="{Binding}"
                                       proj:ScrollViewerHelper.SyncDirection="Both"
+                                      proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
                                       CanContentScroll="True">
@@ -59,6 +60,7 @@
                                           Grid.Row="3" Grid.Column="1"
                                           proj:ScrollViewerHelper.SyncGroup="{Binding}"
                                           proj:ScrollViewerHelper.SyncDirection="Horizontal"
+                                          proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
                                           CanContentScroll="True"

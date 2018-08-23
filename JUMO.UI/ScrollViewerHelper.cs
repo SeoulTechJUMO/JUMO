@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace JUMO.UI
 {
@@ -24,11 +25,29 @@ namespace JUMO.UI
                 new PropertyMetadata(SyncDirection.Both)
             );
 
-        public static object GetSyncGroup(DependencyObject obj) => obj.GetValue(SyncGroupProperty);
-        public static void SetSyncGroup(DependencyObject obj, object newGroup) => obj.SetValue(SyncGroupProperty, newGroup);
+        public static readonly DependencyProperty ShiftWheelScrollsHorizontallyProperty =
+            DependencyProperty.RegisterAttached(
+                "ShiftWheelScrollsHorizontally", typeof(bool), typeof(ScrollViewerHelper),
+                new PropertyMetadata(false, OnShiftWheelScrollsHorizontallyChanged)
+            );
 
-        public static SyncDirection GetSyncDirection(DependencyObject obj) => (SyncDirection)obj.GetValue(SyncDirectionProperty);
-        public static void SetSyncDirection(DependencyObject obj, SyncDirection newDirection) => obj.SetValue(SyncDirectionProperty, newDirection);
+        public static object GetSyncGroup(DependencyObject obj)
+            => obj.GetValue(SyncGroupProperty);
+
+        public static void SetSyncGroup(DependencyObject obj, object newGroup)
+            => obj.SetValue(SyncGroupProperty, newGroup);
+
+        public static SyncDirection GetSyncDirection(DependencyObject obj)
+            => (SyncDirection)obj.GetValue(SyncDirectionProperty);
+
+        public static void SetSyncDirection(DependencyObject obj, SyncDirection newDirection)
+            => obj.SetValue(SyncDirectionProperty, newDirection);
+
+        public static bool GetShiftWheelScrollsHorizontally(DependencyObject obj)
+            => (bool)obj.GetValue(ShiftWheelScrollsHorizontallyProperty);
+
+        public static void SetShiftWheelScrollsHorizontally(DependencyObject obj, bool value)
+            => obj.SetValue(ShiftWheelScrollsHorizontallyProperty, value);
 
         private static void OnSyncGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -82,6 +101,23 @@ namespace JUMO.UI
             }
         }
 
+        private static void OnShiftWheelScrollsHorizontallyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (!(d is ScrollViewer scrollViewer))
+            {
+                return;
+            }
+
+            if ((bool)e.NewValue)
+            {
+                scrollViewer.PreviewMouseWheel += ScrollViewer_PreviewMouseWheel;
+            }
+            else
+            {
+                scrollViewer.PreviewMouseWheel -= ScrollViewer_PreviewMouseWheel;
+            }
+        }
+
         private static void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.HorizontalChange == 0 && e.VerticalChange == 0)
@@ -128,6 +164,30 @@ namespace JUMO.UI
                     sv.ScrollToVerticalOffset(_vOffsets[group]);
                 }
             }
+        }
+
+        private static void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (!(sender is ScrollViewer scrollViewer))
+            {
+                return;
+            }
+
+            if (Keyboard.Modifiers != ModifierKeys.Shift)
+            {
+                return;
+            }
+
+            if (e.Delta < 0)
+            {
+                scrollViewer.LineRight();
+            }
+            else
+            {
+                scrollViewer.LineLeft();
+            }
+
+            e.Handled = true;
         }
 
         [Flags]
