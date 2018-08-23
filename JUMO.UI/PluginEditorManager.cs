@@ -10,7 +10,7 @@ namespace JUMO.UI
     /// <summary>
     /// 열려 있는 VST 플러그인 편집기 창을 관리합니다.
     /// </summary>
-    class PluginEditorManager
+    sealed class PluginEditorManager
     {
         #region Signleton
 
