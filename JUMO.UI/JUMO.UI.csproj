@@ -86,9 +86,13 @@
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
+    <Compile Include="Layouts\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainViewModel.cs" />
     <Compile Include="MinusConverter.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
@@ -105,6 +109,10 @@
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Layouts\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
