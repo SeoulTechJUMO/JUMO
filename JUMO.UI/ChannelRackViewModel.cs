@@ -17,9 +17,6 @@ namespace JUMO.UI
         private ICollectionView _pluginsView;
         private Pattern _pattern;
 
-        private RelayCommand _addPluginCommand;
-        private RelayCommand _openPluginEditorCommand;
-
         public override string DisplayName => $"패턴: {_pattern.Name}";
 
         public Pattern Pattern
@@ -47,34 +44,16 @@ namespace JUMO.UI
             }
         }
 
-        public RelayCommand AddPluginCommand
-        {
-            get
-            {
-                if (_addPluginCommand == null)
-                {
-                    _addPluginCommand = new RelayCommand(_ => PluginManager.Instance.AddPlugin(null));
-                }
+        public RelayCommand AddPluginCommand { get; } =
+            new RelayCommand(
+                _ => PluginManager.Instance.AddPlugin(null)
+            );
 
-                return _addPluginCommand;
-            }
-        }
-
-        public RelayCommand OpenPluginEditorCommand
-        {
-            get
-            {
-                if (_openPluginEditorCommand == null)
-                {
-                    _openPluginEditorCommand = new RelayCommand(
-                        plugin => PluginEditorManager.Instance.OpenEditor(plugin as Plugin),
-                        plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
-                    );
-                }
-
-                return _openPluginEditorCommand;
-            }
-        }
+        public RelayCommand OpenPluginEditorCommand { get; } =
+            new RelayCommand(
+                plugin => PluginEditorManager.Instance.OpenEditor(plugin as Plugin),
+                plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
+            );
 
         public ChannelRackViewModel()
         {
