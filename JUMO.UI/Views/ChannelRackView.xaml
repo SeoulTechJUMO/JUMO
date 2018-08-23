@@ -42,7 +42,7 @@
                                                   Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
                                                   CommandParameter="{Binding Key}" />
                                         <MenuItem Header="피아노 롤 열기(_P)"
-                                                  Command="{x:Static proj:UICommands.OpenPianoRollCommand}"
+                                                  Command="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"
                                                   CommandParameter="{Binding Key}" />
                                         <MenuItem Header="제거(_D)" />
                                     </ContextMenu>

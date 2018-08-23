@@ -55,6 +55,15 @@ namespace JUMO.UI
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
 
+        public RelayCommand OpenPianoRollCommand { get; } =
+            new RelayCommand(
+                parameter => {
+                    Plugin plugin = parameter as Plugin;
+                    WorkspaceKey key = new PianoRollWorkspaceKey(plugin);
+                    WorkspaceManager.Instance.OpenWorkspace(key, () => new PianoRollViewModel(plugin));
+                }
+            );
+
         public ChannelRackViewModel()
         {
             Pattern = new Pattern("Test Pattern");

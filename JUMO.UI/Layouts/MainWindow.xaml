@@ -86,13 +86,19 @@
 
             <TabControl Grid.Column="0">
                 <TabItem Header="패턴">
-                    <Grid>
-                        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="(사이드 바)" />
-                    </Grid>
+                    <proj:ChannelRackViewModel />
                 </TabItem>
             </TabControl>
             <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-            <TabControl Grid.Column="2">
+            <TabControl Grid.Column="2" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" Command="{Binding CloseCommand}" />
+                            <TextBlock Text="{Binding DisplayName}" />
+                        </DockPanel>
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
             </TabControl>
         </Grid>
     </DockPanel>
