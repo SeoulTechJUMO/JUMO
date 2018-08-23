@@ -39,16 +39,16 @@
             <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
             <ScrollViewer x:Name="KeyScrollViewer"
                           Grid.Row="2" Grid.Column="0"
-                          proj:ScrollSync.Group="{Binding}"
-                          proj:ScrollSync.Direction="Vertical"
+                          proj:ScrollViewerHelper.SyncGroup="{Binding}"
+                          proj:ScrollViewerHelper.SyncDirection="Vertical"
                           HorizontalScrollBarVisibility="Hidden"
                           VerticalScrollBarVisibility="Hidden">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
             <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
                                       Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
-                                      proj:ScrollSync.Group="{Binding}"
-                                      proj:ScrollSync.Direction="Both"
+                                      proj:ScrollViewerHelper.SyncGroup="{Binding}"
+                                      proj:ScrollViewerHelper.SyncDirection="Both"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
                                       CanContentScroll="True">
@@ -57,8 +57,8 @@
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
                 <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
                                           Grid.Row="3" Grid.Column="1"
-                                          proj:ScrollSync.Group="{Binding}"
-                                          proj:ScrollSync.Direction="Horizontal"
+                                          proj:ScrollViewerHelper.SyncGroup="{Binding}"
+                                          proj:ScrollViewerHelper.SyncDirection="Horizontal"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
                                           CanContentScroll="True"

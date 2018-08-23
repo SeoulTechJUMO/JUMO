@@ -6,31 +6,31 @@ using System.Windows.Controls;
 
 namespace JUMO.UI
 {
-    class ScrollSync : DependencyObject
+    class ScrollViewerHelper : DependencyObject
     {
         private static readonly Dictionary<ScrollViewer, object> _svTable = new Dictionary<ScrollViewer, object>();
         private static readonly Dictionary<object, double> _hOffsets = new Dictionary<object, double>();
         private static readonly Dictionary<object, double> _vOffsets = new Dictionary<object, double>();
 
-        public static readonly DependencyProperty GroupProperty =
+        public static readonly DependencyProperty SyncGroupProperty =
             DependencyProperty.RegisterAttached(
-                "Group", typeof(object), typeof(ScrollSync),
-                new PropertyMetadata(OnGroupChanged)
+                "SyncGroup", typeof(object), typeof(ScrollViewerHelper),
+                new PropertyMetadata(OnSyncGroupChanged)
             );
 
-        public static readonly DependencyProperty DirectionProperty =
+        public static readonly DependencyProperty SyncDirectionProperty =
             DependencyProperty.RegisterAttached(
-                "Direction", typeof(SyncDirection), typeof(ScrollSync),
+                "SyncDirection", typeof(SyncDirection), typeof(ScrollViewerHelper),
                 new PropertyMetadata(SyncDirection.Both)
             );
 
-        public static object GetGroup(DependencyObject obj) => obj.GetValue(GroupProperty);
-        public static void SetGroup(DependencyObject obj, object newGroup) => obj.SetValue(GroupProperty, newGroup);
+        public static object GetSyncGroup(DependencyObject obj) => obj.GetValue(SyncGroupProperty);
+        public static void SetSyncGroup(DependencyObject obj, object newGroup) => obj.SetValue(SyncGroupProperty, newGroup);
 
-        public static SyncDirection GetDirection(DependencyObject obj) => (SyncDirection)obj.GetValue(DirectionProperty);
-        public static void SetDirection(DependencyObject obj, SyncDirection newDirection) => obj.SetValue(DirectionProperty, newDirection);
+        public static SyncDirection GetSyncDirection(DependencyObject obj) => (SyncDirection)obj.GetValue(SyncDirectionProperty);
+        public static void SetSyncDirection(DependencyObject obj, SyncDirection newDirection) => obj.SetValue(SyncDirectionProperty, newDirection);
 
-        private static void OnGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSyncGroupChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (!(d is ScrollViewer scrollViewer))
             {
@@ -51,7 +51,7 @@ namespace JUMO.UI
 
             if (newGroup != null)
             {
-                SyncDirection direction = GetDirection(scrollViewer);
+                SyncDirection direction = GetSyncDirection(scrollViewer);
 
                 if (_hOffsets.ContainsKey(newGroup))
                 {
@@ -95,7 +95,7 @@ namespace JUMO.UI
             }
 
             object group = _svTable[changedScrollViewer];
-            SyncDirection srcDirection = GetDirection(changedScrollViewer);
+            SyncDirection srcDirection = GetSyncDirection(changedScrollViewer);
 
             if (srcDirection.HasFlag(SyncDirection.Horizontal))
             {
@@ -114,7 +114,7 @@ namespace JUMO.UI
 
             foreach (ScrollViewer sv in affectedScrollViewers)
             {
-                SyncDirection dir = GetDirection(sv);
+                SyncDirection dir = GetSyncDirection(sv);
 
                 if (dir.HasFlag(SyncDirection.Horizontal)
                     && sv.HorizontalOffset != _hOffsets[group])
