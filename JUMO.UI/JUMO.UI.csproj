@@ -105,9 +105,6 @@
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\PluginView.xaml.cs">
-      <DependentUpon>PluginView.xaml</DependentUpon>
-    </Compile>
     <Page Include="Layouts\PianoRollWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -128,10 +125,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PianoRollView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PluginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
