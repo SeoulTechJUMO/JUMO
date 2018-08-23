@@ -110,6 +110,7 @@
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkspaceKey.cs" />
+    <Compile Include="WorkspaceManager.cs" />
     <Page Include="Layouts\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
