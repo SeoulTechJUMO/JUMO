@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="{Binding DisplayName}" Height="450" Width="800">
+        Title="{Binding DisplayName}" Height="600" Width="900">
     <Window.DataContext>
         <proj:MainViewModel />
     </Window.DataContext>
     <DockPanel>
-        <!--<Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="파일(F)">
                 <MenuItem Header="저장" />
                 <MenuItem Header="열기" />
@@ -42,8 +42,8 @@
                 <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="MX" />
                 <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="PL" />
             </ToolBar>
-        </ToolBarTray>-->
-        <!--<StatusBar DockPanel.Dock="Bottom">
+        </ToolBarTray>
+        <StatusBar DockPanel.Dock="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -76,7 +76,7 @@
             <StatusBarItem Grid.Column="6">
                 <ProgressBar Width="100" Height="{x:Static SystemParameters.MenuBarHeight}" />
             </StatusBarItem>
-        </StatusBar>-->
+        </StatusBar>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" MinWidth="300" />
