@@ -25,25 +25,6 @@ namespace JUMO.UI.Layouts
             InitializeComponent();
         }
 
-        private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            if (sender.Equals(MainScrollViewer))
-            {
-                KeyScrollViewer.ScrollToHorizontalOffset(0.0);
-                KeyScrollViewer.ScrollToVerticalOffset(e.VerticalOffset);
-                VelocityScrollViewer.ScrollToVerticalOffset(0.0);
-                VelocityScrollViewer.ScrollToHorizontalOffset(e.HorizontalOffset);
-            }
-            else if (sender.Equals(KeyScrollViewer))
-            {
-                MainScrollViewer?.ScrollToVerticalOffset(e.VerticalOffset);
-            }
-            else if (sender.Equals(VelocityScrollViewer))
-            {
-                MainScrollViewer?.ScrollToHorizontalOffset(e.HorizontalOffset);
-            }
-        }
-
         private void MainScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl))
@@ -51,28 +32,6 @@ namespace JUMO.UI.Layouts
                 (DataContext as PianoRollViewModel).ZoomFactor += e.Delta > 0 ? 1 : -1;
                 e.Handled = true;
             }
-            else if (Keyboard.IsKeyDown(Key.LeftShift))
-            {
-                if (e.Delta < 0)
-                {
-                    (sender as ScrollViewer)?.LineRight();
-                }
-                else
-                {
-                    (sender as ScrollViewer)?.LineLeft();
-                }
-                e.Handled = true;
-            }
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as PianoRollViewModel).Notes.Add(new Note(127, 64, 0, 480));
-        }
-
-        private void RemoveButton_Click(object sender, RoutedEventArgs e)
-        {
-            (DataContext as PianoRollViewModel).Notes.RemoveAt(0);
         }
 
         private void PianoRollCanvas_MouseDown(object sender, MouseButtonEventArgs e)

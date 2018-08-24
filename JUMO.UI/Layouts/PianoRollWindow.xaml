@@ -22,8 +22,6 @@
             <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
             <Label Content="ZoomFactor" />
             <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
-            <Button Content="Add Note" Click="AddButton_Click" />
-            <Button Content="Remove Note" Click="RemoveButton_Click" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -39,7 +37,7 @@
             <Rectangle Grid.Row="0" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
             <Rectangle Grid.Row="1" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
             <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
-            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" ScrollChanged="OnScrollChanged">
+            <ScrollViewer x:Name="KeyScrollViewer" Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
                 <ctrl:PianoRollKeyboard />
             </ScrollViewer>
             <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
@@ -47,7 +45,6 @@
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
                                       CanContentScroll="True"
-                                      ScrollChanged="OnScrollChanged"
                                       PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel">
                 <ctrl:PianoRollCanvas Items="{Binding Notes}" ExtentHeightOverride="2560" MouseDown="PianoRollCanvas_MouseDown" />
             </ctrl:MusicalScrollViewer>
@@ -57,7 +54,6 @@
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
                                           CanContentScroll="True"
-                                          ScrollChanged="OnScrollChanged"
                                           PreviewMouseWheel="MainScrollViewer_PreviewMouseWheel"
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}" />
