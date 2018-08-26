@@ -4,17 +4,6 @@
     xmlns:local="clr-namespace:JUMO.UI"
     xmlns:view="clr-namespace:JUMO.UI.Views"
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls">
-
-    <local:MinusConverter x:Key="MinusConverter" />
-
-    <DataTemplate DataType="{x:Type local:ChannelRackViewModel}">
-        <view:ChannelRackView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type local:PianoRollViewModel}">
-        <view:PianoRollView />
-    </DataTemplate>
-
     <Style TargetType="{x:Type ctrl:NumericUpDown}">
         <Setter Property="Template">
             <Setter.Value>
@@ -85,6 +74,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:MusicalScrollViewer}">
                     <Grid x:Name="Grid">
+                        <Grid.Resources>
+                            <local:MinusConverter x:Key="MinusConverter" />
+                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />

@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:JUMO"
              StartupUri="pack://application:,,,/JUMO.UI;component/Layouts/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ViewModelTemplates.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
