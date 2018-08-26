@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "메인창", "메인창\메�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO.UI", "JUMO.UI\JUMO.UI.csproj", "{B6171FE8-9E92-4B7A-80E6-59CCABD78CC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO", "JUMO\JUMO.csproj", "{EE59E781-B315-4CDB-9B61-46922349298F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO.Core", "JUMO.Core\JUMO.Core.csproj", "{EE59E781-B315-4CDB-9B61-46922349298F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

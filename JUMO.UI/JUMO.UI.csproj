@@ -164,9 +164,9 @@
       <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
       <Name>JUMO.Media</Name>
     </ProjectReference>
-    <ProjectReference Include="..\JUMO\JUMO.csproj">
+    <ProjectReference Include="..\JUMO.Core\JUMO.Core.csproj">
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
-      <Name>JUMO</Name>
+      <Name>JUMO.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
