@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
@@ -63,6 +64,24 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(ExtentHeightOverrideProperty);
             set => SetValue(ExtentHeightOverrideProperty, value);
+        }
+
+        #endregion
+
+        #region Routed Events
+
+        public static readonly RoutedEvent ZoomChangedEvent =
+            EventManager.RegisterRoutedEvent(
+                "ZoomChanged",
+                RoutingStrategy.Direct,
+                typeof(ZoomChangedEventHandler),
+                typeof(MusicalCanvasBase)
+            );
+
+        public event ZoomChangedEventHandler ZoomChanged
+        {
+            add => AddHandler(ZoomChangedEvent, value);
+            remove => RemoveHandler(ZoomChangedEvent, value);
         }
 
         #endregion
@@ -396,6 +415,15 @@ namespace JUMO.UI.Controls
             dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, RenderSize));
         }
 
+        protected override void OnPreviewMouseWheel(MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                RaiseEvent(new MusicalCanvasZoomEventArgs(ZoomChangedEvent, e.Delta > 0 ? 1 : -1));
+                e.Handled = true;
+            }
+        }
+
         #region Visual Host Container Implementation
 
         private VisualCollection _children;
@@ -506,6 +534,19 @@ namespace JUMO.UI.Controls
             _disposeWorker = new SelfThrottlingWorker(2000, 50, DisposeHandler);
 
             RenderTransform = _transform;
+        }
+    }
+
+    delegate void ZoomChangedEventHandler(object sender, MusicalCanvasZoomEventArgs e);
+
+    class MusicalCanvasZoomEventArgs : RoutedEventArgs
+    {
+        public int Delta { get; }
+
+        public MusicalCanvasZoomEventArgs(RoutedEvent id, int delta)
+        {
+            RoutedEvent = id;
+            Delta = delta;
         }
     }
 }

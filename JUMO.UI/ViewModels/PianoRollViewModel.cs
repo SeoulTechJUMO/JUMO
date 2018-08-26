@@ -12,6 +12,10 @@ namespace JUMO.UI
 {
     public class PianoRollViewModel : WorkspaceViewModel
     {
+        private const int ZOOM_INIT = 24;
+        private const int ZOOM_MIN = 1;
+        private const int ZOOM_MAX = 96;
+
         private int _zoomFactor = 24;
         private int _gridUnit = 16;
 
@@ -30,8 +34,7 @@ namespace JUMO.UI
             get => _zoomFactor;
             set
             {
-                System.Diagnostics.Debug.WriteLine($"Setting {nameof(ZoomFactor)} to {value}");
-                _zoomFactor = value;
+                _zoomFactor = Math.Max(ZOOM_MIN, Math.Min(value, ZOOM_MAX));
                 OnPropertyChanged(nameof(ZoomFactor));
             }
         }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JUMO.UI.Controls;
 
 namespace JUMO.UI.Views
 {
@@ -23,6 +24,11 @@ namespace JUMO.UI.Views
         public PianoRollView()
         {
             InitializeComponent();
+        }
+
+        private void MusicalCanvas_ZoomChanged(object sender, MusicalCanvasZoomEventArgs e)
+        {
+            ((PianoRollViewModel)DataContext).ZoomFactor += e.Delta;
         }
     }
 }
