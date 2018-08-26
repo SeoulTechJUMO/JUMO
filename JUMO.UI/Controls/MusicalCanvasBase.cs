@@ -507,7 +507,9 @@ namespace JUMO.UI.Controls
                 _itemsView.CollectionChanged += OnItemsCollectionChanged;
             }
 
+            Children.Clear();
             _table = new Dictionary<object, IVirtualElement>();
+            _index = new BinaryPartition<IVirtualElement>();
 
             foreach (object item in Items)
             {
