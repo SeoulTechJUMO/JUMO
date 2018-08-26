@@ -55,6 +55,7 @@
                                       CanContentScroll="True">
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
                                       ExtentHeightOverride="2560"
+                                      Interaction="PianoRollCanvas_Interaction"
                                       ZoomChanged="MusicalCanvas_ZoomChanged" />
             </ctrl:MusicalScrollViewer>
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">

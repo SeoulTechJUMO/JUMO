@@ -30,5 +30,12 @@ namespace JUMO.UI.Views
         {
             ((PianoRollViewModel)DataContext).ZoomFactor += e.Delta;
         }
+
+        private void PianoRollCanvas_Interaction(object sender, PianoRollInteractionEventArgs e)
+        {
+            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+
+            vm.Notes.Add(new Note(e.Value, 64, e.SnappedPosition, 480));
+        }
     }
 }
