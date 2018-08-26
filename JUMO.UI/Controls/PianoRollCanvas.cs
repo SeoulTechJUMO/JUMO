@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace JUMO.UI.Controls
 {
@@ -55,6 +56,24 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        #region Routed Events
+
+        public static readonly RoutedEvent InteractionEvent =
+            EventManager.RegisterRoutedEvent(
+                "Interaction",
+                RoutingStrategy.Direct,
+                typeof(PianoRollInteractionEventHandler),
+                typeof(PianoRollCanvas)
+            );
+
+        public event PianoRollInteractionEventHandler Interaction
+        {
+            add => AddHandler(InteractionEvent, value);
+            remove => RemoveHandler(InteractionEvent, value);
+        }
+
+        #endregion
+
         protected override IVirtualElement CreateVirtualElementForItem(object item)
         {
             return new VirtualNote((Note)item);
@@ -80,6 +99,37 @@ namespace JUMO.UI.Controls
             double w = GetLength(element) * WidthPerTick;
 
             return new Rect(new Point(x, y), new Size(w, 20));
+        }
+
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            Point pt = e.GetPosition(this);
+            byte value = (byte)(127 - ((int)pt.Y / 20));
+            long pos = (long)(pt.X * TimeResolution / (ZoomFactor << 2));
+            long gridTick = (long)(TimeResolution * (4.0 / GridUnit));
+            long snap = (pos / gridTick) * gridTick;
+
+            RaiseEvent(new PianoRollInteractionEventArgs(InteractionEvent, pos, snap, value, e));
+            e.Handled = true;
+        }
+    }
+
+    delegate void PianoRollInteractionEventHandler(object sender, PianoRollInteractionEventArgs e);
+
+    class PianoRollInteractionEventArgs : RoutedEventArgs
+    {
+        public long Position { get; }
+        public long SnappedPosition { get; }
+        public byte Value { get; }
+        public MouseButtonEventArgs MouseButtonEventData { get; }
+
+        public PianoRollInteractionEventArgs(RoutedEvent id, long position, long snappedPosition, byte value, MouseButtonEventArgs mouseEvent)
+        {
+            RoutedEvent = id;
+            Position = position;
+            SnappedPosition = snappedPosition;
+            Value = value;
+            MouseButtonEventData = mouseEvent;
         }
     }
 }
