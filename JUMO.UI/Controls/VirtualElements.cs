@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
@@ -36,11 +37,7 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Button r = new Button()
-                {
-                    Content = $"{_note.Value}",
-                    HorizontalContentAlignment = HorizontalAlignment.Left
-                };
+                NoteView r = new NoteView() { DataContext = _note };
 
                 PianoRollCanvas.SetNoteValue(r, _note.Value);
                 PianoRollCanvas.SetStart(r, _note.Start);

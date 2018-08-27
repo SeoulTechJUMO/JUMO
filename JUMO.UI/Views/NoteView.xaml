@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="JUMO.UI.Views.NoteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="20" d:DesignWidth="240">
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" BorderBrush="Transparent" Background="Transparent" SnapsToDevicePixels="True" Padding="1,0">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Thumb">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Rectangle Fill="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Border BorderBrush="Black" Background="MediumSpringGreen" BorderThickness="1" CornerRadius="3">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="NoteButton" Grid.Column="0"
+                    Content="{Binding Value, FallbackValue=C4}"
+                    FontSize="10"
+                    FontFamily="Segoe UI"
+                    Cursor="Hand"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Top" />
+            <Thumb x:Name="ResizeHandle" Grid.Column="1"
+                   Cursor="SizeWE" />
+            <Border Grid.ColumnSpan="2" BorderThickness="2,1" IsHitTestVisible="False">
+                <Rectangle Height="2"
+                           IsHitTestVisible="False"
+                           VerticalAlignment="Bottom"
+                           Fill="#7f000000">
+                    <Rectangle.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="0.007874" />
+                            <ScaleTransform ScaleX="{Binding Velocity, FallbackValue=100}" />
+                        </TransformGroup>
+                    </Rectangle.RenderTransform>
+                </Rectangle>
+            </Border>
+        </Grid>
+    </Border>
+</UserControl>
