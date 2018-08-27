@@ -19,6 +19,38 @@ namespace JUMO.UI.Controls
     {
         private StackPanel buttonContainerElement;
 
+        #region Routed Events
+
+        public static readonly RoutedEvent KeyPressedEvent =
+            EventManager.RegisterRoutedEvent(
+                "KeyPressed",
+                RoutingStrategy.Direct,
+                typeof(PianoRollKeyEventHandler),
+                typeof(PianoRollKeyboard)
+            );
+
+        public static readonly RoutedEvent KeyReleasedEvent =
+            EventManager.RegisterRoutedEvent(
+                "KeyReleased",
+                RoutingStrategy.Direct,
+                typeof(PianoRollKeyEventHandler),
+                typeof(PianoRollKeyboard)
+            );
+
+        public event PianoRollKeyEventHandler KeyPressed
+        {
+            add => AddHandler(KeyPressedEvent, value);
+            remove => RemoveHandler(KeyPressedEvent, value);
+        }
+
+        public event PianoRollKeyEventHandler KeyReleased
+        {
+            add => AddHandler(KeyReleasedEvent, value);
+            remove => RemoveHandler(KeyReleasedEvent, value);
+        }
+
+        #endregion
+
         static PianoRollKeyboard()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PianoRollKeyboard), new FrameworkPropertyMetadata(typeof(PianoRollKeyboard)));
@@ -63,10 +95,41 @@ namespace JUMO.UI.Controls
                 Button btn = new Button
                 {
                     Content = keyName[n] + octave,
-                    Style = keyStyle
+                    Style = keyStyle,
+                    Tag = keyNum
                 };
+                btn.PreviewMouseLeftButtonDown += Btn_PreviewMouseLeftButtonDown;
+                btn.PreviewMouseLeftButtonUp += Btn_PreviewMouseLeftButtonUp;
                 buttonContainerElement.Children.Add(btn);
             }
+        }
+
+        private void Btn_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Point pos = e.GetPosition(btn);
+            RaiseEvent(new PianoRollKeyEventArgs(KeyPressedEvent, Convert.ToByte(btn.Tag), (byte)(pos.X * 127 / btn.ActualWidth)));
+        }
+
+        private void Btn_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Button btn = (Button)sender;
+            RaiseEvent(new PianoRollKeyEventArgs(KeyReleasedEvent, Convert.ToByte(btn.Tag), 127));
+        }
+    }
+
+    public delegate void PianoRollKeyEventHandler(object sender, PianoRollKeyEventArgs e);
+
+    public class PianoRollKeyEventArgs : RoutedEventArgs
+    {
+        public byte NoteValue { get; }
+        public byte Velocity { get; }
+
+        public PianoRollKeyEventArgs(RoutedEvent id, byte value, byte velocity)
+        {
+            RoutedEvent = id;
+            NoteValue = value;
+            Velocity = velocity;
         }
     }
 }

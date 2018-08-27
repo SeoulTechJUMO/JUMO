@@ -43,7 +43,8 @@
                           proj:ScrollViewerHelper.SyncDirection="Vertical"
                           HorizontalScrollBarVisibility="Hidden"
                           VerticalScrollBarVisibility="Hidden">
-                <ctrl:PianoRollKeyboard />
+                <ctrl:PianoRollKeyboard KeyPressed="PianoRollKeyboard_KeyPressed"
+                                        KeyReleased="PianoRollKeyboard_KeyReleased" />
             </ScrollViewer>
             <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
                                       Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"

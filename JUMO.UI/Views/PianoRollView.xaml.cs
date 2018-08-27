@@ -37,5 +37,17 @@ namespace JUMO.UI.Views
 
             vm.Notes.Add(new Note(e.Value, 64, e.SnappedPosition, 480));
         }
+
+        private void PianoRollKeyboard_KeyPressed(object sender, PianoRollKeyEventArgs e)
+        {
+            (DataContext as PianoRollViewModel).Plugin.NoteOn(e.NoteValue, e.Velocity);
+            System.Diagnostics.Debug.WriteLine($"PianoRollView::PianoRollKeyboard_KeyPressed value = {e.NoteValue}, velocity = {e.Velocity}");
+        }
+
+        private void PianoRollKeyboard_KeyReleased(object sender, PianoRollKeyEventArgs e)
+        {
+            (DataContext as PianoRollViewModel).Plugin.NoteOff(e.NoteValue, e.Velocity);
+            System.Diagnostics.Debug.WriteLine($"PianoRollView::PianoRollKeyboard_KeyReleased value = {e.NoteValue}, velocity = {e.Velocity}");
+        }
     }
 }
