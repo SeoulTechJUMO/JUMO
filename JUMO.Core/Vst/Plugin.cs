@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
@@ -61,6 +62,26 @@ namespace JUMO.Vst
             Name = PluginCommandStub.GetEffectName();
             _volume = new VolumeSampleProvider(new VstSampleProvider(this));
             SampleProvider = _volume;
+        }
+
+        public void NoteOn(byte value, byte velocity)
+        {
+            PluginCommandStub.StartProcess();
+            PluginCommandStub.ProcessEvents(new VstEvent[]
+            {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, velocity)
+            });
+            PluginCommandStub.StopProcess();
+        }
+
+        public void NoteOff(byte value, byte velocity)
+        {
+            PluginCommandStub.StartProcess();
+            PluginCommandStub.ProcessEvents(new VstEvent[]
+            {
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, velocity, 0x00 }, 0, velocity)
+            });
+            PluginCommandStub.StopProcess();
         }
 
         public void Dispose()
