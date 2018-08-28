@@ -1,9 +1,10 @@
-﻿using JUMO.UI.Data;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using JUMO.UI.Data;
 using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
@@ -17,23 +18,45 @@ namespace JUMO.UI.Controls
         event EventHandler BoundsChanged;
     }
 
-    class VirtualNote : IVirtualElement
+    abstract class VirtualNoteBase : IVirtualElement
     {
-        private readonly Note _note;
+        protected readonly Note _note;
+        protected Segment _bounds;
 
-        public VirtualNote(Note note)
-        {
-            _note = note;
-            Bounds = new Segment(_note.Start, _note.Length);
-        }
-
-        public Segment Bounds { get; }
-
-        public UIElement Visual { get; private set; }
+        public Segment Bounds => _bounds;
+        public UIElement Visual { get; protected set; }
 
         public event EventHandler BoundsChanged;
 
-        public UIElement CreateVisual(MusicalCanvasBase parent)
+        public VirtualNoteBase(Note note)
+        {
+            _note = note;
+            _bounds = new Segment(_note.Start, _note.Length);
+            _note.PropertyChanged += OnNotePropertyChanged;
+        }
+
+        public abstract UIElement CreateVisual(MusicalCanvasBase parent);
+
+        public void DisposeVisual()
+        {
+            Visual = null;
+        }
+
+        private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Note note = (Note)sender;
+            _bounds.Start = _note.Start;
+            _bounds.Length = _note.Length;
+
+            BoundsChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    class VirtualNote : VirtualNoteBase
+    {
+        public VirtualNote(Note note) : base(note) { }
+
+        public override UIElement CreateVisual(MusicalCanvasBase parent)
         {
             if (Visual == null)
             {
@@ -48,30 +71,13 @@ namespace JUMO.UI.Controls
 
             return Visual;
         }
-
-        public void DisposeVisual()
-        {
-            Visual = null;
-        }
     }
 
-    class VirtualVelocityControl : IVirtualElement
+    class VirtualVelocityControl : VirtualNoteBase
     {
-        private readonly Note _note;
+        public VirtualVelocityControl(Note note) : base(note) { }
 
-        public VirtualVelocityControl(Note note)
-        {
-            _note = note;
-            Bounds = new Segment(_note.Start, _note.Length);
-        }
-
-        public Segment Bounds { get; }
-
-        public UIElement Visual { get; private set; }
-
-        public event EventHandler BoundsChanged;
-
-        public UIElement CreateVisual(MusicalCanvasBase parent)
+        public override UIElement CreateVisual(MusicalCanvasBase parent)
         {
             if (Visual == null)
             {
@@ -111,11 +117,6 @@ namespace JUMO.UI.Controls
             }
 
             return Visual;
-        }
-
-        public void DisposeVisual()
-        {
-            Visual = null;
         }
     }
 }
