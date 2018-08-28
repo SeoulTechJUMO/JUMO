@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace JUMO.UI.Controls
 {
-    class PianoRollCanvas : MusicalCanvasBase
+    class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
         #region Routed Events
 
@@ -59,17 +59,45 @@ namespace JUMO.UI.Controls
             return new Rect(new Point(x, y), new Size(w, 20));
         }
 
-        protected override void OnMouseDown(MouseButtonEventArgs e)
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             Point pt = e.GetPosition(this);
             byte value = (byte)(127 - ((int)pt.Y / 20));
-            long pos = (long)(pt.X * TimeResolution / (ZoomFactor << 2));
-            long gridTick = (long)(TimeResolution * (4.0 / GridUnit));
-            long snap = (pos / gridTick) * gridTick;
+            long pos = PixelToTick(pt.X);
+            long snap = SnapToGrid(pos);
 
             RaiseEvent(new PianoRollInteractionEventArgs(InteractionEvent, pos, snap, value, e));
             e.Handled = true;
         }
+
+        public long PixelToTick(double xPos) => (long)(xPos * TimeResolution / (ZoomFactor << 2));
+
+        public long SnapToGrid(long pos)
+        {
+            long ticksPerGrid = (long)(TimeResolution * (4.0 / GridUnit));
+            return (pos / ticksPerGrid) * ticksPerGrid;
+        }
+
+        #region IMusicalViewCallback Members
+
+        public void MusicalViewResizing(object musicalObject, double delta)
+        {
+            Note note = (Note)musicalObject;
+            long end = note.Start + note.Length;
+            long newEnd = SnapToGrid(end + PixelToTick(delta));
+
+            if (newEnd > note.Start)
+            {
+                note.Length = newEnd - note.Start;
+            }
+        }
+
+        public void MusicalViewResizeComplete(object musicalobject)
+        {
+            ReIndexItem(musicalobject);
+        }
+
+        #endregion
     }
 
     delegate void PianoRollInteractionEventHandler(object sender, PianoRollInteractionEventArgs e);

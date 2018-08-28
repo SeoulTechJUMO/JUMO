@@ -194,6 +194,19 @@ namespace JUMO.UI.Controls
         protected abstract Size CalculateSizeForElement(FrameworkElement element);
         protected abstract Rect CalculateRectForElement(FrameworkElement element);
 
+        protected void ReIndexItem(object item)
+        {
+            _table.TryGetValue(item, out IVirtualElement ve);
+
+            if (ve != null)
+            {
+                _index.Remove(ve);
+                _index.Insert(ve, ve.Bounds);
+
+                InvalidateVisual();
+            }
+        }
+
         private void CalculateLogicalLengthInternal()
         {
             double newLogicalLength = CalculateLogicalLength();
@@ -455,15 +468,22 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        private void OnVirtualElementBoundsChanged(object sender, EventArgs e)
+        {
+            InvalidateMeasure();
+        }
+
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
                 foreach (object newItem in e.NewItems)
                 {
+                    // TODO: Extract Method (* 1)
                     IVirtualElement ve = CreateVirtualElementForItem(newItem);
                     _table.Add(newItem, ve);
                     _index.Insert(ve, ve.Bounds);
+                    ve.BoundsChanged += OnVirtualElementBoundsChanged;
                 }
             }
 
@@ -505,9 +525,11 @@ namespace JUMO.UI.Controls
 
             foreach (object item in Items)
             {
+                // TODO: Extract Method (* 1)
                 IVirtualElement ve = CreateVirtualElementForItem(item);
                 _table.Add(item, ve);
                 _index.Insert(ve, ve.Bounds);
+                ve.BoundsChanged += OnVirtualElementBoundsChanged;
             }
 
             CalculateLogicalLengthInternal();
