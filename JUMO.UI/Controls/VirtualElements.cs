@@ -75,39 +75,7 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Border b1 = new Border()
-                {
-                    BorderBrush = Brushes.Fuchsia,
-                    BorderThickness = new Thickness(0, 1.5, 0, 0),
-                    Background = new SolidColorBrush(Colors.Fuchsia) { Opacity = 0.125 }
-                };
-
-                Border b2 = new Border()
-                {
-                    BorderBrush = Brushes.Fuchsia,
-                    BorderThickness = new Thickness(1, 0, 0, 0)
-                };
-
-                Ellipse e = new Ellipse()
-                {
-                    Stroke = Brushes.Fuchsia,
-                    StrokeThickness = 1.5,
-                    Fill = Brushes.White,
-                    Width = 6.0,
-                    Height = 6.0,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    Margin = new Thickness(-4, -3.5, 0, 0)
-                };
-
-                b2.Child = e;
-                b1.Child = b2;
-
-                VelocityCanvas.SetVelocity(b1, _note.Velocity);
-                VelocityCanvas.SetStart(b1, _note.Start);
-                VelocityCanvas.SetLength(b1, _note.Length);
-
-                Visual = b1;
+                Visual = new NoteVelocityView() { DataContext = _note };
             }
 
             return Visual;
