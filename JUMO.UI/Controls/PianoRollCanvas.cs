@@ -10,52 +10,6 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : MusicalCanvasBase
     {
-        #region Attached Properties
-
-        public static readonly DependencyProperty NoteValueProperty =
-            DependencyProperty.RegisterAttached(
-                "NoteValue", typeof(int), typeof(PianoRollCanvas),
-                new FrameworkPropertyMetadata(
-                    0,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty StartProperty =
-            DependencyProperty.RegisterAttached(
-                "Start", typeof(long), typeof(PianoRollCanvas),
-                new FrameworkPropertyMetadata(
-                    0L,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        public static readonly DependencyProperty LengthProperty =
-            DependencyProperty.RegisterAttached(
-                "Length", typeof(long), typeof(PianoRollCanvas),
-                new FrameworkPropertyMetadata(
-                    0L,
-                    FrameworkPropertyMetadataOptions.AffectsArrange
-                    | FrameworkPropertyMetadataOptions.AffectsMeasure
-                    | FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
-        #endregion
-
-        #region Attached Property Accessors
-
-        public static int GetNoteValue(UIElement target) => (int)target.GetValue(NoteValueProperty);
-        public static void SetNoteValue(UIElement target, int value) => target.SetValue(NoteValueProperty, value);
-        public static long GetStart(UIElement target) => (long)target.GetValue(StartProperty);
-        public static void SetStart(UIElement target, long value) => target.SetValue(StartProperty, value);
-        public static long GetLength(UIElement target) => (long)target.GetValue(LengthProperty);
-        public static void SetLength(UIElement target, long value) => target.SetValue(LengthProperty, value);
-
-        #endregion
-
         #region Routed Events
 
         public static readonly RoutedEvent InteractionEvent =
@@ -89,14 +43,18 @@ namespace JUMO.UI.Controls
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            return new Size(GetLength(element) * WidthPerTick, 20);
+            Note note = element.DataContext as Note;
+
+            return new Size((note?.Length ?? 0L) * WidthPerTick, 20);
         }
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            double x = GetStart(element) * WidthPerTick;
-            double y = (127 - GetNoteValue(element)) * 20;
-            double w = GetLength(element) * WidthPerTick;
+            Note note = element.DataContext as Note;
+
+            double x = (note?.Start ?? 0L) * WidthPerTick;
+            double y = (127 - (note?.Value ?? 0)) * 20;
+            double w = (note?.Length ?? 0L) * WidthPerTick;
 
             return new Rect(new Point(x, y), new Size(w, 20));
         }

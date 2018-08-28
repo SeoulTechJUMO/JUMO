@@ -60,13 +60,7 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                NoteView r = new NoteView() { DataContext = _note };
-
-                PianoRollCanvas.SetNoteValue(r, _note.Value);
-                PianoRollCanvas.SetStart(r, _note.Start);
-                PianoRollCanvas.SetLength(r, _note.Length);
-
-                Visual = r;
+                Visual = new NoteView() { DataContext = _note };
             }
 
             return Visual;
