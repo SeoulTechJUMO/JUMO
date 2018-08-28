@@ -106,6 +106,9 @@
     <Compile Include="Views\ChannelRackView.xaml.cs">
       <DependentUpon>ChannelRackView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NoteVelocityView.xaml.cs">
+      <DependentUpon>NoteVelocityView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NoteView.xaml.cs">
       <DependentUpon>NoteView.xaml</DependentUpon>
     </Compile>
@@ -130,6 +133,10 @@
     <Compile Include="Controls\MusicalGrid.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
     <Page Include="Views\ChannelRackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NoteVelocityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
