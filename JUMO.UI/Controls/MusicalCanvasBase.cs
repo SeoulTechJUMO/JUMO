@@ -191,8 +191,8 @@ namespace JUMO.UI.Controls
 
         protected abstract IVirtualElement CreateVirtualElementForItem(object item);
         protected abstract double CalculateLogicalLength();
-        protected abstract Size CalculateSizeForElement(UIElement element);
-        protected abstract Rect CalculateRectForElement(UIElement element);
+        protected abstract Size CalculateSizeForElement(FrameworkElement element);
+        protected abstract Rect CalculateRectForElement(FrameworkElement element);
 
         private void CalculateLogicalLengthInternal()
         {
@@ -226,7 +226,7 @@ namespace JUMO.UI.Controls
                 SetHorizontalOffset(HorizontalOffset);
             }
 
-            foreach (UIElement element in Children)
+            foreach (FrameworkElement element in Children)
             {
                 if (element == null)
                 {
@@ -247,7 +247,7 @@ namespace JUMO.UI.Controls
                 SetHorizontalOffset(HorizontalOffset);
             }
 
-            foreach (UIElement element in Children)
+            foreach (FrameworkElement element in Children)
             {
                 if (element == null)
                 {

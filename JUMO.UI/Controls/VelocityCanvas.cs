@@ -68,7 +68,7 @@ namespace JUMO.UI.Controls
             return length + (TimeResolution << 3);
         }
 
-        protected override Size CalculateSizeForElement(UIElement element)
+        protected override Size CalculateSizeForElement(FrameworkElement element)
         {
             double w = GetLength(element) * WidthPerTick;
             double h = GetVelocity(element) * ViewportHeight / 127.0;
@@ -76,7 +76,7 @@ namespace JUMO.UI.Controls
             return new Size(w, h);
         }
 
-        protected override Rect CalculateRectForElement(UIElement element)
+        protected override Rect CalculateRectForElement(FrameworkElement element)
         {
             double x = GetStart(element) * WidthPerTick;
             double y = (127 - GetVelocity(element)) * ViewportHeight / 127.0;
