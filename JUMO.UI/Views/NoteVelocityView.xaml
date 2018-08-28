@@ -18,20 +18,22 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border BorderBrush="Magenta" BorderThickness="0,1.5,0,0" Background="#1FFF00FF" SnapsToDevicePixels="False">
-        <Border BorderBrush="Magenta" BorderThickness="1,0,0,0" SnapsToDevicePixels="True">
-            <Grid Width="6" Height="6"
-                  Margin="-3.5,-4.25,0,0"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Top"
-                  SnapsToDevicePixels="False" >
-                <Ellipse Fill="White"
-                         Stroke="Magenta"
-                         StrokeThickness="1.5"
-                         SnapsToDevicePixels="False" />
-                <Thumb Cursor="SizeNS"
-                       DragDelta="Thumb_DragDelta" />
-            </Grid>
+    <Grid SnapsToDevicePixels="False">
+        <Border BorderBrush="Magenta" BorderThickness="0,1.5,0,0" Background="#1FFF00FF" SnapsToDevicePixels="False" IsHitTestVisible="False">
+            <Border BorderBrush="Magenta" BorderThickness="1,0,0,0" SnapsToDevicePixels="True" IsHitTestVisible="False">
+            </Border>
         </Border>
-    </Border>
+        <Grid Width="7" Height="7"
+              Margin="-3,-2.75,0,0"
+              HorizontalAlignment="Left"
+              VerticalAlignment="Top"
+              SnapsToDevicePixels="False" >
+            <Ellipse Fill="White"
+                     Stroke="Magenta"
+                     StrokeThickness="1.5"
+                     SnapsToDevicePixels="False" />
+            <Thumb Cursor="SizeNS"
+                   DragDelta="Thumb_DragDelta" />
+        </Grid>
+    </Grid>
 </UserControl>
