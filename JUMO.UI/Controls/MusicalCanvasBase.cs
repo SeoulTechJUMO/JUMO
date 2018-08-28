@@ -457,37 +457,29 @@ namespace JUMO.UI.Controls
 
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+            if (e.NewItems != null)
             {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (object newItem in e.NewItems)
-                    {
-                        IVirtualElement ve = CreateVirtualElementForItem(newItem);
-                        _table.Add(newItem, ve);
-                        _index.Insert(ve, ve.Bounds);
-                    }
-                    CalculateLogicalLengthInternal();
-                    break;
-
-                case NotifyCollectionChangedAction.Remove:
-                    foreach (object oldItem in e.OldItems)
-                    {
-                        IVirtualElement ve = _table[oldItem];
-                        Children.Remove(ve.Visual);
-                        ve.DisposeVisual();
-                        _table.Remove(oldItem);
-                        _index.Remove(ve);
-                    }
-                    CalculateLogicalLengthInternal();
-                    break;
-
-                case NotifyCollectionChangedAction.Reset:
-                    break;
-
-                default:
-                    break;
+                foreach (object newItem in e.NewItems)
+                {
+                    IVirtualElement ve = CreateVirtualElementForItem(newItem);
+                    _table.Add(newItem, ve);
+                    _index.Insert(ve, ve.Bounds);
+                }
             }
 
+            if (e.OldItems != null)
+            {
+                foreach (object oldItem in e.OldItems)
+                {
+                    IVirtualElement ve = _table[oldItem];
+                    Children.Remove(ve.Visual);
+                    ve.DisposeVisual();
+                    _table.Remove(oldItem);
+                    _index.Remove(ve);
+                }
+            }
+
+            CalculateLogicalLengthInternal();
             OnScrollChanged();
         }
 
