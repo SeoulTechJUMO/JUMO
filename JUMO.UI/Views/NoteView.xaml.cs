@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JUMO.UI.Controls;
 
 namespace JUMO.UI.Views
 {
@@ -24,6 +25,16 @@ namespace JUMO.UI.Views
         public NoteView()
         {
             InitializeComponent();
+        }
+
+        private void ResizeHandle_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeComplete(DataContext);
+        }
+
+        private void ResizeHandle_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(DataContext, e.HorizontalChange);
         }
     }
 }

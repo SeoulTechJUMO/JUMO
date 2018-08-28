@@ -43,6 +43,8 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Top" />
             <Thumb x:Name="ResizeHandle" Grid.Column="1"
+                   DragCompleted="ResizeHandle_DragCompleted"
+                   DragDelta="ResizeHandle_DragDelta"
                    Cursor="SizeWE" />
             <Border Grid.ColumnSpan="2" BorderThickness="2,1" IsHitTestVisible="False">
                 <Rectangle Height="2"
