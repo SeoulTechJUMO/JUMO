@@ -90,6 +90,8 @@ namespace JUMO.UI.Controls
             {
                 note.Length = newEnd - note.Start;
             }
+
+            FollowMouse();
         }
 
         public void MusicalViewResizeComplete(FrameworkElement view)
@@ -105,6 +107,8 @@ namespace JUMO.UI.Controls
 
             note.Start = Math.Max(0, newStart);
             note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
+
+            FollowMouse();
         }
 
         public void MusicalViewMoveComplete(FrameworkElement view)
@@ -113,6 +117,29 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        private void FollowMouse()
+        {
+            Point pos = Mouse.GetPosition(this) - new Vector(HorizontalOffset, VerticalOffset);
+
+            if (pos.X > ViewportWidth)
+            {
+                SetHorizontalOffset(HorizontalOffset + pos.X - ViewportWidth);
+            }
+            else if (pos.X < 0)
+            {
+                SetHorizontalOffset(HorizontalOffset + pos.X);
+            }
+
+            if (pos.Y > ViewportHeight)
+            {
+                SetVerticalOffset(VerticalOffset + pos.Y - ViewportHeight);
+            }
+            else if (pos.Y < 0)
+            {
+                SetVerticalOffset(VerticalOffset + pos.Y);
+            }
+        }
     }
 
     delegate void PianoRollInteractionEventHandler(object sender, PianoRollInteractionEventArgs e);
