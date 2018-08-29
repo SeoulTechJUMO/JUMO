@@ -43,18 +43,18 @@ namespace JUMO.UI.Controls
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            Note note = element.DataContext as Note;
+            Note note = (Note)element.DataContext;
 
-            return new Size((note?.Length ?? 0L) * WidthPerTick, 20);
+            return new Size(note.Length * WidthPerTick, 20);
         }
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            Note note = element.DataContext as Note;
+            Note note = (Note)element.DataContext;
 
-            double x = (note?.Start ?? 0L) * WidthPerTick;
-            double y = (127 - (note?.Value ?? 0)) * 20;
-            double w = (note?.Length ?? 0L) * WidthPerTick;
+            double x = note.Start * WidthPerTick;
+            double y = (127 - note.Value) * 20;
+            double w = note.Length * WidthPerTick;
 
             return new Rect(new Point(x, y), new Size(w, 20));
         }

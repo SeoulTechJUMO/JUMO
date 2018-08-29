@@ -24,22 +24,22 @@ namespace JUMO.UI.Controls
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            Note note = element.DataContext as Note;
+            Note note = (Note)element.DataContext;
 
-            double w = (note?.Length ?? 0L) * WidthPerTick;
-            double h = (note?.Velocity ?? 0) * ViewportHeight / 127.0;
+            double w = note.Length * WidthPerTick;
+            double h = note.Velocity * ViewportHeight / 127.0;
 
             return new Size(w, h);
         }
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            Note note = element.DataContext as Note;
+            Note note = (Note)element.DataContext;
 
-            double x = (note?.Start ?? 0L) * WidthPerTick;
-            double y = (127 - (note?.Velocity ?? 0)) * ViewportHeight / 127.0;
-            double w = (note?.Length ?? 0L) * WidthPerTick;
-            double h = (note?.Velocity ?? 0) * ViewportHeight / 127.0;
+            double x = note.Start * WidthPerTick;
+            double y = (127 - note.Velocity) * ViewportHeight / 127.0;
+            double w = note.Length * WidthPerTick;
+            double h = note.Velocity * ViewportHeight / 127.0;
 
             return new Rect(new Point(x, y), new Size(w, h));
         }
