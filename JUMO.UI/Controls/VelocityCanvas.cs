@@ -54,6 +54,8 @@ namespace JUMO.UI.Controls
         }
 
         public void MusicalViewResizeComplete(object musicalObject) { }
+        public void MusicalViewMoving(object musicalObject, double deltaX, double deltaY) { }
+        public void MusicalViewMoveComplete(object musicalObject) { }
 
         #endregion
     }

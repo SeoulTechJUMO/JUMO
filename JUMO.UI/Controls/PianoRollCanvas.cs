@@ -97,6 +97,21 @@ namespace JUMO.UI.Controls
             ReIndexItem(musicalobject);
         }
 
+        public void MusicalViewMoving(object musicalObject, double deltaX, double deltaY)
+        {
+            Note note = (Note)musicalObject;
+            long newStart = SnapToGrid(note.Start + PixelToTick(deltaX));
+            int newValue = note.Value - (int)deltaY / 20;
+
+            note.Start = Math.Max(0, newStart);
+            note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
+        }
+
+        public void MusicalViewMoveComplete(object musicalObject)
+        {
+            ReIndexItem(musicalObject);
+        }
+
         #endregion
     }
 

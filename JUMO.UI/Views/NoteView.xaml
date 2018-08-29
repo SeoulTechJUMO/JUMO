@@ -35,14 +35,16 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="5" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="NoteButton" Grid.Column="0"
-                    Content="{Binding Value, FallbackValue=C4}"
-                    FontSize="10"
-                    FontFamily="Segoe UI"
-                    Cursor="Hand"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Top" />
-            <Thumb x:Name="ResizeHandle" Grid.Column="1"
+            <TextBlock Grid.Column="0"
+                       Text="{Binding Value, FallbackValue=C4}"
+                       FontFamily="Segoe UI"
+                       FontSize="10"
+                       Margin="3,1,0,0" />
+            <Thumb Grid.Column="0"
+                   DragCompleted="NoteButton_DragCompleted"
+                   DragDelta="NoteButton_DragDelta"
+                   Cursor="Hand" />
+            <Thumb Grid.Column="1"
                    DragCompleted="ResizeHandle_DragCompleted"
                    DragDelta="ResizeHandle_DragDelta"
                    Cursor="SizeWE" />

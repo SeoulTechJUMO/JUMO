@@ -10,5 +10,7 @@ namespace JUMO.UI.Controls
     {
         void MusicalViewResizing(object musicalObject, double delta);
         void MusicalViewResizeComplete(object musicalObject);
+        void MusicalViewMoving(object musicalObject, double deltaX, double deltaY);
+        void MusicalViewMoveComplete(object musicalObject);
     }
 }
