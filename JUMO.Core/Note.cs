@@ -25,8 +25,11 @@ namespace JUMO
             get => _value;
             set
             {
-                _value = value;
-                OnPropertyChanged(nameof(Value));
+                if (_value != value)
+                {
+                    _value = value;
+                    OnPropertyChanged(nameof(Value));
+                }
             }
         }
 
@@ -38,8 +41,11 @@ namespace JUMO
             get => _velocity;
             set
             {
-                _velocity = value;
-                OnPropertyChanged(nameof(Velocity));
+                if (_velocity != value)
+                {
+                    _velocity = value;
+                    OnPropertyChanged(nameof(Velocity));
+                }
             }
         }
 
@@ -51,8 +57,11 @@ namespace JUMO
             get => _start;
             set
             {
-                _start = value;
-                OnPropertyChanged(nameof(Start));
+                if (_start != value)
+                {
+                    _start = value;
+                    OnPropertyChanged(nameof(Start));
+                }
             }
         }
 
@@ -64,8 +73,11 @@ namespace JUMO
             get => _length;
             set
             {
-                _length = value;
-                OnPropertyChanged(nameof(Length));
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(nameof(Length));
+                }
             }
         }
 

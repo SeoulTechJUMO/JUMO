@@ -40,8 +40,11 @@ namespace JUMO
             get => _length;
             set
             {
-                _length = value;
-                OnPropertyChanged(nameof(Length));
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(nameof(Length));
+                }
             }
         }
 

@@ -27,8 +27,11 @@ namespace JUMO
             get => _start;
             set
             {
-                _start = value;
-                OnPropertyChanged(nameof(Start));
+                if (_start != value)
+                {
+                    _start = value;
+                    OnPropertyChanged(nameof(Start));
+                }
             }
         }
 
