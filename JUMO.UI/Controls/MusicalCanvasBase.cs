@@ -470,7 +470,7 @@ namespace JUMO.UI.Controls
 
         private void OnVirtualElementBoundsChanged(object sender, EventArgs e)
         {
-            InvalidateMeasure();
+            CalculateLogicalLengthInternal();
         }
 
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
