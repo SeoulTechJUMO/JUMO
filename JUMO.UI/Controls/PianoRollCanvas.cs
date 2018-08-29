@@ -80,9 +80,9 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizing(object musicalObject, double delta)
+        public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            Note note = (Note)musicalObject;
+            Note note = (Note)view.DataContext;
             long end = note.Start + note.Length;
             long newEnd = SnapToGrid(end + PixelToTick(delta));
 
@@ -92,14 +92,14 @@ namespace JUMO.UI.Controls
             }
         }
 
-        public void MusicalViewResizeComplete(object musicalobject)
+        public void MusicalViewResizeComplete(FrameworkElement view)
         {
-            ReIndexItem(musicalobject);
+            ReIndexItem(view.DataContext);
         }
 
-        public void MusicalViewMoving(object musicalObject, double deltaX, double deltaY)
+        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            Note note = (Note)musicalObject;
+            Note note = (Note)view.DataContext;
             long newStart = SnapToGrid(note.Start + PixelToTick(deltaX));
             int newValue = note.Value - (int)deltaY / 20;
 
@@ -107,9 +107,9 @@ namespace JUMO.UI.Controls
             note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
         }
 
-        public void MusicalViewMoveComplete(object musicalObject)
+        public void MusicalViewMoveComplete(FrameworkElement view)
         {
-            ReIndexItem(musicalObject);
+            ReIndexItem(view.DataContext);
         }
 
         #endregion

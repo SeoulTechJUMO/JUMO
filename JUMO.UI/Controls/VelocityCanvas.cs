@@ -46,16 +46,16 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizing(object musicalObject, double delta)
+        public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            Note note = (Note)musicalObject;
+            Note note = (Note)view.DataContext;
             int newVelocity = (int)Math.Round(note.Velocity + (-delta) * (127.0 / ActualHeight));
             note.Velocity = (byte)Math.Max(0, Math.Min(newVelocity, 127));
         }
 
-        public void MusicalViewResizeComplete(object musicalObject) { }
-        public void MusicalViewMoving(object musicalObject, double deltaX, double deltaY) { }
-        public void MusicalViewMoveComplete(object musicalObject) { }
+        public void MusicalViewResizeComplete(FrameworkElement view) { }
+        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
+        public void MusicalViewMoveComplete(FrameworkElement view) { }
 
         #endregion
     }

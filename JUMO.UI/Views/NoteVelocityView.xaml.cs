@@ -29,7 +29,7 @@ namespace JUMO.UI.Views
 
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(DataContext, e.VerticalChange);
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(this, e.VerticalChange);
         }
     }
 }

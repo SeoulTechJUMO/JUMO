@@ -29,22 +29,22 @@ namespace JUMO.UI.Views
 
         private void ResizeHandle_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeComplete(DataContext);
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeComplete(this);
         }
 
         private void ResizeHandle_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(DataContext, e.HorizontalChange);
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(this, e.HorizontalChange);
         }
 
         private void NoteButton_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            (VisualParent as IMusicalViewCallback)?.MusicalViewMoveComplete(DataContext);
+            (VisualParent as IMusicalViewCallback)?.MusicalViewMoveComplete(this);
         }
 
         private void NoteButton_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            (VisualParent as IMusicalViewCallback)?.MusicalViewMoving(DataContext, e.HorizontalChange, e.VerticalChange);
+            (VisualParent as IMusicalViewCallback)?.MusicalViewMoving(this, e.HorizontalChange, e.VerticalChange);
         }
     }
 }
