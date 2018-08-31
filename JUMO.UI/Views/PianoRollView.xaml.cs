@@ -49,5 +49,15 @@ namespace JUMO.UI.Views
             (DataContext as PianoRollViewModel).Plugin.NoteOff(e.NoteValue, e.Velocity);
             System.Diagnostics.Debug.WriteLine($"PianoRollView::PianoRollKeyboard_KeyReleased value = {e.NoteValue}, velocity = {e.Velocity}");
         }
+
+        private void PianoRollCanvas_DeleteNoteRequested(object sender, DeleteNoteRequestedEventArgs e)
+        {
+            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+
+            foreach (Note note in e.NotesToDelete)
+            {
+                vm.Notes.Remove(note);
+            }
+        }
     }
 }

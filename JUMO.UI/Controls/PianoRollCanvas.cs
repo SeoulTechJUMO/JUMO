@@ -13,6 +13,7 @@ namespace JUMO.UI.Controls
         #region Events
 
         public event AddNoteRequestedEventHandler AddNoteRequested;
+        public event DeleteNoteRequestedEventHandler DeleteNoteRequested;
 
         #endregion
 
@@ -118,6 +119,10 @@ namespace JUMO.UI.Controls
         // RightButtonDown - 노트 제거
         public void MusicalViewRightButtonDown(FrameworkElement view)
         {
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                DeleteNoteRequested?.Invoke(this, new DeleteNoteRequestedEventArgs((Note)view.DataContext));
+            }
         }
 
         #endregion
@@ -147,6 +152,7 @@ namespace JUMO.UI.Controls
     }
 
     delegate void AddNoteRequestedEventHandler(object sender, AddNoteRequestedEventArgs e);
+    delegate void DeleteNoteRequestedEventHandler(object sender, DeleteNoteRequestedEventArgs e);
 
     class AddNoteRequestedEventArgs : EventArgs
     {
@@ -159,6 +165,21 @@ namespace JUMO.UI.Controls
             Position = position;
             SnappedPosition = snappedPosition;
             Value = value;
+        }
+    }
+
+    class DeleteNoteRequestedEventArgs : EventArgs
+    {
+        public IEnumerable<Note> NotesToDelete { get; }
+
+        public DeleteNoteRequestedEventArgs(Note noteToDelete)
+        {
+            NotesToDelete = new Note[] { noteToDelete };
+        }
+
+        public DeleteNoteRequestedEventArgs(IEnumerable<Note> notesToDelete)
+        {
+            NotesToDelete = notesToDelete;
         }
     }
 }
