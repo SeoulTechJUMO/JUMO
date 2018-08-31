@@ -56,6 +56,8 @@ namespace JUMO.UI.Controls
         public void MusicalViewResizeComplete(FrameworkElement view) { }
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
         public void MusicalViewMoveComplete(FrameworkElement view) { }
+        public void MusicalViewLeftButtonDown(FrameworkElement view) { }
+        public void MusicalViewRightButtonDown(FrameworkElement view) { }
 
         #endregion
     }

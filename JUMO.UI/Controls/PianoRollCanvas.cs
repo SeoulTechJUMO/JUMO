@@ -116,6 +116,18 @@ namespace JUMO.UI.Controls
             ReIndexItem(view.DataContext);
         }
 
+        // LeftButtonDown - 노트 재생
+        // Ctrl+LeftButtonDown - 노트 선택
+        // Ctrl+Shift+LeftButtonDown - 현재 선택 영역에 노트 추가
+        public void MusicalViewLeftButtonDown(FrameworkElement view)
+        {
+        }
+
+        // RightButtonDown - 노트 제거
+        public void MusicalViewRightButtonDown(FrameworkElement view)
+        {
+        }
+
         #endregion
 
         private void FollowMouse()
