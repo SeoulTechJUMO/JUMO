@@ -22,9 +22,33 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class NoteView : UserControl
     {
+        private bool _isSelected = false;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                UpdateVisualStates();
+            }
+        }
+
         public NoteView()
         {
             InitializeComponent();
+        }
+
+        private void UpdateVisualStates()
+        {
+            if (IsSelected)
+            {
+                VisualStateManager.GoToState(this, "Selected", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Unselected", false);
+            }
         }
 
         private void ResizeHandle_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -45,6 +69,16 @@ namespace JUMO.UI.Views
         private void NoteButton_DragDelta(object sender, DragDeltaEventArgs e)
         {
             (VisualParent as IMusicalViewCallback)?.MusicalViewMoving(this, e.HorizontalChange, e.VerticalChange);
+        }
+
+        private void NoteButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewLeftButtonDown(this);
+        }
+
+        private void NoteButton_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewRightButtonDown(this);
         }
     }
 }

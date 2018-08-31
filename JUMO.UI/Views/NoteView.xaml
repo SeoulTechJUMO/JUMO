@@ -29,7 +29,23 @@
             </Setter>
         </Style>
     </UserControl.Resources>
-    <Border BorderBrush="Black" Background="MediumSpringGreen" BorderThickness="1" CornerRadius="3">
+    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="SelectionStates">
+                <VisualState x:Name="Selected">
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetName="NoteBackgroundBrush"
+                                        Storyboard.TargetProperty="Color"
+                                        To="Orange"
+                                        Duration="0:0:0" />
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Unselected" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Border.Background>
+            <SolidColorBrush x:Name="NoteBackgroundBrush" Color="MediumSpringGreen" />
+        </Border.Background>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -43,6 +59,8 @@
             <Thumb Grid.Column="0"
                    DragCompleted="NoteButton_DragCompleted"
                    DragDelta="NoteButton_DragDelta"
+                   PreviewMouseLeftButtonDown="NoteButton_MouseLeftButtonDown"
+                   PreviewMouseRightButtonDown="NoteButton_MouseRightButtonDown"
                    Cursor="Hand" />
             <Thumb Grid.Column="1"
                    DragCompleted="ResizeHandle_DragCompleted"

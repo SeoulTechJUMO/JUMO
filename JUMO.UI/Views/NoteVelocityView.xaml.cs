@@ -22,9 +22,33 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class NoteVelocityView : UserControl
     {
+        private bool _isSelected = false;
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _isSelected = value;
+                UpdateVisualStates();
+            }
+        }
+
         public NoteVelocityView()
         {
             InitializeComponent();
+        }
+
+        private void UpdateVisualStates()
+        {
+            if (IsSelected)
+            {
+                VisualStateManager.GoToState(this, "Selected", false);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Unselected", false);
+            }
         }
 
         private void Thumb_DragDelta(object sender, DragDeltaEventArgs e)

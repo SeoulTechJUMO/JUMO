@@ -19,19 +19,45 @@
         </Style>
     </UserControl.Resources>
     <Grid SnapsToDevicePixels="False">
-        <Border BorderBrush="Green" BorderThickness="0,1.5,0,0" Background="#1f008000" SnapsToDevicePixels="False" IsHitTestVisible="False">
-            <Border BorderBrush="Green" BorderThickness="1,0,0,0" SnapsToDevicePixels="True" IsHitTestVisible="False">
-            </Border>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="SelectionStates">
+                <VisualState x:Name="Selected">
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetName="BorderBrush"
+                                        Storyboard.TargetProperty="Color"
+                                        To="Orange"
+                                        Duration="0:0:0.0" />
+                        <ColorAnimation Storyboard.TargetName="CircleBorderBrush"
+                                        Storyboard.TargetProperty="Color"
+                                        To="Orange"
+                                        Duration="0:0:0.0" />
+                        <ColorAnimation Storyboard.TargetName="BackgroundBrush"
+                                        Storyboard.TargetProperty="Color"
+                                        To="Orange"
+                                        Duration="0:0:0.0" />
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Unselected" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Border BorderThickness="1,1.5,0,0" SnapsToDevicePixels="False" IsHitTestVisible="False">
+            <Border.BorderBrush>
+                <SolidColorBrush x:Name="BorderBrush" Color="Green" />
+            </Border.BorderBrush>
+            <Border.Background>
+                <SolidColorBrush x:Name="BackgroundBrush" Color="Green" Opacity="0.125" />
+            </Border.Background>
         </Border>
         <Grid Width="7" Height="7"
               Margin="-3,-2.75,0,0"
               HorizontalAlignment="Left"
               VerticalAlignment="Top"
               SnapsToDevicePixels="False" >
-            <Ellipse Fill="White"
-                     Stroke="Green"
-                     StrokeThickness="1.5"
-                     SnapsToDevicePixels="False" />
+            <Ellipse Fill="White" StrokeThickness="1.5" SnapsToDevicePixels="False">
+                <Ellipse.Stroke>
+                    <SolidColorBrush x:Name="CircleBorderBrush" Color="Green" />
+                </Ellipse.Stroke>
+            </Ellipse>
             <Thumb Cursor="SizeNS"
                    DragDelta="Thumb_DragDelta" />
         </Grid>
