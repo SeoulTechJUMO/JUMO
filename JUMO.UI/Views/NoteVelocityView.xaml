@@ -19,8 +19,8 @@
         </Style>
     </UserControl.Resources>
     <Grid SnapsToDevicePixels="False">
-        <Border BorderBrush="Magenta" BorderThickness="0,1.5,0,0" Background="#1FFF00FF" SnapsToDevicePixels="False" IsHitTestVisible="False">
-            <Border BorderBrush="Magenta" BorderThickness="1,0,0,0" SnapsToDevicePixels="True" IsHitTestVisible="False">
+        <Border BorderBrush="Green" BorderThickness="0,1.5,0,0" Background="#1f008000" SnapsToDevicePixels="False" IsHitTestVisible="False">
+            <Border BorderBrush="Green" BorderThickness="1,0,0,0" SnapsToDevicePixels="True" IsHitTestVisible="False">
             </Border>
         </Border>
         <Grid Width="7" Height="7"
@@ -29,7 +29,7 @@
               VerticalAlignment="Top"
               SnapsToDevicePixels="False" >
             <Ellipse Fill="White"
-                     Stroke="Magenta"
+                     Stroke="Green"
                      StrokeThickness="1.5"
                      SnapsToDevicePixels="False" />
             <Thumb Cursor="SizeNS"
