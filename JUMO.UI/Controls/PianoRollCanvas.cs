@@ -12,8 +12,8 @@ namespace JUMO.UI.Controls
     {
         #region Events
 
-        public event AddNoteRequestedEventHandler AddNoteRequested;
-        public event DeleteNoteRequestedEventHandler DeleteNoteRequested;
+        public event EventHandler<AddNoteRequestedEventArgs> AddNoteRequested;
+        public event EventHandler<DeleteNoteRequestedEventArgs> DeleteNoteRequested;
 
         #endregion
 
@@ -171,9 +171,6 @@ namespace JUMO.UI.Controls
             }
         }
     }
-
-    delegate void AddNoteRequestedEventHandler(object sender, AddNoteRequestedEventArgs e);
-    delegate void DeleteNoteRequestedEventHandler(object sender, DeleteNoteRequestedEventArgs e);
 
     class AddNoteRequestedEventArgs : EventArgs
     {
