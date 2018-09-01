@@ -502,9 +502,9 @@ namespace JUMO.UI.Controls
             OnScrollChanged();
         }
 
-        private void RefreshItems(IEnumerable oldCollection, IEnumerable newCollection)
+        private void OnItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
         {
-            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::RefreshItems called");
+            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::OnItemsPropertyChanged called");
 
             if (oldCollection is INotifyCollectionChanged oldIncc)
             {
@@ -536,7 +536,7 @@ namespace JUMO.UI.Controls
         {
             if (d is MusicalCanvasBase ctrl)
             {
-                ctrl.RefreshItems(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
+                ctrl.OnItemsPropertyChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             }
         }
 
