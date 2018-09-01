@@ -178,7 +178,6 @@ namespace JUMO.UI.Controls
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
 
-        private ICollectionView _itemsView;
         private Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
 
@@ -503,27 +502,25 @@ namespace JUMO.UI.Controls
             OnScrollChanged();
         }
 
-        private void RefreshItems(IEnumerable newItems)
+        private void RefreshItems(IEnumerable oldCollection, IEnumerable newCollection)
         {
-            System.Diagnostics.Debug.WriteLine("MusicalCanvas::RefreshItems called");
+            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::RefreshItems called");
 
-            if (_itemsView != null)
+            if (oldCollection is INotifyCollectionChanged oldIncc)
             {
-                _itemsView.CollectionChanged -= OnItemsCollectionChanged;
+                oldIncc.CollectionChanged -= OnItemsCollectionChanged;
             }
 
-            _itemsView = CollectionViewSource.GetDefaultView(newItems);
-
-            if (_itemsView != null)
+            if (newCollection is INotifyCollectionChanged newIncc)
             {
-                _itemsView.CollectionChanged += OnItemsCollectionChanged;
+                newIncc.CollectionChanged += OnItemsCollectionChanged;
             }
 
             Children.Clear();
             _table = new Dictionary<object, IVirtualElement>();
             _index = new BinaryPartition<IVirtualElement>();
 
-            foreach (object item in Items)
+            foreach (var item in Items ?? Enumerable.Empty<object>())
             {
                 // TODO: Extract Method (* 1)
                 IVirtualElement ve = CreateVirtualElementForItem(item);
@@ -539,7 +536,7 @@ namespace JUMO.UI.Controls
         {
             if (d is MusicalCanvasBase ctrl)
             {
-                ctrl.RefreshItems(e.NewValue as IEnumerable);
+                ctrl.RefreshItems(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             }
         }
 
