@@ -52,6 +52,8 @@ namespace JUMO.UI
 
         public ObservableCollection<Note> Notes => Pattern[Plugin];
 
+        public ObservableCollection<Note> SelectedNotes { get; } = new ObservableCollection<Note>();
+
         public PianoRollViewModel(Vst.Plugin plugin)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));

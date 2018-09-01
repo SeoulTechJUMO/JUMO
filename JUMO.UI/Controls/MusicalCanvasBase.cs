@@ -35,6 +35,16 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty SelectedItemsProperty =
+            DependencyProperty.Register(
+                "SelectedItems", typeof(IEnumerable), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(
+                    Enumerable.Empty<object>(),
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    SelectedItemsPropertyChangedCallback
+                )
+            );
+
         public static readonly DependencyProperty ExtentHeightOverrideProperty =
             DependencyProperty.Register(
                 "ExtentHeightOverride", typeof(double), typeof(MusicalCanvasBase),
@@ -58,6 +68,12 @@ namespace JUMO.UI.Controls
         {
             get => (IEnumerable)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
+        }
+
+        public IEnumerable SelectedItems
+        {
+            get => (IEnumerable)GetValue(SelectedItemsProperty);
+            set => SetValue(SelectedItemsProperty, value);
         }
 
         public double ExtentHeightOverride
@@ -502,6 +518,31 @@ namespace JUMO.UI.Controls
             OnScrollChanged();
         }
 
+        private void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (object newItem in e.NewItems)
+                {
+                    if (_table.TryGetValue(newItem, out IVirtualElement ve))
+                    {
+                        ve.IsSelected = true;
+                    }
+                }
+            }
+
+            if (e.OldItems != null)
+            {
+                foreach (object oldItem in e.OldItems)
+                {
+                    if (_table.TryGetValue(oldItem, out IVirtualElement ve))
+                    {
+                        ve.IsSelected = false;
+                    }
+                }
+            }
+        }
+
         private void OnItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
         {
             System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::OnItemsPropertyChanged called");
@@ -532,11 +573,47 @@ namespace JUMO.UI.Controls
             CalculateLogicalLengthInternal();
         }
 
+        private void OnSelectedItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
+        {
+            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::OnSelectedItemsPropertyChanged called");
+
+            if (oldCollection is INotifyCollectionChanged oldIncc)
+            {
+                oldIncc.CollectionChanged -= OnSelectedItemsCollectionChanged;
+            }
+
+            if (newCollection is INotifyCollectionChanged newIncc)
+            {
+                newIncc.CollectionChanged += OnSelectedItemsCollectionChanged;
+            }
+
+            foreach (var ve in _table.Values)
+            {
+                ve.IsSelected = false;
+            }
+
+            foreach (var item in SelectedItems ?? Enumerable.Empty<object>())
+            {
+                if (_table.TryGetValue(item, out IVirtualElement ve))
+                {
+                    ve.IsSelected = true;
+                }
+            }
+        }
+
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is MusicalCanvasBase ctrl)
             {
                 ctrl.OnItemsPropertyChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
+            }
+        }
+
+        private static void SelectedItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is MusicalCanvasBase ctrl)
+            {
+                ctrl.OnSelectedItemsPropertyChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             }
         }
 
