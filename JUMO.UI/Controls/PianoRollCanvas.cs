@@ -52,15 +52,27 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        // LeftButtonDown - 노트 삽입
+        // Ctrl+LeftButtonDown - 사각형 블록 선택 시작 (새 선택 영역)
+        // Ctrl+Shift+LeftButtonDown - 사각형 블록 선택 시작 (선택 영역 추가)
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            Point pt = e.GetPosition(this);
-            byte value = (byte)(127 - ((int)pt.Y / 20));
-            long pos = PixelToTick(pt.X);
-            long snap = SnapToGrid(pos);
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                Point pt = e.GetPosition(this);
+                byte value = (byte)(127 - ((int)pt.Y / 20));
+                long pos = PixelToTick(pt.X);
+                long snap = SnapToGrid(pos);
 
-            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(pos, snap, value));
-            e.Handled = true;
+                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(pos, snap, value));
+                e.Handled = true;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+            }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+            }
         }
 
         public long PixelToTick(double xPos) => (long)(xPos * TimeResolution / (ZoomFactor << 2));
@@ -114,6 +126,15 @@ namespace JUMO.UI.Controls
         // Ctrl+Shift+LeftButtonDown - 현재 선택 영역에 노트 추가
         public void MusicalViewLeftButtonDown(FrameworkElement view)
         {
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+            }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+            }
         }
 
         // RightButtonDown - 노트 제거
