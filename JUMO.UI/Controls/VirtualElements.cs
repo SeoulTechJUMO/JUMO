@@ -13,6 +13,7 @@ namespace JUMO.UI.Controls
     {
         Segment Bounds { get; }
         UIElement Visual { get; }
+        bool IsSelected { get; set; }
         UIElement CreateVisual(MusicalCanvasBase parent);
         void DisposeVisual();
         event EventHandler BoundsChanged;
@@ -22,9 +23,23 @@ namespace JUMO.UI.Controls
     {
         protected readonly Note _note;
         protected Segment _bounds;
+        private bool _isSelected = false;
 
         public Segment Bounds => _bounds;
         public UIElement Visual { get; protected set; }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnIsSelectedChanged();
+                }
+            }
+        }
 
         public event EventHandler BoundsChanged;
 
@@ -34,6 +49,8 @@ namespace JUMO.UI.Controls
             _bounds = new Segment(_note.Start, _note.Length);
             _note.PropertyChanged += OnNotePropertyChanged;
         }
+
+        protected abstract void OnIsSelectedChanged();
 
         public abstract UIElement CreateVisual(MusicalCanvasBase parent);
 
@@ -60,10 +77,22 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Visual = new NoteView() { DataContext = _note };
+                Visual = new NoteView()
+                {
+                    DataContext = _note,
+                    IsSelected = IsSelected
+                };
             }
 
             return Visual;
+        }
+
+        protected override void OnIsSelectedChanged()
+        {
+            if (Visual != null)
+            {
+                ((NoteView)Visual).IsSelected = IsSelected;
+            }
         }
     }
 
@@ -75,10 +104,22 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Visual = new NoteVelocityView() { DataContext = _note };
+                Visual = new NoteVelocityView()
+                {
+                    DataContext = _note,
+                    IsSelected = IsSelected
+                };
             }
 
             return Visual;
+        }
+
+        protected override void OnIsSelectedChanged()
+        {
+            if (Visual != null)
+            {
+                ((NoteVelocityView)Visual).IsSelected = IsSelected;
+            }
         }
     }
 }
