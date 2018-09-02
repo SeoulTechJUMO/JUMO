@@ -196,8 +196,9 @@ namespace JUMO.UI.Controls
         private readonly IList<Segment> _visibleRegions = new List<Segment>();
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
 
-        private Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
+        private readonly Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
+        private readonly IList<IVirtualElement> _selected = new List<IVirtualElement>();
 
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
@@ -537,6 +538,7 @@ namespace JUMO.UI.Controls
                     Children.Remove(ve.Visual);
                     ve.DisposeVisual();
                     _table.Remove(oldItem);
+                    _selected.Remove(ve);
                     _index.Remove(ve);
                 }
             }
@@ -553,6 +555,7 @@ namespace JUMO.UI.Controls
                 {
                     if (_table.TryGetValue(newItem, out IVirtualElement ve))
                     {
+                        _selected.Add(ve);
                         ve.IsSelected = true;
                     }
                 }
@@ -564,6 +567,7 @@ namespace JUMO.UI.Controls
                 {
                     if (_table.TryGetValue(oldItem, out IVirtualElement ve))
                     {
+                        _selected.Remove(ve);
                         ve.IsSelected = false;
                     }
                 }
@@ -571,10 +575,12 @@ namespace JUMO.UI.Controls
 
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                foreach (var ve in _table.Values)
+                foreach (var ve in _selected)
                 {
                     ve.IsSelected = false;
                 }
+
+                _selected.Clear();
             }
         }
 
@@ -593,7 +599,8 @@ namespace JUMO.UI.Controls
             }
 
             Children.Clear();
-            _table = new Dictionary<object, IVirtualElement>();
+            _table.Clear();
+            _selected.Clear();
             _index = new BinaryPartition<IVirtualElement>();
 
             foreach (var item in Items ?? Enumerable.Empty<object>())
@@ -622,15 +629,18 @@ namespace JUMO.UI.Controls
                 newIncc.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
 
-            foreach (var ve in _table.Values)
+            foreach (var ve in _selected)
             {
                 ve.IsSelected = false;
             }
+
+            _selected.Clear();
 
             foreach (var item in SelectedItems ?? Enumerable.Empty<object>())
             {
                 if (_table.TryGetValue(item, out IVirtualElement ve))
                 {
+                    _selected.Add(ve);
                     ve.IsSelected = true;
                 }
             }
