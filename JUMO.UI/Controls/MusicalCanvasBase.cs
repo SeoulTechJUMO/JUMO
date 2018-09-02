@@ -522,11 +522,7 @@ namespace JUMO.UI.Controls
             {
                 foreach (object newItem in e.NewItems)
                 {
-                    // TODO: Extract Method (* 1)
-                    IVirtualElement ve = CreateVirtualElementForItem(newItem);
-                    _table.Add(newItem, ve);
-                    _index.Insert(ve, ve.Bounds);
-                    ve.BoundsChanged += OnVirtualElementBoundsChanged;
+                    AddItemInternal(newItem);
                 }
             }
 
@@ -534,12 +530,7 @@ namespace JUMO.UI.Controls
             {
                 foreach (object oldItem in e.OldItems)
                 {
-                    IVirtualElement ve = _table[oldItem];
-                    Children.Remove(ve.Visual);
-                    ve.DisposeVisual();
-                    _table.Remove(oldItem);
-                    _selected.Remove(ve);
-                    _index.Remove(ve);
+                    RemoveItemInternal(oldItem);
                 }
             }
 
@@ -553,11 +544,7 @@ namespace JUMO.UI.Controls
             {
                 foreach (object newItem in e.NewItems)
                 {
-                    if (_table.TryGetValue(newItem, out IVirtualElement ve))
-                    {
-                        _selected.Add(ve);
-                        ve.IsSelected = true;
-                    }
+                    SelectItemInternal(newItem);
                 }
             }
 
@@ -565,29 +552,18 @@ namespace JUMO.UI.Controls
             {
                 foreach (object oldItem in e.OldItems)
                 {
-                    if (_table.TryGetValue(oldItem, out IVirtualElement ve))
-                    {
-                        _selected.Remove(ve);
-                        ve.IsSelected = false;
-                    }
+                    DeselectItemInternal(oldItem);
                 }
             }
 
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
-                foreach (var ve in _selected)
-                {
-                    ve.IsSelected = false;
-                }
-
-                _selected.Clear();
+                ResetSelectionInternal();
             }
         }
 
         private void OnItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
         {
-            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::OnItemsPropertyChanged called");
-
             if (oldCollection is INotifyCollectionChanged oldIncc)
             {
                 oldIncc.CollectionChanged -= OnItemsCollectionChanged;
@@ -598,18 +574,11 @@ namespace JUMO.UI.Controls
                 newIncc.CollectionChanged += OnItemsCollectionChanged;
             }
 
-            Children.Clear();
-            _table.Clear();
-            _selected.Clear();
-            _index = new BinaryPartition<IVirtualElement>();
+            ResetItemsInternal();
 
             foreach (var item in Items ?? Enumerable.Empty<object>())
             {
-                // TODO: Extract Method (* 1)
-                IVirtualElement ve = CreateVirtualElementForItem(item);
-                _table.Add(item, ve);
-                _index.Insert(ve, ve.Bounds);
-                ve.BoundsChanged += OnVirtualElementBoundsChanged;
+                AddItemInternal(item);
             }
 
             CalculateLogicalLengthInternal();
@@ -617,8 +586,6 @@ namespace JUMO.UI.Controls
 
         private void OnSelectedItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
         {
-            System.Diagnostics.Debug.WriteLine("MusicalCanvasBase::OnSelectedItemsPropertyChanged called");
-
             if (oldCollection is INotifyCollectionChanged oldIncc)
             {
                 oldIncc.CollectionChanged -= OnSelectedItemsCollectionChanged;
@@ -629,21 +596,75 @@ namespace JUMO.UI.Controls
                 newIncc.CollectionChanged += OnSelectedItemsCollectionChanged;
             }
 
+            ResetSelectionInternal();
+
+            foreach (var item in SelectedItems ?? Enumerable.Empty<object>())
+            {
+                SelectItemInternal(item);
+            }
+        }
+
+        private void AddItemInternal(object item)
+        {
+            IVirtualElement ve = CreateVirtualElementForItem(item);
+            _table.Add(item, ve);
+            _index.Insert(ve, ve.Bounds);
+            ve.BoundsChanged += OnVirtualElementBoundsChanged;
+        }
+
+        private void RemoveItemInternal(object item)
+        {
+            if (_table.TryGetValue(item, out IVirtualElement ve))
+            {
+                ve.BoundsChanged -= OnVirtualElementBoundsChanged;
+
+                Children.Remove(ve.Visual);
+                ve.DisposeVisual();
+                _table.Remove(item);
+                _selected.Remove(ve);
+                _index.Remove(ve);
+            }
+        }
+
+        private void ResetItemsInternal()
+        {
+            foreach (var ve in _table.Values)
+            {
+                ve.BoundsChanged -= OnVirtualElementBoundsChanged;
+            }
+
+            Children.Clear();
+            _table.Clear();
+            _selected.Clear();
+            _index = new BinaryPartition<IVirtualElement>();
+        }
+
+        private void SelectItemInternal(object item)
+        {
+            if (_table.TryGetValue(item, out IVirtualElement ve))
+            {
+                _selected.Add(ve);
+                ve.IsSelected = true;
+            }
+        }
+
+        private void DeselectItemInternal(object item)
+        {
+            if (_table.TryGetValue(item, out IVirtualElement ve))
+            {
+                _selected.Remove(ve);
+                ve.IsSelected = false;
+            }
+        }
+
+        private void ResetSelectionInternal()
+        {
             foreach (var ve in _selected)
             {
                 ve.IsSelected = false;
             }
 
             _selected.Clear();
-
-            foreach (var item in SelectedItems ?? Enumerable.Empty<object>())
-            {
-                if (_table.TryGetValue(item, out IVirtualElement ve))
-                {
-                    _selected.Add(ve);
-                    ve.IsSelected = true;
-                }
-            }
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
