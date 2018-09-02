@@ -84,7 +84,7 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        #region Routed Events
+        #region Events
 
         public static readonly RoutedEvent ZoomChangedEvent =
             EventManager.RegisterRoutedEvent(
@@ -99,6 +99,8 @@ namespace JUMO.UI.Controls
             add => AddHandler(ZoomChangedEvent, value);
             remove => RemoveHandler(ZoomChangedEvent, value);
         }
+
+        public event EventHandler<NotifyCollectionChangedEventArgs> SelectionChanged;
 
         #endregion
 
@@ -220,6 +222,31 @@ namespace JUMO.UI.Controls
 
                 InvalidateVisual();
             }
+        }
+
+        protected void SelectItem(object item)
+        {
+            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
+        }
+
+        protected void SelectItems(IList items)
+        {
+            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
+        }
+
+        protected void DeselectItem(object item)
+        {
+            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
+        }
+
+        protected void DeselectItems(IList items)
+        {
+            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
+        }
+
+        protected void ClearSelection()
+        {
+            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         private void CalculateLogicalLengthInternal()
@@ -539,6 +566,14 @@ namespace JUMO.UI.Controls
                     {
                         ve.IsSelected = false;
                     }
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                foreach (var ve in _table.Values)
+                {
+                    ve.IsSelected = false;
                 }
             }
         }

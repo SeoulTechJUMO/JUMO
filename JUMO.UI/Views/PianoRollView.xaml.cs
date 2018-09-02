@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,13 +32,6 @@ namespace JUMO.UI.Views
             ((PianoRollViewModel)DataContext).ZoomFactor += e.Delta;
         }
 
-        private void PianoRollCanvas_AddNoteRequested(object sender, AddNoteRequestedEventArgs e)
-        {
-            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
-
-            vm.Notes.Add(new Note(e.Value, 64, e.SnappedPosition, 480));
-        }
-
         private void PianoRollKeyboard_KeyPressed(object sender, PianoRollKeyEventArgs e)
         {
             (DataContext as PianoRollViewModel).Plugin.NoteOn(e.NoteValue, e.Velocity);
@@ -50,6 +44,13 @@ namespace JUMO.UI.Views
             System.Diagnostics.Debug.WriteLine($"PianoRollView::PianoRollKeyboard_KeyReleased value = {e.NoteValue}, velocity = {e.Velocity}");
         }
 
+        private void PianoRollCanvas_AddNoteRequested(object sender, AddNoteRequestedEventArgs e)
+        {
+            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+
+            vm.Notes.Add(new Note(e.Value, 64, e.SnappedPosition, 480));
+        }
+
         private void PianoRollCanvas_DeleteNoteRequested(object sender, DeleteNoteRequestedEventArgs e)
         {
             PianoRollViewModel vm = (PianoRollViewModel)DataContext;
@@ -57,6 +58,26 @@ namespace JUMO.UI.Views
             foreach (Note note in e.NotesToDelete)
             {
                 vm.Notes.Remove(note);
+            }
+        }
+
+        private void PianoRollCanvas_SelectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    vm.SelectItems(e.NewItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    vm.DeselectItems(e.OldItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    vm.ClearSelection();
+                    break;
             }
         }
     }

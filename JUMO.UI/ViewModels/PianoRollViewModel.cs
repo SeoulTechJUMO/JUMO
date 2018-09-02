@@ -61,6 +61,33 @@ namespace JUMO.UI
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
         }
 
+        public void SelectItems(IEnumerable items)
+        {
+            if (items != null)
+            {
+                foreach (var item in items.OfType<Note>())
+                {
+                    SelectedNotes.Add(item);
+                }
+            }
+        }
+
+        public void DeselectItems(IEnumerable items)
+        {
+            if (items != null)
+            {
+                foreach (var item in items.OfType<Note>())
+                {
+                    SelectedNotes.Remove(item);
+                }
+            }
+        }
+
+        public void ClearSelection()
+        {
+            SelectedNotes?.Clear();
+        }
+
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(e.PropertyName);

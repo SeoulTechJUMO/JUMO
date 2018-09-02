@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
@@ -126,14 +128,26 @@ namespace JUMO.UI.Controls
         // Ctrl+Shift+LeftButtonDown - 현재 선택 영역에 노트 추가
         public void MusicalViewLeftButtonDown(FrameworkElement view)
         {
+            NoteView noteView = (NoteView)view;
+
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
             {
+                ClearSelection();
+                SelectItem(noteView.DataContext);
             }
             else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
             {
+                if (noteView.IsSelected)
+                {
+                    DeselectItem(noteView.DataContext);
+                }
+                else
+                {
+                    SelectItem(noteView.DataContext);
+                }
             }
         }
 
