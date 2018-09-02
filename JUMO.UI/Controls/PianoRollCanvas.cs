@@ -230,8 +230,12 @@ namespace JUMO.UI.Controls
 
         private void ViewEditComplete(FrameworkElement view)
         {
+            foreach (Note note in _affectedNotes)
+            {
+                ReIndexItem(note);
+            }
+
             _affectedNotes = null;
-            ReIndexItem(view.DataContext);
         }
 
         private void ResizeNote(Note note, double delta)
