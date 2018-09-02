@@ -51,6 +51,11 @@ namespace JUMO.UI.Views
             }
         }
 
+        private void ResizeHandle_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeStarted(this);
+        }
+
         private void ResizeHandle_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             (VisualParent as IMusicalViewCallback)?.MusicalViewResizeComplete(this);
@@ -59,6 +64,11 @@ namespace JUMO.UI.Views
         private void ResizeHandle_DragDelta(object sender, DragDeltaEventArgs e)
         {
             (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(this, e.HorizontalChange);
+        }
+
+        private void NoteButton_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewMoveStarted(this);
         }
 
         private void NoteButton_DragCompleted(object sender, DragCompletedEventArgs e)

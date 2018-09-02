@@ -57,12 +57,14 @@
                        FontSize="10"
                        Margin="3,1,0,0" />
             <Thumb Grid.Column="0"
+                   DragStarted="NoteButton_DragStarted"
                    DragCompleted="NoteButton_DragCompleted"
                    DragDelta="NoteButton_DragDelta"
                    PreviewMouseLeftButtonDown="NoteButton_MouseLeftButtonDown"
                    PreviewMouseRightButtonDown="NoteButton_MouseRightButtonDown"
                    Cursor="Hand" />
             <Thumb Grid.Column="1"
+                   DragStarted="ResizeHandle_DragStarted"
                    DragCompleted="ResizeHandle_DragCompleted"
                    DragDelta="ResizeHandle_DragDelta"
                    Cursor="SizeWE" />

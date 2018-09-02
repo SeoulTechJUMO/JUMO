@@ -12,6 +12,8 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        private IEnumerable<Note> _affectedNotes;
+
         #region Events
 
         public event EventHandler<AddNoteRequestedEventArgs> AddNoteRequested;
@@ -87,33 +89,30 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizeStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MusicalViewMoveStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
+        public void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public void MusicalViewMoveStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
+        public void MusicalViewMoveComplete(FrameworkElement view) => ViewEditComplete(view);
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            ResizeNote((Note)view.DataContext, delta);
+            foreach (Note note in _affectedNotes)
+            {
+                ResizeNote(note, delta);
+            }
 
             FollowMouse();
         }
 
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            MoveNote((Note)view.DataContext, deltaX, deltaY);
+            foreach (Note note in _affectedNotes)
+            {
+                MoveNote(note, deltaX, deltaY);
+            }
 
             FollowMouse();
         }
-
-        public void MusicalViewResizeComplete(FrameworkElement view) => ReIndexItem(view.DataContext);
-
-        public void MusicalViewMoveComplete(FrameworkElement view) => ReIndexItem(view.DataContext);
 
         // LeftButtonDown - 노트 재생
         // Ctrl+LeftButtonDown - 노트 선택
@@ -153,6 +152,24 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        private void CalculateAffectedNotes(FrameworkElement view)
+        {
+            if (((NoteView)view).IsSelected)
+            {
+                _affectedNotes = SelectedItems.Cast<Note>();
+            }
+            else
+            {
+                _affectedNotes = new[] { view.DataContext as Note };
+            }
+        }
+
+        private void ViewEditComplete(FrameworkElement view)
+        {
+            _affectedNotes = null;
+            ReIndexItem(view.DataContext);
+        }
 
         private void ResizeNote(Note note, double delta)
         {
