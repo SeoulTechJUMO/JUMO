@@ -59,6 +59,8 @@
                 </Ellipse.Stroke>
             </Ellipse>
             <Thumb Cursor="SizeNS"
+                   DragStarted="Thumb_DragStarted"
+                   DragCompleted="Thumb_DragCompleted"
                    DragDelta="Thumb_DragDelta" />
         </Grid>
     </Grid>

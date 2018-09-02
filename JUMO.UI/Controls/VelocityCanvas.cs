@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
     class VelocityCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        private IEnumerable<Note> _affectedNotes;
+
         #region MusicalCanvasBase Overrides
 
         protected override IVirtualElement CreateVirtualElementForItem(object item)
@@ -50,26 +53,48 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizeStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MusicalViewMoveStarted(FrameworkElement view) { }
+        public void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            Note note = (Note)view.DataContext;
-            int newVelocity = (int)Math.Round(note.Velocity + (-delta) * (127.0 / ActualHeight));
-            note.Velocity = (byte)Math.Max(0, Math.Min(newVelocity, 127));
+            foreach (Note note in _affectedNotes)
+            {
+                AdjustVelocity(note, delta);
+            }
         }
 
-        public void MusicalViewResizeComplete(FrameworkElement view) { }
-        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
+        public void MusicalViewMoveStarted(FrameworkElement view) { }
         public void MusicalViewMoveComplete(FrameworkElement view) { }
+        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
+
         public void MusicalViewLeftButtonDown(FrameworkElement view) { }
         public void MusicalViewRightButtonDown(FrameworkElement view) { }
 
         #endregion
+
+        private void CalculateAffectedNotes(FrameworkElement view)
+        {
+            if (((NoteVelocityView)view).IsSelected)
+            {
+                _affectedNotes = SelectedItems.Cast<Note>();
+            }
+            else
+            {
+                _affectedNotes = new[] { view.DataContext as Note };
+            }
+        }
+
+        private void ViewEditComplete(FrameworkElement view)
+        {
+            _affectedNotes = null;
+            ReIndexItem(view.DataContext);
+        }
+
+        private void AdjustVelocity(Note note, double delta)
+        {
+            int newVelocity = (int)Math.Round(note.Velocity - delta * (127.0 / ActualHeight));
+            note.Velocity = (byte)Math.Max(0, Math.Min(newVelocity, 127));
+        }
     }
 }
