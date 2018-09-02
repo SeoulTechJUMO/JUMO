@@ -89,39 +89,21 @@ namespace JUMO.UI.Controls
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            Note note = (Note)view.DataContext;
-            long end = note.Start + note.Length;
-            long newEnd = SnapToGrid(end + PixelToTick(delta));
-
-            if (newEnd > note.Start)
-            {
-                note.Length = newEnd - note.Start;
-            }
+            ResizeNote((Note)view.DataContext, delta);
 
             FollowMouse();
-        }
-
-        public void MusicalViewResizeComplete(FrameworkElement view)
-        {
-            ReIndexItem(view.DataContext);
         }
 
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            Note note = (Note)view.DataContext;
-            long newStart = SnapToGrid(note.Start + PixelToTick(deltaX));
-            int newValue = note.Value - (int)deltaY / 20;
-
-            note.Start = Math.Max(0, newStart);
-            note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
+            MoveNote((Note)view.DataContext, deltaX, deltaY);
 
             FollowMouse();
         }
 
-        public void MusicalViewMoveComplete(FrameworkElement view)
-        {
-            ReIndexItem(view.DataContext);
-        }
+        public void MusicalViewResizeComplete(FrameworkElement view) => ReIndexItem(view.DataContext);
+
+        public void MusicalViewMoveComplete(FrameworkElement view) => ReIndexItem(view.DataContext);
 
         // LeftButtonDown - 노트 재생
         // Ctrl+LeftButtonDown - 노트 선택
@@ -161,6 +143,26 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        private void ResizeNote(Note note, double delta)
+        {
+            long end = note.Start + note.Length;
+            long newEnd = SnapToGrid(end + PixelToTick(delta));
+
+            if (newEnd > note.Start)
+            {
+                note.Length = newEnd - note.Start;
+            }
+        }
+
+        private void MoveNote(Note note, double deltaX, double deltaY)
+        {
+            long newStart = SnapToGrid(note.Start + PixelToTick(deltaX));
+            int newValue = note.Value - (int)deltaY / 20;
+
+            note.Start = Math.Max(0, newStart);
+            note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
+        }
 
         private void FollowMouse()
         {
