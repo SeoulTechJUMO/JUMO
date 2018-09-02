@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using JUMO.UI.Data;
 using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
@@ -98,6 +99,18 @@ namespace JUMO.UI.Controls
             if (_isSelecting)
             {
                 EndBlockSelection();
+
+                long startTick = Math.Max(0L, PixelToTick(_selectionRect.Left));
+                long length = PixelToTick(_selectionRect.Width);
+                byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)_selectionRect.Bottom / 20, 127));
+                byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)_selectionRect.Top / 20, 127));
+
+                var selectedNotes =
+                    GetVirtualElementsInside(new Segment(startTick, length))
+                    .Select(ve => (Note)((NoteView)ve.Visual).DataContext)
+                    .Where(note => note.Value >= lowValue && note.Value <= highValue);
+
+                SelectItems(new List<Note>(selectedNotes));
             }
         }
 

@@ -250,6 +250,14 @@ namespace JUMO.UI.Controls
             SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
+        protected IEnumerable<IVirtualElement> GetVirtualElementsInside(Segment bounds)
+        {
+            foreach (IVirtualElement ve in _index.GetItemsInside(bounds))
+            {
+                yield return ve;
+            }
+        }
+
         private void CalculateLogicalLengthInternal()
         {
             double newLogicalLength = CalculateLogicalLength();
