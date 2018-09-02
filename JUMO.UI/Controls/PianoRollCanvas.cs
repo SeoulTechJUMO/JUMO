@@ -12,6 +12,7 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        private const double _followAcceleration = 0.0625;
         private IEnumerable<Note> _affectedNotes;
 
         #region Events
@@ -197,20 +198,20 @@ namespace JUMO.UI.Controls
 
             if (pos.X > ViewportWidth)
             {
-                SetHorizontalOffset(HorizontalOffset + pos.X - ViewportWidth);
+                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * _followAcceleration);
             }
             else if (pos.X < 0)
             {
-                SetHorizontalOffset(HorizontalOffset + pos.X);
+                SetHorizontalOffset(HorizontalOffset + pos.X * _followAcceleration);
             }
 
             if (pos.Y > ViewportHeight)
             {
-                SetVerticalOffset(VerticalOffset + pos.Y - ViewportHeight);
+                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * _followAcceleration);
             }
             else if (pos.Y < 0)
             {
-                SetVerticalOffset(VerticalOffset + pos.Y);
+                SetVerticalOffset(VerticalOffset + pos.Y * _followAcceleration);
             }
         }
     }
