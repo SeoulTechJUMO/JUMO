@@ -198,7 +198,7 @@ namespace JUMO.UI.Controls
 
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
         private readonly Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
-        private readonly IList<IVirtualElement> _selected = new List<IVirtualElement>();
+        private readonly IList<IVirtualElement> _selectedElements = new List<IVirtualElement>();
 
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
@@ -206,6 +206,17 @@ namespace JUMO.UI.Controls
         private bool _isAllCreated = true;
 
         protected double WidthPerTick { get; private set; } = 0;
+
+        protected IEnumerable<IVirtualElement> SelectedElements
+        {
+            get
+            {
+                foreach (var ve in _selectedElements)
+                {
+                    yield return ve;
+                }
+            }
+        }
 
         protected abstract IVirtualElement CreateVirtualElementForItem(object item);
         protected abstract double CalculateLogicalLength();
@@ -621,7 +632,7 @@ namespace JUMO.UI.Controls
                 Children.Remove(ve.Visual);
                 ve.DisposeVisual();
                 _table.Remove(item);
-                _selected.Remove(ve);
+                _selectedElements.Remove(ve);
                 _index.Remove(ve);
             }
         }
@@ -635,7 +646,7 @@ namespace JUMO.UI.Controls
 
             Children.Clear();
             _table.Clear();
-            _selected.Clear();
+            _selectedElements.Clear();
             _index = new BinaryPartition<IVirtualElement>();
         }
 
@@ -643,7 +654,7 @@ namespace JUMO.UI.Controls
         {
             if (_table.TryGetValue(item, out IVirtualElement ve))
             {
-                _selected.Add(ve);
+                _selectedElements.Add(ve);
                 ve.IsSelected = true;
             }
         }
@@ -652,19 +663,19 @@ namespace JUMO.UI.Controls
         {
             if (_table.TryGetValue(item, out IVirtualElement ve))
             {
-                _selected.Remove(ve);
+                _selectedElements.Remove(ve);
                 ve.IsSelected = false;
             }
         }
 
         private void ResetSelectionInternal()
         {
-            foreach (var ve in _selected)
+            foreach (var ve in _selectedElements)
             {
                 ve.IsSelected = false;
             }
 
-            _selected.Clear();
+            _selectedElements.Clear();
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
