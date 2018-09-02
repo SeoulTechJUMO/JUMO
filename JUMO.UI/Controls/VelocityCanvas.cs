@@ -9,6 +9,8 @@ namespace JUMO.UI.Controls
 {
     class VelocityCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        #region MusicalCanvasBase Overrides
+
         protected override IVirtualElement CreateVirtualElementForItem(object item)
         {
             return new VirtualVelocityControl((Note)item);
@@ -44,7 +46,16 @@ namespace JUMO.UI.Controls
             return new Rect(new Point(x, y), new Size(w, h));
         }
 
+        #endregion
+
         #region IMusicalViewCallback Members
+
+        public void MusicalViewResizeStarted(FrameworkElement view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MusicalViewMoveStarted(FrameworkElement view) { }
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {

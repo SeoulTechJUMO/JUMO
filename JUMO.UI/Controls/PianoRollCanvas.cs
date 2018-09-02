@@ -87,6 +87,16 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
+        public void MusicalViewResizeStarted(FrameworkElement view)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MusicalViewMoveStarted(FrameworkElement view)
+        {
+            throw new NotImplementedException();
+        }
+
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
             ResizeNote((Note)view.DataContext, delta);
