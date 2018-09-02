@@ -25,7 +25,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
-                "Items", typeof(IEnumerable), typeof(MusicalCanvasBase),
+                "Items", typeof(IEnumerable<object>), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     Enumerable.Empty<object>(),
                     FrameworkPropertyMetadataOptions.AffectsArrange
@@ -37,7 +37,7 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register(
-                "SelectedItems", typeof(IEnumerable), typeof(MusicalCanvasBase),
+                "SelectedItems", typeof(IEnumerable<object>), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     Enumerable.Empty<object>(),
                     FrameworkPropertyMetadataOptions.AffectsRender,
@@ -64,15 +64,15 @@ namespace JUMO.UI.Controls
         protected int GridUnit => MusicalProps.GetGridUnit(this);
         protected int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
-        public IEnumerable Items
+        public IEnumerable<object> Items
         {
-            get => (IEnumerable)GetValue(ItemsProperty);
+            get => (IEnumerable<object>)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
 
-        public IEnumerable SelectedItems
+        public IEnumerable<object> SelectedItems
         {
-            get => (IEnumerable)GetValue(SelectedItemsProperty);
+            get => (IEnumerable<object>)GetValue(SelectedItemsProperty);
             set => SetValue(SelectedItemsProperty, value);
         }
 
@@ -206,17 +206,6 @@ namespace JUMO.UI.Controls
         private bool _isAllCreated = true;
 
         protected double WidthPerTick { get; private set; } = 0;
-
-        protected IEnumerable<IVirtualElement> SelectedElements
-        {
-            get
-            {
-                foreach (var ve in _selectedElements)
-                {
-                    yield return ve;
-                }
-            }
-        }
 
         protected abstract IVirtualElement CreateVirtualElementForItem(object item);
         protected abstract double CalculateLogicalLength();
