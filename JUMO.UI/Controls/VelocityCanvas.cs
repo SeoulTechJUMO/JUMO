@@ -63,15 +63,21 @@ namespace JUMO.UI.Controls
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            if ((_min.Velocity <= MIN_VELOCITY && delta >= 0)
-                || (_max.Velocity >= MAX_VELOCITY && delta <= 0))
+            int deltaVelocity = -(int)Math.Round(delta * MAX_VELOCITY / ActualHeight);
+
+            if (delta > 0 && MIN_VELOCITY - _min.Velocity > deltaVelocity)
             {
-                return;
+                deltaVelocity = MIN_VELOCITY - _min.Velocity;
+            }
+
+            if (delta < 0 && MAX_VELOCITY - _max.Velocity < deltaVelocity)
+            {
+                deltaVelocity = MAX_VELOCITY - _max.Velocity;
             }
 
             foreach (Note note in _affectedNotes)
             {
-                AdjustVelocity(note, delta);
+                AdjustVelocity(note, deltaVelocity);
             }
         }
 
@@ -103,9 +109,9 @@ namespace JUMO.UI.Controls
             _affectedNotes = null;
         }
 
-        private void AdjustVelocity(Note note, double delta)
+        private void AdjustVelocity(Note note, int deltaVelocity)
         {
-            int newVelocity = (int)Math.Round(note.Velocity - delta * (MAX_VELOCITY / ActualHeight));
+            int newVelocity = note.Velocity + deltaVelocity;
             note.Velocity = (byte)Math.Max(MIN_VELOCITY, Math.Min(newVelocity, MAX_VELOCITY));
         }
     }
