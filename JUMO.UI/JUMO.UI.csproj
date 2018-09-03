@@ -91,6 +91,7 @@
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
+    <Compile Include="Data\EnumHelper.cs" />
     <Compile Include="Layouts\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
