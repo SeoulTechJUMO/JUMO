@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using JUMO.UI.Data;
 using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
     class VelocityCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        private const byte MIN_VELOCITY = 0;
+        private const byte MAX_VELOCITY = 127;
+
         private IEnumerable<Note> _affectedNotes;
+        private Note _min, _max;
 
         #region MusicalCanvasBase Overrides
 
@@ -58,6 +63,12 @@ namespace JUMO.UI.Controls
 
         public void MusicalViewResizing(FrameworkElement view, double delta)
         {
+            if ((_min.Velocity <= MIN_VELOCITY && delta >= 0)
+                || (_max.Velocity >= MAX_VELOCITY && delta <= 0))
+            {
+                return;
+            }
+
             foreach (Note note in _affectedNotes)
             {
                 AdjustVelocity(note, delta);
@@ -78,23 +89,24 @@ namespace JUMO.UI.Controls
             if (((NoteVelocityView)view).IsSelected)
             {
                 _affectedNotes = SelectedItems.Cast<Note>();
+                (_min, _max) = _affectedNotes.MinMaxBy(note => note.Velocity);
             }
             else
             {
-                _affectedNotes = new[] { view.DataContext as Note };
+                _affectedNotes = new[] { (Note)view.DataContext };
+                _min = _max = (Note)view.DataContext;
             }
         }
 
         private void ViewEditComplete(FrameworkElement view)
         {
             _affectedNotes = null;
-            ReIndexItem(view.DataContext);
         }
 
         private void AdjustVelocity(Note note, double delta)
         {
-            int newVelocity = (int)Math.Round(note.Velocity - delta * (127.0 / ActualHeight));
-            note.Velocity = (byte)Math.Max(0, Math.Min(newVelocity, 127));
+            int newVelocity = (int)Math.Round(note.Velocity - delta * (MAX_VELOCITY / ActualHeight));
+            note.Velocity = (byte)Math.Max(MIN_VELOCITY, Math.Min(newVelocity, MAX_VELOCITY));
         }
     }
 }
