@@ -14,8 +14,13 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
-        private const double _followAcceleration = 0.0625;
+        private const double MIN_VALUE = 0;
+        private const double MAX_VALUE = 127;
+        private const double FOLLOW_ACCEL = 0.0625;
+
         private IEnumerable<Note> _affectedNotes;
+        private Note _minTick;
+        private Note _minValue, _maxValue;
 
         private readonly BlockSelectionAdorner _selectionAdorner;
         private bool _isSelecting = false;
@@ -169,6 +174,19 @@ namespace JUMO.UI.Controls
 
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
+            // TODO: BUG
+            if (_minTick.Start <= 0 && deltaX <= 0)
+            {
+                deltaX = 0;
+            }
+
+            // TODO: BUG
+            if ((_minValue.Value <= MIN_VALUE && deltaY >= 0)
+                || (_maxValue.Value >= MAX_VALUE && deltaY <= 0))
+            {
+                deltaY = 0;
+            }
+
             foreach (Note note in _affectedNotes)
             {
                 MoveNote(note, deltaX, deltaY);
@@ -221,10 +239,13 @@ namespace JUMO.UI.Controls
             if (((NoteView)view).IsSelected)
             {
                 _affectedNotes = SelectedItems.Cast<Note>();
+                _minTick = _affectedNotes.MinBy(note => note.Start);
+                (_minValue, _maxValue) = _affectedNotes.MinMaxBy(note => note.Value);
             }
             else
             {
-                _affectedNotes = new[] { view.DataContext as Note };
+                _affectedNotes = new[] { (Note)view.DataContext };
+                _minTick = _minValue = _maxValue = (Note)view.DataContext;
             }
         }
 
@@ -264,20 +285,20 @@ namespace JUMO.UI.Controls
 
             if (pos.X > ViewportWidth)
             {
-                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * _followAcceleration);
+                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * FOLLOW_ACCEL);
             }
             else if (pos.X < 0)
             {
-                SetHorizontalOffset(HorizontalOffset + pos.X * _followAcceleration);
+                SetHorizontalOffset(HorizontalOffset + pos.X * FOLLOW_ACCEL);
             }
 
             if (pos.Y > ViewportHeight)
             {
-                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * _followAcceleration);
+                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * FOLLOW_ACCEL);
             }
             else if (pos.Y < 0)
             {
-                SetVerticalOffset(VerticalOffset + pos.Y * _followAcceleration);
+                SetVerticalOffset(VerticalOffset + pos.Y * FOLLOW_ACCEL);
             }
         }
     }
