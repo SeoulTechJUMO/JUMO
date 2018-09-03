@@ -14,8 +14,8 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
-        private const double MIN_VALUE = 0;
-        private const double MAX_VALUE = 127;
+        private const byte MIN_VALUE = 0;
+        private const byte MAX_VALUE = 127;
         private const double FOLLOW_ACCEL = 0.0625;
 
         private IEnumerable<Note> _affectedNotes;
@@ -174,22 +174,27 @@ namespace JUMO.UI.Controls
 
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            // TODO: BUG
-            if (_minTick.Start <= 0 && deltaX <= 0)
+            long deltaStart = PixelToTick(deltaX);
+            int deltaValue = -(int)deltaY / 20;
+
+            if (deltaX < 0 && _minTick.Start < -deltaStart)
             {
-                deltaX = 0;
+                deltaStart = -_minTick.Start;
             }
 
-            // TODO: BUG
-            if ((_minValue.Value <= MIN_VALUE && deltaY >= 0)
-                || (_maxValue.Value >= MAX_VALUE && deltaY <= 0))
+            if (deltaY > 0 && MIN_VALUE - _minValue.Value > deltaValue)
             {
-                deltaY = 0;
+                deltaValue = MIN_VALUE - _minValue.Value;
+            }
+
+            if (deltaY < 0 && MAX_VALUE - _maxValue.Value < deltaValue)
+            {
+                deltaValue = MAX_VALUE - _maxValue.Value;
             }
 
             foreach (Note note in _affectedNotes)
             {
-                MoveNote(note, deltaX, deltaY);
+                MoveNote(note, deltaStart, deltaValue);
             }
 
             FollowMouse();
@@ -265,13 +270,13 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void MoveNote(Note note, double deltaX, double deltaY)
+        private void MoveNote(Note note, long deltaStart, int deltaValue)
         {
-            long newStart = SnapToGrid(note.Start + PixelToTick(deltaX));
-            int newValue = note.Value - (int)deltaY / 20;
+            long newStart = SnapToGrid(note.Start + deltaStart);
+            int newValue = note.Value + deltaValue;
 
             note.Start = Math.Max(0, newStart);
-            note.Value = (byte)Math.Max(0, Math.Min(newValue, 127));
+            note.Value = (byte)Math.Max(MIN_VALUE, Math.Min(newValue, MAX_VALUE));
         }
 
         private void FollowMouse()
