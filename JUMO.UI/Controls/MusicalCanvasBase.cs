@@ -212,19 +212,6 @@ namespace JUMO.UI.Controls
         protected abstract Size CalculateSizeForElement(FrameworkElement element);
         protected abstract Rect CalculateRectForElement(FrameworkElement element);
 
-        protected void ReIndexItem(object item)
-        {
-            _table.TryGetValue(item, out IVirtualElement ve);
-
-            if (ve != null)
-            {
-                _index.Remove(ve);
-                _index.Insert(ve, ve.Bounds);
-
-                InvalidateVisual();
-            }
-        }
-
         protected void SelectItem(object item)
         {
             SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
@@ -521,7 +508,14 @@ namespace JUMO.UI.Controls
 
         private void OnVirtualElementBoundsChanged(object sender, EventArgs e)
         {
-            CalculateLogicalLengthInternal();
+            if (sender is IVirtualElement ve)
+            {
+                if (_index.Remove(ve))
+                {
+                    _index.Insert(ve, ve.Bounds);
+                    CalculateLogicalLengthInternal();
+                }
+            }
         }
 
         private void OnItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
