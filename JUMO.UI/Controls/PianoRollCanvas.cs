@@ -85,7 +85,7 @@ namespace JUMO.UI.Controls
                 long pos = PixelToTick(pt.X);
                 long snap = SnapToGrid(pos);
 
-                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(pos, snap, value));
+                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, 480)));
                 e.Handled = true;
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
@@ -305,15 +305,11 @@ namespace JUMO.UI.Controls
 
     class AddNoteRequestedEventArgs : EventArgs
     {
-        public long Position { get; }
-        public long SnappedPosition { get; }
-        public byte Value { get; }
+        public Note Note { get; }
 
-        public AddNoteRequestedEventArgs(long position, long snappedPosition, byte value)
+        public AddNoteRequestedEventArgs(Note note)
         {
-            Position = position;
-            SnappedPosition = snappedPosition;
-            Value = value;
+            Note = note;
         }
     }
 

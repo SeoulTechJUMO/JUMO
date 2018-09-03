@@ -48,7 +48,7 @@ namespace JUMO.UI.Views
         {
             PianoRollViewModel vm = (PianoRollViewModel)DataContext;
 
-            vm.Notes.Add(new Note(e.Value, 64, e.SnappedPosition, 480));
+            vm.Notes.Add(e.Note);
         }
 
         private void PianoRollCanvas_DeleteNoteRequested(object sender, DeleteNoteRequestedEventArgs e)
