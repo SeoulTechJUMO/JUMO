@@ -26,6 +26,8 @@ namespace JUMO.UI.Controls
         private bool _isSelecting = false;
         private Rect _selectionRect;
 
+        public long _lastLength;
+
         #region Events
 
         public event EventHandler<AddNoteRequestedEventArgs> AddNoteRequested;
@@ -36,6 +38,7 @@ namespace JUMO.UI.Controls
         public PianoRollCanvas() : base()
         {
             _selectionAdorner = new BlockSelectionAdorner(this);
+            _lastLength = TimeResolution;
         }
 
         #region MusicalCanvasBase Overrides
@@ -85,7 +88,7 @@ namespace JUMO.UI.Controls
                 long pos = PixelToTick(pt.X);
                 long snap = SnapToGrid(pos);
 
-                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, 480)));
+                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
                 e.Handled = true;
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
@@ -257,6 +260,7 @@ namespace JUMO.UI.Controls
         private void ViewEditComplete(FrameworkElement view)
         {
             _affectedNotes = null;
+            _lastLength = ((Note)view.DataContext).Length;
         }
 
         private void ResizeNote(Note note, double delta)
