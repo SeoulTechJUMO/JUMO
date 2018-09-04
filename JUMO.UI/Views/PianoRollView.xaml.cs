@@ -27,20 +27,6 @@ namespace JUMO.UI.Views
             InitializeComponent();
         }
 
-        private void MusicalCanvas_ZoomChanged(object sender, MusicalCanvasZoomEventArgs e)
-        {
-            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
-
-            if (e.Delta > 0)
-            {
-                vm.ZoomIn();
-            }
-            else
-            {
-                vm.ZoomOut();
-            }
-        }
-
         private void PianoRollKeyboard_KeyPressed(object sender, PianoRollKeyEventArgs e)
         {
             (DataContext as PianoRollViewModel).Plugin.NoteOn(e.NoteValue, e.Velocity);
@@ -87,6 +73,22 @@ namespace JUMO.UI.Views
                 case NotifyCollectionChangedAction.Reset:
                     vm.ClearSelection();
                     break;
+            }
+        }
+
+        private void MusicalCanvas_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+                RelayCommand zoomCmd = e.Delta > 0 ? vm.ZoomInCommand : vm.ZoomOutCommand;
+
+                if (zoomCmd.CanExecute(null))
+                {
+                    zoomCmd.Execute(null);
+                }
+
+                e.Handled = true;
             }
         }
     }

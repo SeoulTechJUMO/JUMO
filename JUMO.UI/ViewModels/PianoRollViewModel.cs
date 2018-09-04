@@ -19,6 +19,10 @@ namespace JUMO.UI
         private int _zoomPercent = 100;
         private int _gridUnit = 16;
 
+        private RelayCommand _zoomInCommand;
+        private RelayCommand _zoomOutCommand;
+        private RelayCommand _resetZoomCommand;
+
         public override WorkspaceKey Key { get; }
         public override string DisplayName => $"피아노 롤: {Plugin.Name}";
 
@@ -59,6 +63,30 @@ namespace JUMO.UI
 
         public ObservableCollection<Note> SelectedNotes { get; } = new ObservableCollection<Note>();
 
+        public RelayCommand ZoomInCommand
+        {
+            get => _zoomInCommand ?? (_zoomInCommand = new RelayCommand(
+                    _ => ZoomPercent += ZoomPercent >= 100 ? 10 : 5,
+                    _ => ZoomPercent < ZOOM_PERCENT_MAX
+                ));
+        }
+
+        public RelayCommand ZoomOutCommand
+        {
+            get => _zoomOutCommand ?? (_zoomOutCommand = new RelayCommand(
+                    _ => ZoomPercent -= ZoomPercent > 100 ? 10 : 5,
+                    _ => ZoomPercent > ZOOM_PERCENT_MIN
+                ));
+        }
+
+        public RelayCommand ResetZoomCommand
+        {
+            get => _resetZoomCommand ?? (_resetZoomCommand = new RelayCommand(
+                    _ => ZoomPercent = 100,
+                    _ => ZoomPercent != 100
+                ));
+        }
+
         public PianoRollViewModel(Vst.Plugin plugin)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
@@ -91,21 +119,6 @@ namespace JUMO.UI
         public void ClearSelection()
         {
             SelectedNotes?.Clear();
-        }
-
-        public void ZoomIn()
-        {
-            ZoomPercent += ZoomPercent >= 100 ? 10 : 5;
-        }
-
-        public void ZoomOut()
-        {
-            ZoomPercent -= ZoomPercent > 100 ? 10 : 5;
-        }
-
-        public void ResetZoom()
-        {
-            ZoomPercent = 100;
         }
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)

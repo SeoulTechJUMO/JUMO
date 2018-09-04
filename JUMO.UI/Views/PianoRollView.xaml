@@ -24,6 +24,9 @@
             <Label Content="{Binding ZoomFactor}" />
             <Label Content="ZoomPercent" />
             <Label Content="{Binding ZoomPercent}" />
+            <Button Content="-" Padding="10,3" Command="{Binding ZoomOutCommand}" />
+            <Button Content="/" Padding="10,3" Command="{Binding ResetZoomCommand}" />
+            <Button Content="+" Padding="8,3" Command="{Binding ZoomInCommand}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -62,7 +65,7 @@
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
-                                      ZoomChanged="MusicalCanvas_ZoomChanged" />
+                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
             </ctrl:MusicalScrollViewer>
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
                 <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
@@ -76,7 +79,7 @@
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
                                          SelectedItems="{Binding SelectedNotes}"
-                                         ZoomChanged="MusicalCanvas_ZoomChanged" />
+                                         PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
                 </ctrl:MusicalScrollViewer>
             </Border>
         </Grid>
