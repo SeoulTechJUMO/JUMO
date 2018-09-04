@@ -21,7 +21,9 @@
             <Label Content="GridUnit" />
             <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
             <Label Content="ZoomFactor" />
-            <ctrl:NumericUpDown x:Name="ZoomFactorControl" MinValue="1" MaxValue="96" Delta="1" Value="{Binding ZoomFactor, Mode=TwoWay}" />
+            <Label Content="{Binding ZoomFactor}" />
+            <Label Content="ZoomPercent" />
+            <Label Content="{Binding ZoomPercent}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

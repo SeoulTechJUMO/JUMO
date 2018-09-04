@@ -12,11 +12,11 @@ namespace JUMO.UI
 {
     public class PianoRollViewModel : WorkspaceViewModel
     {
-        private const int ZOOM_INIT = 24;
-        private const int ZOOM_MIN = 1;
-        private const int ZOOM_MAX = 96;
+        private const double ZOOM_BASE = 24.0;
+        private const int ZOOM_PERCENT_MIN = 25;
+        private const int ZOOM_PERCENT_MAX = 400;
 
-        private int _zoomFactor = 24;
+        private int _zoomPercent = 100;
         private int _gridUnit = 16;
 
         public override WorkspaceKey Key { get; }
@@ -29,12 +29,17 @@ namespace JUMO.UI
         public int Denominator => Song.Current.Denominator;
         public int TimeResolution => Song.Current.TimeResolution;
 
-        public int ZoomFactor
+        public int ZoomFactor { get; private set; } = 24;
+
+        public int ZoomPercent
         {
-            get => _zoomFactor;
-            set
+            get => _zoomPercent;
+            private set
             {
-                _zoomFactor = Math.Max(ZOOM_MIN, Math.Min(value, ZOOM_MAX));
+                _zoomPercent = Math.Max(ZOOM_PERCENT_MIN, Math.Min(value, ZOOM_PERCENT_MAX));
+                ZoomFactor = (int)(ZOOM_BASE * _zoomPercent / 100.0);
+
+                OnPropertyChanged(nameof(ZoomPercent));
                 OnPropertyChanged(nameof(ZoomFactor));
             }
         }
@@ -86,6 +91,21 @@ namespace JUMO.UI
         public void ClearSelection()
         {
             SelectedNotes?.Clear();
+        }
+
+        public void ZoomIn()
+        {
+            ZoomPercent += ZoomPercent >= 100 ? 10 : 5;
+        }
+
+        public void ZoomOut()
+        {
+            ZoomPercent -= ZoomPercent > 100 ? 10 : 5;
+        }
+
+        public void ResetZoom()
+        {
+            ZoomPercent = 100;
         }
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)

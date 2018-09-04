@@ -29,7 +29,16 @@ namespace JUMO.UI.Views
 
         private void MusicalCanvas_ZoomChanged(object sender, MusicalCanvasZoomEventArgs e)
         {
-            ((PianoRollViewModel)DataContext).ZoomFactor += e.Delta;
+            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
+
+            if (e.Delta > 0)
+            {
+                vm.ZoomIn();
+            }
+            else
+            {
+                vm.ZoomOut();
+            }
         }
 
         private void PianoRollKeyboard_KeyPressed(object sender, PianoRollKeyEventArgs e)
