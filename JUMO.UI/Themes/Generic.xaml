@@ -108,26 +108,10 @@
                                    Maximum="{TemplateBinding ScrollableHeight}"
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
-                        <Grid Grid.Row="2" Grid.Column="0">
-                            <Grid.Background>
-                                <VisualBrush Viewport="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                             Viewbox="{Binding ContentBoundary, ElementName=MusicalGrid}"
-                                             ViewportUnits="Absolute"
-                                             ViewboxUnits="Absolute"
-                                             TileMode="Tile">
-                                    <VisualBrush.Visual>
-                                        <ctrl:MusicalGrid x:Name="MusicalGrid"
-                                                          GridStep="{TemplateBinding GridStep}"
-                                                          GridHeight="{TemplateBinding GridHeight}"
-                                                          ShouldDrawHorizontalGrid="{TemplateBinding ShouldDrawHorizontalGrid}" />
-                                    </VisualBrush.Visual>
-                                    <VisualBrush.Transform>
-                                        <TranslateTransform X="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MinusConverter}}"
-                                                            Y="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource MinusConverter}}" />
-                                    </VisualBrush.Transform>
-                                </VisualBrush>
-                            </Grid.Background>
-                        </Grid>
+                        <ctrl:MusicalGrid Grid.Row="2" Grid.Column="0"
+                                          GridStep="{TemplateBinding GridStep}"
+                                          GridHeight="{TemplateBinding GridHeight}"
+                                          ShouldDrawHorizontalGrid="{TemplateBinding ShouldDrawHorizontalGrid}" />
                         <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                                 Grid.Row="2" Grid.Column="0"
                                                 ContentTemplate="{TemplateBinding ContentTemplate}"

@@ -13,15 +13,6 @@ namespace JUMO.UI.Controls
     {
         #region Dependency Properties
 
-        private static readonly DependencyPropertyKey ContentBoundaryKey =
-            DependencyProperty.RegisterReadOnly(
-                "ContentBoundary", typeof(Rect), typeof(MusicalGrid),
-                new FrameworkPropertyMetadata(
-                    new Rect(),
-                    FrameworkPropertyMetadataOptions.AffectsRender
-                )
-            );
-
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
             DependencyProperty.Register(
                 "ShouldDrawHorizontalGrid", typeof(bool), typeof(MusicalGrid),
@@ -49,8 +40,6 @@ namespace JUMO.UI.Controls
                 )
             );
 
-        public static readonly DependencyProperty ContentBoundaryProperty = ContentBoundaryKey.DependencyProperty;
-
         #endregion
 
         #region Properties
@@ -59,8 +48,6 @@ namespace JUMO.UI.Controls
         private int Denominator => MusicalProps.GetDenominator(this);
         private int TimeResolution => MusicalProps.GetTimeResolution(this);
         private int ZoomFactor => MusicalProps.GetZoomFactor(this);
-
-        public Rect ContentBoundary => (Rect)GetValue(ContentBoundaryProperty);
 
         public bool ShouldDrawHorizontalGrid
         {
@@ -94,35 +81,36 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            int gridCount = Numerator * GridStep;
             int ticksPerBeat = (TimeResolution << 2) / Denominator;
-
             double beatWidth = TickToPixel(ticksPerBeat);
             double barWidth = TickToPixel(ticksPerBeat * Numerator);
             double gridWidth = TickToPixel(ticksPerBeat / GridStep);
 
-            SetValue(ContentBoundaryKey, new Rect(0, 0, barWidth, GridHeight));
-
-            double cw = ContentBoundary.Width;
-            double ch = ContentBoundary.Height;
+            double rw = RenderSize.Width;
+            double rh = RenderSize.Height;
 
             if (ShouldDrawHorizontalGrid)
             {
-                dc.DrawLine(fadedPen, new Point(0, 0.5), new Point(cw, 0.5));
+                for (double ypos = 0; ypos <= rh; ypos += GridHeight)
+                {
+                    dc.DrawLine(fadedPen, new Point(0, ypos + 0.5), new Point(rw, ypos + 0.5));
+                }
             }
 
-            for (double xpos = 0; xpos <= cw; xpos += gridWidth)
+            for (double xpos = 0; xpos <= rw; xpos += gridWidth)
             {
-                dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
+                dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            for (double xpos = 0; xpos <= cw; xpos += beatWidth)
+            for (double xpos = 0; xpos <= rw; xpos += beatWidth)
             {
-                dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
+                dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            dc.DrawLine(thickPen, new Point(0.5, 0), new Point(0.5, ch));
-            dc.DrawLine(thickPen, new Point(cw + 0.5, 0), new Point(cw + 0.5, ch));
+            for (double xpos = 0; xpos <= rw; xpos += barWidth)
+            {
+                dc.DrawLine(thickPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
+            }
         }
 
         private double TickToPixel(long tick) => tick * (ZoomFactor << 2) / (double)TimeResolution;
