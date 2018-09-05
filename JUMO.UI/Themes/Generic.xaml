@@ -117,6 +117,7 @@
                                              TileMode="Tile">
                                     <VisualBrush.Visual>
                                         <ctrl:MusicalGrid x:Name="MusicalGrid"
+                                                          GridStep="{TemplateBinding GridStep}"
                                                           GridHeight="{TemplateBinding GridHeight}"
                                                           ShouldDrawHorizontalGrid="{TemplateBinding ShouldDrawHorizontalGrid}" />
                                     </VisualBrush.Visual>

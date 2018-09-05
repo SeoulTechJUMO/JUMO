@@ -31,6 +31,15 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty GridStepProperty =
+            DependencyProperty.Register(
+                "GridStep", typeof(int), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    4,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
         public static readonly DependencyProperty GridHeightProperty =
             DependencyProperty.Register(
                 "GridHeight", typeof(double), typeof(MusicalGrid),
@@ -58,6 +67,12 @@ namespace JUMO.UI.Controls
         {
             get => (bool)GetValue(ShouldDrawHorizontalGridProperty);
             set => SetValue(ShouldDrawHorizontalGridProperty, value);
+        }
+
+        public int GridStep
+        {
+            get => (int)GetValue(GridStepProperty);
+            set => SetValue(GridStepProperty, value);
         }
 
         public double GridHeight

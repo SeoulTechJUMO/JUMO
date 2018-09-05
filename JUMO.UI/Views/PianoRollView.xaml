@@ -62,6 +62,8 @@
                                       proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
+                                      GridStep="{Binding GridStep}"
+                                      GridHeight="20"
                                       CanContentScroll="True">
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
                                       SelectedItems="{Binding SelectedNotes}"
