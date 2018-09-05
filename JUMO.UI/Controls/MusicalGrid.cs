@@ -110,13 +110,24 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        private double _beatWidth;
+        private double _barWidth;
+        private double _gridWidth;
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            double tickWidth = (ZoomFactor << 2) / (double)TimeResolution;
+            int ticksPerBeat = (TimeResolution << 2) / Denominator;
+
+            _beatWidth = tickWidth * ticksPerBeat;
+            _barWidth = tickWidth * ticksPerBeat * Numerator;
+            _gridWidth = tickWidth * ticksPerBeat / GridStep;
+
+            return base.MeasureOverride(availableSize);
+        }
+
         protected override void OnRender(DrawingContext dc)
         {
-            int ticksPerBeat = (TimeResolution << 2) / Denominator;
-            double beatWidth = TickToPixel(ticksPerBeat);
-            double barWidth = TickToPixel(ticksPerBeat * Numerator);
-            double gridWidth = TickToPixel(ticksPerBeat / GridStep);
-
             double rw = RenderSize.Width;
             double rh = RenderSize.Height;
             double hOffset = -HorizontalOffset;
@@ -130,22 +141,20 @@ namespace JUMO.UI.Controls
                 }
             }
 
-            for (double xpos = hOffset % gridWidth; xpos <= rw; xpos += gridWidth)
+            for (double xpos = hOffset % _gridWidth; xpos <= rw; xpos += _gridWidth)
             {
                 dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            for (double xpos = hOffset % beatWidth; xpos <= rw; xpos += beatWidth)
+            for (double xpos = hOffset % _beatWidth; xpos <= rw; xpos += _beatWidth)
             {
                 dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            for (double xpos = hOffset % barWidth; xpos <= rw; xpos += barWidth)
+            for (double xpos = hOffset % _barWidth; xpos <= rw; xpos += _barWidth)
             {
                 dc.DrawLine(thickPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
         }
-
-        private double TickToPixel(long tick) => tick * (ZoomFactor << 2) / (double)TimeResolution;
     }
 }

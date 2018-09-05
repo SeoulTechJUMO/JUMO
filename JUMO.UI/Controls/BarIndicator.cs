@@ -42,7 +42,12 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        #region Dependency Property Accessors
+        #region Properties
+
+        private int Numerator => MusicalProps.GetNumerator(this);
+        private int Denominator => MusicalProps.GetDenominator(this);
+        private int TimeResolution => MusicalProps.GetTimeResolution(this);
+        private int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public Brush Background
         {
@@ -64,31 +69,22 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        private double _widthPerTick;
-        private int _ticksPerBar;
+        private double _barWidth;
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            int ppqn = MusicalProps.GetTimeResolution(this);
-            _widthPerTick = (MusicalProps.GetZoomFactor(this) << 2) / (double)ppqn;
-            _ticksPerBar = (ppqn * MusicalProps.GetNumerator(this) * 4) / MusicalProps.GetDenominator(this);
+            double tickWidth = (ZoomFactor << 2) / (double)TimeResolution;
+            int ticksPerBar = (TimeResolution * Numerator * 4) / Denominator;
 
-            double w = double.IsInfinity(availableSize.Width) ? 0 : availableSize.Width;
-            double h = double.IsInfinity(availableSize.Height) ? 0 : availableSize.Height;
+            _barWidth = ticksPerBar * tickWidth;
 
-            return new Size(w, h);
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            return finalSize;
+            return base.MeasureOverride(availableSize);
         }
 
         protected override void OnRender(DrawingContext dc)
         {
-            double barWidth = _ticksPerBar * _widthPerTick;
-            int nextBar = (int)(ScrollOffset / barWidth);
-            double nextBarPos = nextBar * barWidth - ScrollOffset + 0.5;
+            int nextBar = (int)(ScrollOffset / _barWidth);
+            double nextBarPos = nextBar * _barWidth - ScrollOffset + 0.5;
             Pen barSeparatorPen = new Pen(Foreground, 2.0);
 
             dc.DrawRectangle(Background, null, new Rect(new Point(0, 0), RenderSize));
@@ -108,7 +104,7 @@ namespace JUMO.UI.Controls
                     new Point(nextBarPos + 3, 0)
                 );
                 nextBar += 1;
-                nextBarPos += barWidth;
+                nextBarPos += _barWidth;
             }
         }
     }
