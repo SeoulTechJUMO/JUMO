@@ -36,16 +36,6 @@ namespace JUMO.UI
                 )
             );
 
-        public static readonly DependencyProperty GridUnitProperty =
-            DependencyProperty.RegisterAttached(
-                "GridUnit", typeof(int), typeof(MusicalProps),
-                new FrameworkPropertyMetadata(
-                    16,
-                    FrameworkPropertyMetadataOptions.AffectsRender
-                    | FrameworkPropertyMetadataOptions.Inherits
-                )
-            );
-
         public static readonly DependencyProperty ZoomFactorProperty =
             DependencyProperty.RegisterAttached(
                 "ZoomFactor", typeof(int), typeof(MusicalProps),
@@ -66,9 +56,6 @@ namespace JUMO.UI
 
         public static int GetTimeResolution(UIElement target) => (int)target.GetValue(TimeResolutionProperty);
         public static void SetTimeResolution(UIElement target, int value) => target.SetValue(TimeResolutionProperty, value);
-
-        public static int GetGridUnit(UIElement target) => (int)target.GetValue(GridUnitProperty);
-        public static void SetGridUnit(UIElement target, int value) => target.SetValue(GridUnitProperty, value);
 
         public static int GetZoomFactor(UIElement target) => (int)target.GetValue(ZoomFactorProperty);
         public static void SetZoomFactor(UIElement target, int value) => target.SetValue(ZoomFactorProperty, value);

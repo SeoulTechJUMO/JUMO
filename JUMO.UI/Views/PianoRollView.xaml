@@ -11,7 +11,6 @@
     <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
           proj:MusicalProps.Denominator="{Binding Denominator}"
           proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
-          proj:MusicalProps.GridUnit="{Binding GridUnit}"
           proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -29,8 +28,6 @@
                 <TextBlock Text="{Binding ZoomPercent, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <Button Content="+" Padding="8,3" Command="{Binding ZoomInCommand}" />
-            <Label Content="GridUnit" />
-            <ctrl:NumericUpDown x:Name="GridUnitControl" MinValue="1" MaxValue="64" Delta="1" Value="{Binding GridUnit, Mode=TwoWay}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
