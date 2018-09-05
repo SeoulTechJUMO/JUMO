@@ -28,6 +28,22 @@ namespace JUMO.UI.Controls
 
         public long _lastLength;
 
+        #region Dependency Properties
+
+        public static readonly DependencyProperty SnapToGridProperty =
+            DependencyProperty.Register(
+                "SnapToGrid", typeof(bool), typeof(PianoRollCanvas),
+                new FrameworkPropertyMetadata(true)
+            );
+
+        public bool SnapToGrid
+        {
+            get => (bool)GetValue(SnapToGridProperty);
+            set => SetValue(SnapToGridProperty, value);
+        }
+
+        #endregion
+
         #region Events
 
         public event EventHandler<AddNoteRequestedEventArgs> AddNoteRequested;
@@ -86,7 +102,7 @@ namespace JUMO.UI.Controls
                 Point pt = e.GetPosition(this);
                 byte value = (byte)(127 - ((int)pt.Y / 20));
                 long pos = PixelToTick(pt.X);
-                long snap = SnapToGrid(pos);
+                long snap = SnapToGridInternal(pos);
 
                 AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
                 e.Handled = true;
@@ -152,8 +168,13 @@ namespace JUMO.UI.Controls
 
         private long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
 
-        private long SnapToGrid(long pos)
+        private long SnapToGridInternal(long pos)
         {
+            if (!SnapToGrid)
+            {
+                return pos;
+            }
+
             int ticksPerBeat = (TimeResolution << 2) / MusicalProps.GetDenominator(this);
             int ticksPerGrid = ticksPerBeat / GridStep;
             return (pos / ticksPerGrid) * ticksPerGrid;
@@ -267,7 +288,7 @@ namespace JUMO.UI.Controls
         private void ResizeNote(Note note, double delta)
         {
             long end = note.Start + note.Length;
-            long newEnd = SnapToGrid(end + PixelToTick(delta));
+            long newEnd = SnapToGridInternal(end + PixelToTick(delta));
 
             if (newEnd > note.Start)
             {
@@ -277,7 +298,7 @@ namespace JUMO.UI.Controls
 
         private void MoveNote(Note note, long deltaStart, int deltaValue)
         {
-            long newStart = SnapToGrid(note.Start + deltaStart);
+            long newStart = SnapToGridInternal(note.Start + deltaStart);
             int newValue = note.Value + deltaValue;
 
             note.Start = Math.Max(0, newStart);

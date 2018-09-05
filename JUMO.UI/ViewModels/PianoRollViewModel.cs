@@ -18,6 +18,7 @@ namespace JUMO.UI
 
         private int _zoomPercent = 100;
         private int _gridStep = 4;
+        private bool _snapToGrid = true;
 
         private RelayCommand _zoomInCommand;
         private RelayCommand _zoomOutCommand;
@@ -57,6 +58,16 @@ namespace JUMO.UI
             {
                 _gridStep = value;
                 OnPropertyChanged(nameof(GridStep));
+            }
+        }
+
+        public bool SnapToGrid
+        {
+            get => _snapToGrid;
+            set
+            {
+                _snapToGrid = value;
+                OnPropertyChanged(nameof(SnapToGrid));
             }
         }
 

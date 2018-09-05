@@ -47,6 +47,7 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -85,6 +86,7 @@
                                       SelectedItems="{Binding SelectedNotes}"
                                       ExtentHeightOverride="2560"
                                       GridStep="{Binding GridStep}"
+                                      SnapToGrid="{Binding SnapToGrid}"
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
