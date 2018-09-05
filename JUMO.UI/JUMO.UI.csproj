@@ -107,6 +107,9 @@
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\ChannelRackItemView.xaml.cs">
+      <DependentUpon>ChannelRackItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChannelRackView.xaml.cs">
       <DependentUpon>ChannelRackView.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,10 @@
     </Page>
     <Compile Include="Controls\MusicalGrid.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
+    <Page Include="Views\ChannelRackItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChannelRackView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
