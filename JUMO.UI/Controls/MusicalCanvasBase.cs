@@ -56,12 +56,17 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty GridStepProperty =
+            DependencyProperty.Register(
+                "GridStep", typeof(int), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(4)
+            );
+
         #endregion
 
         #region Dependency Property Accessors
 
         protected int TimeResolution => MusicalProps.GetTimeResolution(this);
-        protected int GridUnit => MusicalProps.GetGridUnit(this);
         protected int ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public IEnumerable<object> Items
@@ -80,6 +85,12 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(ExtentHeightOverrideProperty);
             set => SetValue(ExtentHeightOverrideProperty, value);
+        }
+
+        public int GridStep
+        {
+            get => (int)GetValue(GridStepProperty);
+            set => SetValue(GridStepProperty, value);
         }
 
         #endregion

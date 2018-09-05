@@ -68,6 +68,7 @@
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
                                       SelectedItems="{Binding SelectedNotes}"
                                       ExtentHeightOverride="2560"
+                                      GridStep="{Binding GridStep}"
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
@@ -81,6 +82,7 @@
                                           proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
+                                          GridStep="{Binding GridStep}"
                                           CanContentScroll="True"
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"

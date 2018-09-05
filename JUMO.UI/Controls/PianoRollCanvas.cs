@@ -150,11 +150,12 @@ namespace JUMO.UI.Controls
             Mouse.Capture(null);
         }
 
-        private long PixelToTick(double xPos) => (long)(xPos * TimeResolution / (ZoomFactor << 2));
+        private long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
 
         private long SnapToGrid(long pos)
         {
-            long ticksPerGrid = (long)(TimeResolution * (4.0 / GridUnit));
+            int ticksPerBeat = (TimeResolution << 2) / MusicalProps.GetDenominator(this);
+            int ticksPerGrid = ticksPerBeat / GridStep;
             return (pos / ticksPerGrid) * ticksPerGrid;
         }
 
