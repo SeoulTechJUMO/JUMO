@@ -27,7 +27,8 @@ namespace JUMO.UI.Controls
                 "GridStep", typeof(int), typeof(MusicalGrid),
                 new FrameworkPropertyMetadata(
                     4,
-                    FrameworkPropertyMetadataOptions.AffectsRender
+                    FrameworkPropertyMetadataOptions.AffectsMeasure
+                    | FrameworkPropertyMetadataOptions.AffectsRender
                 )
             );
 

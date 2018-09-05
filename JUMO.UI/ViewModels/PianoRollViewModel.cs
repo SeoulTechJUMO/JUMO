@@ -48,6 +48,8 @@ namespace JUMO.UI
             }
         }
 
+        public IEnumerable<int> GridStepOptions { get; } = new[] { 1, 2, 3, 4, 6, 8, 12, 16 };
+
         public int GridStep
         {
             get => _gridStep;
@@ -90,7 +92,10 @@ namespace JUMO.UI
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             Key = new PianoRollWorkspaceKey(plugin);
+
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
+
+            GridStep = Denominator >= 4 ? 4 : 2;
         }
 
         public void SelectItems(IEnumerable items)

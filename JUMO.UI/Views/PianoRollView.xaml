@@ -28,6 +28,25 @@
                 <TextBlock Text="{Binding ZoomPercent, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <Button Content="+" Padding="8,3" Command="{Binding ZoomInCommand}" />
+            <Label Content="눈금" />
+            <ComboBox Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="1">
+                                            <Setter Property="Text" Value="1박" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
