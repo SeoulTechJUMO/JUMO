@@ -59,7 +59,6 @@ namespace JUMO.UI.Controls
         private int Denominator => MusicalProps.GetDenominator(this);
         private int TimeResolution => MusicalProps.GetTimeResolution(this);
         private int ZoomFactor => MusicalProps.GetZoomFactor(this);
-        private int GridUnit => MusicalProps.GetGridUnit(this);
 
         public Rect ContentBoundary => (Rect)GetValue(ContentBoundaryProperty);
 
@@ -81,10 +80,6 @@ namespace JUMO.UI.Controls
             set => SetValue(GridHeightProperty, value);
         }
 
-        private int TicksPerGridUnit => (int)(TimeResolution / (GridUnit / 4.0));
-        private double GridWidth => ZoomFactor * (16.0 / GridUnit);
-        private double BeatWidth => ZoomFactor * (16.0 / Denominator);
-
         #endregion
 
         #region Drawing Resources
@@ -99,8 +94,14 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            System.Diagnostics.Debug.WriteLine($"TimeSignature = {Numerator}/{Denominator}, PPQN = {TimeResolution}, Ticks Per GridUnit = {TicksPerGridUnit}, GridWidth = {GridWidth}, Content Boundary = {ContentBoundary}");
-            ResizeContentBoundary();
+            int gridCount = Numerator * GridStep;
+            int ticksPerBeat = (TimeResolution << 2) / Denominator;
+
+            double beatWidth = TickToPixel(ticksPerBeat);
+            double barWidth = TickToPixel(ticksPerBeat * Numerator);
+            double gridWidth = TickToPixel(ticksPerBeat / GridStep);
+
+            SetValue(ContentBoundaryKey, new Rect(0, 0, barWidth, GridHeight));
 
             double cw = ContentBoundary.Width;
             double ch = ContentBoundary.Height;
@@ -110,12 +111,12 @@ namespace JUMO.UI.Controls
                 dc.DrawLine(fadedPen, new Point(0, 0.5), new Point(cw, 0.5));
             }
 
-            for (double xpos = 0; xpos <= cw; xpos += GridWidth)
+            for (double xpos = 0; xpos <= cw; xpos += gridWidth)
             {
                 dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
             }
 
-            for (double xpos = 0; xpos <= cw; xpos += BeatWidth)
+            for (double xpos = 0; xpos <= cw; xpos += beatWidth)
             {
                 dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, ch));
             }
@@ -124,6 +125,6 @@ namespace JUMO.UI.Controls
             dc.DrawLine(thickPen, new Point(cw + 0.5, 0), new Point(cw + 0.5, ch));
         }
 
-        private void ResizeContentBoundary() => SetValue(ContentBoundaryKey, new Rect(0, 0, BeatWidth * Numerator, GridHeight));
+        private double TickToPixel(long tick) => tick * (ZoomFactor << 2) / (double)TimeResolution;
     }
 }
