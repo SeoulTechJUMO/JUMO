@@ -109,6 +109,9 @@
                                    ViewportSize="{TemplateBinding ViewportHeight}"
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
                         <ctrl:MusicalGrid Grid.Row="2" Grid.Column="0"
+                                          ClipToBounds="True"
+                                          HorizontalOffset="{TemplateBinding HorizontalOffset}"
+                                          VerticalOffset="{TemplateBinding VerticalOffset}"
                                           GridStep="{TemplateBinding GridStep}"
                                           GridHeight="{TemplateBinding GridHeight}"
                                           ShouldDrawHorizontalGrid="{TemplateBinding ShouldDrawHorizontalGrid}" />

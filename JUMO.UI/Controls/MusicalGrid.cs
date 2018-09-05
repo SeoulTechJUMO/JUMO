@@ -40,6 +40,25 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty HorizontalOffsetProperty =
+            DependencyProperty.Register(
+                "HorizontalOffset", typeof(double), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    0.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
+
+        public static readonly DependencyProperty VerticalOffsetProperty =
+            DependencyProperty.Register(
+                "VerticalOffset", typeof(double), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    0.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
         #endregion
 
         #region Properties
@@ -67,6 +86,18 @@ namespace JUMO.UI.Controls
             set => SetValue(GridHeightProperty, value);
         }
 
+        public double HorizontalOffset
+        {
+            get => (double)GetValue(HorizontalOffsetProperty);
+            set => SetValue(HorizontalOffsetProperty, value);
+        }
+
+        public double VerticalOffset
+        {
+            get => (double)GetValue(VerticalOffsetProperty);
+            set => SetValue(VerticalOffsetProperty, value);
+        }
+
         #endregion
 
         #region Drawing Resources
@@ -88,26 +119,28 @@ namespace JUMO.UI.Controls
 
             double rw = RenderSize.Width;
             double rh = RenderSize.Height;
+            double hOffset = -HorizontalOffset;
+            double vOffset = -VerticalOffset;
 
             if (ShouldDrawHorizontalGrid)
             {
-                for (double ypos = 0; ypos <= rh; ypos += GridHeight)
+                for (double ypos = vOffset % GridHeight; ypos <= rh; ypos += GridHeight)
                 {
                     dc.DrawLine(fadedPen, new Point(0, ypos + 0.5), new Point(rw, ypos + 0.5));
                 }
             }
 
-            for (double xpos = 0; xpos <= rw; xpos += gridWidth)
+            for (double xpos = hOffset % gridWidth; xpos <= rw; xpos += gridWidth)
             {
                 dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            for (double xpos = 0; xpos <= rw; xpos += beatWidth)
+            for (double xpos = hOffset % beatWidth; xpos <= rw; xpos += beatWidth)
             {
                 dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
-            for (double xpos = 0; xpos <= rw; xpos += barWidth)
+            for (double xpos = hOffset % barWidth; xpos <= rw; xpos += barWidth)
             {
                 dc.DrawLine(thickPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
