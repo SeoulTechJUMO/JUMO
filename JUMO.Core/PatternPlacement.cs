@@ -40,6 +40,8 @@ namespace JUMO
         /// </summary>
         public long Length => Pattern.Length;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         /// <summary>
         /// 새로운 PatternPlacement 인스턴스를 생성합니다.
         /// </summary>
@@ -47,11 +49,14 @@ namespace JUMO
         /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
         public PatternPlacement(Pattern pattern, long start)
         {
-            Pattern = pattern;
+            Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
             Start = start;
+
+            pattern.PropertyChanged += OnPatternPropertyChanged;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
+            => OnPropertyChanged(e.PropertyName);
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
