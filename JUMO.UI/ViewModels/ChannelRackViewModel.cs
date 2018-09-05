@@ -12,33 +12,23 @@ namespace JUMO.UI
 {
     public class ChannelRackViewModel : ViewModelBase
     {
-        // TODO: PluginsSource 속성을 만들어서 의존성 분리?
-        private IEnumerable<Plugin> _plugins = PluginManager.Instance.Plugins;
+        private readonly Song _song = Song.Current;
+        private readonly IEnumerable<Plugin> _plugins = PluginManager.Instance.Plugins;
         private ICollectionView _pluginsView;
-        private Pattern _pattern;
 
-        public override string DisplayName => $"패턴: {_pattern.Name}";
+        public override string DisplayName => $"패턴: {Pattern.Name}";
 
-        public Pattern Pattern
-        {
-            get => _pattern;
-            set
-            {
-                _pattern = value;
-                OnPropertyChanged(nameof(Pattern));
-                OnPropertyChanged(nameof(Plugins));
-            }
-        }
+        public Pattern Pattern => _song.CurrentPattern;
 
         public IEnumerable<KeyValuePair<Plugin, IEnumerable<Note>>> Plugins
         {
             get
             {
-                if (_pattern != null)
+                if (Pattern != null)
                 {
                     foreach (Plugin p in _plugins)
                     {
-                        yield return new KeyValuePair<Plugin, IEnumerable<Note>>(p, _pattern[p]);
+                        yield return new KeyValuePair<Plugin, IEnumerable<Note>>(p, Pattern[p]);
                     }
                 }
             }
@@ -66,14 +56,25 @@ namespace JUMO.UI
 
         public ChannelRackViewModel()
         {
-            Pattern = new Pattern("Test Pattern");
             _pluginsView = CollectionViewSource.GetDefaultView(_plugins);
             _pluginsView.CollectionChanged += PluginsView_CollectionChanged;
+            _song.PropertyChanged += OnSongPropertyChanged;
         }
 
         private void PluginsView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(Plugins));
+        }
+
+        private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(Song.CurrentPattern):
+                    OnPropertyChanged(nameof(Pattern));
+                    OnPropertyChanged(nameof(Plugins));
+                    break;
+            }
         }
     }
 }
