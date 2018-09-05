@@ -18,6 +18,7 @@ namespace JUMO.UI
 
         private int _zoomPercent = 100;
         private int _gridUnit = 16;
+        private int _gridStep = 4;
 
         private RelayCommand _zoomInCommand;
         private RelayCommand _zoomOutCommand;
@@ -56,6 +57,16 @@ namespace JUMO.UI
                 System.Diagnostics.Debug.WriteLine($"Setting {nameof(GridUnit)} to {value}");
                 _gridUnit = value;
                 OnPropertyChanged(nameof(GridUnit));
+            }
+        }
+
+        public int GridStep
+        {
+            get => _gridStep;
+            set
+            {
+                _gridStep = value;
+                OnPropertyChanged(nameof(GridStep));
             }
         }
 
