@@ -74,9 +74,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:MusicalScrollViewer}">
                     <Grid x:Name="Grid">
-                        <Grid.Resources>
-                            <local:MinusConverter x:Key="MinusConverter" />
-                        </Grid.Resources>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="auto" />

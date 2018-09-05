@@ -99,7 +99,6 @@
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="MinusConverter.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
     <Compile Include="ViewModels\PianoRollViewModel.cs" />
