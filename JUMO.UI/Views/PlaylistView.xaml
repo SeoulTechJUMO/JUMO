@@ -1,0 +1,86 @@
+﻿<UserControl x:Class="JUMO.UI.Views.PlaylistView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Views"
+             xmlns:proj="clr-namespace:JUMO.UI"
+             xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
+          proj:MusicalProps.Denominator="{Binding Denominator}"
+          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+          proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="-" Padding="10,3" Command="{Binding ZoomOutCommand}" />
+            <Border BorderBrush="{x:Static SystemColors.ActiveBorderBrush}"
+                    Background="{x:Static SystemColors.WindowBrush}"
+                    Width="50"
+                    BorderThickness="1">
+                <Border.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
+                </Border.InputBindings>
+                <TextBlock Text="{Binding ZoomPercent, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <Button Content="+" Padding="8,3" Command="{Binding ZoomInCommand}" />
+            <Label Content="눈금" />
+            <ComboBox Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="1">
+                                            <Setter Property="Text" Value="1박" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Row="0" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
+            <ScrollViewer x:Name="KeyScrollViewer"
+                          Grid.Row="2" Grid.Column="0"
+                          proj:ScrollViewerHelper.SyncGroup="{Binding}"
+                          proj:ScrollViewerHelper.SyncDirection="Vertical"
+                          HorizontalScrollBarVisibility="Hidden"
+                          VerticalScrollBarVisibility="Hidden">
+                <Rectangle Fill="Gray" Width="100" />
+            </ScrollViewer>
+            <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
+                                      Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
+                                      proj:ScrollViewerHelper.SyncGroup="{Binding}"
+                                      proj:ScrollViewerHelper.SyncDirection="Both"
+                                      proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
+                                      HorizontalScrollBarVisibility="Visible"
+                                      VerticalScrollBarVisibility="Visible"
+                                      GridStep="{Binding GridStep}"
+                                      GridHeight="60"
+                                      CanContentScroll="True">
+            </ctrl:MusicalScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

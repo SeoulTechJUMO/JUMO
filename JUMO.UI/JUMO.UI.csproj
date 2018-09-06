@@ -124,6 +124,9 @@
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PlaylistView.xaml.cs">
+      <DependentUpon>PlaylistView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
     <Page Include="Layouts\MainWindow.xaml">
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PianoRollView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaylistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

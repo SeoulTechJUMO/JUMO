@@ -10,4 +10,8 @@
     <DataTemplate DataType="{x:Type ui:PianoRollViewModel}">
         <view:PianoRollView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type ui:PlaylistViewModel}">
+        <view:PlaylistView />
+    </DataTemplate>
 </ResourceDictionary>
