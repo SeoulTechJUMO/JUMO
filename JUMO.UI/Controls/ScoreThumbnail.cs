@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
 
@@ -60,14 +61,57 @@ namespace JUMO.UI.Controls
         {
             dc.DrawRectangle(Background, null, new Rect(RenderSize));
 
-            if ((Score?.Count ?? 0) == 0)
+            if (Score == null || Score.Count == 0 || Score.Pattern.Length == 0)
             {
                 return;
+            }
+
+            (Note minValueNote, Note maxValueNote) = Data.EnumHelper.MinMaxBy(Score, note => note.Value);
+            byte minValue = minValueNote.Value;
+            byte maxValue = maxValueNote.Value;
+            int valueRangeSize = maxValue - minValue + 1;
+
+            double tickWidth = RenderSize.Width / Score.Pattern.Length;
+            double noteHeight = RenderSize.Height / (valueRangeSize > 10 ? valueRangeSize : 10);
+            double top = valueRangeSize < 10 ? (10 - valueRangeSize) * noteHeight / 2 : 0;
+
+            foreach (Note note in Score)
+            {
+                Point point = new Point(note.Start * tickWidth, top + (maxValue - note.Value) * noteHeight);
+                Size size = new Size(note.Length * tickWidth, noteHeight);
+
+                dc.DrawRectangle(Foreground, null, new Rect(point, size));
+            }
+        }
+
+        #region Callbacks
+
+        private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(Note.Velocity))
+            {
+                InvalidateVisual();
             }
         }
 
         private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.OldItems != null)
+            {
+                foreach (Note note in e.OldItems)
+                {
+                    note.PropertyChanged -= OnNotePropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (Note note in e.NewItems)
+                {
+                    note.PropertyChanged += OnNotePropertyChanged;
+                }
+            }
+
             InvalidateVisual();
         }
 
@@ -90,5 +134,7 @@ namespace JUMO.UI.Controls
         {
             (d as ScoreThumbnail)?.OnScorePropertyChanged(e.OldValue as Score, e.NewValue as Score);
         }
+
+        #endregion
     }
 }
