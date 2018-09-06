@@ -20,7 +20,7 @@ namespace JUMO.UI
 
         public Pattern Pattern => _song.CurrentPattern;
 
-        public IEnumerable<KeyValuePair<Plugin, IEnumerable<Note>>> Plugins
+        public IEnumerable<KeyValuePair<Plugin, Score>> Plugins
         {
             get
             {
@@ -28,7 +28,7 @@ namespace JUMO.UI
                 {
                     foreach (Plugin p in _plugins)
                     {
-                        yield return new KeyValuePair<Plugin, IEnumerable<Note>>(p, Pattern[p]);
+                        yield return new KeyValuePair<Plugin, Score>(p, Pattern[p]);
                     }
                 }
             }

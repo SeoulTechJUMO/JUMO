@@ -15,8 +15,8 @@ namespace JUMO
     /// </summary>
     public class Pattern : INotifyPropertyChanged
     {
-        private readonly Dictionary<Plugin, ObservableCollection<Note>> _scores = new Dictionary<Plugin, ObservableCollection<Note>>();
-        private readonly Dictionary<IEnumerable<Note>, long> _lengthTable = new Dictionary<IEnumerable<Note>, long>();
+        private readonly Dictionary<Plugin, Score> _scores = new Dictionary<Plugin, Score>();
+        private readonly Dictionary<Score, long> _lengthTable = new Dictionary<Score, long>();
         private Song _song;
         private string _name;
         private long _length;
@@ -68,17 +68,17 @@ namespace JUMO
         /// 인덱스로 지정된 VST 플러그인에 대응하는 악보를 나타내는 컬렉션을 가져옵니다.
         /// </summary>
         /// <param name="p">VST 플러그인</param>
-        public ObservableCollection<Note> this[Plugin p]
+        public Score this[Plugin p]
         {
             get
             {
-                if (_scores.TryGetValue(p, out ObservableCollection<Note> score))
+                if (_scores.TryGetValue(p, out Score score))
                 {
                     return score;
                 }
                 else
                 {
-                    var newScore = new ObservableCollection<Note>();
+                    var newScore = new Score(this);
                     newScore.CollectionChanged += OnScoreChanged;
                     _scores.Add(p, newScore);
                     _lengthTable.Add(newScore, 0);
@@ -110,7 +110,7 @@ namespace JUMO
 
         private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            IEnumerable<Note> score = sender as IEnumerable<Note>;
+            Score score = sender as Score;
             long newLength = score?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
             _lengthTable[score] = newLength;
 

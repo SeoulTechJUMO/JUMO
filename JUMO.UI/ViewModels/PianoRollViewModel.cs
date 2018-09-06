@@ -71,7 +71,7 @@ namespace JUMO.UI
             }
         }
 
-        public ObservableCollection<Note> Notes => Pattern[Plugin];
+        public Score Notes => Pattern[Plugin];
 
         public ObservableCollection<Note> SelectedNotes { get; } = new ObservableCollection<Note>();
 

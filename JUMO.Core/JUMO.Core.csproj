@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
+    <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />

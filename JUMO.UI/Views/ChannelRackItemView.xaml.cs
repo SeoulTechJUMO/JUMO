@@ -29,7 +29,7 @@ namespace JUMO.UI.Views
 
         public static readonly DependencyProperty ScoreProperty =
             DependencyProperty.Register(
-                "Score", typeof(IEnumerable<Note>), typeof(ChannelRackItemView)
+                "Score", typeof(Score), typeof(ChannelRackItemView)
             );
 
         public static readonly DependencyProperty OpenPluginEditorProperty =
@@ -52,9 +52,9 @@ namespace JUMO.UI.Views
             set => SetValue(PluginProperty, value);
         }
 
-        public IEnumerable<Note> Score
+        public Score Score
         {
-            get => (IEnumerable<Note>)GetValue(ScoreProperty);
+            get => (Score)GetValue(ScoreProperty);
             set => SetValue(ScoreProperty, value);
         }
 
