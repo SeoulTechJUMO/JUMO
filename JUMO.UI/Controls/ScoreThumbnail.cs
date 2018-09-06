@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media;
@@ -86,34 +87,9 @@ namespace JUMO.UI.Controls
 
         #region Callbacks
 
-        private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != nameof(Note.Velocity))
-            {
-                InvalidateVisual();
-            }
-        }
+        private void OnNotePropertyChanged(object sender, EventArgs e) => InvalidateVisual();
 
-        private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                foreach (Note note in e.OldItems)
-                {
-                    note.PropertyChanged -= OnNotePropertyChanged;
-                }
-            }
-
-            if (e.NewItems != null)
-            {
-                foreach (Note note in e.NewItems)
-                {
-                    note.PropertyChanged += OnNotePropertyChanged;
-                }
-            }
-
-            InvalidateVisual();
-        }
+        private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e) => InvalidateVisual();
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -128,12 +104,14 @@ namespace JUMO.UI.Controls
             if (oldScore != null)
             {
                 oldScore.CollectionChanged -= OnScoreChanged;
+                oldScore.NotePropertyChanged -= OnNotePropertyChanged;
                 oldScore.Pattern.PropertyChanged -= OnPatternPropertyChanged;
             }
 
             if (newScore != null)
             {
                 newScore.CollectionChanged += OnScoreChanged;
+                newScore.NotePropertyChanged += OnNotePropertyChanged;
                 newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
 
