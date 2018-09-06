@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:JUMO.UI.Views"
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             xmlns:view="clr-namespace:JUMO.UI.Views"
              xmlns:proj="clr-namespace:JUMO.UI"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="450">
@@ -19,41 +20,10 @@
             <ItemsControl ItemsSource="{Binding Plugins}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="0,5">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="100" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" Margin="5,0,0,0" VerticalAlignment="Center" IsEnabled="False" />
-                            <Slider Grid.Column="1" Margin="5,0,0,0" Width="50" VerticalAlignment="Center" Minimum="0" Maximum="1" Value="{Binding Key.Volume}" />
-                            <ctrl:NumericUpDown Grid.Column="2" Width="50" Margin="5,0,0,0" />
-                            <Button Grid.Column="3" Margin="5,0" Padding="8,3" Content="{Binding Key.Name}"
-                                    Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
-                                    CommandParameter="{Binding Key}" >
-                                <Button.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="{Binding Key.Name}" IsEnabled="False" />
-                                        <Separator />
-                                        <MenuItem Header="편집(_E)"
-                                                  FontWeight="Bold"
-                                                  Command="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
-                                                  CommandParameter="{Binding Key}" />
-                                        <MenuItem Header="피아노 롤 열기(_P)"
-                                                  Command="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"
-                                                  CommandParameter="{Binding Key}" />
-                                        <MenuItem Header="제거(_D)" />
-                                    </ContextMenu>
-                                </Button.ContextMenu>
-                            </Button>
-                            <Rectangle Grid.Row="1" Grid.ColumnSpan="5" Stroke="Black" StrokeThickness="1" SnapsToDevicePixels="True" Margin="5,5,5,0" Height="32" />
-                        </Grid>
+                        <view:ChannelRackItemView Plugin="{Binding Key}"
+                                                  Score="{Binding Value}"
+                                                  OpenPluginEditor="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
+                                                  OpenPianoRoll="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

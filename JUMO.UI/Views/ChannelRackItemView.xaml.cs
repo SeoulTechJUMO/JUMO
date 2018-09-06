@@ -20,9 +20,63 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class ChannelRackItemView : UserControl
     {
+        #region Dependency Properties
+
+        public static readonly DependencyProperty PluginProperty =
+            DependencyProperty.Register(
+                "Plugin", typeof(Vst.Plugin), typeof(ChannelRackItemView)
+            );
+
+        public static readonly DependencyProperty ScoreProperty =
+            DependencyProperty.Register(
+                "Score", typeof(IEnumerable<Note>), typeof(ChannelRackItemView)
+            );
+
+        public static readonly DependencyProperty OpenPluginEditorProperty =
+            DependencyProperty.Register(
+                "OpenPluginEditor", typeof(ICommand), typeof(ChannelRackItemView)
+            );
+
+        public static readonly DependencyProperty OpenPianoRollProperty =
+            DependencyProperty.Register(
+                "OpenPianoRoll", typeof(ICommand), typeof(ChannelRackItemView)
+            );
+
+        #endregion
+
+        #region Properties
+
+        public Vst.Plugin Plugin
+        {
+            get => (Vst.Plugin)GetValue(PluginProperty);
+            set => SetValue(PluginProperty, value);
+        }
+
+        public IEnumerable<Note> Score
+        {
+            get => (IEnumerable<Note>)GetValue(ScoreProperty);
+            set => SetValue(ScoreProperty, value);
+        }
+
+        public ICommand OpenPluginEditor
+        {
+            get => (ICommand)GetValue(OpenPluginEditorProperty);
+            set => SetValue(OpenPluginEditorProperty, value);
+        }
+
+        public ICommand OpenPianoRoll
+        {
+            get => (ICommand)GetValue(OpenPianoRollProperty);
+            set => SetValue(OpenPianoRollProperty, value);
+        }
+
+        #endregion
+
         public ChannelRackItemView()
         {
             InitializeComponent();
+
+            root.DataContext = this;
         }
     }
 }

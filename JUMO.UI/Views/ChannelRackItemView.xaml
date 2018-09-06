@@ -4,11 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:JUMO.UI.Views"
-             xmlns:proj="clr-namespace:JUMO.UI"
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
              d:DesignWidth="350">
-    <Grid Margin="0,5">
+    <Grid x:Name="root" Margin="0,5">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -28,19 +27,26 @@
         <Slider Grid.Row="0" Grid.Column="1"
                 Margin="5,0,0,0" Width="50"
                 Minimum="0" Maximum="1"
+                Value="{Binding Plugin.Volume, Mode=TwoWay}"
                 VerticalAlignment="Center" />
         <ctrl:NumericUpDown Grid.Row="0" Grid.Column="2"
                             Margin="5,0,0,0" Width="50" />
         <Button Grid.Row="0" Grid.Column="3"
                 Margin="5,0,0,0"
-                Content="Plugin">
+                Content="{Binding Plugin.Name}"
+                Command="{Binding OpenPluginEditor}"
+                CommandParameter="{Binding Plugin}">
             <Button.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Plugin" IsEnabled="False" />
+                    <MenuItem Header="{Binding Plugin.Name}" IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="편집(_E)"
-                              FontWeight="Bold" />
-                    <MenuItem Header="피아노 롤 열기(_P)" />
+                              FontWeight="Bold"
+                              Command="{Binding OpenPluginEditor}"
+                              CommandParameter="{Binding Plugin}" />
+                    <MenuItem Header="피아노 롤 열기(_P)"
+                              Command="{Binding OpenPianoRoll}"
+                              CommandParameter="{Binding Plugin}" />
                     <MenuItem Header="제거(_D)" />
                 </ContextMenu>
             </Button.ContextMenu>
