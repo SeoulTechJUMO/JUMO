@@ -31,6 +31,26 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty BarGridBrushProperty =
+            DependencyProperty.Register(
+                "BarGridBrush", typeof(Brush), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(
+                    Brushes.Black,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
+        public static readonly DependencyProperty BarGridThicknessProperty =
+            DependencyProperty.Register(
+                "BarGridThickness", typeof(double), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(
+                    2.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
         public static readonly DependencyProperty ScrollOffsetProperty =
             DependencyProperty.Register(
                 "ScrollOffset", typeof(double), typeof(BarIndicator),
@@ -61,6 +81,18 @@ namespace JUMO.UI.Controls
             set => SetValue(ForegroundProperty, value);
         }
 
+        public Brush BarGridBrush
+        {
+            get => (Brush)GetValue(BarGridBrushProperty);
+            set => SetValue(BarGridBrushProperty, value);
+        }
+
+        public double BarGridThickness
+        {
+            get => (double)GetValue(BarGridThicknessProperty);
+            set => SetValue(BarGridThicknessProperty, value);
+        }
+
         public double ScrollOffset
         {
             get => (double)GetValue(ScrollOffsetProperty);
@@ -69,7 +101,14 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        private Pen _barGridPen;
         private double _barWidth;
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            UpdatePen();
+            base.OnInitialized(e);
+        }
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -85,13 +124,12 @@ namespace JUMO.UI.Controls
         {
             int nextBar = (int)(ScrollOffset / _barWidth);
             double nextBarPos = nextBar * _barWidth - ScrollOffset + 0.5;
-            Pen barSeparatorPen = new Pen(Foreground, 2.0);
 
             dc.DrawRectangle(Background, null, new Rect(new Point(0, 0), RenderSize));
 
             while (nextBarPos <= RenderSize.Width)
             {
-                dc.DrawLine(barSeparatorPen, new Point(nextBarPos, 0), new Point(nextBarPos, RenderSize.Height));
+                dc.DrawLine(_barGridPen, new Point(nextBarPos, 0), new Point(nextBarPos, RenderSize.Height));
                 dc.DrawText(
                     new FormattedText(
                         $"{nextBar + 1}",
@@ -106,6 +144,16 @@ namespace JUMO.UI.Controls
                 nextBar += 1;
                 nextBarPos += _barWidth;
             }
+        }
+
+        private void UpdatePen()
+        {
+            _barGridPen = new Pen(BarGridBrush, BarGridThickness);
+        }
+
+        private static void GridBrushPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as BarIndicator)?.UpdatePen();
         }
     }
 }
