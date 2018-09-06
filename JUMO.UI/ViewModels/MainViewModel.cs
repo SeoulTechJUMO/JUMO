@@ -23,6 +23,11 @@ namespace JUMO.UI
             }
         }
 
+        public RelayCommand OpenPlaylistCommand { get; } =
+            new RelayCommand(
+                _ => WorkspaceManager.Instance.OpenWorkspace(PlaylistWorkspaceKey.Instance, () => new PlaylistViewModel())
+            );
+
         public MainViewModel()
         {
             WorkspaceManager.Instance.PropertyChanged += WorkspaceManager_PropertyChanged;

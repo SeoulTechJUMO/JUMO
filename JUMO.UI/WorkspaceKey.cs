@@ -32,4 +32,25 @@ namespace JUMO.UI
 
         public override int GetHashCode() => base.GetHashCode();
     }
+
+    public class PlaylistWorkspaceKey : WorkspaceKey
+    {
+        private static readonly Lazy<PlaylistWorkspaceKey> _instance = new Lazy<PlaylistWorkspaceKey>(() => new PlaylistWorkspaceKey());
+
+        private PlaylistWorkspaceKey() : base(new object()) { }
+
+        public static PlaylistWorkspaceKey Instance => _instance.Value;
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is PlaylistWorkspaceKey key))
+            {
+                return false;
+            }
+
+            return ReferenceEquals(data, key.data);
+        }
+
+        public override int GetHashCode() => base.GetHashCode();
+    }
 }
