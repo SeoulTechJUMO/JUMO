@@ -77,6 +77,8 @@
                                       proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
+                                      BeatGridBrush="{x:Null}"
+                                      BarGridThickness="1"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
                                       CanContentScroll="True">
