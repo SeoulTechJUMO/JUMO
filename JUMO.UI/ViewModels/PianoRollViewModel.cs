@@ -34,7 +34,7 @@ namespace JUMO.UI
         public int Denominator => Song.Current.Denominator;
         public int TimeResolution => Song.Current.TimeResolution;
 
-        public int ZoomFactor { get; private set; } = 24;
+        public double ZoomFactor { get; private set; } = 24.0;
 
         public int ZoomPercent
         {
@@ -42,7 +42,7 @@ namespace JUMO.UI
             private set
             {
                 _zoomPercent = Math.Max(ZOOM_PERCENT_MIN, Math.Min(value, ZOOM_PERCENT_MAX));
-                ZoomFactor = (int)(ZOOM_BASE * _zoomPercent / 100.0);
+                ZoomFactor = ZOOM_BASE * _zoomPercent / 100.0;
 
                 OnPropertyChanged(nameof(ZoomPercent));
                 OnPropertyChanged(nameof(ZoomFactor));

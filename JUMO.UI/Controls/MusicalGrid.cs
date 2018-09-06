@@ -67,7 +67,7 @@ namespace JUMO.UI.Controls
         private int Numerator => MusicalProps.GetNumerator(this);
         private int Denominator => MusicalProps.GetDenominator(this);
         private int TimeResolution => MusicalProps.GetTimeResolution(this);
-        private int ZoomFactor => MusicalProps.GetZoomFactor(this);
+        private double ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public bool ShouldDrawHorizontalGrid
         {
@@ -117,7 +117,7 @@ namespace JUMO.UI.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double tickWidth = (ZoomFactor << 2) / (double)TimeResolution;
+            double tickWidth = ZoomFactor * 4 / TimeResolution;
             int ticksPerBeat = (TimeResolution << 2) / Denominator;
 
             _beatWidth = tickWidth * ticksPerBeat;

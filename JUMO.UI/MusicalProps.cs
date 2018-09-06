@@ -38,9 +38,9 @@ namespace JUMO.UI
 
         public static readonly DependencyProperty ZoomFactorProperty =
             DependencyProperty.RegisterAttached(
-                "ZoomFactor", typeof(int), typeof(MusicalProps),
+                "ZoomFactor", typeof(double), typeof(MusicalProps),
                 new FrameworkPropertyMetadata(
-                    24,
+                    24.0,
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender
@@ -57,7 +57,7 @@ namespace JUMO.UI
         public static int GetTimeResolution(UIElement target) => (int)target.GetValue(TimeResolutionProperty);
         public static void SetTimeResolution(UIElement target, int value) => target.SetValue(TimeResolutionProperty, value);
 
-        public static int GetZoomFactor(UIElement target) => (int)target.GetValue(ZoomFactorProperty);
-        public static void SetZoomFactor(UIElement target, int value) => target.SetValue(ZoomFactorProperty, value);
+        public static double GetZoomFactor(UIElement target) => (double)target.GetValue(ZoomFactorProperty);
+        public static void SetZoomFactor(UIElement target, double value) => target.SetValue(ZoomFactorProperty, value);
     }
 }

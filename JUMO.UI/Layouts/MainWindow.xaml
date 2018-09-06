@@ -40,7 +40,7 @@
                     <ComboBoxItem>패턴3</ComboBoxItem>
                 </ComboBox>
                 <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="MX" />
-                <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="PL" />
+                <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="PL" Command="{Binding OpenPlaylistCommand}" />
             </ToolBar>
         </ToolBarTray>
         <StatusBar DockPanel.Dock="Bottom">

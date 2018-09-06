@@ -67,7 +67,7 @@ namespace JUMO.UI.Controls
         #region Dependency Property Accessors
 
         protected int TimeResolution => MusicalProps.GetTimeResolution(this);
-        protected int ZoomFactor => MusicalProps.GetZoomFactor(this);
+        protected double ZoomFactor => MusicalProps.GetZoomFactor(this);
 
         public IEnumerable<object> Items
         {
@@ -264,7 +264,7 @@ namespace JUMO.UI.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            WidthPerTick = (ZoomFactor << 2) / (double)TimeResolution;
+            WidthPerTick = ZoomFactor * 4 / TimeResolution;
 
             ScaleExtent();
 
