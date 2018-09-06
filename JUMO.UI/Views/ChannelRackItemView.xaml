@@ -52,9 +52,11 @@
             </Button.ContextMenu>
         </Button>
 
-        <Rectangle Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
-                   Margin="5,5,5,0" Height="32"
-                   Stroke="Black" StrokeThickness="1"
-                   SnapsToDevicePixels="True" />
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+                Margin="5,5,5,0" Height="32"
+                BorderBrush="Black" BorderThickness="1"
+                SnapsToDevicePixels="True">
+            <ctrl:ScoreThumbnail Score="{Binding Score}" />
+        </Border>
     </Grid>
 </UserControl>
