@@ -115,16 +115,26 @@ namespace JUMO.UI.Controls
             InvalidateVisual();
         }
 
+        private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Pattern.Length))
+            {
+                InvalidateVisual();
+            }
+        }
+
         private void OnScorePropertyChanged(Score oldScore, Score newScore)
         {
             if (oldScore != null)
             {
                 oldScore.CollectionChanged -= OnScoreChanged;
+                oldScore.Pattern.PropertyChanged -= OnPatternPropertyChanged;
             }
 
             if (newScore != null)
             {
                 newScore.CollectionChanged += OnScoreChanged;
+                newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
 
             InvalidateVisual();
