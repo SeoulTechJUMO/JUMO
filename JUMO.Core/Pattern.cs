@@ -80,6 +80,7 @@ namespace JUMO
                 {
                     var newScore = new Score(this);
                     newScore.CollectionChanged += OnScoreChanged;
+                    newScore.NotePropertyChanged += OnNotePropertyChanged;
                     _scores.Add(p, newScore);
                     _lengthTable.Add(newScore, 0);
 
@@ -110,11 +111,20 @@ namespace JUMO
 
         private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Score score = sender as Score;
+            UpdateLengthTable(sender as Score);
+            UpdateLength();
+        }
+
+        private void OnNotePropertyChanged(object sender, EventArgs e)
+        {
+            UpdateLengthTable(sender as Score);
+            UpdateLength();
+        }
+
+        private void UpdateLengthTable(Score score)
+        {
             long newLength = score?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
             _lengthTable[score] = newLength;
-
-            UpdateLength();
         }
 
         private void UpdateLength()
