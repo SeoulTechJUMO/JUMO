@@ -122,4 +122,49 @@ namespace JUMO.UI.Controls
             }
         }
     }
+
+    class VirtualPatternControl : IVirtualElement
+    {
+        private bool _isSelected = false;
+        private Segment _bounds;
+
+        public Segment Bounds => _bounds;
+
+        public UIElement Visual { get; private set; }
+
+        public bool IsSelected
+        {
+            get => _isSelected;
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnIsSelectedChanged();
+                }
+            }
+        }
+
+        public event EventHandler BoundsChanged;
+
+        public UIElement CreateVisual(MusicalCanvasBase parent)
+        {
+            if (Visual == null)
+            {
+                Visual = new Button() { };
+            }
+
+            return Visual;
+        }
+
+        public void DisposeVisual()
+        {
+            Visual = null;
+        }
+
+        private void OnIsSelectedChanged()
+        {
+            //throw new NotImplementedException();
+        }
+    }
 }
