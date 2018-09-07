@@ -84,6 +84,7 @@
     <Compile Include="Controls\BlockSelectionAdorner.cs" />
     <Compile Include="Controls\IMusicalViewCallback.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
+    <Compile Include="Controls\PlaylistCanvas.cs" />
     <Compile Include="Controls\ScoreThumbnail.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />

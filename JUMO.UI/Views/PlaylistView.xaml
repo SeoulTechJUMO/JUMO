@@ -82,6 +82,8 @@
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
                                       CanContentScroll="True">
+                <ctrl:PlaylistCanvas GridStep="{Binding GridStep}"
+                                     SnapToGrid="{Binding SnapToGrid}" />
             </ctrl:MusicalScrollViewer>
         </Grid>
     </Grid>
