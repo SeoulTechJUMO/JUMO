@@ -128,31 +128,23 @@ namespace JUMO.UI.Controls
         }
     }
 
-    class VirtualPatternControl : IVirtualElement
+    class VirtualPatternControl : VirtualElement
     {
-        private bool _isSelected = false;
+        private PatternPlacement _patternPlacement;
         private Segment _bounds;
 
-        public Segment Bounds => _bounds;
+        public override event EventHandler BoundsChanged;
 
-        public UIElement Visual { get; private set; }
+        public override Segment Bounds => _bounds;
 
-        public bool IsSelected
+        public VirtualPatternControl(PatternPlacement patternPlacement)
         {
-            get => _isSelected;
-            set
-            {
-                if (_isSelected != value)
-                {
-                    _isSelected = value;
-                    OnIsSelectedChanged();
-                }
-            }
+            _patternPlacement = patternPlacement;
+            _bounds = new Segment(_patternPlacement.Start, _patternPlacement.Length);
+            _patternPlacement.PropertyChanged += OnPatternPlacementPropertyChanged;
         }
 
-        public event EventHandler BoundsChanged;
-
-        public UIElement CreateVisual(MusicalCanvasBase parent)
+        public override UIElement CreateVisual(MusicalCanvasBase parent)
         {
             if (Visual == null)
             {
@@ -162,14 +154,18 @@ namespace JUMO.UI.Controls
             return Visual;
         }
 
-        public void DisposeVisual()
+        protected override void OnIsSelectedChanged()
         {
-            Visual = null;
+            throw new NotImplementedException();
         }
 
-        private void OnIsSelectedChanged()
+        private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
+            PatternPlacement pp = (PatternPlacement)sender;
+            _bounds.Start = pp.Start;
+            _bounds.Length = pp.Length;
+
+            BoundsChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }
