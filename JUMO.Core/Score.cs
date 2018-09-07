@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -7,7 +8,22 @@ namespace JUMO
 {
     public class Score : ObservableCollection<Note>
     {
+        private long _length = 0;
+
         public Pattern Pattern { get; }
+
+        public long Length
+        {
+            get => _length;
+            private set
+            {
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Length)));
+                }
+            }
+        }
 
         public event EventHandler NotePropertyChanged;
 
@@ -34,11 +50,15 @@ namespace JUMO
                 }
             }
 
+            UpdateLength();
             base.OnCollectionChanged(e);
         }
 
+        private void UpdateLength() => Length = this.Select(note => note.Start + note.Length).DefaultIfEmpty(0L).Max();
+
         private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            UpdateLength();
             NotePropertyChanged?.Invoke(this, EventArgs.Empty);
         }
     }

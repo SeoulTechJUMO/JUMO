@@ -16,7 +16,6 @@ namespace JUMO
     public class Pattern : INotifyPropertyChanged
     {
         private readonly Dictionary<Plugin, Score> _scores = new Dictionary<Plugin, Score>();
-        private readonly Dictionary<Score, long> _lengthTable = new Dictionary<Score, long>();
         private Song _song;
         private string _name;
         private long _length;
@@ -79,10 +78,8 @@ namespace JUMO
                 else
                 {
                     var newScore = new Score(this);
-                    newScore.CollectionChanged += OnScoreChanged;
-                    newScore.NotePropertyChanged += OnNotePropertyChanged;
+                    ((INotifyPropertyChanged)newScore).PropertyChanged += OnScorePropertyChanged;
                     _scores.Add(p, newScore);
-                    _lengthTable.Add(newScore, 0);
 
                     return newScore;
                 }
@@ -109,28 +106,18 @@ namespace JUMO
             }
         }
 
-        private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnScorePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateLengthTable(sender as Score);
-            UpdateLength();
-        }
-
-        private void OnNotePropertyChanged(object sender, EventArgs e)
-        {
-            UpdateLengthTable(sender as Score);
-            UpdateLength();
-        }
-
-        private void UpdateLengthTable(Score score)
-        {
-            long newLength = score?.Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length)) ?? 0;
-            _lengthTable[score] = newLength;
+            if (e.PropertyName == nameof(Score.Length))
+            {
+                UpdateLength();
+            }
         }
 
         private void UpdateLength()
         {
             long ticksPerBar = 4 * CurrentSong.TimeResolution * CurrentSong.Numerator / CurrentSong.Denominator;
-            long maxLength = Math.Max(1, _lengthTable.Values.Max());
+            long maxLength = Math.Max(1, _scores.Values.Max(score => score.Length));
             long q = Math.DivRem(maxLength, ticksPerBar, out long r);
 
             Length = (q + (r == 0 ? 0 : 1)) * ticksPerBar;
