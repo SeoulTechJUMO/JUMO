@@ -13,6 +13,46 @@ namespace JUMO.UI.Controls
     {
         #region Dependency Properties
 
+        public static readonly DependencyProperty SmallGridBrushProperty =
+            DependencyProperty.Register(
+                "SmallGridBrush", typeof(Brush), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    Brushes.Silver,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
+        public static readonly DependencyProperty BeatGridBrushProperty =
+            DependencyProperty.Register(
+                "BeatGridBrush", typeof(Brush), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    Brushes.Black,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
+        public static readonly DependencyProperty BarGridBrushProperty =
+            DependencyProperty.Register(
+                "BarGridBrush", typeof(Brush), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    Brushes.Black,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
+        public static readonly DependencyProperty BarGridThicknessProperty =
+            DependencyProperty.Register(
+                "BarGridThickness", typeof(double), typeof(MusicalGrid),
+                new FrameworkPropertyMetadata(
+                    2.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    GridBrushPropertyChangedCallback
+                )
+            );
+
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
             DependencyProperty.Register(
                 "ShouldDrawHorizontalGrid", typeof(bool), typeof(MusicalGrid),
@@ -69,6 +109,30 @@ namespace JUMO.UI.Controls
         private int TimeResolution => MusicalProps.GetTimeResolution(this);
         private double ZoomFactor => MusicalProps.GetZoomFactor(this);
 
+        public Brush SmallGridBrush
+        {
+            get => (Brush)GetValue(SmallGridBrushProperty);
+            set => SetValue(SmallGridBrushProperty, value);
+        }
+
+        public Brush BeatGridBrush
+        {
+            get => (Brush)GetValue(BeatGridBrushProperty);
+            set => SetValue(BeatGridBrushProperty, value);
+        }
+
+        public Brush BarGridBrush
+        {
+            get => (Brush)GetValue(BarGridBrushProperty);
+            set => SetValue(BarGridBrushProperty, value);
+        }
+
+        public double BarGridThickness
+        {
+            get => (double)GetValue(BarGridThicknessProperty);
+            set => SetValue(BarGridThicknessProperty, value);
+        }
+
         public bool ShouldDrawHorizontalGrid
         {
             get => (bool)GetValue(ShouldDrawHorizontalGridProperty);
@@ -101,19 +165,18 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        #region Drawing Resources
-
-        private static readonly SolidColorBrush normalBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-        private static readonly SolidColorBrush fadedBrush = new SolidColorBrush(Color.FromArgb(64, 0, 0, 0));
-        private static readonly Pen thickPen = new Pen(normalBrush, 2);
-        private static readonly Pen normalPen = new Pen(normalBrush, 1);
-        private static readonly Pen fadedPen = new Pen(fadedBrush, 1);
-
-        #endregion
-
+        private Pen _smallGridPen;
+        private Pen _beatGridPen;
+        private Pen _barGridPen;
         private double _beatWidth;
         private double _barWidth;
         private double _gridWidth;
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            UpdatePen();
+            base.OnInitialized(e);
+        }
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -138,24 +201,36 @@ namespace JUMO.UI.Controls
             {
                 for (double ypos = vOffset % GridHeight; ypos <= rh; ypos += GridHeight)
                 {
-                    dc.DrawLine(fadedPen, new Point(0, ypos + 0.5), new Point(rw, ypos + 0.5));
+                    dc.DrawLine(_smallGridPen, new Point(0, ypos + 0.5), new Point(rw, ypos + 0.5));
                 }
             }
 
             for (double xpos = hOffset % _gridWidth; xpos <= rw; xpos += _gridWidth)
             {
-                dc.DrawLine(fadedPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
+                dc.DrawLine(_smallGridPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
             for (double xpos = hOffset % _beatWidth; xpos <= rw; xpos += _beatWidth)
             {
-                dc.DrawLine(normalPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
+                dc.DrawLine(_beatGridPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
 
             for (double xpos = hOffset % _barWidth; xpos <= rw; xpos += _barWidth)
             {
-                dc.DrawLine(thickPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
+                dc.DrawLine(_barGridPen, new Point(xpos + 0.5, 0), new Point(xpos + 0.5, rh));
             }
+        }
+
+        private void UpdatePen()
+        {
+            _smallGridPen = new Pen(SmallGridBrush, 1);
+            _beatGridPen = new Pen(BeatGridBrush, 1);
+            _barGridPen = new Pen(BarGridBrush, BarGridThickness);
+        }
+
+        private static void GridBrushPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            (d as MusicalGrid)?.UpdatePen();
         }
     }
 }

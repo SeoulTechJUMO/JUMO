@@ -94,6 +94,8 @@
                                    Fill="{x:Static SystemColors.ControlBrush}" />
                         <ctrl:BarIndicator Grid.Row="1" Grid.Column="0"
                                            ClipToBounds="True"
+                                           BarGridBrush="{TemplateBinding BarGridBrush}"
+                                           BarGridThickness="{TemplateBinding BarGridThickness}"
                                            ScrollOffset="{TemplateBinding HorizontalOffset}"
                                            Background="{x:Static SystemColors.ControlBrush}"
                                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
@@ -107,6 +109,10 @@
                                    Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
                         <ctrl:MusicalGrid Grid.Row="2" Grid.Column="0"
                                           ClipToBounds="True"
+                                          SmallGridBrush="{TemplateBinding SmallGridBrush}"
+                                          BeatGridBrush="{TemplateBinding BeatGridBrush}"
+                                          BarGridBrush="{TemplateBinding BarGridBrush}"
+                                          BarGridThickness="{TemplateBinding BarGridThickness}"
                                           HorizontalOffset="{TemplateBinding HorizontalOffset}"
                                           VerticalOffset="{TemplateBinding VerticalOffset}"
                                           GridStep="{TemplateBinding GridStep}"

@@ -19,6 +19,30 @@ namespace JUMO.UI.Controls
     {
         #region Dependency Properties
 
+        public static readonly DependencyProperty SmallGridBrushProperty =
+            DependencyProperty.Register(
+                "SmallGridBrush", typeof(Brush), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(Brushes.Silver)
+            );
+
+        public static readonly DependencyProperty BeatGridBrushProperty =
+            DependencyProperty.Register(
+                "BeatGridBrush", typeof(Brush), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(Brushes.Black)
+            );
+
+        public static readonly DependencyProperty BarGridBrushProperty =
+            DependencyProperty.Register(
+                "BarGridBrush", typeof(Brush), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(Brushes.Black)
+            );
+
+        public static readonly DependencyProperty BarGridThicknessProperty =
+            DependencyProperty.Register(
+                "BarGridThickness", typeof(double), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(2.0)
+            );
+
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
             DependencyProperty.Register(
                 "ShouldDrawHorizontalGrid", typeof(bool), typeof(MusicalScrollViewer),
@@ -46,6 +70,30 @@ namespace JUMO.UI.Controls
         #endregion
 
         #region Dependency Property Accessors
+
+        public Brush SmallGridBrush
+        {
+            get => (Brush)GetValue(SmallGridBrushProperty);
+            set => SetValue(SmallGridBrushProperty, value);
+        }
+
+        public Brush BeatGridBrush
+        {
+            get => (Brush)GetValue(BeatGridBrushProperty);
+            set => SetValue(BeatGridBrushProperty, value);
+        }
+
+        public Brush BarGridBrush
+        {
+            get => (Brush)GetValue(BarGridBrushProperty);
+            set => SetValue(BarGridBrushProperty, value);
+        }
+
+        public double BarGridThickness
+        {
+            get => (double)GetValue(BarGridThicknessProperty);
+            set => SetValue(BarGridThicknessProperty, value);
+        }
 
         public bool ShouldDrawHorizontalGrid
         {
