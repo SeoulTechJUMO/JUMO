@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO
 {
     /// <summary>
     /// 패턴을 배치할 수 있는 트랙을 나타냅니다.
     /// </summary>
-    public class Track : INotifyPropertyChanged
+    public class Track : ObservableCollection<PatternPlacement>
     {
         private string _name;
+        private long _length;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// 트랙에 배치된 임의의 PatternPlacement의 속성이 변경되었을 때 발생하는 이벤트입니다.
+        /// </summary>
+        public event EventHandler PatternPlacementPropertyChanged;
 
         /// <summary>
         /// 트랙의 이름을 가져오거나 설정합니다.
@@ -25,19 +28,25 @@ namespace JUMO
             set
             {
                 _name = value;
-                OnPropertyChanged(nameof(Name));
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Name)));
             }
         }
 
         /// <summary>
-        /// 트랙에 배치된 패턴을 저장하는 컬렉션을 가져옵니다.
-        /// </summary>
-        public ICollection<PatternPlacement> Patterns { get; } = new List<PatternPlacement>();
-
-        /// <summary>
         /// 트랙의 총 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length => Patterns.Count == 0 ? 0 : Patterns.Max(pp => pp.Start + pp.Length);
+        public long Length
+        {
+            get => _length;
+            private set
+            {
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(new PropertyChangedEventArgs(nameof(Length)));
+                }
+            }
+        }
 
         /// <summary>
         /// 새로운 Track 인스턴스를 생성합니다.
@@ -45,7 +54,34 @@ namespace JUMO
         /// <param name="name">새 트랙의 이름</param>
         public Track(string name) => Name = name;
 
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (PatternPlacement pp in e.OldItems)
+                {
+                    pp.PropertyChanged -= OnPatternPlacementPropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (PatternPlacement pp in e.NewItems)
+                {
+                    pp.PropertyChanged += OnPatternPlacementPropertyChanged;
+                }
+            }
+
+            UpdateLength();
+            base.OnCollectionChanged(e);
+        }
+
+        private void UpdateLength() => Length = this.Select(pp => pp.Start + pp.Length).DefaultIfEmpty(0).Max();
+
+        private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateLength();
+            PatternPlacementPropertyChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }
