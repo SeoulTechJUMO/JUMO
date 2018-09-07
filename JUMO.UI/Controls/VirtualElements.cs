@@ -19,13 +19,13 @@ namespace JUMO.UI.Controls
         event EventHandler BoundsChanged;
     }
 
-    abstract class VirtualNoteBase : IVirtualElement
+    abstract class VirtualElement : IVirtualElement
     {
-        protected readonly Note _note;
-        protected Segment _bounds;
         private bool _isSelected = false;
 
-        public Segment Bounds => _bounds;
+        public abstract event EventHandler BoundsChanged;
+
+        public abstract Segment Bounds { get; }
         public UIElement Visual { get; protected set; }
 
         public bool IsSelected
@@ -41,22 +41,27 @@ namespace JUMO.UI.Controls
             }
         }
 
-        public event EventHandler BoundsChanged;
+        public abstract UIElement CreateVisual(MusicalCanvasBase parent);
+
+        public virtual void DisposeVisual() => Visual = null;
+
+        protected virtual void OnIsSelectedChanged() { }
+    }
+
+    abstract class VirtualNoteBase : VirtualElement
+    {
+        protected readonly Note _note;
+        protected Segment _bounds;
+
+        public override event EventHandler BoundsChanged;
+
+        public override Segment Bounds => _bounds;
 
         public VirtualNoteBase(Note note)
         {
             _note = note;
             _bounds = new Segment(_note.Start, _note.Length);
             _note.PropertyChanged += OnNotePropertyChanged;
-        }
-
-        protected abstract void OnIsSelectedChanged();
-
-        public abstract UIElement CreateVisual(MusicalCanvasBase parent);
-
-        public void DisposeVisual()
-        {
-            Visual = null;
         }
 
         private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
