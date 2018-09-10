@@ -22,6 +22,7 @@ namespace JUMO
             for (int i = 0; i < NumOfTracks; i++)
             {
                 Tracks[i] = new Track(i, $"트랙 {i + 1}");
+                ((INotifyPropertyChanged)Tracks[i]).PropertyChanged += OnTrackPropertyChanged;
             }
 
             for (int i = 0; i < 16; i++)
@@ -29,6 +30,8 @@ namespace JUMO
                 Patterns.Add(new Pattern($"패턴 {i + 1}"));
             }
             CurrentPattern = Patterns[0];
+
+            UpdateLength();
         }
 
         /// <summary>
@@ -51,6 +54,7 @@ namespace JUMO
         private int _numerator = 4;
         private int _denominator = 4;
         private int _timeResolution = 480;
+        private long _length = 0;
         private Pattern _currentPattern;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -167,6 +171,22 @@ namespace JUMO
         }
 
         /// <summary>
+        /// 곡의 총 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
+        /// </summary>
+        public long Length
+        {
+            get => _length;
+            private set
+            {
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(nameof(Length));
+                }
+            }
+        }
+
+        /// <summary>
         /// 곡을 구성하는 트랙의 배열을 가져옵니다.
         /// </summary>
         public Track[] Tracks { get; } = new Track[NumOfTracks];
@@ -194,6 +214,16 @@ namespace JUMO
         /// 4분음표 하나가 연주되는 시간을 마이크로초 단위로 나타낸 값입니다.
         /// </summary>
         public int MidiTempo { get; private set; }
+
+        private void UpdateLength() => Length = Tracks.Select(track => track.Length).Max();
+
+        private void OnTrackPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Track.Length))
+            {
+                UpdateLength();
+            }
+        }
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
