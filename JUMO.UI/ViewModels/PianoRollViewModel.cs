@@ -24,7 +24,7 @@ namespace JUMO.UI
 
         public Score Notes => Pattern[Plugin];
 
-        public ObservableCollection<Note> SelectedNotes { get; } = new ObservableCollection<Note>();
+        public ObservableCollection<Note> SelectedItems { get; } = new ObservableCollection<Note>();
 
         public PianoRollViewModel(Vst.Plugin plugin) : base()
         {
@@ -42,7 +42,7 @@ namespace JUMO.UI
             {
                 foreach (var item in items.OfType<Note>())
                 {
-                    SelectedNotes.Add(item);
+                    SelectedItems.Add(item);
                 }
             }
         }
@@ -53,14 +53,14 @@ namespace JUMO.UI
             {
                 foreach (var item in items.OfType<Note>())
                 {
-                    SelectedNotes.Remove(item);
+                    SelectedItems.Remove(item);
                 }
             }
         }
 
         public void ClearSelection()
         {
-            SelectedNotes?.Clear();
+            SelectedItems?.Clear();
         }
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)

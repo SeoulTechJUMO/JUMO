@@ -83,7 +83,7 @@
                                       GridHeight="20"
                                       CanContentScroll="True">
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
-                                      SelectedItems="{Binding SelectedNotes}"
+                                      SelectedItems="{Binding SelectedItems}"
                                       ExtentHeightOverride="2560"
                                       GridStep="{Binding GridStep}"
                                       SnapToGrid="{Binding SnapToGrid}"
@@ -104,7 +104,7 @@
                                           CanContentScroll="True"
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
-                                         SelectedItems="{Binding SelectedNotes}"
+                                         SelectedItems="{Binding SelectedItems}"
                                          PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
                 </ctrl:MusicalScrollViewer>
             </Border>
