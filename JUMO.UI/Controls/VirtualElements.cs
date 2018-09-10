@@ -148,10 +148,10 @@ namespace JUMO.UI.Controls
         {
             if (Visual == null)
             {
-                Visual = new Button()
+                Visual = new PatternPlacementView()
                 {
                     DataContext = _patternPlacement,
-                    Content = _patternPlacement.Pattern.Name
+                    IsSelected = IsSelected
                 };
             }
 

@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="JUMO.UI.Views.PatternPlacementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="60" d:DesignWidth="80">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type Thumb}">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Rectangle Fill="Transparent" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3"
+            Background="#0F000000">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0"
+                    Background="MediumSpringGreen"
+                    CornerRadius="2.5,2.5,0,0">
+                <TextBlock Text="{Binding Pattern.Name, FallbackValue=패턴}"
+                           FontFamily="Segoe UI"
+                           FontSize="10"
+                           Margin="3,1"/>
+            </Border>
+            <Thumb Grid.RowSpan="2"
+                   DragStarted="Thumb_DragStarted"
+                   DragCompleted="Thumb_DragCompleted"
+                   DragDelta="Thumb_DragDelta"
+                   PreviewMouseLeftButtonDown="Thumb_PreviewMouseLeftButtonDown"
+                   PreviewMouseRightButtonDown="Thumb_PreviewMouseRightButtonDown"
+                   Cursor="Hand" />
+        </Grid>
+    </Border>
+</UserControl>
