@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using JUMO.UI.Controls;
 
 namespace JUMO.UI.Views
 {
@@ -39,6 +40,13 @@ namespace JUMO.UI.Views
 
                 e.Handled = true;
             }
+        }
+
+        private void PlaylistCanvas_PlacePatternRequested(object sender, PlacePatternRequestedEventArgs e)
+        {
+            PlaylistViewModel vm = (PlaylistViewModel)DataContext;
+
+            vm.PlacePattern(e.Pattern, e.TrackIndex, e.Start);
         }
     }
 }
