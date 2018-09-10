@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
-    public abstract class MusicalCanvasWorkspaceViewModel : WorkspaceViewModel
+    public abstract class MusicalCanvasWorkspaceViewModel<T> : WorkspaceViewModel
     {
         protected abstract double ZoomBase { get; }
         protected virtual int ZoomPercentMinimum => 25;
@@ -61,6 +63,8 @@ namespace JUMO.UI
             }
         }
 
+        public ObservableCollection<T> SelectedItems { get; } = new ObservableCollection<T>();
+
         public RelayCommand ZoomInCommand
         {
             get => _zoomInCommand ?? (_zoomInCommand = new RelayCommand(
@@ -88,6 +92,33 @@ namespace JUMO.UI
         protected MusicalCanvasWorkspaceViewModel()
         {
             ZoomFactor = ZoomBase;
+        }
+
+        public void SelectItems(IEnumerable items)
+        {
+            if (items != null)
+            {
+                foreach (var item in items.OfType<T>())
+                {
+                    SelectedItems.Add(item);
+                }
+            }
+        }
+
+        public void DeselectItems(IEnumerable items)
+        {
+            if (items != null)
+            {
+                foreach (var item in items.OfType<T>())
+                {
+                    SelectedItems.Remove(item);
+                }
+            }
+        }
+
+        public void ClearSelection()
+        {
+            SelectedItems?.Clear();
         }
     }
 }

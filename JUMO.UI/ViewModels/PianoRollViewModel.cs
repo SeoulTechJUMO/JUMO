@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    public class PianoRollViewModel : MusicalCanvasWorkspaceViewModel
+    public class PianoRollViewModel : MusicalCanvasWorkspaceViewModel<Note>
     {
         protected override double ZoomBase => 24.0;
 
@@ -24,8 +24,6 @@ namespace JUMO.UI
 
         public Score Notes => Pattern[Plugin];
 
-        public ObservableCollection<Note> SelectedItems { get; } = new ObservableCollection<Note>();
-
         public PianoRollViewModel(Vst.Plugin plugin) : base()
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
@@ -34,33 +32,6 @@ namespace JUMO.UI
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
 
             GridStep = Denominator >= 4 ? 4 : 2;
-        }
-
-        public void SelectItems(IEnumerable items)
-        {
-            if (items != null)
-            {
-                foreach (var item in items.OfType<Note>())
-                {
-                    SelectedItems.Add(item);
-                }
-            }
-        }
-
-        public void DeselectItems(IEnumerable items)
-        {
-            if (items != null)
-            {
-                foreach (var item in items.OfType<Note>())
-                {
-                    SelectedItems.Remove(item);
-                }
-            }
-        }
-
-        public void ClearSelection()
-        {
-            SelectedItems?.Clear();
         }
 
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)

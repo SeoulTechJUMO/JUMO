@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
-    public class PlaylistViewModel : MusicalCanvasWorkspaceViewModel
+    public class PlaylistViewModel : MusicalCanvasWorkspaceViewModel<PatternPlacement>
     {
         private readonly Track[] _tracks = Song.Current.Tracks;
 
