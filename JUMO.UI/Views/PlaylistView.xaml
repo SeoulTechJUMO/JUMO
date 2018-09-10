@@ -86,6 +86,7 @@
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
                                      PlacePatternRequested="PlaylistCanvas_PlacePatternRequested"
+                                     RemovePatternRequested="PlaylistCanvas_RemovePatternRequested"
                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
             </ctrl:MusicalScrollViewer>
         </Grid>

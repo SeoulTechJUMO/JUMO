@@ -29,6 +29,7 @@ namespace JUMO.UI.Controls
         #region Events
 
         public event EventHandler<PlacePatternRequestedEventArgs> PlacePatternRequested;
+        public event EventHandler<RemovePatternRequestedEventArgs> RemovePatternRequested;
 
         #endregion
 
@@ -95,7 +96,7 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewLeftButtonDown(FrameworkElement view)
+        public void MusicalViewMoveStarted(FrameworkElement view)
         {
             throw new NotImplementedException();
         }
@@ -105,34 +106,26 @@ namespace JUMO.UI.Controls
             throw new NotImplementedException();
         }
 
-        public void MusicalViewMoveStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
-
         public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicalViewResizeComplete(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
+        public void MusicalViewResizeStarted(FrameworkElement view) { }
+        public void MusicalViewResizeComplete(FrameworkElement view) { }
+        public void MusicalViewResizing(FrameworkElement view, double delta) { }
 
-        public void MusicalViewResizeStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void MusicalViewResizing(FrameworkElement view, double delta)
+        public void MusicalViewLeftButtonDown(FrameworkElement view)
         {
             throw new NotImplementedException();
         }
 
         public void MusicalViewRightButtonDown(FrameworkElement view)
         {
-            throw new NotImplementedException();
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                RemovePatternRequested?.Invoke(this, new RemovePatternRequestedEventArgs((PatternPlacement)view.DataContext));
+            }
         }
 
         #endregion
@@ -149,6 +142,16 @@ namespace JUMO.UI.Controls
             Pattern = pattern;
             TrackIndex = trackIndex;
             Start = start;
+        }
+    }
+
+    class RemovePatternRequestedEventArgs : EventArgs
+    {
+        public PatternPlacement PatternToRemove { get; }
+
+        public RemovePatternRequestedEventArgs(PatternPlacement patternToRemove)
+        {
+            PatternToRemove = patternToRemove;
         }
     }
 }

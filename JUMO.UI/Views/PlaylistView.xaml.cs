@@ -48,5 +48,12 @@ namespace JUMO.UI.Views
 
             vm.PlacePattern(e.Pattern, e.TrackIndex, e.Start);
         }
+
+        private void PlaylistCanvas_RemovePatternRequested(object sender, RemovePatternRequestedEventArgs e)
+        {
+            PlaylistViewModel vm = (PlaylistViewModel)DataContext;
+
+            vm.RemovePattern(e.PatternToRemove);
+        }
     }
 }
