@@ -20,6 +20,11 @@ namespace JUMO
         public event EventHandler PatternPlacementPropertyChanged;
 
         /// <summary>
+        /// 트랙의 인덱스 번호를 가져옵니다.
+        /// </summary>
+        public int Index { get; }
+
+        /// <summary>
         /// 트랙의 이름을 가져오거나 설정합니다.
         /// </summary>
         public string Name
@@ -51,8 +56,13 @@ namespace JUMO
         /// <summary>
         /// 새로운 Track 인스턴스를 생성합니다.
         /// </summary>
+        /// <param name="index">새 트랙의 인덱스 번호</param>
         /// <param name="name">새 트랙의 이름</param>
-        public Track(string name) => Name = name;
+        internal Track(int index, string name)
+        {
+            Index = index;
+            Name = name;
+        }
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {

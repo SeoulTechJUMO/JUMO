@@ -21,7 +21,7 @@ namespace JUMO
 
             for (int i = 0; i < NumOfTracks; i++)
             {
-                Tracks[i] = new Track($"트랙 {i + 1}");
+                Tracks[i] = new Track(i, $"트랙 {i + 1}");
             }
 
             for (int i = 0; i < 16; i++)
@@ -38,7 +38,10 @@ namespace JUMO
 
         #endregion
 
-        private const int NumOfTracks = 64;
+        /// <summary>
+        /// 트랙의 총 개수를 정의하는 상수입니다.
+        /// </summary>
+        public const int NumOfTracks = 64;
 
         private int _tempo;
         private string _title = "제목 없음";
