@@ -83,10 +83,12 @@
                                       GridHeight="60"
                                       CanContentScroll="True">
                 <ctrl:PlaylistCanvas Items="{Binding PlacedPatterns}"
+                                     SelectedItems="{Binding SelectedItems}"
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
                                      PlacePatternRequested="PlaylistCanvas_PlacePatternRequested"
                                      RemovePatternRequested="PlaylistCanvas_RemovePatternRequested"
+                                     SelectionChanged="PlaylistCanvas_SelectionChanged"
                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
             </ctrl:MusicalScrollViewer>
         </Grid>

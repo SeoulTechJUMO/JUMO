@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,26 @@ namespace JUMO.UI.Views
             PlaylistViewModel vm = (PlaylistViewModel)DataContext;
 
             vm.RemovePattern(e.PatternToRemove);
+        }
+
+        private void PlaylistCanvas_SelectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            PlaylistViewModel vm = (PlaylistViewModel)DataContext;
+
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    vm.SelectItems(e.NewItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    vm.DeselectItems(e.OldItems);
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    vm.ClearSelection();
+                    break;
+            }
         }
     }
 }
