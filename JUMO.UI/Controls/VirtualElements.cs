@@ -160,7 +160,10 @@ namespace JUMO.UI.Controls
 
         protected override void OnIsSelectedChanged()
         {
-            throw new NotImplementedException();
+            if (Visual != null)
+            {
+                ((PatternPlacementView)Visual).IsSelected = IsSelected;
+            }
         }
 
         private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)

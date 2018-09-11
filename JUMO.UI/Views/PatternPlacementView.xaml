@@ -21,14 +21,29 @@
     </UserControl.Resources>
     <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3"
             Background="#0F000000">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="SelectionStates">
+                <VisualState x:Name="Selected">
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetName="PatternHeaderBackgroundBrush"
+                                        Storyboard.TargetProperty="Color"
+                                        To="Orange"
+                                        Duration="0:0:0.0" />
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Unselected" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Border Grid.Row="0"
-                    Background="MediumSpringGreen"
                     CornerRadius="2.5,2.5,0,0">
+                <Border.Background>
+                    <SolidColorBrush x:Name="PatternHeaderBackgroundBrush" Color="MediumSpringGreen" />
+                </Border.Background>
                 <TextBlock Text="{Binding Pattern.Name, FallbackValue=패턴}"
                            FontFamily="Segoe UI"
                            FontSize="10"
