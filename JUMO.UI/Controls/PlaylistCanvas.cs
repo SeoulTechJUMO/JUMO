@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using JUMO.UI.Data;
+using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
     class PlaylistCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
+        private const double FOLLOW_ACCEL = 0.0625;
+
+        private readonly BlockSelectionHelper _selectionHelper;
+
         #region Dependency Properties
 
         public static DependencyProperty SnapToGridProperty =
@@ -32,6 +36,11 @@ namespace JUMO.UI.Controls
         public event EventHandler<RemovePatternRequestedEventArgs> RemovePatternRequested;
 
         #endregion
+
+        public PlaylistCanvas()
+        {
+            _selectionHelper = new BlockSelectionHelper(this);
+        }
 
         #region MusicalCanvasBase Members
 
@@ -72,11 +81,41 @@ namespace JUMO.UI.Controls
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
             {
-                throw new NotImplementedException();
+                ClearSelection();
+                _selectionHelper.StartBlockSelection(e.GetPosition(this));
             }
             else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
             {
-                throw new NotImplementedException();
+                _selectionHelper.StartBlockSelection(e.GetPosition(this));
+            }
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (_selectionHelper.IsBlockSelecting)
+            {
+                Rect selectionRect = _selectionHelper.EndBlockSelection();
+
+                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
+                long length = PixelToTick(selectionRect.Width);
+                int lowIndex = (int)Math.Max(0, Math.Min(selectionRect.Top / 60, 63));
+                int highIndex = (int)Math.Max(0, Math.Min(selectionRect.Bottom / 60, 63));
+
+                var selectedPatterns =
+                    GetVirtualElementsInside(new Segment(startTick, length))
+                    .Select(ve => (PatternPlacement)((PatternPlacementView)ve.Visual).DataContext)
+                    .Where(pp => pp.TrackIndex >= lowIndex && pp.TrackIndex <= highIndex);
+
+                SelectItems(new List<PatternPlacement>(selectedPatterns));
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
+                FollowMouse();
             }
         }
 
@@ -129,6 +168,29 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        private void FollowMouse()
+        {
+            Point pos = Mouse.GetPosition(this) - new Vector(HorizontalOffset, VerticalOffset);
+
+            if (pos.X > ViewportWidth)
+            {
+                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * FOLLOW_ACCEL);
+            }
+            else if (pos.X < 0)
+            {
+                SetHorizontalOffset(HorizontalOffset + pos.X * FOLLOW_ACCEL);
+            }
+
+            if (pos.Y > ViewportHeight)
+            {
+                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * FOLLOW_ACCEL);
+            }
+            else if (pos.Y < 0)
+            {
+                SetVerticalOffset(VerticalOffset + pos.Y * FOLLOW_ACCEL);
+            }
+        }
     }
 
     class PlacePatternRequestedEventArgs : EventArgs
