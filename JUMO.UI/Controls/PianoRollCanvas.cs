@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using JUMO.UI.Data;
 using JUMO.UI.Views;
@@ -22,9 +18,7 @@ namespace JUMO.UI.Controls
         private Note _minTick;
         private Note _minValue, _maxValue;
 
-        private readonly BlockSelectionAdorner _selectionAdorner;
-        private bool _isSelecting = false;
-        private Rect _selectionRect;
+        private readonly BlockSelectionHelper _selectionHelper;
 
         public long _lastLength;
 
@@ -53,7 +47,7 @@ namespace JUMO.UI.Controls
 
         public PianoRollCanvas() : base()
         {
-            _selectionAdorner = new BlockSelectionAdorner(this);
+            _selectionHelper = new BlockSelectionHelper(this);
             _lastLength = TimeResolution;
         }
 
@@ -110,24 +104,24 @@ namespace JUMO.UI.Controls
             else if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 ClearSelection();
-                StartBlockSelection(e.GetPosition(this));
+                _selectionHelper.StartBlockSelection(e.GetPosition(this));
             }
             else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
             {
-                StartBlockSelection(e.GetPosition(this));
+                _selectionHelper.StartBlockSelection(e.GetPosition(this));
             }
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (_isSelecting)
+            if (_selectionHelper.IsBlockSelecting)
             {
-                EndBlockSelection();
+                Rect selectionRect = _selectionHelper.EndBlockSelection();
 
-                long startTick = Math.Max(0L, PixelToTick(_selectionRect.Left));
-                long length = PixelToTick(_selectionRect.Width);
-                byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)_selectionRect.Bottom / 20, 127));
-                byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)_selectionRect.Top / 20, 127));
+                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
+                long length = PixelToTick(selectionRect.Width);
+                byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Bottom / 20, 127));
+                byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Top / 20, 127));
 
                 var selectedNotes =
                     GetVirtualElementsInside(new Segment(startTick, length))
@@ -142,28 +136,9 @@ namespace JUMO.UI.Controls
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
             {
-                _selectionAdorner.Point2 = e.GetPosition(this);
-
+                _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
                 FollowMouse();
             }
-        }
-
-        private void StartBlockSelection(Point point1)
-        {
-            Mouse.Capture(this, CaptureMode.Element);
-            AdornerLayer.GetAdornerLayer(this)?.Add(_selectionAdorner);
-
-            _selectionAdorner.Point1 = _selectionAdorner.Point2 = point1;
-            _isSelecting = true;
-        }
-
-        private void EndBlockSelection()
-        {
-            _isSelecting = false;
-            _selectionRect = new Rect(_selectionAdorner.Point1, _selectionAdorner.Point2);
-
-            AdornerLayer.GetAdornerLayer(this)?.Remove(_selectionAdorner);
-            Mouse.Capture(null);
         }
 
         private long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
