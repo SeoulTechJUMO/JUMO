@@ -20,7 +20,6 @@ namespace ChordMagicianTest.ViewModel
             _Mode = mode;
             _API = API;
             _progress = progress;
-            _MakeProgress = null;
         }
 
         //선택된 조성의 키값
@@ -30,7 +29,6 @@ namespace ChordMagicianTest.ViewModel
             get => _Key;
             set
             {
-                _Key = value;
                 OnPropertyChanged(nameof(Key));
             }
         }
@@ -72,14 +70,14 @@ namespace ChordMagicianTest.ViewModel
         }
 
         //입력된 코드진행 리스트
-        private ObservableCollection<Progress> _MakeProgress;
-        public ObservableCollection<Progress> MakeProgress
+        private ObservableCollection<Progress> _CurrentProgress = new ObservableCollection<Progress>();
+        public ObservableCollection<Progress> CurrentProgress
         {
-            get => _MakeProgress;
+            get => _CurrentProgress;
             set
             {
-                _MakeProgress = value;
-                OnPropertyChanged(nameof(MakeProgress));
+                _CurrentProgress = value;
+                OnPropertyChanged(nameof(CurrentProgress));
             }
         }
 
@@ -96,7 +94,7 @@ namespace ChordMagicianTest.ViewModel
             {
                 if (_InsertProgress == null)
                 {
-                    _InsertProgress = new RelayCommand(progress => InsertChord(progress as Progress));
+                    _InsertProgress = new RelayCommand(progress => InsertChord(progress as Progress), _ => progress.Any());
                 }
                 return _InsertProgress;        
             }
@@ -105,7 +103,14 @@ namespace ChordMagicianTest.ViewModel
         {
             if (chord != null)
             {
+                CurrentProgress.Add(chord);
                 progress = API.Request(chord.ChildPath);
+
+                if (progress.Count == 0)
+                {
+                    MessageBox.Show("다음으로 적합한 코드진행이 없습니다.");
+                }
+                
             }
             else
             {
@@ -129,6 +134,65 @@ namespace ChordMagicianTest.ViewModel
         {
             //TODO:미디메시지를 생성해서 VST에 전송해야됨
             System.Diagnostics.Debug.WriteLine(p);
+        }
+        
+        //선택 코드진행 리셋
+        private RelayCommand _Reset;
+        public RelayCommand Reset
+        {
+            get
+            {
+                if (_Reset == null)
+                {
+                    _Reset = new RelayCommand(progress => ChordReset(), _ => CurrentProgress.Any());
+                }
+                return _Reset;
+            }
+        }
+        public void ChordReset()
+        {
+            CurrentProgress.Clear();
+            progress = API.Request("");
+        }
+
+        //선택한 코드진행만 삭제
+        private RelayCommand _Remove;
+        public RelayCommand Remove
+        {
+            get
+            {
+                if (_Remove == null)
+                {
+                    _Remove = new RelayCommand(progress => ChordRemove(progress as Progress), _ => CurrentProgress.Any());
+                }
+                return _Remove;
+            }
+        }
+        public void ChordRemove(Progress chord)
+        {
+            if (chord != null)
+            {
+                string cp = "";
+                //현재 진행 리스트에서 선택된 객체 삭제
+                CurrentProgress.Remove(chord);
+                //child path 만들기
+                foreach (Progress i in CurrentProgress)
+                {
+                    cp += i.ID;
+                    i.ChildPath = cp;
+                    cp += ",";
+                }
+                if (cp.Length > 0)
+                {
+                    cp = cp.Substring(0, cp.Length - 1);
+                }
+                progress = API.Request(cp);
+            }
+            else
+            {
+                MessageBox.Show("삭제할 코드를 선택해주세요.");
+            }
+
         }
     }
 }

@@ -37,9 +37,26 @@ namespace ChordMagicianTest
             _Chord = "";
         }
 
-        public string ChildPath
-        {
+        public string ChildPath {
             get => _Child_path;
+            set
+            {
+                _Child_path = value;
+            }
+        }
+
+        public string ID
+        {
+            get => _ID;
+        }
+
+        public string Chord
+        {
+            get => _Chord;
+            set
+            {
+                _Chord = value;
+            }
         }
     }
 }

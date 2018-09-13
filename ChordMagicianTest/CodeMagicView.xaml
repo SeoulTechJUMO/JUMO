@@ -6,13 +6,7 @@
         xmlns:local="clr-namespace:ChordMagicianTest"
         mc:Ignorable="d"
         x:Name="window"
-        Title="코드 마법사" Height="550" Width="550">
-    <Window.Resources>
-        <Style x:Key="ProgressContainerStyle">
-            
-        </Style>
-    </Window.Resources>
-    
+        Title="코드 마법사" Height="550" Width="550" ResizeMode="NoResize">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0"/>
@@ -38,11 +32,29 @@
                 </ComboBox>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <Rectangle Fill="#FFF4F4F5" Height="100" Width="500"/>
-                <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14" Margin="0,20,0,0" ><Run Text="코드 진행을 바탕으로 다음 코드를 찾았습니다."/></TextBlock>
+                <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Width="500"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+                <StackPanel Margin="0,20,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="삭제" Width="70" Command="{Binding Remove}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}"/>
+                    <Button Content="리셋" Width="70" Margin="10,0,0,0" HorizontalAlignment="Right" Command="{Binding Reset}"/>
+                </StackPanel>
+                <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="코드 진행을 바탕으로 다음 코드를 찾았습니다."/></TextBlock>
                 <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="코드 버튼을 클릭하면 미리 들을 수 있습니다."/></TextBlock>
             </StackPanel>
-            <ListBox x:Name="chord_list" ItemsSource="{Binding progress}" Margin="20" >
+            <ListBox x:Name="chord_list" ItemsSource="{Binding progress}" Margin="20" Height="100">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
@@ -57,10 +69,7 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Right">
-                <Button Content="진행삽입" Width="100" Command="{Binding InsertProgress}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}"/>
-                <Button Content="삭제" Width="100" Margin="10,0,10,0"/>
-            </StackPanel>
+            <Button Content="진행삽입" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0" Command="{Binding InsertProgress}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}"/>
         </StackPanel>
     </DockPanel>
 </Window>
