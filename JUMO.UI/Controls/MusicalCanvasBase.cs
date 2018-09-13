@@ -49,12 +49,6 @@ namespace JUMO.UI.Controls
                 )
             );
 
-        public static readonly DependencyProperty GridStepProperty =
-            DependencyProperty.Register(
-                "GridStep", typeof(int), typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(4)
-            );
-
         #endregion
 
         #region Dependency Property Accessors
@@ -78,12 +72,6 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(ExtentHeightOverrideProperty);
             set => SetValue(ExtentHeightOverrideProperty, value);
-        }
-
-        public int GridStep
-        {
-            get => (int)GetValue(GridStepProperty);
-            set => SetValue(GridStepProperty, value);
         }
 
         #endregion

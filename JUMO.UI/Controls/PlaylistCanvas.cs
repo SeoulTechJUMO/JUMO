@@ -8,7 +8,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class PlaylistCanvas : MusicalCanvasBase, IMusicalViewCallback
+    class PlaylistCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
     {
         private const double FOLLOW_ACCEL = 0.0625;
 

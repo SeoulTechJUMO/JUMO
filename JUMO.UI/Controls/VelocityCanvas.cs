@@ -7,7 +7,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class VelocityCanvas : MusicalCanvasBase, IMusicalViewCallback
+    class VelocityCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
     {
         private const byte MIN_VELOCITY = 0;
         private const byte MAX_VELOCITY = 127;

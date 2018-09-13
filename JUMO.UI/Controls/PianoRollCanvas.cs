@@ -8,7 +8,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class PianoRollCanvas : MusicalCanvasBase, IMusicalViewCallback
+    class PianoRollCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
     {
         private const byte MIN_VALUE = 0;
         private const byte MAX_VALUE = 127;
