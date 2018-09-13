@@ -44,7 +44,7 @@ namespace JUMO.UI.Controls
 
         #region MusicalCanvasBase Members
 
-        protected override IVirtualElement CreateVirtualElementForItem(object item)
+        protected override IVirtualElement CreateVirtualElementForItem(IMusicalItem item)
         {
             return new VirtualPatternControl((PatternPlacement)item);
         }

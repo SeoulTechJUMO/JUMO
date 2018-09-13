@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using JUMO.UI.Data;
 using JUMO.UI.Views;
@@ -19,7 +17,7 @@ namespace JUMO.UI.Controls
 
         #region MusicalCanvasBase Overrides
 
-        protected override IVirtualElement CreateVirtualElementForItem(object item)
+        protected override IVirtualElement CreateVirtualElementForItem(IMusicalItem item)
         {
             return new VirtualVelocityControl((Note)item);
         }

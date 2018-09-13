@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using JUMO.UI.Data;
 
@@ -25,9 +18,9 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
-                "Items", typeof(IEnumerable<object>), typeof(MusicalCanvasBase),
+                "Items", typeof(IEnumerable), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
-                    Enumerable.Empty<object>(),
+                    Enumerable.Empty<IMusicalItem>(),
                     FrameworkPropertyMetadataOptions.AffectsArrange
                     | FrameworkPropertyMetadataOptions.AffectsMeasure
                     | FrameworkPropertyMetadataOptions.AffectsRender,
@@ -37,9 +30,9 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty SelectedItemsProperty =
             DependencyProperty.Register(
-                "SelectedItems", typeof(IEnumerable<object>), typeof(MusicalCanvasBase),
+                "SelectedItems", typeof(IEnumerable), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
-                    Enumerable.Empty<object>(),
+                    Enumerable.Empty<IMusicalItem>(),
                     FrameworkPropertyMetadataOptions.AffectsRender,
                     SelectedItemsPropertyChangedCallback
                 )
@@ -69,15 +62,15 @@ namespace JUMO.UI.Controls
         protected int TimeResolution => MusicalProps.GetTimeResolution(this);
         protected double ZoomFactor => MusicalProps.GetZoomFactor(this);
 
-        public IEnumerable<object> Items
+        public IEnumerable Items
         {
-            get => (IEnumerable<object>)GetValue(ItemsProperty);
+            get => (IEnumerable)GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
 
-        public IEnumerable<object> SelectedItems
+        public IEnumerable SelectedItems
         {
-            get => (IEnumerable<object>)GetValue(SelectedItemsProperty);
+            get => (IEnumerable)GetValue(SelectedItemsProperty);
             set => SetValue(SelectedItemsProperty, value);
         }
 
@@ -194,7 +187,7 @@ namespace JUMO.UI.Controls
         private readonly IList<Segment> _dirtyRegions = new List<Segment>();
 
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
-        private readonly Dictionary<object, IVirtualElement> _table = new Dictionary<object, IVirtualElement>();
+        private readonly Dictionary<IMusicalItem, IVirtualElement> _table = new Dictionary<IMusicalItem, IVirtualElement>();
         private readonly IList<IVirtualElement> _selectedElements = new List<IVirtualElement>();
 
         private DispatcherTimer _timer;
@@ -204,7 +197,7 @@ namespace JUMO.UI.Controls
 
         protected double WidthPerTick { get; private set; } = 0;
 
-        protected abstract IVirtualElement CreateVirtualElementForItem(object item);
+        protected abstract IVirtualElement CreateVirtualElementForItem(IMusicalItem item);
         protected abstract double CalculateLogicalLength();
         protected abstract Size CalculateSizeForElement(FrameworkElement element);
         protected abstract Rect CalculateRectForElement(FrameworkElement element);
@@ -510,7 +503,7 @@ namespace JUMO.UI.Controls
         {
             if (e.NewItems != null)
             {
-                foreach (object newItem in e.NewItems)
+                foreach (IMusicalItem newItem in e.NewItems)
                 {
                     AddItemInternal(newItem);
                 }
@@ -518,7 +511,7 @@ namespace JUMO.UI.Controls
 
             if (e.OldItems != null)
             {
-                foreach (object oldItem in e.OldItems)
+                foreach (IMusicalItem oldItem in e.OldItems)
                 {
                     RemoveItemInternal(oldItem);
                 }
@@ -532,7 +525,7 @@ namespace JUMO.UI.Controls
         {
             if (e.NewItems != null)
             {
-                foreach (object newItem in e.NewItems)
+                foreach (IMusicalItem newItem in e.NewItems)
                 {
                     SelectItemInternal(newItem);
                 }
@@ -540,7 +533,7 @@ namespace JUMO.UI.Controls
 
             if (e.OldItems != null)
             {
-                foreach (object oldItem in e.OldItems)
+                foreach (IMusicalItem oldItem in e.OldItems)
                 {
                     DeselectItemInternal(oldItem);
                 }
@@ -566,9 +559,12 @@ namespace JUMO.UI.Controls
 
             ResetItemsInternal();
 
-            foreach (var item in Items ?? Enumerable.Empty<object>())
+            if (Items != null)
             {
-                AddItemInternal(item);
+                foreach (IMusicalItem item in Items)
+                {
+                    AddItemInternal(item);
+                }
             }
 
             CalculateLogicalLengthInternal();
@@ -588,13 +584,16 @@ namespace JUMO.UI.Controls
 
             ResetSelectionInternal();
 
-            foreach (var item in SelectedItems ?? Enumerable.Empty<object>())
+            if (SelectedItems != null)
             {
-                SelectItemInternal(item);
+                foreach (IMusicalItem item in SelectedItems)
+                {
+                    SelectItemInternal(item);
+                }
             }
         }
 
-        private void AddItemInternal(object item)
+        private void AddItemInternal(IMusicalItem item)
         {
             IVirtualElement ve = CreateVirtualElementForItem(item);
             _table.Add(item, ve);
@@ -602,7 +601,7 @@ namespace JUMO.UI.Controls
             ve.BoundsChanged += OnVirtualElementBoundsChanged;
         }
 
-        private void RemoveItemInternal(object item)
+        private void RemoveItemInternal(IMusicalItem item)
         {
             if (_table.TryGetValue(item, out IVirtualElement ve))
             {
@@ -629,7 +628,7 @@ namespace JUMO.UI.Controls
             _index = new BinaryPartition<IVirtualElement>();
         }
 
-        private void SelectItemInternal(object item)
+        private void SelectItemInternal(IMusicalItem item)
         {
             if (_table.TryGetValue(item, out IVirtualElement ve))
             {
@@ -638,7 +637,7 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void DeselectItemInternal(object item)
+        private void DeselectItemInternal(IMusicalItem item)
         {
             if (_table.TryGetValue(item, out IVirtualElement ve))
             {

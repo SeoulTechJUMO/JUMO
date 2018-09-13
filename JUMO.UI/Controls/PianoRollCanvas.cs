@@ -53,7 +53,7 @@ namespace JUMO.UI.Controls
 
         #region MusicalCanvasBase Overrides
 
-        protected override IVirtualElement CreateVirtualElementForItem(object item)
+        protected override IVirtualElement CreateVirtualElementForItem(IMusicalItem item)
         {
             return new VirtualNote((Note)item);
         }
