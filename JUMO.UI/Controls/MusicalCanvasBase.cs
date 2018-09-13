@@ -28,16 +28,6 @@ namespace JUMO.UI.Controls
                 )
             );
 
-        public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register(
-                "SelectedItems", typeof(IEnumerable), typeof(MusicalCanvasBase),
-                new FrameworkPropertyMetadata(
-                    Enumerable.Empty<IMusicalItem>(),
-                    FrameworkPropertyMetadataOptions.AffectsRender,
-                    SelectedItemsPropertyChangedCallback
-                )
-            );
-
         public static readonly DependencyProperty ExtentHeightOverrideProperty =
             DependencyProperty.Register(
                 "ExtentHeightOverride", typeof(double), typeof(MusicalCanvasBase),
@@ -62,23 +52,11 @@ namespace JUMO.UI.Controls
             set => SetValue(ItemsProperty, value);
         }
 
-        public IEnumerable SelectedItems
-        {
-            get => (IEnumerable)GetValue(SelectedItemsProperty);
-            set => SetValue(SelectedItemsProperty, value);
-        }
-
         public double ExtentHeightOverride
         {
             get => (double)GetValue(ExtentHeightOverrideProperty);
             set => SetValue(ExtentHeightOverrideProperty, value);
         }
-
-        #endregion
-
-        #region Events
-
-        public event EventHandler<NotifyCollectionChangedEventArgs> SelectionChanged;
 
         #endregion
 
@@ -176,7 +154,6 @@ namespace JUMO.UI.Controls
 
         private BinaryPartition<IVirtualElement> _index = new BinaryPartition<IVirtualElement>();
         private readonly Dictionary<IMusicalItem, IVirtualElement> _table = new Dictionary<IMusicalItem, IVirtualElement>();
-        private readonly IList<IVirtualElement> _selectedElements = new List<IVirtualElement>();
 
         private DispatcherTimer _timer;
         private readonly SelfThrottlingWorker _createWorker;
@@ -190,29 +167,11 @@ namespace JUMO.UI.Controls
         protected abstract Size CalculateSizeForElement(FrameworkElement element);
         protected abstract Rect CalculateRectForElement(FrameworkElement element);
 
-        protected void SelectItem(object item)
+        protected IVirtualElement LookupVirtualElement(IMusicalItem item)
         {
-            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item));
-        }
+            _table.TryGetValue(item, out IVirtualElement ve);
 
-        protected void SelectItems(IList items)
-        {
-            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, items));
-        }
-
-        protected void DeselectItem(object item)
-        {
-            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item));
-        }
-
-        protected void DeselectItems(IList items)
-        {
-            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items));
-        }
-
-        protected void ClearSelection()
-        {
-            SelectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+            return ve;
         }
 
         protected IEnumerable<IVirtualElement> GetVirtualElementsInside(Segment bounds)
@@ -222,6 +181,10 @@ namespace JUMO.UI.Controls
                 yield return ve;
             }
         }
+
+        protected virtual void OnItemAdded(IMusicalItem newItem) { }
+        protected virtual void OnItemRemoved(IMusicalItem oldItem) { }
+        protected virtual void OnItemsReset() { }
 
         private void CalculateLogicalLengthInternal()
         {
@@ -509,30 +472,6 @@ namespace JUMO.UI.Controls
             OnScrollChanged();
         }
 
-        private void OnSelectedItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems != null)
-            {
-                foreach (IMusicalItem newItem in e.NewItems)
-                {
-                    SelectItemInternal(newItem);
-                }
-            }
-
-            if (e.OldItems != null)
-            {
-                foreach (IMusicalItem oldItem in e.OldItems)
-                {
-                    DeselectItemInternal(oldItem);
-                }
-            }
-
-            if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                ResetSelectionInternal();
-            }
-        }
-
         private void OnItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
         {
             if (oldCollection is INotifyCollectionChanged oldIncc)
@@ -558,29 +497,6 @@ namespace JUMO.UI.Controls
             CalculateLogicalLengthInternal();
         }
 
-        private void OnSelectedItemsPropertyChanged(IEnumerable oldCollection, IEnumerable newCollection)
-        {
-            if (oldCollection is INotifyCollectionChanged oldIncc)
-            {
-                oldIncc.CollectionChanged -= OnSelectedItemsCollectionChanged;
-            }
-
-            if (newCollection is INotifyCollectionChanged newIncc)
-            {
-                newIncc.CollectionChanged += OnSelectedItemsCollectionChanged;
-            }
-
-            ResetSelectionInternal();
-
-            if (SelectedItems != null)
-            {
-                foreach (IMusicalItem item in SelectedItems)
-                {
-                    SelectItemInternal(item);
-                }
-            }
-        }
-
         private void AddItemInternal(IMusicalItem item)
         {
             IVirtualElement ve = CreateVirtualElementForItem(item);
@@ -598,9 +514,10 @@ namespace JUMO.UI.Controls
                 Children.Remove(ve.Visual);
                 ve.DisposeVisual();
                 _table.Remove(item);
-                _selectedElements.Remove(ve);
                 _index.Remove(ve);
             }
+
+            OnItemRemoved(item);
         }
 
         private void ResetItemsInternal()
@@ -612,36 +529,9 @@ namespace JUMO.UI.Controls
 
             Children.Clear();
             _table.Clear();
-            _selectedElements.Clear();
             _index = new BinaryPartition<IVirtualElement>();
-        }
 
-        private void SelectItemInternal(IMusicalItem item)
-        {
-            if (_table.TryGetValue(item, out IVirtualElement ve))
-            {
-                _selectedElements.Add(ve);
-                ve.IsSelected = true;
-            }
-        }
-
-        private void DeselectItemInternal(IMusicalItem item)
-        {
-            if (_table.TryGetValue(item, out IVirtualElement ve))
-            {
-                _selectedElements.Remove(ve);
-                ve.IsSelected = false;
-            }
-        }
-
-        private void ResetSelectionInternal()
-        {
-            foreach (var ve in _selectedElements)
-            {
-                ve.IsSelected = false;
-            }
-
-            _selectedElements.Clear();
+            OnItemsReset();
         }
 
         private static void ItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -649,14 +539,6 @@ namespace JUMO.UI.Controls
             if (d is MusicalCanvasBase ctrl)
             {
                 ctrl.OnItemsPropertyChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
-            }
-        }
-
-        private static void SelectedItemsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is MusicalCanvasBase ctrl)
-            {
-                ctrl.OnSelectedItemsPropertyChanged(e.OldValue as IEnumerable, e.NewValue as IEnumerable);
             }
         }
 
