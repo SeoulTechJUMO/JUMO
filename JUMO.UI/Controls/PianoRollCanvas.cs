@@ -12,7 +12,6 @@ namespace JUMO.UI.Controls
     {
         private const byte MIN_VALUE = 0;
         private const byte MAX_VALUE = 127;
-        private const double FOLLOW_ACCEL = 0.0625;
 
         private IEnumerable<Note> _affectedNotes;
         private Note _minTick;
@@ -21,22 +20,6 @@ namespace JUMO.UI.Controls
         private readonly BlockSelectionHelper _selectionHelper;
 
         public long _lastLength;
-
-        #region Dependency Properties
-
-        public static readonly DependencyProperty SnapToGridProperty =
-            DependencyProperty.Register(
-                "SnapToGrid", typeof(bool), typeof(PianoRollCanvas),
-                new FrameworkPropertyMetadata(true)
-            );
-
-        public bool SnapToGrid
-        {
-            get => (bool)GetValue(SnapToGridProperty);
-            set => SetValue(SnapToGridProperty, value);
-        }
-
-        #endregion
 
         #region Events
 
@@ -139,20 +122,6 @@ namespace JUMO.UI.Controls
                 _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
                 FollowMouse();
             }
-        }
-
-        private long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
-
-        private long SnapToGridInternal(long pos)
-        {
-            if (!SnapToGrid)
-            {
-                return pos;
-            }
-
-            int ticksPerBeat = (TimeResolution << 2) / MusicalProps.GetDenominator(this);
-            int ticksPerGrid = ticksPerBeat / GridStep;
-            return (pos / ticksPerGrid) * ticksPerGrid;
         }
 
         #region IMusicalViewCallback Members
@@ -278,29 +247,6 @@ namespace JUMO.UI.Controls
 
             note.Start = Math.Max(0, newStart);
             note.Value = (byte)Math.Max(MIN_VALUE, Math.Min(newValue, MAX_VALUE));
-        }
-
-        private void FollowMouse()
-        {
-            Point pos = Mouse.GetPosition(this) - new Vector(HorizontalOffset, VerticalOffset);
-
-            if (pos.X > ViewportWidth)
-            {
-                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * FOLLOW_ACCEL);
-            }
-            else if (pos.X < 0)
-            {
-                SetHorizontalOffset(HorizontalOffset + pos.X * FOLLOW_ACCEL);
-            }
-
-            if (pos.Y > ViewportHeight)
-            {
-                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * FOLLOW_ACCEL);
-            }
-            else if (pos.Y < 0)
-            {
-                SetVerticalOffset(VerticalOffset + pos.Y * FOLLOW_ACCEL);
-            }
         }
     }
 

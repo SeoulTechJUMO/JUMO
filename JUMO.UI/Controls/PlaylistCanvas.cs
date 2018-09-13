@@ -10,25 +10,7 @@ namespace JUMO.UI.Controls
 {
     class PlaylistCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
     {
-        private const double FOLLOW_ACCEL = 0.0625;
-
         private readonly BlockSelectionHelper _selectionHelper;
-
-        #region Dependency Properties
-
-        public static DependencyProperty SnapToGridProperty =
-            DependencyProperty.Register(
-                "SnapToGrid", typeof(bool), typeof(PlaylistCanvas),
-                new FrameworkPropertyMetadata(true)
-            );
-
-        public bool SnapToGrid
-        {
-            get => (bool)GetValue(SnapToGridProperty);
-            set => SetValue(SnapToGridProperty, value);
-        }
-
-        #endregion
 
         #region Events
 
@@ -119,20 +101,6 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
-
-        private long SnapToGridInternal(long pos)
-        {
-            if (!SnapToGrid)
-            {
-                return pos;
-            }
-
-            int ticksPerBeat = (TimeResolution << 2) / MusicalProps.GetDenominator(this);
-            int ticksPerGrid = ticksPerBeat / GridStep;
-            return (pos / ticksPerGrid) * ticksPerGrid;
-        }
-
         #region IMusicalViewCallback Members
 
         public void MusicalViewMoveStarted(FrameworkElement view)
@@ -168,29 +136,6 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
-
-        private void FollowMouse()
-        {
-            Point pos = Mouse.GetPosition(this) - new Vector(HorizontalOffset, VerticalOffset);
-
-            if (pos.X > ViewportWidth)
-            {
-                SetHorizontalOffset(HorizontalOffset + (pos.X - ViewportWidth) * FOLLOW_ACCEL);
-            }
-            else if (pos.X < 0)
-            {
-                SetHorizontalOffset(HorizontalOffset + pos.X * FOLLOW_ACCEL);
-            }
-
-            if (pos.Y > ViewportHeight)
-            {
-                SetVerticalOffset(VerticalOffset + (pos.Y - ViewportHeight) * FOLLOW_ACCEL);
-            }
-            else if (pos.Y < 0)
-            {
-                SetVerticalOffset(VerticalOffset + pos.Y * FOLLOW_ACCEL);
-            }
-        }
     }
 
     class PlacePatternRequestedEventArgs : EventArgs
