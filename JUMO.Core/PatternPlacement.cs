@@ -10,7 +10,7 @@ namespace JUMO
     /// <summary>
     /// 트랙 상에 배치된 패턴을 나타냅니다.
     /// </summary>
-    public class PatternPlacement : INotifyPropertyChanged
+    public class PatternPlacement : IMusicalItem, INotifyPropertyChanged
     {
         private int _trackIndex;
         private long _start;

@@ -81,6 +81,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMusicalItem.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
     <Compile Include="Score.cs" />

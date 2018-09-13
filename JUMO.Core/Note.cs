@@ -10,7 +10,7 @@ namespace JUMO
     /// <summary>
     /// 악보 상의 음표 하나를 나타냅니다.
     /// </summary>
-    public class Note : INotifyPropertyChanged
+    public class Note : IMusicalItem, INotifyPropertyChanged
     {
         private byte _value;
         private long _length;
