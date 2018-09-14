@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using JUMO.UI.Data;
 using JUMO.UI.Views;
 
@@ -53,6 +54,8 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) { }
 
         #region IMusicalViewCallback Members
 

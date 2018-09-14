@@ -17,8 +17,6 @@ namespace JUMO.UI.Controls
         private Note _minTick;
         private Note _minValue, _maxValue;
 
-        private readonly BlockSelectionHelper _selectionHelper;
-
         public long _lastLength;
 
         #region Events
@@ -30,7 +28,6 @@ namespace JUMO.UI.Controls
 
         public PianoRollCanvas() : base()
         {
-            _selectionHelper = new BlockSelectionHelper(this);
             _lastLength = TimeResolution;
         }
 
@@ -69,59 +66,28 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        // LeftButtonDown - 노트 삽입
-        // Ctrl+LeftButtonDown - 사각형 블록 선택 시작 (새 선택 영역)
-        // Ctrl+Shift+LeftButtonDown - 사각형 블록 선택 시작 (선택 영역 추가)
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnSurfaceClick(Point pt)
         {
-            if (Keyboard.Modifiers == ModifierKeys.None)
-            {
-                Point pt = e.GetPosition(this);
-                byte value = (byte)(127 - ((int)pt.Y / 20));
-                long pos = PixelToTick(pt.X);
-                long snap = SnapToGridInternal(pos);
+            byte value = (byte)(127 - ((int)pt.Y / 20));
+            long pos = PixelToTick(pt.X);
+            long snap = SnapToGridInternal(pos);
 
-                AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
-                e.Handled = true;
-            }
-            else if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                ClearSelection();
-                _selectionHelper.StartBlockSelection(e.GetPosition(this));
-            }
-            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
-            {
-                _selectionHelper.StartBlockSelection(e.GetPosition(this));
-            }
+            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        protected override void OnBlockSelectionCompleted(Rect selectionRect)
         {
-            if (_selectionHelper.IsBlockSelecting)
-            {
-                Rect selectionRect = _selectionHelper.EndBlockSelection();
+            long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
+            long length = PixelToTick(selectionRect.Width);
+            byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Bottom / 20, 127));
+            byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Top / 20, 127));
 
-                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
-                long length = PixelToTick(selectionRect.Width);
-                byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Bottom / 20, 127));
-                byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Top / 20, 127));
+            var selectedNotes =
+                GetVirtualElementsInside(new Segment(startTick, length))
+                .Select(ve => (Note)((NoteView)ve.Visual).DataContext)
+                .Where(note => note.Value >= lowValue && note.Value <= highValue);
 
-                var selectedNotes =
-                    GetVirtualElementsInside(new Segment(startTick, length))
-                    .Select(ve => (Note)((NoteView)ve.Visual).DataContext)
-                    .Where(note => note.Value >= lowValue && note.Value <= highValue);
-
-                SelectItems(new List<Note>(selectedNotes));
-            }
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
-                FollowMouse();
-            }
+            SelectItems(new List<Note>(selectedNotes));
         }
 
         #region IMusicalViewCallback Members

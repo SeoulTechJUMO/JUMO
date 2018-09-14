@@ -13,6 +13,7 @@ namespace JUMO.UI.Controls
         private const double FOLLOW_ACCEL = 0.0625;
 
         private readonly List<IVirtualElement> _selectedElements = new List<IVirtualElement>();
+        private readonly BlockSelectionHelper _selectionHelper;
 
         #region Dependency Properties
 
@@ -134,7 +135,14 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        #region Overrides
+        #region Virtual Methods
+
+        protected virtual void OnSurfaceClick(Point pt) { }
+        protected virtual void OnBlockSelectionCompleted(Rect selectionRect) { }
+
+        #endregion
+
+        #region MusicalCanvasBase Overrides
 
         protected override void OnItemRemoved(IMusicalItem oldItem)
         {
@@ -149,6 +157,56 @@ namespace JUMO.UI.Controls
         protected override void OnItemsReset()
         {
             _selectedElements.Clear();
+        }
+
+        #endregion
+
+        #region UIElement Overrides
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            Point pt = e.GetPosition(this);
+
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                OnSurfaceClick(pt);
+
+                e.Handled = true;
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                ClearSelection();
+                _selectionHelper.StartBlockSelection(pt);
+
+                e.Handled = true;
+            }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                _selectionHelper.StartBlockSelection(pt);
+
+                e.Handled = true;
+            }
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (_selectionHelper.IsBlockSelecting)
+            {
+                OnBlockSelectionCompleted(_selectionHelper.EndBlockSelection());
+
+                e.Handled = true;
+            }
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (_selectionHelper.IsBlockSelecting)
+            {
+                _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
+                FollowMouse();
+
+                e.Handled = true;
+            }
         }
 
         #endregion
@@ -247,5 +305,10 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        public InteractiveMusicalCanvas() : base()
+        {
+            _selectionHelper = new BlockSelectionHelper(this);
+        }
     }
 }

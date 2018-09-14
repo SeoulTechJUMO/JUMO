@@ -10,8 +10,6 @@ namespace JUMO.UI.Controls
 {
     class PlaylistCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
     {
-        private readonly BlockSelectionHelper _selectionHelper;
-
         #region Events
 
         public event EventHandler<PlacePatternRequestedEventArgs> PlacePatternRequested;
@@ -19,10 +17,7 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        public PlaylistCanvas()
-        {
-            _selectionHelper = new BlockSelectionHelper(this);
-        }
+        public PlaylistCanvas() : base() { }
 
         #region MusicalCanvasBase Members
 
@@ -49,56 +44,29 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnSurfaceClick(Point pt)
         {
-            if (Keyboard.Modifiers == ModifierKeys.None)
-            {
-                Point pt = e.GetPosition(this);
-                Pattern pattern = Song.Current.CurrentPattern;
-                int trackIndex = (int)(pt.Y / 60);
-                long start = PixelToTick(pt.X);
-                long snap = SnapToGridInternal(start);
+            Pattern pattern = Song.Current.CurrentPattern;
+            int trackIndex = (int)(pt.Y / 60);
+            long start = PixelToTick(pt.X);
+            long snap = SnapToGridInternal(start);
 
-                PlacePatternRequested?.Invoke(this, new PlacePatternRequestedEventArgs(pattern, trackIndex, snap));
-            }
-            else if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                ClearSelection();
-                _selectionHelper.StartBlockSelection(e.GetPosition(this));
-            }
-            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
-            {
-                _selectionHelper.StartBlockSelection(e.GetPosition(this));
-            }
+            PlacePatternRequested?.Invoke(this, new PlacePatternRequestedEventArgs(pattern, trackIndex, snap));
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        protected override void OnBlockSelectionCompleted(Rect selectionRect)
         {
-            if (_selectionHelper.IsBlockSelecting)
-            {
-                Rect selectionRect = _selectionHelper.EndBlockSelection();
+            long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
+            long length = PixelToTick(selectionRect.Width);
+            int lowIndex = (int)Math.Max(0, Math.Min(selectionRect.Top / 60, 63));
+            int highIndex = (int)Math.Max(0, Math.Min(selectionRect.Bottom / 60, 63));
 
-                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
-                long length = PixelToTick(selectionRect.Width);
-                int lowIndex = (int)Math.Max(0, Math.Min(selectionRect.Top / 60, 63));
-                int highIndex = (int)Math.Max(0, Math.Min(selectionRect.Bottom / 60, 63));
+            var selectedPatterns =
+                GetVirtualElementsInside(new Segment(startTick, length))
+                .Select(ve => (PatternPlacement)((PatternPlacementView)ve.Visual).DataContext)
+                .Where(pp => pp.TrackIndex >= lowIndex && pp.TrackIndex <= highIndex);
 
-                var selectedPatterns =
-                    GetVirtualElementsInside(new Segment(startTick, length))
-                    .Select(ve => (PatternPlacement)((PatternPlacementView)ve.Visual).DataContext)
-                    .Where(pp => pp.TrackIndex >= lowIndex && pp.TrackIndex <= highIndex);
-
-                SelectItems(new List<PatternPlacement>(selectedPatterns));
-            }
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                _selectionHelper.UpdateBlockSelection(e.GetPosition(this));
-                FollowMouse();
-            }
+            SelectItems(new List<PatternPlacement>(selectedPatterns));
         }
 
         #region IMusicalViewCallback Members
