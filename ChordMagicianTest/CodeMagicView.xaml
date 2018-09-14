@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChordMagicianTest"
         mc:Ignorable="d"
         x:Name="window"
-        Title="코드 마법사" Height="550" Width="550" ResizeMode="NoResize">
+        Title="코드 마법사" Height="600" Width="550" ResizeMode="NoResize">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0"/>
@@ -35,7 +35,7 @@
                 <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"  />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>
@@ -70,6 +70,7 @@
                 </ListBox.ItemsPanel>
             </ListBox>
             <Button Content="진행삽입" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0" Command="{Binding InsertProgress}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}"/>
+            <Button Content="로그아웃" HorizontalAlignment="Left" Margin="20,0,0,0" Click="Logout"/>
         </StackPanel>
     </DockPanel>
 </Window>

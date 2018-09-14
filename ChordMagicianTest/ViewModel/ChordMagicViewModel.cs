@@ -20,6 +20,7 @@ namespace ChordMagicianTest.ViewModel
             _Mode = mode;
             _API = API;
             _progress = progress;
+            progress = ChangeChordName(progress);
         }
 
         //선택된 조성의 키값
@@ -29,6 +30,7 @@ namespace ChordMagicianTest.ViewModel
             get => _Key;
             set
             {
+                _Key = value;
                 OnPropertyChanged(nameof(Key));
             }
         }
@@ -192,7 +194,26 @@ namespace ChordMagicianTest.ViewModel
             {
                 MessageBox.Show("삭제할 코드를 선택해주세요.");
             }
+        }
 
+        //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
+        public ObservableCollection<Progress> ChangeChordName(ObservableCollection<Progress> old_p)
+        {
+            ObservableCollection<Progress> new_p = new ObservableCollection<Progress>();
+            foreach (Progress i in old_p)
+            {
+                i.Chord = GetChordName(i.ID, Key);
+                new_p.Add(i);
+            }
+            return new_p;
+        }
+
+        public string GetChordName(string id, string key)
+        {
+            string ChordName="";
+
+            ChordName = id;
+            return ChordName;
         }
     }
 }

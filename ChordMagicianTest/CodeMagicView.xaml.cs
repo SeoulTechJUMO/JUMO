@@ -31,5 +31,15 @@ namespace ChordMagicianTest
         {
             this.Close();
         }
+
+        private void Logout(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.username = "";
+            Properties.Settings.Default.password = "";
+            Properties.Settings.Default.Save();
+            LoginView lv = new LoginView();
+            lv.Show();
+            this.Close();
+        }
     }
 }
