@@ -8,7 +8,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class VelocityCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
+    class VelocityCanvas : InteractiveMusicalCanvas
     {
         private const byte MIN_VELOCITY = 0;
         private const byte MAX_VELOCITY = 127;
@@ -59,10 +59,10 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
-        public void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
+        public override void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public override void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
 
-        public void MusicalViewResizing(FrameworkElement view, double delta)
+        public override void MusicalViewResizing(FrameworkElement view, double delta)
         {
             int deltaVelocity = -(int)Math.Round(delta * MAX_VELOCITY / ActualHeight);
 
@@ -81,13 +81,6 @@ namespace JUMO.UI.Controls
                 AdjustVelocity(note, deltaVelocity);
             }
         }
-
-        public void MusicalViewMoveStarted(FrameworkElement view) { }
-        public void MusicalViewMoveComplete(FrameworkElement view) { }
-        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
-
-        public void MusicalViewLeftButtonDown(FrameworkElement view) { }
-        public void MusicalViewRightButtonDown(FrameworkElement view) { }
 
         #endregion
 

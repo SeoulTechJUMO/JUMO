@@ -8,7 +8,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class PlaylistCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
+    class PlaylistCanvas : InteractiveMusicalCanvas
     {
         #region Events
 
@@ -71,31 +71,27 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewMoveStarted(FrameworkElement view)
+        public override void MusicalViewMoveStarted(FrameworkElement view)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicalViewMoveComplete(FrameworkElement view)
+        public override void MusicalViewMoveComplete(FrameworkElement view)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
+        public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicalViewResizeStarted(FrameworkElement view) { }
-        public void MusicalViewResizeComplete(FrameworkElement view) { }
-        public void MusicalViewResizing(FrameworkElement view, double delta) { }
-
-        public void MusicalViewLeftButtonDown(FrameworkElement view)
+        public override void MusicalViewLeftButtonDown(FrameworkElement view)
         {
             throw new NotImplementedException();
         }
 
-        public void MusicalViewRightButtonDown(FrameworkElement view)
+        public override void MusicalViewRightButtonDown(FrameworkElement view)
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {

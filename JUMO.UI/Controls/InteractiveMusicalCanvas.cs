@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace JUMO.UI.Controls
 {
-    abstract class InteractiveMusicalCanvas : MusicalCanvasBase
+    abstract class InteractiveMusicalCanvas : MusicalCanvasBase, IMusicalViewCallback
     {
         private const double FOLLOW_ACCEL = 0.0625;
 
@@ -139,6 +139,19 @@ namespace JUMO.UI.Controls
 
         protected virtual void OnSurfaceClick(Point pt) { }
         protected virtual void OnBlockSelectionCompleted(Rect selectionRect) { }
+
+        #endregion
+
+        #region IMusicalViewCallback Members
+
+        public virtual void MusicalViewResizeStarted(FrameworkElement view) { }
+        public virtual void MusicalViewResizing(FrameworkElement view, double delta) { }
+        public virtual void MusicalViewResizeComplete(FrameworkElement view) { }
+        public virtual void MusicalViewMoveStarted(FrameworkElement view) { }
+        public virtual void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY) { }
+        public virtual void MusicalViewMoveComplete(FrameworkElement view) { }
+        public virtual void MusicalViewLeftButtonDown(FrameworkElement view) { }
+        public virtual void MusicalViewRightButtonDown(FrameworkElement view) { }
 
         #endregion
 

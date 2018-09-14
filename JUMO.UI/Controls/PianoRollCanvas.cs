@@ -8,7 +8,7 @@ using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
-    class PianoRollCanvas : InteractiveMusicalCanvas, IMusicalViewCallback
+    class PianoRollCanvas : InteractiveMusicalCanvas
     {
         private const byte MIN_VALUE = 0;
         private const byte MAX_VALUE = 127;
@@ -92,12 +92,12 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
-        public void MusicalViewMoveStarted(FrameworkElement view) => CalculateAffectedNotes(view);
-        public void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
-        public void MusicalViewMoveComplete(FrameworkElement view) => ViewEditComplete(view);
+        public override void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public override void MusicalViewMoveStarted(FrameworkElement view) => CalculateAffectedNotes(view);
+        public override void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
+        public override void MusicalViewMoveComplete(FrameworkElement view) => ViewEditComplete(view);
 
-        public void MusicalViewResizing(FrameworkElement view, double delta)
+        public override void MusicalViewResizing(FrameworkElement view, double delta)
         {
             foreach (Note note in _affectedNotes)
             {
@@ -107,7 +107,7 @@ namespace JUMO.UI.Controls
             FollowMouse();
         }
 
-        public void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
+        public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
             long deltaStart = PixelToTick(deltaX);
             int deltaValue = -(int)deltaY / 20;
@@ -138,7 +138,7 @@ namespace JUMO.UI.Controls
         // LeftButtonDown - 노트 재생
         // Ctrl+LeftButtonDown - 노트 선택
         // Ctrl+Shift+LeftButtonDown - 현재 선택 영역에 노트 추가
-        public void MusicalViewLeftButtonDown(FrameworkElement view)
+        public override void MusicalViewLeftButtonDown(FrameworkElement view)
         {
             NoteView noteView = (NoteView)view;
 
@@ -164,7 +164,7 @@ namespace JUMO.UI.Controls
         }
 
         // RightButtonDown - 노트 제거
-        public void MusicalViewRightButtonDown(FrameworkElement view)
+        public override void MusicalViewRightButtonDown(FrameworkElement view)
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
