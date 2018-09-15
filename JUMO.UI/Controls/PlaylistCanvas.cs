@@ -10,6 +10,10 @@ namespace JUMO.UI.Controls
 {
     class PlaylistCanvas : InteractiveMusicalCanvas
     {
+        private IEnumerable<PatternPlacement> _affectedItems;
+        private PatternPlacement _minTick;
+        private PatternPlacement _minTrack, _maxTrack;
+
         #region Events
 
         public event EventHandler<PlacePatternRequestedEventArgs> PlacePatternRequested;
@@ -66,24 +70,60 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
-        public override void MusicalViewMoveStarted(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void MusicalViewMoveComplete(FrameworkElement view)
-        {
-            throw new NotImplementedException();
-        }
+        public override void MusicalViewMoveStarted(FrameworkElement view) => CalculateAffectedItems(view);
+        public override void MusicalViewMoveComplete(FrameworkElement view) => ViewEditComplete(view);
 
         public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            throw new NotImplementedException();
+            long deltaStart = PixelToTick(deltaX);
+            int deltaIndex = FromVerticalDelta(deltaY);
+
+            if (deltaX < 0 && _minTick.Start < -deltaStart)
+            {
+                deltaStart = -_minTick.Start;
+            }
+
+            if (deltaY > 0 && MaxVerticalValue - _maxTrack.TrackIndex < deltaIndex)
+            {
+                deltaIndex = MaxVerticalValue - _maxTrack.TrackIndex;
+            }
+
+            if (deltaY < 0 && MinVerticalValue - _minTick.TrackIndex > deltaIndex)
+            {
+                deltaIndex = MinVerticalValue - _minTick.TrackIndex;
+            }
+
+            foreach (PatternPlacement pp in _affectedItems)
+            {
+                MovePattern(pp, deltaStart, deltaIndex);
+            }
+
+            FollowMouse();
         }
 
         public override void MusicalViewLeftButtonDown(FrameworkElement view)
         {
-            throw new NotImplementedException();
+            PatternPlacementView ppView = (PatternPlacementView)view;
+
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+            }
+            else if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                ClearSelection();
+                SelectItem(ppView.DataContext);
+            }
+            else if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
+            {
+                if (ppView.IsSelected)
+                {
+                    DeselectItem(ppView.DataContext);
+                }
+                else
+                {
+                    SelectItem(ppView.DataContext);
+                }
+            }
         }
 
         public override void MusicalViewRightButtonDown(FrameworkElement view)
@@ -95,6 +135,35 @@ namespace JUMO.UI.Controls
         }
 
         #endregion
+
+        private void CalculateAffectedItems(FrameworkElement view)
+        {
+            if (((PatternPlacementView)view).IsSelected)
+            {
+                _affectedItems = SelectedItems.Cast<PatternPlacement>();
+                _minTick = _affectedItems.MinBy(pp => pp.Start);
+                (_minTrack, _maxTrack) = _affectedItems.MinMaxBy(pp => pp.TrackIndex);
+            }
+            else
+            {
+                _affectedItems = new[] { (PatternPlacement)view.DataContext };
+                _minTick = _minTrack = _maxTrack = (PatternPlacement)view.DataContext;
+            }
+        }
+
+        private void ViewEditComplete(FrameworkElement view)
+        {
+            _affectedItems = null;
+        }
+
+        private void MovePattern(PatternPlacement pp, long deltaStart, int deltaIndex)
+        {
+            long newStart = SnapToGridInternal(pp.Start + deltaStart);
+            int newIndex = pp.TrackIndex + deltaIndex;
+
+            pp.Start = Math.Max(0, newStart);
+            pp.TrackIndex = Math.Max(MinVerticalValue, Math.Min(newIndex, MaxVerticalValue));
+        }
     }
 
     class PlacePatternRequestedEventArgs : EventArgs
