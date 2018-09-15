@@ -4,13 +4,16 @@ namespace JUMO.UI
 {
     class NoteViewModel : IMusicalItem, INotifyPropertyChanged
     {
-        private readonly Note _source;
+        private bool _updating = false;
+
         private byte _value;
         private long _start;
         private long _length;
         private byte _velocity;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Note Source { get; }
 
         public byte Value
         {
@@ -54,25 +57,34 @@ namespace JUMO.UI
 
         public NoteViewModel(Note source)
         {
-            _source = source;
-            Value = _source.Value;
-            Start = _source.Start;
-            Length = _source.Length;
-            Velocity = _source.Velocity;
+            Source = source;
+            Value = Source.Value;
+            Start = Source.Start;
+            Length = Source.Length;
+            Velocity = Source.Velocity;
 
-            _source.PropertyChanged += OnSourcePropertyChanged;
+            Source.PropertyChanged += OnSourcePropertyChanged;
         }
 
         public void UpdateSource()
         {
-            _source.Value = Value;
-            _source.Start = Start;
-            _source.Length = Length;
-            _source.Velocity = Velocity;
+            _updating = true;
+
+            Source.Value = Value;
+            Source.Start = Start;
+            Source.Length = Length;
+            Source.Velocity = Velocity;
+
+            _updating = false;
         }
 
         private void OnSourcePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (_updating)
+            {
+                return;
+            }
+
             var srcValue = sender.GetType().GetProperty(e.PropertyName).GetValue(sender);
             GetType().GetProperty(e.PropertyName)?.SetValue(this, srcValue);
         }
