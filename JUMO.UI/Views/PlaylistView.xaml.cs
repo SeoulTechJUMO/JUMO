@@ -45,12 +45,16 @@ namespace JUMO.UI.Views
 
         private void PlaylistCanvas_PlacePatternRequested(object sender, PlacePatternRequestedEventArgs e)
         {
-            throw new NotImplementedException();
+            PlaylistViewModel vm = (PlaylistViewModel)DataContext;
+
+            vm.PlacePattern(e.Pattern, e.TrackIndex, e.Start);
         }
 
         private void PlaylistCanvas_RemovePatternRequested(object sender, RemovePatternRequestedEventArgs e)
         {
-            throw new NotImplementedException();
+            PlaylistViewModel vm = (PlaylistViewModel)DataContext;
+
+            vm.RemovePattern(e.PatternToRemove);
         }
 
         private void PlaylistCanvas_SelectionChanged(object sender, NotifyCollectionChangedEventArgs e)

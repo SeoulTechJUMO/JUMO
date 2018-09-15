@@ -86,6 +86,8 @@ namespace JUMO
             base.OnCollectionChanged(e);
         }
 
+        internal new void Add(PatternPlacement item) => base.Add(item);
+
         private void UpdateLength() => Length = this.Select(pp => pp.Start + pp.Length).DefaultIfEmpty(0).Max();
 
         private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)

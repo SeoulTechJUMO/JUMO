@@ -12,7 +12,10 @@ namespace JUMO
     /// </summary>
     public class PatternPlacement : IMusicalItem, INotifyPropertyChanged
     {
-        private int _trackIndex;
+        private static readonly Track[] _tracks = Song.Current.Tracks;
+
+        private bool _initialized = false;
+        private int _trackIndex = -1;
         private long _start;
 
         /// <summary>
@@ -23,16 +26,27 @@ namespace JUMO
         public int TrackIndex
         {
             get => _trackIndex;
-            internal set
+            set
             {
                 if (_trackIndex != value)
                 {
-                    if (_trackIndex < 0 || _trackIndex >= Song.NumOfTracks)
+                    if (value < 0 || value >= Song.NumOfTracks)
                     {
                         throw new IndexOutOfRangeException($"{nameof(TrackIndex)} must be in [0, {Song.NumOfTracks})");
                     }
 
+                    if (_initialized)
+                    {
+                        _tracks[_trackIndex].Remove(this);
+                    }
+                    else
+                    {
+                        _initialized = true;
+                    }
+
                     _trackIndex = value;
+
+                    _tracks[_trackIndex].Add(this);
                     OnPropertyChanged(nameof(TrackIndex));
                 }
             }
@@ -61,19 +75,26 @@ namespace JUMO
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// 새로운 PatternPlacement 인스턴스를 생성합니다.
-        /// </summary>
-        /// <param name="pattern">배치된 패턴</param>
-        /// <param name="trackIndex">패턴이 배치된 트랙의 인덱스</param>
-        /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
-        internal PatternPlacement(Pattern pattern, int trackIndex, long start)
+        private PatternPlacement(Pattern pattern, int trackIndex, long start)
         {
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
             TrackIndex = trackIndex;
             Start = start;
 
             pattern.PropertyChanged += OnPatternPropertyChanged;
+        }
+
+        /// <summary>
+        /// 새로운 PatternPlacement 인스턴스를 생성하여 트랙에 배치합니다.
+        /// </summary>
+        /// <param name="pattern">배치된 패턴</param>
+        /// <param name="trackIndex">패턴이 배치된 트랙의 인덱스</param>
+        /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
+        public static PatternPlacement Create(Pattern pattern, int trackIndex, long start)
+        {
+            PatternPlacement pp = new PatternPlacement(pattern, trackIndex, start);
+
+            return pp;
         }
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
