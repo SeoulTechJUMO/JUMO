@@ -65,7 +65,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
     <Compile Include="ViewModel\ChordMagicViewModel.cs" />
     <Page Include="CodeMagicView.xaml">
       <Generator>MSBuild:Compile</Generator>

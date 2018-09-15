@@ -32,6 +32,7 @@ namespace ChordMagicianTest.ViewModel
             {
                 _Key = value;
                 OnPropertyChanged(nameof(Key));
+                ChangeAllChordName();
             }
         }
 
@@ -44,6 +45,7 @@ namespace ChordMagicianTest.ViewModel
             {
                 _Mode = value;
                 OnPropertyChanged(nameof(Mode));
+                ChangeAllChordName();
             }
         }
 
@@ -83,6 +85,18 @@ namespace ChordMagicianTest.ViewModel
             }
         }
 
+        //현재 선택중인 코드
+        private Progress _CurrentChord;
+        public Progress CurrentChord
+        {
+            get => _CurrentChord;
+            set
+            {
+                _CurrentChord = value;
+                OnPropertyChanged(nameof(CurrentChord));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
@@ -107,6 +121,7 @@ namespace ChordMagicianTest.ViewModel
             {
                 CurrentProgress.Add(chord);
                 progress = API.Request(chord.ChildPath);
+                ChangeAllChordName();
 
                 if (progress.Count == 0)
                 {
@@ -120,6 +135,7 @@ namespace ChordMagicianTest.ViewModel
             }
         }
 
+        //코드 재생
         private RelayCommand _PlayChord;
         public RelayCommand PlayChord
         {
@@ -135,6 +151,7 @@ namespace ChordMagicianTest.ViewModel
         public void Play(Progress p)
         {
             //TODO:미디메시지를 생성해서 VST에 전송해야됨
+            CurrentChord = p;
             System.Diagnostics.Debug.WriteLine(p);
         }
         
@@ -155,6 +172,7 @@ namespace ChordMagicianTest.ViewModel
         {
             CurrentProgress.Clear();
             progress = API.Request("");
+            ChangeAllChordName();
         }
 
         //선택한 코드진행만 삭제
@@ -189,6 +207,7 @@ namespace ChordMagicianTest.ViewModel
                     cp = cp.Substring(0, cp.Length - 1);
                 }
                 progress = API.Request(cp);
+                ChangeAllChordName();
             }
             else
             {
@@ -202,18 +221,37 @@ namespace ChordMagicianTest.ViewModel
             ObservableCollection<Progress> new_p = new ObservableCollection<Progress>();
             foreach (Progress i in old_p)
             {
-                i.Chord = GetChordName(i.ID, Key);
+                i.Chord = GetChordName(i.ID, Key, Mode);
                 new_p.Add(i);
             }
             return new_p;
         }
 
-        public string GetChordName(string id, string key)
+        public string GetChordName(string id, string key, string mode)
         {
             string ChordName="";
+            List<byte> Scale = Naming.CalScale(key,Naming.Scale[mode]);
 
-            ChordName = id;
+            //ChordName = key;
+            
             return ChordName;
+        }
+
+        //조성이 바뀔시에 모든 코드이름 업데이트
+        public void ChangeAllChordName()
+        {
+            if (progress != null)
+            {
+                progress = ChangeChordName(progress);
+            }
+            if (CurrentProgress != null)
+            {
+                CurrentProgress = ChangeChordName(CurrentProgress);
+            }
+            if (CurrentChord != null)
+            {
+                CurrentChord.Chord = GetChordName(CurrentChord.ID, Key, Mode);
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ namespace ChordMagicianTest
                 {
                     Login(Properties.Settings.Default.username, Properties.Settings.Default.password, true);
                 }
-                catch { }
+                catch (Exception e){ System.Diagnostics.Debug.WriteLine(e); }
             }
             username.Focus();
         }

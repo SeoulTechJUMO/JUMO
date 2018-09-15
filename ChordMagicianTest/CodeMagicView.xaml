@@ -18,24 +18,27 @@
             <StackPanel Orientation="Horizontal" Margin="20">
                 <TextBlock x:Name="text1" Width="130" Height="20" FontSize="14"><Run Text="선택한 패턴: "/></TextBlock>
                 <TextBlock x:Name="text2" Width="68" Height="20" FontSize="14" Margin="150,0,0,0"><Run Text="현재 조성:"/></TextBlock>
-                <ComboBox Width="40" Height="20" Margin="10,0,0,0" ItemsSource="{x:Static local:Naming.NoteName}" 
-                          SelectedValuePath="Key" SelectedValue="{Binding Key}" SelectedIndex="0">
+                <ComboBox Width="50" Height="20" Margin="10,0,0,0" ItemsSource="{x:Static local:Naming.NoteName}"
+                          SelectedValuePath="Key" SelectedValue="{Binding Key}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Key}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ComboBox Width="80" Height="20" Margin="10,0,0,0" SelectedValuePath="Content" SelectedValue="{Binding Mode}">
-                    <ComboBoxItem>Major</ComboBoxItem>
-                    <ComboBoxItem>Minor</ComboBoxItem>
+                <ComboBox Width="70" Height="20" Margin="10,0,0,0" SelectedValuePath="Key" SelectedValue="{Binding Mode}" ItemsSource="{x:Static local:Naming.Scale}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure">
+                <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure" SelectedItem="{Binding CurrentChord}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"  />
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>
@@ -54,7 +57,7 @@
                 <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="코드 진행을 바탕으로 다음 코드를 찾았습니다."/></TextBlock>
                 <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="코드 버튼을 클릭하면 미리 들을 수 있습니다."/></TextBlock>
             </StackPanel>
-            <ListBox x:Name="chord_list" ItemsSource="{Binding progress}" Margin="20" Height="100">
+            <ListBox x:Name="chord_list" ItemsSource="{Binding progress}" Margin="20" Height="100" SelectedItem="{Binding CurrentChord}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
