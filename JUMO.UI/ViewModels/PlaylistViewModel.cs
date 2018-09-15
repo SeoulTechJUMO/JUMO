@@ -34,10 +34,6 @@ namespace JUMO.UI
             }
         }
 
-        public void PlacePattern(Pattern pattern, int trackIndex, long start) => _tracks[trackIndex].PlacePattern(pattern, start);
-
-        public void RemovePattern(PatternPlacement patternPlacement) => _tracks[patternPlacement.TrackIndex].Remove(patternPlacement);
-
         private void OnTrackCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)

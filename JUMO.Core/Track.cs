@@ -86,10 +86,6 @@ namespace JUMO
             base.OnCollectionChanged(e);
         }
 
-        public new void Add(PatternPlacement pp) => throw new NotSupportedException($"Use {nameof(Track)}.{nameof(PlacePattern)} instead.");
-
-        public void PlacePattern(Pattern pattern, long start) => base.Add(new PatternPlacement(pattern, Index, start));
-
         private void UpdateLength() => Length = this.Select(pp => pp.Start + pp.Length).DefaultIfEmpty(0).Max();
 
         private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)
