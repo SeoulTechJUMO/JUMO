@@ -10,7 +10,7 @@ using System.Windows.Data;
 
 namespace JUMO.UI
 {
-    public class PianoRollViewModel : MusicalCanvasWorkspaceViewModel<Note>
+    public class PianoRollViewModel : MusicalCanvasWorkspaceViewModel
     {
         protected override double ZoomBase => 24.0;
 

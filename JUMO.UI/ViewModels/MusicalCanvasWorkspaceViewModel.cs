@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
-    public abstract class MusicalCanvasWorkspaceViewModel<T> : WorkspaceViewModel
+    public abstract class MusicalCanvasWorkspaceViewModel : WorkspaceViewModel
     {
         protected abstract double ZoomBase { get; }
         protected virtual int ZoomPercentMinimum => 25;
@@ -63,7 +63,7 @@ namespace JUMO.UI
             }
         }
 
-        public ObservableCollection<T> SelectedItems { get; } = new ObservableCollection<T>();
+        public ObservableCollection<IMusicalItem> SelectedItems { get; } = new ObservableCollection<IMusicalItem>();
 
         public RelayCommand ZoomInCommand
         {
@@ -98,7 +98,7 @@ namespace JUMO.UI
         {
             if (items != null)
             {
-                foreach (var item in items.OfType<T>())
+                foreach (var item in items.OfType<IMusicalItem>())
                 {
                     SelectedItems.Add(item);
                 }
@@ -109,7 +109,7 @@ namespace JUMO.UI
         {
             if (items != null)
             {
-                foreach (var item in items.OfType<T>())
+                foreach (var item in items.OfType<IMusicalItem>())
                 {
                     SelectedItems.Remove(item);
                 }
