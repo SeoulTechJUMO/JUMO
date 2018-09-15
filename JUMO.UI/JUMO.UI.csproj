@@ -106,6 +106,7 @@
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
     <Compile Include="ViewModels\MusicalCanvasWorkspaceViewModel.cs" />
+    <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\PianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="RelayCommand.cs" />
