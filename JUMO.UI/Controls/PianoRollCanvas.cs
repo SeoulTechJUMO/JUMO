@@ -10,9 +10,6 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : InteractiveMusicalCanvas
     {
-        private const byte MIN_VALUE = 0;
-        private const byte MAX_VALUE = 127;
-
         private IEnumerable<Note> _affectedNotes;
         private Note _minTick;
         private Note _minValue, _maxValue;
@@ -66,29 +63,25 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        #region InteractiveMusicalCanvas Overrides
+
+        protected override int MinVerticalValue => 0;
+        protected override int MaxVerticalValue => 127;
+
+        protected override int GetVerticalValue(IMusicalItem item) => ((Note)item).Value;
+        protected override int FromVerticalPosition(double y) => 127 - (int)y / 20;
+        protected override int FromVerticalDelta(double dy) => -(int)dy / 20;
+
         protected override void OnSurfaceClick(Point pt)
         {
-            byte value = (byte)(127 - ((int)pt.Y / 20));
+            byte value = (byte)FromVerticalPosition(pt.Y);
             long pos = PixelToTick(pt.X);
             long snap = SnapToGridInternal(pos);
 
             AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
         }
 
-        protected override void OnBlockSelectionCompleted(Rect selectionRect)
-        {
-            long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
-            long length = PixelToTick(selectionRect.Width);
-            byte lowValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Bottom / 20, 127));
-            byte highValue = (byte)Math.Max(0, Math.Min(127 - (int)selectionRect.Top / 20, 127));
-
-            var selectedNotes =
-                GetVirtualElementsInside(new Segment(startTick, length))
-                .Select(ve => (Note)((NoteView)ve.Visual).DataContext)
-                .Where(note => note.Value >= lowValue && note.Value <= highValue);
-
-            SelectItems(new List<Note>(selectedNotes));
-        }
+        #endregion
 
         #region IMusicalViewCallback Members
 
@@ -110,21 +103,21 @@ namespace JUMO.UI.Controls
         public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
             long deltaStart = PixelToTick(deltaX);
-            int deltaValue = -(int)deltaY / 20;
+            int deltaValue = FromVerticalDelta(deltaY);
 
             if (deltaX < 0 && _minTick.Start < -deltaStart)
             {
                 deltaStart = -_minTick.Start;
             }
 
-            if (deltaY > 0 && MIN_VALUE - _minValue.Value > deltaValue)
+            if (deltaY > 0 && MinVerticalValue - _minValue.Value > deltaValue)
             {
-                deltaValue = MIN_VALUE - _minValue.Value;
+                deltaValue = MinVerticalValue - _minValue.Value;
             }
 
-            if (deltaY < 0 && MAX_VALUE - _maxValue.Value < deltaValue)
+            if (deltaY < 0 && MaxVerticalValue - _maxValue.Value < deltaValue)
             {
-                deltaValue = MAX_VALUE - _maxValue.Value;
+                deltaValue = MaxVerticalValue - _maxValue.Value;
             }
 
             foreach (Note note in _affectedNotes)
@@ -212,7 +205,7 @@ namespace JUMO.UI.Controls
             int newValue = note.Value + deltaValue;
 
             note.Start = Math.Max(0, newStart);
-            note.Value = (byte)Math.Max(MIN_VALUE, Math.Min(newValue, MAX_VALUE));
+            note.Value = (byte)Math.Max(MinVerticalValue, Math.Min(newValue, MaxVerticalValue));
         }
     }
 

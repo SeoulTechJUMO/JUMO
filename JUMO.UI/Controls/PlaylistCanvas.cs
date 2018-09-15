@@ -44,30 +44,25 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        #region InteractiveMusicalCanvas Overrides
+
+        protected override int MinVerticalValue => 0;
+        protected override int MaxVerticalValue => 63;
+
+        protected override int GetVerticalValue(IMusicalItem item) => ((PatternPlacement)item).TrackIndex;
+        protected override int FromVerticalPosition(double y) => (int)y / 60;
+
         protected override void OnSurfaceClick(Point pt)
         {
             Pattern pattern = Song.Current.CurrentPattern;
-            int trackIndex = (int)(pt.Y / 60);
+            int trackIndex = FromVerticalPosition(pt.Y);
             long start = PixelToTick(pt.X);
             long snap = SnapToGridInternal(start);
 
             PlacePatternRequested?.Invoke(this, new PlacePatternRequestedEventArgs(pattern, trackIndex, snap));
         }
 
-        protected override void OnBlockSelectionCompleted(Rect selectionRect)
-        {
-            long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
-            long length = PixelToTick(selectionRect.Width);
-            int lowIndex = (int)Math.Max(0, Math.Min(selectionRect.Top / 60, 63));
-            int highIndex = (int)Math.Max(0, Math.Min(selectionRect.Bottom / 60, 63));
-
-            var selectedPatterns =
-                GetVirtualElementsInside(new Segment(startTick, length))
-                .Select(ve => (PatternPlacement)((PatternPlacementView)ve.Visual).DataContext)
-                .Where(pp => pp.TrackIndex >= lowIndex && pp.TrackIndex <= highIndex);
-
-            SelectItems(new List<PatternPlacement>(selectedPatterns));
-        }
+        #endregion
 
         #region IMusicalViewCallback Members
 

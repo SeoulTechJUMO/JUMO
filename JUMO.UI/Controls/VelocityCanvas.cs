@@ -10,9 +10,6 @@ namespace JUMO.UI.Controls
 {
     class VelocityCanvas : InteractiveMusicalCanvas
     {
-        private const byte MIN_VELOCITY = 0;
-        private const byte MAX_VELOCITY = 127;
-
         private IEnumerable<Note> _affectedNotes;
         private Note _min, _max;
 
@@ -55,6 +52,11 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        protected override int MinVerticalValue => 0;
+        protected override int MaxVerticalValue => 127;
+
+        protected override int GetVerticalValue(IMusicalItem item) => ((Note)item).Velocity;
+
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) { }
 
         #region IMusicalViewCallback Members
@@ -64,16 +66,16 @@ namespace JUMO.UI.Controls
 
         public override void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            int deltaVelocity = -(int)Math.Round(delta * MAX_VELOCITY / ActualHeight);
+            int deltaVelocity = -(int)Math.Round(delta * MaxVerticalValue / ActualHeight);
 
-            if (delta > 0 && MIN_VELOCITY - _min.Velocity > deltaVelocity)
+            if (delta > 0 && MinVerticalValue - _min.Velocity > deltaVelocity)
             {
-                deltaVelocity = MIN_VELOCITY - _min.Velocity;
+                deltaVelocity = MinVerticalValue - _min.Velocity;
             }
 
-            if (delta < 0 && MAX_VELOCITY - _max.Velocity < deltaVelocity)
+            if (delta < 0 && MaxVerticalValue - _max.Velocity < deltaVelocity)
             {
-                deltaVelocity = MAX_VELOCITY - _max.Velocity;
+                deltaVelocity = MaxVerticalValue - _max.Velocity;
             }
 
             foreach (Note note in _affectedNotes)
@@ -106,7 +108,7 @@ namespace JUMO.UI.Controls
         private void AdjustVelocity(Note note, int deltaVelocity)
         {
             int newVelocity = note.Velocity + deltaVelocity;
-            note.Velocity = (byte)Math.Max(MIN_VELOCITY, Math.Min(newVelocity, MAX_VELOCITY));
+            note.Velocity = (byte)Math.Max(MinVerticalValue, Math.Min(newVelocity, MaxVerticalValue));
         }
     }
 }

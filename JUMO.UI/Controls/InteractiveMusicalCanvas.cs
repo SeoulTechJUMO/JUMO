@@ -5,6 +5,8 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using JUMO.UI.Data;
+using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls
 {
@@ -135,10 +137,19 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        #region Virtual Properties
+
+        protected abstract int MinVerticalValue { get; }
+        protected abstract int MaxVerticalValue { get; }
+
+        #endregion
+
         #region Virtual Methods
 
+        protected abstract int GetVerticalValue(IMusicalItem item);
+        protected virtual int FromVerticalPosition(double y) => (int)y;
+        protected virtual int FromVerticalDelta(double dy) => FromVerticalPosition(dy);
         protected virtual void OnSurfaceClick(Point pt) { }
-        protected virtual void OnBlockSelectionCompleted(Rect selectionRect) { }
 
         #endregion
 
@@ -205,7 +216,23 @@ namespace JUMO.UI.Controls
         {
             if (_selectionHelper.IsBlockSelecting)
             {
-                OnBlockSelectionCompleted(_selectionHelper.EndBlockSelection());
+                Rect selectionRect = _selectionHelper.EndBlockSelection();
+
+                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
+                long length = PixelToTick(selectionRect.Width);
+                int vLimit1 = Math.Max(MinVerticalValue, Math.Min(FromVerticalPosition(selectionRect.Top), MaxVerticalValue));
+                int vLimit2 = Math.Max(MinVerticalValue, Math.Min(FromVerticalPosition(selectionRect.Bottom), MaxVerticalValue));
+
+                var selectedItems =
+                    GetVirtualElementsInside(new Segment(startTick, length))
+                    .Select(ve => (IMusicalItem)((SelectableView)ve.Visual).DataContext)
+                    .Where(x =>
+                    {
+                        int v = GetVerticalValue(x);
+                        return v >= Math.Min(vLimit1, vLimit2) && v <= Math.Max(vLimit1, vLimit2);
+                    });
+
+                SelectItems(new List<IMusicalItem>(selectedItems));
 
                 e.Handled = true;
             }
