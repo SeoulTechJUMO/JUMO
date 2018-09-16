@@ -1,9 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using JUMO.UI.Data;
 using JUMO.UI.Views;
 
@@ -130,14 +127,14 @@ namespace JUMO.UI.Controls
 
     class VirtualPatternControl : VirtualElement
     {
-        private PatternPlacement _patternPlacement;
+        private PatternPlacementViewModel _patternPlacement;
         private Segment _bounds;
 
         public override event EventHandler BoundsChanged;
 
         public override Segment Bounds => _bounds;
 
-        public VirtualPatternControl(PatternPlacement patternPlacement)
+        public VirtualPatternControl(PatternPlacementViewModel patternPlacement)
         {
             _patternPlacement = patternPlacement;
             _bounds = new Segment(_patternPlacement.Start, _patternPlacement.Length);
@@ -168,7 +165,7 @@ namespace JUMO.UI.Controls
 
         private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            PatternPlacement pp = (PatternPlacement)sender;
+            PatternPlacementViewModel pp = (PatternPlacementViewModel)sender;
             _bounds.Start = pp.Start;
             _bounds.Length = pp.Length;
 

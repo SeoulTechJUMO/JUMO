@@ -10,9 +10,9 @@ namespace JUMO.UI.Controls
 {
     class PlaylistCanvas : InteractiveMusicalCanvas
     {
-        private IEnumerable<PatternPlacement> _affectedItems;
-        private PatternPlacement _minTick;
-        private PatternPlacement _minTrack, _maxTrack;
+        private IEnumerable<PatternPlacementViewModel> _affectedItems;
+        private PatternPlacementViewModel _minTick;
+        private PatternPlacementViewModel _minTrack, _maxTrack;
 
         #region Events
 
@@ -27,21 +27,21 @@ namespace JUMO.UI.Controls
 
         protected override IVirtualElement CreateVirtualElementForItem(IMusicalItem item)
         {
-            return new VirtualPatternControl((PatternPlacement)item);
+            return new VirtualPatternControl((PatternPlacementViewModel)item);
         }
 
         protected override double CalculateLogicalLength() => Song.Current.Length + (TimeResolution << 6);
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            PatternPlacement pp = (PatternPlacement)element.DataContext;
+            PatternPlacementViewModel pp = (PatternPlacementViewModel)element.DataContext;
 
             return new Size(pp.Length * WidthPerTick, 60);
         }
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            PatternPlacement pp = (PatternPlacement)element.DataContext;
+            PatternPlacementViewModel pp = (PatternPlacementViewModel)element.DataContext;
 
             return new Rect(new Point(pp.Start * WidthPerTick, pp.TrackIndex * 60), new Size(pp.Length * WidthPerTick, 60));
         }
@@ -53,7 +53,7 @@ namespace JUMO.UI.Controls
         protected override int MinVerticalValue => 0;
         protected override int MaxVerticalValue => 63;
 
-        protected override int GetVerticalValue(IMusicalItem item) => ((PatternPlacement)item).TrackIndex;
+        protected override int GetVerticalValue(IMusicalItem item) => ((PatternPlacementViewModel)item).TrackIndex;
         protected override int FromVerticalPosition(double y) => (int)y / 60;
 
         protected override void OnSurfaceClick(Point pt)
@@ -93,7 +93,7 @@ namespace JUMO.UI.Controls
                 deltaIndex = MinVerticalValue - _minTick.TrackIndex;
             }
 
-            foreach (PatternPlacement pp in _affectedItems)
+            foreach (PatternPlacementViewModel pp in _affectedItems)
             {
                 MovePattern(pp, deltaStart, deltaIndex);
             }
@@ -130,7 +130,8 @@ namespace JUMO.UI.Controls
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
-                RemovePatternRequested?.Invoke(this, new RemovePatternRequestedEventArgs((PatternPlacement)view.DataContext));
+                PatternPlacement pp = ((PatternPlacementViewModel)view.DataContext).Source;
+                RemovePatternRequested?.Invoke(this, new RemovePatternRequestedEventArgs(pp));
             }
         }
 
@@ -140,23 +141,28 @@ namespace JUMO.UI.Controls
         {
             if (((PatternPlacementView)view).IsSelected)
             {
-                _affectedItems = SelectedItems.Cast<PatternPlacement>();
+                _affectedItems = SelectedItems.Cast<PatternPlacementViewModel>();
                 _minTick = _affectedItems.MinBy(pp => pp.Start);
                 (_minTrack, _maxTrack) = _affectedItems.MinMaxBy(pp => pp.TrackIndex);
             }
             else
             {
-                _affectedItems = new[] { (PatternPlacement)view.DataContext };
-                _minTick = _minTrack = _maxTrack = (PatternPlacement)view.DataContext;
+                _affectedItems = new[] { (PatternPlacementViewModel)view.DataContext };
+                _minTick = _minTrack = _maxTrack = (PatternPlacementViewModel)view.DataContext;
             }
         }
 
         private void ViewEditComplete(FrameworkElement view)
         {
+            foreach (PatternPlacementViewModel pp in _affectedItems)
+            {
+                pp.UpdateSource();
+            }
+
             _affectedItems = null;
         }
 
-        private void MovePattern(PatternPlacement pp, long deltaStart, int deltaIndex)
+        private void MovePattern(PatternPlacementViewModel pp, long deltaStart, int deltaIndex)
         {
             long newStart = SnapToGridInternal(pp.Start + deltaStart);
             int newIndex = pp.TrackIndex + deltaIndex;
