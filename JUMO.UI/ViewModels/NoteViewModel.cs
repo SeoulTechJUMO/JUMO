@@ -2,7 +2,7 @@
 
 namespace JUMO.UI
 {
-    class NoteViewModel : IMusicalItem, INotifyPropertyChanged
+    public class NoteViewModel : IMusicalItem, INotifyPropertyChanged
     {
         private bool _updating = false;
 

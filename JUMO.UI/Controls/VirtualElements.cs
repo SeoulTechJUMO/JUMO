@@ -57,9 +57,9 @@ namespace JUMO.UI.Controls
 
         public override Segment Bounds => _bounds;
 
-        public VirtualNoteBase(Note note)
+        public VirtualNoteBase(NoteViewModel note)
         {
-            _note = new NoteViewModel(note);
+            _note = note;
             _bounds = new Segment(_note.Start, _note.Length);
             _note.PropertyChanged += OnNotePropertyChanged;
         }
@@ -76,7 +76,7 @@ namespace JUMO.UI.Controls
 
     class VirtualNote : VirtualNoteBase
     {
-        public VirtualNote(Note note) : base(note) { }
+        public VirtualNote(NoteViewModel note) : base(note) { }
 
         public override UIElement CreateVisual(MusicalCanvasBase parent)
         {
@@ -103,7 +103,7 @@ namespace JUMO.UI.Controls
 
     class VirtualVelocityControl : VirtualNoteBase
     {
-        public VirtualVelocityControl(Note note) : base(note) { }
+        public VirtualVelocityControl(NoteViewModel note) : base(note) { }
 
         public override UIElement CreateVisual(MusicalCanvasBase parent)
         {
