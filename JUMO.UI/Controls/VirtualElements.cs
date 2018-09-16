@@ -50,7 +50,7 @@ namespace JUMO.UI.Controls
 
     abstract class VirtualNoteBase : VirtualElement
     {
-        protected readonly Note _note;
+        protected readonly NoteViewModel _note;
         protected Segment _bounds;
 
         public override event EventHandler BoundsChanged;
@@ -59,14 +59,14 @@ namespace JUMO.UI.Controls
 
         public VirtualNoteBase(Note note)
         {
-            _note = note;
+            _note = new NoteViewModel(note);
             _bounds = new Segment(_note.Start, _note.Length);
             _note.PropertyChanged += OnNotePropertyChanged;
         }
 
         private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Note note = (Note)sender;
+            NoteViewModel note = (NoteViewModel)sender;
             _bounds.Start = _note.Start;
             _bounds.Length = _note.Length;
 

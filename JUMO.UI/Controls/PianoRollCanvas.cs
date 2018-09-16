@@ -10,9 +10,9 @@ namespace JUMO.UI.Controls
 {
     class PianoRollCanvas : InteractiveMusicalCanvas
     {
-        private IEnumerable<Note> _affectedNotes;
-        private Note _minTick;
-        private Note _minValue, _maxValue;
+        private IEnumerable<NoteViewModel> _affectedNotes;
+        private NoteViewModel _minTick;
+        private NoteViewModel _minValue, _maxValue;
 
         public long _lastLength;
 
@@ -45,14 +45,14 @@ namespace JUMO.UI.Controls
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            Note note = (Note)element.DataContext;
+            NoteViewModel note = (NoteViewModel)element.DataContext;
 
             return new Size(note.Length * WidthPerTick, 20);
         }
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            Note note = (Note)element.DataContext;
+            NoteViewModel note = (NoteViewModel)element.DataContext;
 
             double x = note.Start * WidthPerTick;
             double y = (127 - note.Value) * 20;
@@ -68,7 +68,7 @@ namespace JUMO.UI.Controls
         protected override int MinVerticalValue => 0;
         protected override int MaxVerticalValue => 127;
 
-        protected override int GetVerticalValue(IMusicalItem item) => ((Note)item).Value;
+        protected override int GetVerticalValue(IMusicalItem item) => ((NoteViewModel)item).Value;
         protected override int FromVerticalPosition(double y) => 127 - (int)y / 20;
         protected override int FromVerticalDelta(double dy) => -(int)dy / 20;
 
@@ -92,7 +92,7 @@ namespace JUMO.UI.Controls
 
         public override void MusicalViewResizing(FrameworkElement view, double delta)
         {
-            foreach (Note note in _affectedNotes)
+            foreach (NoteViewModel note in _affectedNotes)
             {
                 ResizeNote(note, delta);
             }
@@ -120,7 +120,7 @@ namespace JUMO.UI.Controls
                 deltaValue = MaxVerticalValue - _maxValue.Value;
             }
 
-            foreach (Note note in _affectedNotes)
+            foreach (NoteViewModel note in _affectedNotes)
             {
                 MoveNote(note, deltaStart, deltaValue);
             }
@@ -161,7 +161,9 @@ namespace JUMO.UI.Controls
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
-                DeleteNoteRequested?.Invoke(this, new DeleteNoteRequestedEventArgs((Note)view.DataContext));
+                Note note = ((NoteViewModel)view.DataContext).Source;
+
+                DeleteNoteRequested?.Invoke(this, new DeleteNoteRequestedEventArgs(note));
             }
         }
 
@@ -171,24 +173,29 @@ namespace JUMO.UI.Controls
         {
             if (((NoteView)view).IsSelected)
             {
-                _affectedNotes = SelectedItems.Cast<Note>();
+                _affectedNotes = SelectedItems.Cast<NoteViewModel>();
                 _minTick = _affectedNotes.MinBy(note => note.Start);
                 (_minValue, _maxValue) = _affectedNotes.MinMaxBy(note => note.Value);
             }
             else
             {
-                _affectedNotes = new[] { (Note)view.DataContext };
-                _minTick = _minValue = _maxValue = (Note)view.DataContext;
+                _affectedNotes = new[] { (NoteViewModel)view.DataContext };
+                _minTick = _minValue = _maxValue = (NoteViewModel)view.DataContext;
             }
         }
 
         private void ViewEditComplete(FrameworkElement view)
         {
+            foreach (NoteViewModel note in _affectedNotes)
+            {
+                note.UpdateSource();
+            }
+
             _affectedNotes = null;
-            _lastLength = ((Note)view.DataContext).Length;
+            _lastLength = ((NoteViewModel)view.DataContext).Length;
         }
 
-        private void ResizeNote(Note note, double delta)
+        private void ResizeNote(NoteViewModel note, double delta)
         {
             long end = note.Start + note.Length;
             long newEnd = SnapToGridInternal(end + PixelToTick(delta));
@@ -199,7 +206,7 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void MoveNote(Note note, long deltaStart, int deltaValue)
+        private void MoveNote(NoteViewModel note, long deltaStart, int deltaValue)
         {
             long newStart = SnapToGridInternal(note.Start + deltaStart);
             int newValue = note.Value + deltaValue;

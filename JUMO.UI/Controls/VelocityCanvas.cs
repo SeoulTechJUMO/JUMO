@@ -10,8 +10,8 @@ namespace JUMO.UI.Controls
 {
     class VelocityCanvas : InteractiveMusicalCanvas
     {
-        private IEnumerable<Note> _affectedNotes;
-        private Note _min, _max;
+        private IEnumerable<NoteViewModel> _affectedNotes;
+        private NoteViewModel _min, _max;
 
         #region MusicalCanvasBase Overrides
 
@@ -30,7 +30,7 @@ namespace JUMO.UI.Controls
 
         protected override Size CalculateSizeForElement(FrameworkElement element)
         {
-            Note note = (Note)element.DataContext;
+            NoteViewModel note = (NoteViewModel)element.DataContext;
 
             double w = note.Length * WidthPerTick;
             double h = note.Velocity * ViewportHeight / 127.0;
@@ -40,7 +40,7 @@ namespace JUMO.UI.Controls
 
         protected override Rect CalculateRectForElement(FrameworkElement element)
         {
-            Note note = (Note)element.DataContext;
+            NoteViewModel note = (NoteViewModel)element.DataContext;
 
             double x = note.Start * WidthPerTick;
             double y = (127 - note.Velocity) * ViewportHeight / 127.0;
@@ -55,7 +55,7 @@ namespace JUMO.UI.Controls
         protected override int MinVerticalValue => 0;
         protected override int MaxVerticalValue => 127;
 
-        protected override int GetVerticalValue(IMusicalItem item) => ((Note)item).Velocity;
+        protected override int GetVerticalValue(IMusicalItem item) => ((NoteViewModel)item).Velocity;
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) { }
 
@@ -78,7 +78,7 @@ namespace JUMO.UI.Controls
                 deltaVelocity = MaxVerticalValue - _max.Velocity;
             }
 
-            foreach (Note note in _affectedNotes)
+            foreach (NoteViewModel note in _affectedNotes)
             {
                 AdjustVelocity(note, deltaVelocity);
             }
@@ -90,22 +90,27 @@ namespace JUMO.UI.Controls
         {
             if (((NoteVelocityView)view).IsSelected)
             {
-                _affectedNotes = SelectedItems.Cast<Note>();
+                _affectedNotes = SelectedItems.Cast<NoteViewModel>();
                 (_min, _max) = _affectedNotes.MinMaxBy(note => note.Velocity);
             }
             else
             {
-                _affectedNotes = new[] { (Note)view.DataContext };
-                _min = _max = (Note)view.DataContext;
+                _affectedNotes = new[] { (NoteViewModel)view.DataContext };
+                _min = _max = (NoteViewModel)view.DataContext;
             }
         }
 
         private void ViewEditComplete(FrameworkElement view)
         {
+            foreach (NoteViewModel note in _affectedNotes)
+            {
+                note.UpdateSource();
+            }
+
             _affectedNotes = null;
         }
 
-        private void AdjustVelocity(Note note, int deltaVelocity)
+        private void AdjustVelocity(NoteViewModel note, int deltaVelocity)
         {
             int newVelocity = note.Velocity + deltaVelocity;
             note.Velocity = (byte)Math.Max(MinVerticalValue, Math.Min(newVelocity, MaxVerticalValue));
