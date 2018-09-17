@@ -33,7 +33,14 @@ namespace ChordMagicianTest
             List<byte> _scale = new List<byte>();
             foreach (byte i in scale)
             {
-                _scale.Add((byte)(i+NoteName[key]));
+                if (i + NoteName[key] > 11)
+                {
+                    _scale.Add((byte)(i + NoteName[key] - 12));
+                }
+                else
+                {
+                    _scale.Add((byte)(i + NoteName[key]));
+                }     
             }
             return _scale;
         }

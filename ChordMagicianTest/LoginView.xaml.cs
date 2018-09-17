@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Net;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -59,11 +60,27 @@ namespace ChordMagicianTest
                 cm.Show();
                 this.Close();
             }
+            catch (WebException e)
+            {
+                System.Diagnostics.Debug.WriteLine(e);
+                if (e.Status == WebExceptionStatus.ProtocolError)
+                {
+                    if (((HttpWebResponse)e.Response).StatusDescription == "Unauthorized")
+                    {
+                        MessageBox.Show("로그인 정보가 잘못되었습니다. 다시 확인 후 입력해주세요.");
+                    }
+                    
+                }
+                else if (e.Status == WebExceptionStatus.NameResolutionFailure)
+                {
+                    MessageBox.Show("인터넷 연결을 확인해주세요.");
+                }
+            }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e);
                 if (first != true)
-                    MessageBox.Show("로그인 정보가 잘못되었습니다. 다시 입력 해주세요.");
+                    MessageBox.Show("오류가 발생했습니다, 잠시후 다시 시도해주세요.");
             }
         }
 

@@ -221,20 +221,10 @@ namespace ChordMagicianTest.ViewModel
             ObservableCollection<Progress> new_p = new ObservableCollection<Progress>();
             foreach (Progress i in old_p)
             {
-                i.Chord = GetChordName(i.ID, Key, Mode);
+                i.Chord = ChordTools.GetChordName(i.ID, Key, Mode);
                 new_p.Add(i);
             }
             return new_p;
-        }
-
-        public string GetChordName(string id, string key, string mode)
-        {
-            string ChordName="";
-            List<byte> Scale = Naming.CalScale(key,Naming.Scale[mode]);
-
-            //ChordName = key;
-            
-            return ChordName;
         }
 
         //조성이 바뀔시에 모든 코드이름 업데이트
@@ -248,10 +238,10 @@ namespace ChordMagicianTest.ViewModel
             {
                 CurrentProgress = ChangeChordName(CurrentProgress);
             }
-            if (CurrentChord != null)
-            {
-                CurrentChord.Chord = GetChordName(CurrentChord.ID, Key, Mode);
-            }
+            //if (CurrentChord != null)
+            //{
+            //    CurrentChord.Chord = GetChordName(CurrentChord.ID, Key, Mode);
+            //}
         }
     }
 }
