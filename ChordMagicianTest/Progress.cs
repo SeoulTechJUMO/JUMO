@@ -20,7 +20,7 @@ namespace ChordMagicianTest
         {
             if (_Chord == "")
             {
-                return String.Format("{0}\n({1} %)", _ID, _Probability * 100);
+                return String.Format("({0})\n({1} %) {2}", _ID, _Probability * 100, _HTML);
             }
             else
             {
