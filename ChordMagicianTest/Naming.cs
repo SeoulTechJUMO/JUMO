@@ -20,7 +20,32 @@ namespace ChordMagicianTest
 
         public static readonly List<byte> Minor = new List<byte>()
         {
+            0,2,3,5,7,8,10
+        };
+
+        public static readonly List<byte> Lydian = new List<byte>()
+        {
+            0,2,4,6,7,9,11
+        };
+
+        public static readonly List<byte> Mixolydian = new List<byte>()
+        {
+            0,2,4,5,7,9,10
+        };
+
+        public static readonly List<byte> Dorian = new List<byte>()
+        {
             0,2,3,5,7,9,10
+        };
+
+        public static readonly List<byte> Phrygian = new List<byte>()
+        {
+            0,1,3,5,7,8,10
+        };
+
+        public static readonly List<byte> Locrian = new List<byte>()
+        {
+            0,1,3,5,6,8,10
         };
 
         public static readonly Dictionary<string, List<byte>> Scale = new Dictionary<string, List<byte>>()
