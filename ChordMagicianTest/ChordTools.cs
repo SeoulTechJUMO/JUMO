@@ -142,6 +142,16 @@ namespace ChordMagicianTest
                 }
             }
 
+            //인버전이 7th인경우 7th 추가, 추가가 안된경우
+            if (inversion == "65" || inversion == "43" || inversion == "42")
+            {
+                //7th가 있어야 하는데 없는 경우 추가
+                if (Chord.Count < 4)
+                {
+                    Chord.Add(Scale[(byte)((last + 2) % 7)]);
+                }
+            }
+
             //코드명 입력
             ChordName = CalChord(Chord);
 
