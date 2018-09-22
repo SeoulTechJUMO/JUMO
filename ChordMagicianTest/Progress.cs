@@ -15,6 +15,7 @@ namespace ChordMagicianTest
         private string _Child_path;
 
         private string _Chord;
+        private List<byte> _ChordNotes = new List<byte>();
 
         public override string ToString()
         {
@@ -50,12 +51,26 @@ namespace ChordMagicianTest
             get => _ID;
         }
 
+        public string HTML
+        {
+            get => _HTML;
+        }
+
         public string Chord
         {
             get => _Chord;
             set
             {
                 _Chord = value;
+            }
+        }
+
+        public List<byte> ChordNotes
+        {
+            get => _ChordNotes;
+            set
+            {
+                _ChordNotes = value;
             }
         }
     }

@@ -153,6 +153,8 @@ namespace ChordMagicianTest.ViewModel
             //TODO:미디메시지를 생성해서 VST에 전송해야됨
             CurrentChord = p;
             System.Diagnostics.Debug.WriteLine(p);
+            System.Diagnostics.Debug.WriteLine(p.ID);
+            System.Diagnostics.Debug.WriteLine(p.HTML);
         }
         
         //선택 코드진행 리셋
@@ -221,8 +223,7 @@ namespace ChordMagicianTest.ViewModel
             ObservableCollection<Progress> new_p = new ObservableCollection<Progress>();
             foreach (Progress i in old_p)
             {
-                i.Chord = ChordTools.GetChordName(i.ID, Key, Mode);
-                new_p.Add(i);
+                new_p.Add(ChordTools.GetChordName(i, Key, Mode));
             }
             return new_p;
         }
@@ -238,10 +239,6 @@ namespace ChordMagicianTest.ViewModel
             {
                 CurrentProgress = ChangeChordName(CurrentProgress);
             }
-            //if (CurrentChord != null)
-            //{
-            //    CurrentChord.Chord = GetChordName(CurrentChord.ID, Key, Mode);
-            //}
         }
     }
 }
