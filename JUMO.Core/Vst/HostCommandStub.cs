@@ -126,7 +126,8 @@ namespace JUMO.Vst
 
         public bool UpdateDisplay()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         #endregion

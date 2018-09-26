@@ -27,7 +27,7 @@ namespace VstHostTest
             InitializeComponent();
 
             // TODO: Remove when you're done!!!
-            new JUMO.UI.Layouts.MainWindow().Show();
+            //new JUMO.UI.Layouts.MainWindow().Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)

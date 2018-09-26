@@ -22,6 +22,7 @@ namespace JUMO.UI.Layouts
         public MainWindow()
         {
             InitializeComponent();
+            new VstHostTest.MainWindow().Show();
         }
     }
 }

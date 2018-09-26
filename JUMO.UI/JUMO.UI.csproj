@@ -102,6 +102,7 @@
     <Compile Include="Layouts\PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ChordMagicViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
@@ -120,6 +121,12 @@
     </Compile>
     <Compile Include="Views\ChannelRackView.xaml.cs">
       <DependentUpon>ChannelRackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CodeMagicView.xaml.cs">
+      <DependentUpon>CodeMagicView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NoteVelocityView.xaml.cs">
       <DependentUpon>NoteVelocityView.xaml</DependentUpon>
@@ -162,6 +169,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CodeMagicView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\NoteVelocityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -201,6 +216,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -208,6 +224,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChordMagicianModel\ChordMagicianModel.csproj">
+      <Project>{bc746a92-1979-42f7-924e-fbdb62c6ad85}</Project>
+      <Name>ChordMagicianModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
       <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
       <Name>JUMO.Media</Name>
@@ -216,6 +236,13 @@
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VstHostTest\VstHostTest.csproj">
+      <Project>{46aa49f2-b0a3-4b0d-8a4b-d37d5228ab1b}</Project>
+      <Name>VstHostTest</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Views\Hooktheory.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

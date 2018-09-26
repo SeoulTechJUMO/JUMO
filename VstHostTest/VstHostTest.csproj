@@ -137,10 +137,6 @@
       <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
       <Name>JUMO.Media</Name>
     </ProjectReference>
-    <ProjectReference Include="..\JUMO.UI\JUMO.UI.csproj">
-      <Project>{b6171fe8-9e92-4b7a-80e6-59ccabd78cc4}</Project>
-      <Name>JUMO.UI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\JUMO.Core\JUMO.Core.csproj">
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
