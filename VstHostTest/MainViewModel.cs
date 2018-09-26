@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using Jacobi.Vst.Interop.Host;
+using JUMO.Audio;
 using JUMO.Vst;
-using JUMO.Media.Audio;
 
 namespace VstHostTest
 {
@@ -18,9 +18,9 @@ namespace VstHostTest
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICollectionView AudioOutputDevices => AudioManager.Instance.OutputDevices;
+        public IEnumerable<AudioOutputDevice> AudioOutputDevices => AudioManager.Instance.OutputDevices;
 
-        public IAudioOutputDevice CurrentAudioOutputDevice
+        public AudioOutputDevice CurrentAudioOutputDevice
         {
             get => AudioManager.Instance.CurrentOutputDevice;
             private set
@@ -30,7 +30,7 @@ namespace VstHostTest
             }
         }
 
-        public IAudioOutputDevice SelectedAudioOutputDevice { get; set; }
+        public AudioOutputDevice SelectedAudioOutputDevice { get; set; }
 
         public void ChangeCurrentAudioOutputDevice()
         {

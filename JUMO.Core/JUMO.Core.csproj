@@ -123,11 +123,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
-      <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
-      <Name>JUMO.Media</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
