@@ -21,9 +21,13 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        public LoginView()
+        //전달받은 피아노롤 vm
+        PianoRollViewModel vm;
+
+        public LoginView(PianoRollViewModel _vm)
         {
             InitializeComponent();
+            vm = _vm;
             if (ChordMagicianModel.Properties.Settings.Default.username != "" && ChordMagicianModel.Properties.Settings.Default.password != "")
             {
                 try
@@ -57,7 +61,8 @@ namespace JUMO.UI.Views
                     ChordMagicianModel.Properties.Settings.Default.password = password;
                     ChordMagicianModel.Properties.Settings.Default.Save();
                 }
-                CodeMagicView cm = new CodeMagicView(API, progress_list);
+                CodeMagicView cm = new CodeMagicView(vm);
+                cm.DataContext = new ChordMagicViewModel("C", "Major", API, progress_list, vm);
                 cm.Show();
                 this.Close();
             }

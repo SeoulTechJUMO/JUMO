@@ -274,10 +274,5 @@ namespace ChordMagicianModel
 
             return Name;
         }
-
-        public static void SendChordMessage(Progress p)
-        {
-
-        }
     }
 }

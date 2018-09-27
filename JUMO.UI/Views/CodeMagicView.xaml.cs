@@ -22,10 +22,12 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class CodeMagicView : Window
     {
-        public CodeMagicView(getAPI API, ObservableCollection<Progress> progress_list)
+        PianoRollViewModel _vm;
+
+        public CodeMagicView(PianoRollViewModel vm)
         {
+            _vm = vm;
             InitializeComponent();
-            this.DataContext = new ChordMagicViewModel("C","Major",API,progress_list);
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
@@ -38,8 +40,13 @@ namespace JUMO.UI.Views
             ChordMagicianModel.Properties.Settings.Default.username = "";
             ChordMagicianModel.Properties.Settings.Default.password = "";
             ChordMagicianModel.Properties.Settings.Default.Save();
-            new LoginView().Show();
+            new LoginView(_vm).Show();
             this.Close();
+        }
+
+        private void InsertButtonClick(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

@@ -8,17 +8,21 @@ using System.ComponentModel;
 using ChordMagicianModel;
 using System.Windows.Input;
 using System.Windows;
+using System.Threading;
 
 namespace JUMO.UI
 {
     public class ChordMagicViewModel : INotifyPropertyChanged
     {
-        public ChordMagicViewModel(string key, string mode, getAPI API, ObservableCollection<Progress> progress)
+        public List<Note> ProgressNotes = new List<Note>();
+
+        public ChordMagicViewModel(string key, string mode, getAPI API, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
             _Key = key;
             _Mode = mode;
             _API = API;
             _progress = progress;
+            _ViewModel = vm;
             progress = ChangeChordName(progress);
         }
 
@@ -96,6 +100,18 @@ namespace JUMO.UI
             }
         }
 
+        //현재 피아노롤 뷰모델
+        private PianoRollViewModel _ViewModel;
+        public PianoRollViewModel ViewModel
+        {
+            get => _ViewModel;
+            set
+            {
+                _ViewModel = value;
+                OnPropertyChanged(nameof(ViewModel));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
@@ -149,12 +165,30 @@ namespace JUMO.UI
         }
         public void Play(Progress p)
         {
-            //TODO:미디메시지를 생성해서 VST에 전송해야됨
             CurrentChord = p;
-
-            ChordTools.SendChordMessage(p);
+            foreach (byte i in p.ChordNotes)
+            {
+                //근음 추가
+                if (i == p.ChordNotes[0])
+                {
+                    ViewModel.Plugin.NoteOn((byte)(i + 36), 100);
+                }
+                ViewModel.Plugin.NoteOn((byte)(i+48), 100);
+            }
+            Task.Run(()=> 
+            {
+                Thread.Sleep(1000);
+                foreach (byte i in p.ChordNotes)
+                {
+                    if (i == p.ChordNotes[0])
+                    {
+                        ViewModel.Plugin.NoteOff((byte)(i + 36), 100);
+                    }
+                    ViewModel.Plugin.NoteOff((byte)(i + 48), 100);
+                }
+            });
         }
-        
+
         //선택 코드진행 리셋
         private RelayCommand _Reset;
         public RelayCommand Reset
@@ -213,6 +247,34 @@ namespace JUMO.UI
             {
                 MessageBox.Show("삭제할 코드를 선택해주세요.");
             }
+        }
+
+        //선택한 진행 재생
+        private RelayCommand _SelectedChordPlay;
+        public RelayCommand SelectedChordPlay
+        {
+            get
+            {
+                if (_SelectedChordPlay == null)
+                {
+                    _SelectedChordPlay = new RelayCommand(progress => ProgressPlay(), _ => CurrentProgress.Any());
+                }
+                return _SelectedChordPlay;
+            }
+        }
+        public void ProgressPlay()
+        {
+            foreach (Progress p in CurrentProgress)
+            {
+                Play(p);
+                Thread.Sleep(1000);
+            }
+        }
+
+        //스코어에 삽입할 노트 만들기
+        public void MakeNote()
+        {
+
         }
 
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드

@@ -19,7 +19,7 @@ namespace JUMO.Vst
 
         public void SetParameterAutomated(int index, float value)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         #endregion
@@ -30,7 +30,8 @@ namespace JUMO.Vst
 
         public bool BeginEdit(int index)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public VstCanDoResult CanDo(string cando)
@@ -45,7 +46,8 @@ namespace JUMO.Vst
 
         public bool EndEdit(int index)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return true;
         }
 
         public VstAutomationStates GetAutomationState()
