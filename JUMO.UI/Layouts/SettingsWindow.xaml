@@ -9,6 +9,9 @@
         mc:Ignorable="d"
         Title="JUMO 설정" Height="500" Width="650">
     <Window.Resources>
+        <DataTemplate DataType="{x:Type proj:ProjectSettingsViewModel}">
+            <view:ProjectSettingsView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type proj:AudioSettingsViewModel}">
             <view:AudioSettingsView />
         </DataTemplate>

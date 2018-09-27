@@ -10,6 +10,7 @@ namespace JUMO.UI
 
         public List<SettingsGroupViewModel> SettingsGroups { get; } = new List<SettingsGroupViewModel>()
         {
+            new ProjectSettingsViewModel(),
             new AudioSettingsViewModel()
         };
 

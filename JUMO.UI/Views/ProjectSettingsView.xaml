@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:JUMO.UI.Views"
              xmlns:proj="clr-namespace:JUMO.UI"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="450" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type={x:Type proj:ProjectSettingsViewModel}}">
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
     </UserControl.Resources>
@@ -45,17 +46,21 @@
                Content="박자" />
 
         <TextBox Grid.Row="0" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}" />
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Title, Mode=TwoWay}" />
         <TextBox Grid.Row="1" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}" />
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Artist, Mode=TwoWay}" />
         <TextBox Grid.Row="2" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}" />
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Genre, Mode=TwoWay}" />
         <TextBox Grid.Row="3" Grid.Column="1"
                  Height="80"
                  AcceptsReturn="True" TextWrapping="Wrap"
                  HorizontalScrollBarVisibility="Disabled"
                  VerticalScrollBarVisibility="Auto"
-                 Style="{StaticResource SettingsItem}" />
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Description, Mode=TwoWay}" />
         <Separator Grid.Row="4" Grid.Column="1"
                    Style="{StaticResource SettingsItemSeparator}" />
         <Label Grid.Row="5" Grid.Column="1"
@@ -65,7 +70,7 @@
                 <TextBlock>
                     <Run>Quarter</Run>
                     <Run>=</Run>
-                    <Run>120</Run>
+                    <Run Text="{Binding Tempo}" />
                 </TextBlock>
             </Label.Content>
         </Label>
@@ -74,9 +79,9 @@
             <!-- TODO -->
             <Label.Content>
                 <TextBlock>
-                    <Run>4</Run>
+                    <Run Text="{Binding Numerator}" />
                     <Run>/</Run>
-                    <Run>4</Run>
+                    <Run Text="{Binding Denominator}" />
                 </TextBlock>
             </Label.Content>
         </Label>
