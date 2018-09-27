@@ -19,6 +19,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120" />
@@ -31,13 +32,13 @@
         <Label Grid.Row="1" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
                Content="출력 장치 변경" />
-        <Label Grid.Row="2" Grid.Column="0"
-               Style="{StaticResource SettingsItemHeader}"
-               Content="샘플링 주파수" />
         <Label Grid.Row="3" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="비트 심도" />
+               Content="샘플링 주파수" />
         <Label Grid.Row="4" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="비트 심도" />
+        <Label Grid.Row="5" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
                Content="지연 시간" />
 
@@ -60,15 +61,17 @@
         <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsItem}"
                   ItemsSource="{Binding OutputDevices}"
                   SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}" />
-        <ComboBox Grid.Row="2" Grid.Column="1"
-                  Width="100" HorizontalAlignment="Left"
-                  IsEnabled="False"
-                  Style="{StaticResource SettingsItem}" />
+        <Separator Grid.Row="2" Grid.Column="1"
+                  Style="{StaticResource SettingsItemSeparator}" />
         <ComboBox Grid.Row="3" Grid.Column="1"
                   Width="100" HorizontalAlignment="Left"
                   IsEnabled="False"
                   Style="{StaticResource SettingsItem}" />
-        <StackPanel Grid.Row="4" Grid.Column="1">
+        <ComboBox Grid.Row="4" Grid.Column="1"
+                  Width="100" HorizontalAlignment="Left"
+                  IsEnabled="False"
+                  Style="{StaticResource SettingsItem}" />
+        <StackPanel Grid.Row="5" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <ctrl:NumericUpDown Width="100" IsEnabled="False" Style="{StaticResource SettingsItem}"/>
                 <Label Style="{StaticResource SettingsItem}" Content="밀리초" />
