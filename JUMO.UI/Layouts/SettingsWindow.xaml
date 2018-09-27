@@ -13,6 +13,9 @@
             <view:AudioSettingsView />
         </DataTemplate>
     </Window.Resources>
+    <Window.DataContext>
+        <proj:SettingsViewModel />
+    </Window.DataContext>
     <DockPanel>
         <Grid DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal"
@@ -24,9 +27,9 @@
                         <Setter Property="Padding" Value="15,3" />
                     </Style>
                 </StackPanel.Resources>
-                <Button Content="확인" />
-                <Button Content="취소" />
-                <Button Content="적용" />
+                <Button Content="확인" Click="OnOKClick" />
+                <Button Content="취소" Click="OnCancelClick" />
+                <Button Content="적용" Click="OnApplyClick" />
             </StackPanel>
         </Grid>
         <Grid>
@@ -39,23 +42,26 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" SelectedIndex="0">
-                <Label Content="설정 그룹 1" />
-                <Label Content="설정 그룹 2" />
-                <Label Content="설정 그룹 3" />
+            <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                      SelectionMode="Single"
+                      ItemsSource="{Binding SettingsGroups}"
+                      SelectedItem="{Binding CurrentGroup, Mode=TwoWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type proj:ViewModelBase}">
+                        <Label Content="{Binding DisplayName}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
 
             <Label Grid.Row="0" Grid.Column="1"
                    Margin="10" FontSize="24"
-                   Content="설정 그룹 헤더" />
+                   Content="{Binding CurrentGroup.DisplayName}" />
 
             <ScrollViewer Grid.Row="1" Grid.Column="1"
-                          HorizontalScrollBarVisibility="Hidden"
+                          HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto">
                 <Grid Margin="10">
-                    <StackPanel>
-                        <Label Content="프로토타입 컨텐츠" />
-                    </StackPanel>
+                    <ContentControl Content="{Binding CurrentGroup}" />
                 </Grid>
             </ScrollViewer>
         </Grid>
