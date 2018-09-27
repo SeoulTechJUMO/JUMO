@@ -4,14 +4,17 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:JUMO.UI.Views"
+             xmlns:proj="clr-namespace:JUMO.UI"
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="450" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type=proj:AudioSettingsViewModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -24,34 +27,48 @@
 
         <Label Grid.Row="0" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="오디오 출력 장치" />
+               Content="현재 출력 장치" />
         <Label Grid.Row="1" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="샘플링 주파수" />
+               Content="출력 장치 변경" />
         <Label Grid.Row="2" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="비트 심도" />
+               Content="샘플링 주파수" />
         <Label Grid.Row="3" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="비트 심도" />
+        <Label Grid.Row="4" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
                Content="지연 시간" />
 
-        <StackPanel Grid.Row="0" Grid.Column="1">
-            <ComboBox Style="{StaticResource SettingsItem}" />
-            <TextBlock Style="{StaticResource SettingsItemHelpText}">
-                현재 [AudioOutputDevice.FriendlyName]을(를) 사용하고 있습니다.
-                <LineBreak />
-                오디오 출력 장치를 선택하지 않았습니다.
-            </TextBlock>
-        </StackPanel>
-        <ComboBox Grid.Row="1" Grid.Column="1"
-                  Width="100" HorizontalAlignment="Left"
-                  IsEnabled="False"
-                  Style="{StaticResource SettingsItem}" />
+        <Label Grid.Row="0" Grid.Column="1"
+               Style="{StaticResource SettingsItem}">
+            <Label.Content>
+                <TextBlock Text="{Binding CurrentOutputDevice, TargetNullValue=현재 오디오 출력 장치를 사용하고 있지 않습니다.}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CurrentOutputDevice}" Value="{x:Null}">
+                                    <Setter Property="Foreground" Value="Red" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Label.Content>
+        </Label>
+        <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsItem}"
+                  ItemsSource="{Binding OutputDevices}"
+                  SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}" />
         <ComboBox Grid.Row="2" Grid.Column="1"
                   Width="100" HorizontalAlignment="Left"
                   IsEnabled="False"
                   Style="{StaticResource SettingsItem}" />
-        <StackPanel Grid.Row="3" Grid.Column="1">
+        <ComboBox Grid.Row="3" Grid.Column="1"
+                  Width="100" HorizontalAlignment="Left"
+                  IsEnabled="False"
+                  Style="{StaticResource SettingsItem}" />
+        <StackPanel Grid.Row="4" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
                 <ctrl:NumericUpDown Width="100" IsEnabled="False" Style="{StaticResource SettingsItem}"/>
                 <Label Style="{StaticResource SettingsItem}" Content="밀리초" />
