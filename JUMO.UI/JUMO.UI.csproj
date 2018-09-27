@@ -118,6 +118,9 @@
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AudioSettingsView.xaml.cs">
+      <DependentUpon>AudioSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChannelRackItemView.xaml.cs">
       <DependentUpon>ChannelRackItemView.xaml</DependentUpon>
     </Compile>
@@ -155,12 +158,20 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Resources\SettingsViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Controls\MusicalGrid.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
+    <Page Include="Views\AudioSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChannelRackItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
