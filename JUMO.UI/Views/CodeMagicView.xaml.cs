@@ -46,7 +46,7 @@ namespace JUMO.UI.Views
 
         private void InsertButtonClick(object sender, RoutedEventArgs e)
         {
-            
+            this.Close();
         }
     }
 }

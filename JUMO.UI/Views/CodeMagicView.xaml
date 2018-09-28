@@ -10,15 +10,15 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0"/>
-            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick"/>
+            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick" Command="{Binding Insert2Pianoroll}"/>
             <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
 
         <StackPanel>
             <StackPanel Orientation="Horizontal" Margin="20">
                 <TextBlock x:Name="text1" Height="20" FontSize="14"><Run Text="선택한 패턴: "/></TextBlock>
-                <Label Content="{Binding ViewModel.Plugin.Name}" Width="100" FontSize="12"/>
-                <TextBlock x:Name="text2" Width="68" Height="20" FontSize="14" Margin="100,0,0,0"><Run Text="현재 조성:"/></TextBlock>
+                <Label Content="{Binding ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
+                <TextBlock x:Name="text2" Width="68" Height="20" FontSize="14" Margin="10,0,0,0"><Run Text="현재 조성:"/></TextBlock>
                 <ComboBox Width="50" Height="20" Margin="10,0,0,0" ItemsSource="{x:Static local:Naming.NoteName}"
                           SelectedValuePath="Key" SelectedValue="{Binding Key}">
                     <ComboBox.ItemTemplate>
@@ -34,6 +34,14 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Height="20" Margin="20,0,0,5">
+                <TextBlock Text="옥타브   " FontSize="12" VerticalAlignment="Center"/>
+                <Button Content="-" Width="20" Command="{Binding OctaveMinus}"/>
+                <Border BorderBrush="{x:Static SystemColors.ActiveBorderBrush}" BorderThickness="1" Width="30">
+                    <TextBlock Text="{Binding Octave}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <Button Content="+" Width="20"  Command="{Binding OctavePlus}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
                 <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure" SelectedItem="{Binding CurrentChord}">

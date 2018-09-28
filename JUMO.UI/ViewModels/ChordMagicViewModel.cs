@@ -14,8 +14,6 @@ namespace JUMO.UI
 {
     public class ChordMagicViewModel : INotifyPropertyChanged
     {
-        public List<Note> ProgressNotes = new List<Note>();
-
         public ChordMagicViewModel(string key, string mode, getAPI API, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
             _Key = key;
@@ -23,6 +21,7 @@ namespace JUMO.UI
             _API = API;
             _progress = progress;
             _ViewModel = vm;
+            _Octave = 4;
             progress = ChangeChordName(progress);
         }
 
@@ -49,6 +48,18 @@ namespace JUMO.UI
                 _Mode = value;
                 OnPropertyChanged(nameof(Mode));
                 ChangeAllChordName();
+            }
+        }
+
+        //재생, 생성 노트 옥타브
+        private int _Octave;
+        public int Octave
+        {
+            get => _Octave;
+            set
+            {
+                _Octave = value;
+                OnPropertyChanged(nameof(Octave));
             }
         }
 
@@ -118,6 +129,8 @@ namespace JUMO.UI
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         //사용 커맨드
+
+        //코드 진행 삽입
         private RelayCommand _InsertProgress;
         public RelayCommand InsertProgress
         {
@@ -171,9 +184,9 @@ namespace JUMO.UI
                 //근음 추가
                 if (i == p.ChordNotes[0])
                 {
-                    ViewModel.Plugin.NoteOn((byte)(i + 36), 100);
+                    ViewModel.Plugin.NoteOn((byte)(i + 12*(Octave-1)), 100);
                 }
-                ViewModel.Plugin.NoteOn((byte)(i+48), 100);
+                ViewModel.Plugin.NoteOn((byte)(i + 12 * Octave), 100);
             }
             Task.Run(()=> 
             {
@@ -182,9 +195,9 @@ namespace JUMO.UI
                 {
                     if (i == p.ChordNotes[0])
                     {
-                        ViewModel.Plugin.NoteOff((byte)(i + 36), 100);
+                        ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)), 100);
                     }
-                    ViewModel.Plugin.NoteOff((byte)(i + 48), 100);
+                    ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave), 100);
                 }
             });
         }
@@ -271,10 +284,62 @@ namespace JUMO.UI
             }
         }
 
-        //스코어에 삽입할 노트 만들기
+        //코드 진행을 스코어에 삽입
+        private RelayCommand _Insert2Pianoroll;
+        public RelayCommand Insert2Pianoroll
+        {
+            get
+            {
+                if (_Insert2Pianoroll == null)
+                {
+                    _Insert2Pianoroll = new RelayCommand(_ => MakeNote(), _ => CurrentProgress.Any());
+                }
+                return _Insert2Pianoroll;
+            }
+        }
         public void MakeNote()
         {
+            long Start = 0;
 
+            foreach (Progress p in CurrentProgress)
+            {
+                foreach (byte i in p.ChordNotes)
+                {
+                    if (i == p.ChordNotes[0])
+                    {
+                        //근음 추가
+                        ViewModel.AddNote(new Note((byte)(i + 12 * (Octave-1)), 100, Start, Song.Current.TimeResolution*4));
+                    }
+                    ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, Start, Song.Current.TimeResolution * 4));
+                }
+                Start += Song.Current.TimeResolution * 4;
+            }
+        }
+
+        //옥타브 +,-
+        private RelayCommand _OctaveMinus;
+        public RelayCommand OctaveMinus
+        {
+            get
+            {
+                if (_OctaveMinus == null)
+                {
+                    _OctaveMinus = new RelayCommand(_ => --Octave, _ => 0 < Octave);
+                }
+                return _OctaveMinus;
+            }
+        }
+        private RelayCommand _OctavePlus;
+        public RelayCommand OctavePlus
+        {
+            get
+            {
+                if (_OctavePlus == null)
+                {
+                    _OctavePlus = new RelayCommand(_ => ++Octave, _ => 9 > Octave);
+                }
+                return _OctavePlus;
+            }
         }
 
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
