@@ -9,7 +9,12 @@
              d:DesignHeight="450" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type={x:Type proj:ProjectSettingsViewModel}}">
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
+                <ResourceDictionary Source="../Resources/NoteIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
