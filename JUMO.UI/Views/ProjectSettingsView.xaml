@@ -94,16 +94,25 @@
             <Label Content="=" />
             <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" MinValue="10" MaxValue="500" />
         </StackPanel>
-        <Label Grid.Row="6" Grid.Column="1"
-               Style="{StaticResource SettingsItem}">
-            <!-- TODO -->
-            <Label.Content>
-                <TextBlock>
-                    <Run Text="{Binding Numerator}" />
-                    <Run>/</Run>
-                    <Run Text="{Binding Denominator}" />
-                </TextBlock>
-            </Label.Content>
-        </Label>
+        <StackPanel Grid.Row="6" Grid.Column="1"
+                    Orientation="Horizontal"
+                    Style="{StaticResource SettingsItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        BorderBrush="Black" BorderThickness="0,0,0,2">
+                    <ctrl:NumericUpDown Margin="3" Width="40"
+                                        MinValue="2" MaxValue="32"
+                                        Value="{Binding Numerator}" />
+                </Border>
+                <ctrl:NumericUpDown Grid.Row="1" Margin="3" Width="40"
+                                    MinValue="2" MaxValue="32"
+                                    Value="{Binding Denominator}" />
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>
