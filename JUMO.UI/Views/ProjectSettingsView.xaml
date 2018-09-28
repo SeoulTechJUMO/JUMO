@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:JUMO.UI.Views"
              xmlns:proj="clr-namespace:JUMO.UI"
+             xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             xmlns:data="clr-namespace:JUMO.UI.Data"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type={x:Type proj:ProjectSettingsViewModel}}">
@@ -14,6 +16,15 @@
                 <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
                 <ResourceDictionary Source="../Resources/NoteIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <data:TempoBeatOptionCollection x:Key="TempoBeatOptions">
+                <data:TempoBeatOption Value="12" Icon="{StaticResource EighthNoteGeometry}" />
+                <data:TempoBeatOption Value="8" Icon="{StaticResource DottedEighthNoteGeometry}" />
+                <data:TempoBeatOption Value="6" Icon="{StaticResource QuarterNoteGeometry}" />
+                <data:TempoBeatOption Value="4" Icon="{StaticResource DottedQuarterNoteGeometry}" />
+                <data:TempoBeatOption Value="3" Icon="{StaticResource HalfNoteGeometry}" />
+                <data:TempoBeatOption Value="2" Icon="{StaticResource DottedHalfNoteGeometry}" />
+            </data:TempoBeatOptionCollection>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -68,17 +79,21 @@
                  Text="{Binding Description, Mode=TwoWay}" />
         <Separator Grid.Row="4" Grid.Column="1"
                    Style="{StaticResource SettingsItemSeparator}" />
-        <Label Grid.Row="5" Grid.Column="1"
-               Style="{StaticResource SettingsItem}">
-            <!-- TODO -->
-            <Label.Content>
-                <TextBlock>
-                    <Run>Quarter</Run>
-                    <Run>=</Run>
-                    <Run Text="{Binding Tempo}" />
-                </TextBlock>
-            </Label.Content>
-        </Label>
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource SettingsItem}">
+            <ComboBox ItemsSource="{StaticResource TempoBeatOptions}"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding TempoBeat}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="2" Width="16" Height="24">
+                            <Path Fill="Black" Data="{Binding Icon}" Stretch="Uniform" HorizontalAlignment="Left" SnapsToDevicePixels="True" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Label Content="=" />
+            <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" MinValue="10" MaxValue="500" />
+        </StackPanel>
         <Label Grid.Row="6" Grid.Column="1"
                Style="{StaticResource SettingsItem}">
             <!-- TODO -->

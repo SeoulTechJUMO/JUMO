@@ -96,6 +96,7 @@
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
     <Compile Include="Data\EnumHelper.cs" />
+    <Compile Include="Data\TempoBeatOptionCollection.cs" />
     <Compile Include="Layouts\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

@@ -8,6 +8,9 @@ namespace JUMO.UI
 {
     public class ProjectSettingsViewModel : SettingsGroupViewModel
     {
+        private double _tempo = Song.Current.Tempo;
+        private int _tempoBeat = Song.Current.TempoBeat;
+
         public override string DisplayName => "프로젝트 정보";
 
         public string Title { get; set; } = Song.Current.Title;
@@ -15,7 +18,28 @@ namespace JUMO.UI
         public string Genre { get; set; } = Song.Current.Genre;
         public string Description { get; set; } = Song.Current.Description;
 
-        public int Tempo { get; set; } = Song.Current.Tempo;
+        public double Tempo
+        {
+            get => _tempo;
+            set
+            {
+                _tempo = value;
+                OnPropertyChanged(nameof(Tempo));
+            }
+        }
+
+        public int TempoBeat
+        {
+            get => _tempoBeat;
+            set
+            {
+                int oldValue = _tempoBeat;
+
+                _tempoBeat = value;
+                Tempo = Tempo * value / oldValue;
+                OnPropertyChanged(nameof(TempoBeat));
+            }
+        }
 
         public int Numerator { get; set; } = Song.Current.Numerator;
         public int Denominator { get; set; } = Song.Current.Denominator;
@@ -28,9 +52,10 @@ namespace JUMO.UI
             Song.Current.Artist = Artist;
             Song.Current.Genre = Genre;
             Song.Current.Description = Description;
-            Song.Current.Tempo = Tempo;
             Song.Current.Numerator = Numerator;
             Song.Current.Denominator = Denominator;
+
+            Song.Current.SetTempo(TempoBeat, Tempo);
         }
     }
 }
