@@ -82,7 +82,7 @@ namespace JUMO.UI.Views
         {
             if (e.PropertyName == nameof(Pattern.Length))
             {
-                InvalidateVisual();
+                RefreshGeometry();
             }
         }
 
@@ -101,6 +101,8 @@ namespace JUMO.UI.Views
                 newScore.NotePropertyChanged += OnNotePropertyChanged;
                 newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
+
+            RefreshGeometry();
         }
 
         private static void ScorePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
