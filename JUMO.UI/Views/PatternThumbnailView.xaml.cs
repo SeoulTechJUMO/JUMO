@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JUMO.UI.Views
 {
@@ -37,33 +27,39 @@ namespace JUMO.UI.Views
 
         #endregion
 
-        private readonly GeometryGroup _geometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
+        private Geometry _geometry;
 
         public PatternThumbnailView()
         {
             InitializeComponent();
         }
 
+        private void UpdateViewbox()
+        {
+            Rect bounds = _geometry.Bounds;
+            int viewBoxTop = (int)bounds.Top;
+            int viewBoxHeight = (int)bounds.Height;
+
+            if (viewBoxHeight < 10)
+            {
+                viewBoxTop -= 5 - (viewBoxHeight >> 1);
+                viewBoxHeight = 10;
+            }
+
+            contentBrush.Viewbox = new Rect(0, viewBoxTop, Pattern.Length, viewBoxHeight);
+        }
+
         #region Callbacks
+
+        private void OnGeometryChanged(object sender, EventArgs e) => UpdateViewbox();
 
         private void OnPatternPropertyChanged(Pattern oldPattern, Pattern newPattern)
         {
-            GeometryCollection gc = _geometry.Children;
-            Rect bounds = Rect.Empty;
-
-            gc.Clear();
-
-            foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
-            {
-                Geometry geometry = ThumbnailManager.Instance.GetThumbnailForScore(Pattern[plugin]);
-                bounds.Union(geometry.Bounds);
-
-                gc.Add(geometry);
-            }
-
-            bounds.Width = Pattern.Length;
-            contentBrush.Viewbox = bounds;
+            _geometry = ThumbnailManager.Instance.GetThumbnailForPattern(newPattern);
+            _geometry.Changed += OnGeometryChanged;
             thumbnailPath.Data = _geometry;
+
+            UpdateViewbox();
         }
 
         private static void PatternPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)

@@ -17,6 +17,7 @@ namespace JUMO.UI
         #endregion
 
         private readonly Dictionary<Score, PathGeometry> _scoreTable = new Dictionary<Score, PathGeometry>();
+        private readonly Dictionary<Pattern, GeometryGroup> _patternTable = new Dictionary<Pattern, GeometryGroup>();
 
         private ThumbnailManager() { }
 
@@ -33,6 +34,22 @@ namespace JUMO.UI
                 return _scoreTable[score];
             }
         }
+
+        public Geometry GetThumbnailForPattern(Pattern pattern)
+        {
+            if (_patternTable.TryGetValue(pattern, out GeometryGroup geometry))
+            {
+                return geometry;
+            }
+            else
+            {
+                RegisterPattern(pattern);
+
+                return _patternTable[pattern];
+            }
+        }
+
+        #region Internal Methods for Score Thumbnails
 
         private void RegisterScore(Score score)
         {
@@ -51,11 +68,10 @@ namespace JUMO.UI
         private void RefreshScoreThumbnailGeometry(Score score)
         {
             GeometryGroup tempGeometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
-            GeometryCollection gc = tempGeometry.Children;
 
             foreach (Note note in score)
             {
-                gc.Add(new RectangleGeometry(new Rect(note.Start, 127 - note.Value, note.Length, 1)));
+                tempGeometry.Children.Add(new RectangleGeometry(new Rect(note.Start, 127 - note.Value, note.Length, 1)));
             }
 
             _scoreTable[score].Figures = tempGeometry.GetFlattenedPathGeometry().Figures;
@@ -64,5 +80,36 @@ namespace JUMO.UI
         private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshScoreThumbnailGeometry((Score)sender);
 
         private void OnScoreNotePropertyChanged(object sender, EventArgs e) => RefreshScoreThumbnailGeometry((Score)sender);
+
+        #endregion
+
+        #region Internal Methods for Pattern Thumbnails
+
+        private void RegisterPattern(Pattern pattern)
+        {
+            if (pattern == null)
+            {
+                throw new ArgumentNullException(nameof(pattern));
+            }
+
+            pattern.ScoreCreated += OnPatternScoreCreated;
+
+            _patternTable.Add(pattern, new GeometryGroup() { FillRule = FillRule.Nonzero });
+            RefreshPatternThumbnailGeometry(pattern);
+        }
+
+        private void RefreshPatternThumbnailGeometry(Pattern pattern)
+        {
+            GeometryGroup geometry = _patternTable[pattern];
+
+            foreach (Score score in pattern.Scores)
+            {
+                geometry.Children.Add(GetThumbnailForScore(score));
+            }
+        }
+
+        private void OnPatternScoreCreated(object sender, EventArgs e) => RefreshPatternThumbnailGeometry((Pattern)sender);
+
+        #endregion
     }
 }
