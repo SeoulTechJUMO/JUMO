@@ -29,13 +29,11 @@ namespace JUMO.UI.Views
 
         #endregion
 
-        private readonly GeometryGroup _geometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
+        private GeometryGroup _geometry;
 
         public ScoreThumbnailView()
         {
             InitializeComponent();
-
-            thumbnailPath.Data = _geometry;
         }
 
         private void RefreshGeometry()
@@ -102,6 +100,8 @@ namespace JUMO.UI.Views
                 newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
 
+            _geometry = ScoreThumbnailManager.Instance[newScore];
+            thumbnailPath.Data = _geometry;
             RefreshGeometry();
         }
 
