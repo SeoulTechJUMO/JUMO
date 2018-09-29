@@ -20,6 +20,8 @@ namespace JUMO
         private string _name;
         private long _length;
 
+        public event EventHandler ScoreCreated;
+
         private Song CurrentSong
         {
             get
@@ -64,6 +66,20 @@ namespace JUMO
         }
 
         /// <summary>
+        /// 현재 사용할 수 있는 Score 인스턴스들을 반환하는 반복기를 가져옵니다.
+        /// </summary>
+        public IEnumerable<Score> Scores
+        {
+            get
+            {
+                foreach (Score score in _scores.Values)
+                {
+                    yield return score;
+                }
+            }
+        }
+
+        /// <summary>
         /// 인덱스로 지정된 VST 플러그인에 대응하는 악보를 나타내는 컬렉션을 가져옵니다.
         /// </summary>
         /// <param name="p">VST 플러그인</param>
@@ -79,7 +95,9 @@ namespace JUMO
                 {
                     var newScore = new Score(this);
                     ((INotifyPropertyChanged)newScore).PropertyChanged += OnScorePropertyChanged;
+
                     _scores.Add(p, newScore);
+                    ScoreCreated?.Invoke(this, EventArgs.Empty);
 
                     return newScore;
                 }
