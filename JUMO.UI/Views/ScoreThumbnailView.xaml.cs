@@ -47,19 +47,14 @@ namespace JUMO.UI.Views
                 return;
             }
 
-            int maxValue = 0;
-            int minValue = 127;
-
             foreach (Note note in Score)
             {
-                maxValue = maxValue < note.Value ? note.Value : maxValue;
-                minValue = minValue > note.Value ? note.Value : minValue;
-
                 gc.Add(new RectangleGeometry(new Rect(note.Start, 127 - note.Value, note.Length, 1)));
             }
 
-            int viewBoxTop = 127 - maxValue;
-            int viewBoxHeight = maxValue - minValue + 1;
+            Rect bounds = _geometry.Bounds;
+            int viewBoxTop = (int)bounds.Top;
+            int viewBoxHeight = (int)bounds.Height;
 
             if (viewBoxHeight < 10)
             {
