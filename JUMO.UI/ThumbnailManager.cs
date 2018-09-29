@@ -4,13 +4,13 @@ using System.Windows.Media;
 
 namespace JUMO.UI
 {
-    class ScoreThumbnailManager
+    class ThumbnailManager
     {
         #region Singleton
 
-        private static readonly Lazy<ScoreThumbnailManager> _instance = new Lazy<ScoreThumbnailManager>(() => new ScoreThumbnailManager());
+        private static readonly Lazy<ThumbnailManager> _instance = new Lazy<ThumbnailManager>(() => new ThumbnailManager());
 
-        public static ScoreThumbnailManager Instance => _instance.Value;
+        public static ThumbnailManager Instance => _instance.Value;
 
         #endregion
 
@@ -34,6 +34,6 @@ namespace JUMO.UI
             }
         }
 
-        private ScoreThumbnailManager() { }
+        private ThumbnailManager() { }
     }
 }
