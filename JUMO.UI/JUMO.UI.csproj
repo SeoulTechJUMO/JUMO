@@ -87,7 +87,6 @@
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
-    <Compile Include="Controls\ScoreThumbnail.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
@@ -148,6 +147,9 @@
     </Compile>
     <Compile Include="Views\ProjectSettingsView.xaml.cs">
       <DependentUpon>ProjectSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreThumbnailView.xaml.cs">
+      <DependentUpon>ScoreThumbnailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
     <Compile Include="WorkspaceKey.cs" />
@@ -212,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProjectSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScoreThumbnailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
