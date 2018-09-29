@@ -140,6 +140,9 @@
     <Compile Include="Views\PatternPlacementView.xaml.cs">
       <DependentUpon>PatternPlacementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PatternThumbnailView.xaml.cs">
+      <DependentUpon>PatternThumbnailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PatternPlacementView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PatternThumbnailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
