@@ -100,7 +100,7 @@ namespace JUMO.UI.Views
                 newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
 
-            _geometry = ThumbnailManager.Instance[newScore];
+            _geometry = ThumbnailManager.Instance.GetThumbnailForScore(newScore);
             thumbnailPath.Data = _geometry;
             RefreshGeometry();
         }

@@ -55,7 +55,7 @@ namespace JUMO.UI.Views
 
             foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
             {
-                GeometryGroup geometry = ThumbnailManager.Instance[Pattern[plugin]];
+                GeometryGroup geometry = ThumbnailManager.Instance.GetThumbnailForScore(Pattern[plugin]);
                 bounds.Union(geometry.Bounds);
 
                 gc.Add(geometry);

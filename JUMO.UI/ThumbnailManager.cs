@@ -14,26 +14,23 @@ namespace JUMO.UI
 
         #endregion
 
-        private readonly Dictionary<Score, GeometryGroup> _table = new Dictionary<Score, GeometryGroup>();
-
-        public GeometryGroup this[Score score]
-        {
-            get
-            {
-                if (_table.TryGetValue(score, out GeometryGroup geometry))
-                {
-                    return geometry;
-                }
-                else
-                {
-                    GeometryGroup newGeometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
-                    _table.Add(score, newGeometry);
-
-                    return newGeometry;
-                }
-            }
-        }
+        private readonly Dictionary<Score, GeometryGroup> _scoreTable = new Dictionary<Score, GeometryGroup>();
 
         private ThumbnailManager() { }
+
+        public GeometryGroup GetThumbnailForScore(Score score)
+        {
+            if (_scoreTable.TryGetValue(score, out GeometryGroup geometry))
+            {
+                return geometry;
+            }
+            else
+            {
+                GeometryGroup newGeometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
+                _scoreTable.Add(score, newGeometry);
+
+                return newGeometry;
+            }
+        }
     }
 }
