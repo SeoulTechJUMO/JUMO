@@ -16,13 +16,13 @@ namespace JUMO.UI
 
         #endregion
 
-        private readonly Dictionary<Score, GeometryGroup> _scoreTable = new Dictionary<Score, GeometryGroup>();
+        private readonly Dictionary<Score, PathGeometry> _scoreTable = new Dictionary<Score, PathGeometry>();
 
         private ThumbnailManager() { }
 
-        public GeometryGroup GetThumbnailForScore(Score score)
+        public Geometry GetThumbnailForScore(Score score)
         {
-            if (_scoreTable.TryGetValue(score, out GeometryGroup geometry))
+            if (_scoreTable.TryGetValue(score, out PathGeometry geometry))
             {
                 return geometry;
             }
@@ -44,25 +44,21 @@ namespace JUMO.UI
             score.CollectionChanged += OnScoreChanged;
             score.NotePropertyChanged += OnScoreNotePropertyChanged;
 
-            _scoreTable.Add(score, new GeometryGroup() { FillRule = FillRule.Nonzero });
+            _scoreTable.Add(score, new PathGeometry() { FillRule = FillRule.Nonzero });
             RefreshScoreThumbnailGeometry(score);
         }
 
         private void RefreshScoreThumbnailGeometry(Score score)
         {
-            GeometryCollection gc = _scoreTable[score].Children;
-
-            gc.Clear();
-
-            if (score == null || score.Count == 0 || score.Pattern.Length == 0)
-            {
-                return;
-            }
+            GeometryGroup tempGeometry = new GeometryGroup() { FillRule = FillRule.Nonzero };
+            GeometryCollection gc = tempGeometry.Children;
 
             foreach (Note note in score)
             {
                 gc.Add(new RectangleGeometry(new Rect(note.Start, 127 - note.Value, note.Length, 1)));
             }
+
+            _scoreTable[score].Figures = tempGeometry.GetFlattenedPathGeometry().Figures;
         }
 
         private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshScoreThumbnailGeometry((Score)sender);

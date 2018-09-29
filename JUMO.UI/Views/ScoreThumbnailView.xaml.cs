@@ -28,7 +28,7 @@ namespace JUMO.UI.Views
 
         #endregion
 
-        private GeometryGroup _geometry;
+        private Geometry _geometry;
 
         public ScoreThumbnailView()
         {
