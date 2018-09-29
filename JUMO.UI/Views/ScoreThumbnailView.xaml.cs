@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,22 +35,8 @@ namespace JUMO.UI.Views
             InitializeComponent();
         }
 
-        private void RefreshGeometry()
+        private void UpdateViewbox()
         {
-            GeometryCollection gc = _geometry.Children;
-
-            gc.Clear();
-
-            if (Score == null || Score.Count == 0 || Score.Pattern.Length == 0)
-            {
-                return;
-            }
-
-            foreach (Note note in Score)
-            {
-                gc.Add(new RectangleGeometry(new Rect(note.Start, 127 - note.Value, note.Length, 1)));
-            }
-
             Rect bounds = _geometry.Bounds;
             int viewBoxTop = (int)bounds.Top;
             int viewBoxHeight = (int)bounds.Height;
@@ -67,15 +52,13 @@ namespace JUMO.UI.Views
 
         #region Callbacks
 
-        private void OnNotePropertyChanged(object sender, EventArgs e) => RefreshGeometry();
-
-        private void OnScoreChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshGeometry();
+        private void OnGeometryChanged(object sender, EventArgs e) => UpdateViewbox();
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Pattern.Length))
             {
-                RefreshGeometry();
+                UpdateViewbox();
             }
         }
 
@@ -83,21 +66,19 @@ namespace JUMO.UI.Views
         {
             if (oldScore != null)
             {
-                oldScore.CollectionChanged -= OnScoreChanged;
-                oldScore.NotePropertyChanged -= OnNotePropertyChanged;
                 oldScore.Pattern.PropertyChanged -= OnPatternPropertyChanged;
             }
 
             if (newScore != null)
             {
-                newScore.CollectionChanged += OnScoreChanged;
-                newScore.NotePropertyChanged += OnNotePropertyChanged;
                 newScore.Pattern.PropertyChanged += OnPatternPropertyChanged;
             }
 
             _geometry = ThumbnailManager.Instance.GetThumbnailForScore(newScore);
+            _geometry.Changed += OnGeometryChanged;
             thumbnailPath.Data = _geometry;
-            RefreshGeometry();
+
+            UpdateViewbox();
         }
 
         private static void ScorePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
