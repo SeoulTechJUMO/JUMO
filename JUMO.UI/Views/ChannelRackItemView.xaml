@@ -56,7 +56,13 @@
                 Margin="5,5,5,0" Height="32"
                 BorderBrush="Black" BorderThickness="1"
                 SnapsToDevicePixels="True">
-            <local:ScoreThumbnailView Score="{Binding Score}" Background="AliceBlue" Foreground="Navy" />
+            <local:ScoreThumbnailView Score="{Binding Score}" Background="AliceBlue" Foreground="Navy">
+                <local:ScoreThumbnailView.InputBindings>
+                    <MouseBinding Gesture="LeftClick"
+                                  Command="{Binding OpenPianoRoll}"
+                                  CommandParameter="{Binding Plugin}" />
+                </local:ScoreThumbnailView.InputBindings>
+            </local:ScoreThumbnailView>
         </Border>
     </Grid>
 </UserControl>
