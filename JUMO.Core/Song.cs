@@ -49,7 +49,7 @@ namespace JUMO
         private string _description = "";
         private int _numerator = 4;
         private int _denominator = 4;
-        private int _timeResolution = 480;
+        private int _timeResolution = 96;
         private long _length = 0;
         private Pattern _currentPattern;
 

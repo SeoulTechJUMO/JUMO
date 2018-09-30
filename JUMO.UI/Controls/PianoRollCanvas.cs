@@ -13,8 +13,21 @@ namespace JUMO.UI.Controls
         private IEnumerable<NoteViewModel> _affectedNotes;
         private NoteViewModel _minTick;
         private NoteViewModel _minValue, _maxValue;
+        private long _lastLength = -1;
 
-        public long _lastLength;
+        private long LastLength
+        {
+            get
+            {
+                if (_lastLength < 0)
+                {
+                    _lastLength = TimeResolution;
+                }
+
+                return _lastLength;
+            }
+            set => _lastLength = value;
+        }
 
         #region Events
 
@@ -23,10 +36,7 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        public PianoRollCanvas() : base()
-        {
-            _lastLength = TimeResolution;
-        }
+        public PianoRollCanvas() : base() { }
 
         #region MusicalCanvasBase Overrides
 
@@ -78,7 +88,7 @@ namespace JUMO.UI.Controls
             long pos = PixelToTick(pt.X);
             long snap = SnapToGridInternal(pos);
 
-            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, _lastLength)));
+            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, LastLength)));
         }
 
         #endregion
@@ -192,7 +202,7 @@ namespace JUMO.UI.Controls
             }
 
             _affectedNotes = null;
-            _lastLength = ((NoteViewModel)view.DataContext).Length;
+            LastLength = ((NoteViewModel)view.DataContext).Length;
         }
 
         private void ResizeNote(NoteViewModel note, double delta)
