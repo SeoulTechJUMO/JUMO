@@ -16,25 +16,11 @@ namespace JUMO
     public class Pattern : INotifyPropertyChanged
     {
         private readonly Dictionary<Plugin, Score> _scores = new Dictionary<Plugin, Score>();
-        private Song _song;
+        private readonly Song _song;
         private string _name;
         private long _length;
 
         public event EventHandler ScoreCreated;
-
-        private Song CurrentSong
-        {
-            get
-            {
-                if (_song == null)
-                {
-                    _song = Song.Current;
-                    _song.PropertyChanged += OnSongPropertyChanged;
-                }
-
-                return _song;
-            }
-        }
 
         /// <summary>
         /// 패턴의 이름을 가져오거나 설정합니다.
@@ -107,8 +93,16 @@ namespace JUMO
         /// <summary>
         /// 새로운 Pattern 인스턴스를 생성합니다.
         /// </summary>
+        /// <param name="owner">이 패턴을 소유하는 Song 인스턴스</param>
         /// <param name="name">패턴의 이름</param>
-        public Pattern(string name) => Name = name;
+        internal Pattern(Song owner, string name)
+        {
+            _song = owner;
+            _song.PropertyChanged += OnSongPropertyChanged;
+            Name = name;
+
+            UpdateLength();
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -134,8 +128,8 @@ namespace JUMO
 
         private void UpdateLength()
         {
-            long ticksPerBar = 4 * CurrentSong.TimeResolution * CurrentSong.Numerator / CurrentSong.Denominator;
-            long maxLength = Math.Max(1, _scores.Values.Max(score => score.Length));
+            long ticksPerBar = 4 * _song.TimeResolution * _song.Numerator / _song.Denominator;
+            long maxLength = Math.Max(1, _scores.Values.Select(score => score.Length).DefaultIfEmpty(0).Max());
             long q = Math.DivRem(maxLength, ticksPerBar, out long r);
 
             Length = (q + (r == 0 ? 0 : 1)) * ticksPerBar;

@@ -24,7 +24,7 @@ namespace JUMO
 
             for (int i = 0; i < 16; i++)
             {
-                Patterns.Add(new Pattern($"패턴 {i + 1}"));
+                Patterns.Add(new Pattern(this, $"패턴 {i + 1}"));
             }
             CurrentPattern = Patterns[0];
 
