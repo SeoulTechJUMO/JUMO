@@ -90,6 +90,7 @@
     <Compile Include="IMusicalItem.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
+    <Compile Include="Playback\PatternSequencer.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
