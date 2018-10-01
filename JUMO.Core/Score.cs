@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using MidiToolkit = Sanford.Multimedia.Midi;
 
 namespace JUMO
 {
@@ -11,7 +12,10 @@ namespace JUMO
     /// </summary>
     public class Score : ObservableCollection<Note>
     {
+        private readonly MidiToolkit.Track _track = new MidiToolkit.Track();
+
         private long _length = 0;
+        private bool _isStale = true;
 
         /// <summary>
         /// 악보에 배치된 임의의 음표의 속성이 변경되었을 때 발생하는 이벤트입니다.
@@ -36,6 +40,22 @@ namespace JUMO
                     _length = value;
                     OnPropertyChanged(new PropertyChangedEventArgs(nameof(Length)));
                 }
+            }
+        }
+
+        /// <summary>
+        /// 이 악보로부터 컴파일된 MIDI 트랙을 가져옵니다.
+        /// </summary>
+        public MidiToolkit.Track MidiTrack
+        {
+            get
+            {
+                if (_isStale)
+                {
+                    CompileTrack();
+                }
+
+                return _track;
             }
         }
 
@@ -68,14 +88,34 @@ namespace JUMO
 
             UpdateLength();
             base.OnCollectionChanged(e);
+
+            _isStale = true;
         }
 
         private void UpdateLength() => Length = this.Select(note => note.Start + note.Length).DefaultIfEmpty(0L).Max();
+
+        private void CompileTrack()
+        {
+            _track.Clear();
+
+            foreach (Note note in this)
+            {
+                int start = (int)note.Start;
+                int end = start + (int)note.Length;
+
+                _track.Insert(start, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOn, 0, note.Value, note.Velocity));
+                _track.Insert(end, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, note.Value, 64));
+            }
+
+            _isStale = false;
+        }
 
         private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateLength();
             NotePropertyChanged?.Invoke(this, EventArgs.Empty);
+
+            _isStale = true;
         }
     }
 }
