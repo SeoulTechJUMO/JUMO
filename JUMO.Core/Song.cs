@@ -18,8 +18,7 @@ namespace JUMO
 
             for (int i = 0; i < NumOfTracks; i++)
             {
-                Tracks[i] = new Track(i, $"트랙 {i + 1}");
-                ((INotifyPropertyChanged)Tracks[i]).PropertyChanged += OnTrackPropertyChanged;
+                Tracks[i] = new Track(this, i, $"트랙 {i + 1}");
             }
 
             for (int i = 0; i < 16; i++)
@@ -27,6 +26,8 @@ namespace JUMO
                 Patterns.Add(new Pattern(this, $"패턴 {i + 1}"));
             }
             CurrentPattern = Patterns[0];
+
+            PlacedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
 
             UpdateLength();
         }
@@ -195,6 +196,11 @@ namespace JUMO
         public ObservableCollection<Pattern> Patterns { get; } = new ObservableCollection<Pattern>();
 
         /// <summary>
+        /// 플레이리스트 상에 배치되어 있는 모든 패턴을 저장하는 컬렉션을 가져옵니다.
+        /// </summary>
+        public ObservableCollection<PatternPlacement> PlacedPatterns { get; } = new ObservableCollection<PatternPlacement>();
+
+        /// <summary>
         /// 현재 선택된 패턴을 가져오거나 설정합니다.
         /// </summary>
         public Pattern CurrentPattern
@@ -223,14 +229,11 @@ namespace JUMO
             OnPropertyChanged(nameof(MidiTempo));
         }
 
-        private void UpdateLength() => Length = Tracks.Select(track => track.Length).Max();
+        private void UpdateLength() => Length = PlacedPatterns.Select(pp => pp.Start + pp.Length).DefaultIfEmpty(0).Max();
 
-        private void OnTrackPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPlacedPatternsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Track.Length))
-            {
-                UpdateLength();
-            }
+            UpdateLength();
         }
 
         private void OnPropertyChanged(string propertyName)

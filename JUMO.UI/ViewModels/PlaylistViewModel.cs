@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
     public class PlaylistViewModel : MusicalCanvasWorkspaceViewModel
     {
-        private readonly Track[] _tracks = Song.Current.Tracks;
+        private readonly ObservableCollection<PatternPlacement> _placedPatterns = Song.Current.PlacedPatterns;
         private readonly Dictionary<PatternPlacement, PatternPlacementViewModel> _vmTable = new Dictionary<PatternPlacement, PatternPlacementViewModel>();
 
         protected override double ZoomBase => 4.0;
@@ -24,19 +20,16 @@ namespace JUMO.UI
 
         public PlaylistViewModel()
         {
-            for (int i = 0; i < Song.NumOfTracks; i++)
-            {
-                _tracks[i].CollectionChanged += OnTrackCollectionChanged;
+            _placedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
 
-                foreach (PatternPlacement pp in _tracks[i])
-                {
-                    PlacePatternInternal(pp);
-                }
+            foreach (PatternPlacement pp in _placedPatterns)
+            {
+                PlacePatternInternal(pp);
             }
         }
 
-        public void PlacePattern(Pattern pattern, int trackIndex, long start) => PatternPlacement.Create(pattern, trackIndex, start);
-        public void RemovePattern(PatternPlacement pp) => _tracks[pp.TrackIndex].Remove(pp);
+        public void PlacePattern(Pattern pattern, int trackIndex, long start) => _placedPatterns.Add(new PatternPlacement(pattern, trackIndex, start));
+        public void RemovePattern(PatternPlacement pp) => _placedPatterns.Remove(pp);
 
         private void PlacePatternInternal(PatternPlacement pp)
         {
@@ -55,7 +48,7 @@ namespace JUMO.UI
             }
         }
 
-        private void OnTrackCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnPlacedPatternsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
             {
