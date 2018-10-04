@@ -195,6 +195,11 @@ namespace JUMO
         public ObservableCollection<Pattern> Patterns { get; } = new ObservableCollection<Pattern>();
 
         /// <summary>
+        /// 플레이리스트 상에 배치되어 있는 모든 패턴을 저장하는 컬렉션을 가져옵니다.
+        /// </summary>
+        public ObservableCollection<PatternPlacement> PlacedPatterns { get; } = new ObservableCollection<PatternPlacement>();
+
+        /// <summary>
         /// 현재 선택된 패턴을 가져오거나 설정합니다.
         /// </summary>
         public Pattern CurrentPattern
