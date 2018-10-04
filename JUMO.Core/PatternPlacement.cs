@@ -12,9 +12,6 @@ namespace JUMO
     /// </summary>
     public class PatternPlacement : IMusicalItem, INotifyPropertyChanged
     {
-        private static readonly Track[] _tracks = Song.Current.Tracks;
-
-        private bool _initialized = false;
         private int _trackIndex = -1;
         private long _start;
 
@@ -35,18 +32,8 @@ namespace JUMO
                         throw new IndexOutOfRangeException($"{nameof(TrackIndex)} must be in [0, {Song.NumOfTracks})");
                     }
 
-                    if (_initialized)
-                    {
-                        _tracks[_trackIndex].Remove(this);
-                    }
-                    else
-                    {
-                        _initialized = true;
-                    }
-
                     _trackIndex = value;
 
-                    _tracks[_trackIndex].Add(this);
                     OnPropertyChanged(nameof(TrackIndex));
                 }
             }
