@@ -35,7 +35,7 @@ namespace JUMO.UI.Views
 
         private void PianoRollKeyboard_KeyReleased(object sender, PianoRollKeyEventArgs e)
         {
-            (DataContext as PianoRollViewModel).Plugin.NoteOff(e.NoteValue, e.Velocity);
+            (DataContext as PianoRollViewModel).Plugin.NoteOff(e.NoteValue);
             System.Diagnostics.Debug.WriteLine($"PianoRollView::PianoRollKeyboard_KeyReleased value = {e.NoteValue}, velocity = {e.Velocity}");
         }
 

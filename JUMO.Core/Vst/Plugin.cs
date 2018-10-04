@@ -71,15 +71,15 @@ namespace JUMO.Vst
         {
             _bc.Add(new VstEvent[]
             {
-                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, velocity)
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, 64)
             });
         }
 
-        public void NoteOff(byte value, byte velocity)
+        public void NoteOff(byte value)
         {
             _bc.Add(new VstEvent[]
             {
-                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, velocity, 0x00 }, 0, velocity)
+                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, 64, 0x00 }, 0, 64)
             });
         }
 

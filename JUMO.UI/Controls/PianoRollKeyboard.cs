@@ -114,7 +114,7 @@ namespace JUMO.UI.Controls
         private void Btn_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             Button btn = (Button)sender;
-            RaiseEvent(new PianoRollKeyEventArgs(KeyReleasedEvent, Convert.ToByte(btn.Tag), 127));
+            RaiseEvent(new PianoRollKeyEventArgs(KeyReleasedEvent, Convert.ToByte(btn.Tag), 64));
         }
     }
 
