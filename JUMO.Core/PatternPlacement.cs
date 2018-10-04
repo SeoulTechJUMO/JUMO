@@ -75,26 +75,19 @@ namespace JUMO
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private PatternPlacement(Pattern pattern, int trackIndex, long start)
+        /// <summary>
+        /// 새로운 PatternPlacement 인스턴스를 생성합니다.
+        /// </summary>
+        /// <param name="pattern">배치된 패턴</param>
+        /// <param name="trackIndex">패턴이 배치된 트랙의 인덱스</param>
+        /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
+        public PatternPlacement(Pattern pattern, int trackIndex, long start)
         {
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
             TrackIndex = trackIndex;
             Start = start;
 
             pattern.PropertyChanged += OnPatternPropertyChanged;
-        }
-
-        /// <summary>
-        /// 새로운 PatternPlacement 인스턴스를 생성하여 트랙에 배치합니다.
-        /// </summary>
-        /// <param name="pattern">배치된 패턴</param>
-        /// <param name="trackIndex">패턴이 배치된 트랙의 인덱스</param>
-        /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
-        public static PatternPlacement Create(Pattern pattern, int trackIndex, long start)
-        {
-            PatternPlacement pp = new PatternPlacement(pattern, trackIndex, start);
-
-            return pp;
         }
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
