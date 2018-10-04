@@ -17,6 +17,7 @@ namespace JUMO.Playback
     class MasterSequencer : INotifyPropertyChanged, IDisposable
     {
         private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
+        private readonly Song _song;
 
         private bool _isDisposed = false;
         private long _position = 0;
@@ -34,7 +35,7 @@ namespace JUMO.Playback
 
                 return _clock.Ppqn;
             }
-            set
+            private set
             {
                 if (_isDisposed)
                 {
@@ -56,7 +57,7 @@ namespace JUMO.Playback
 
                 return _clock.Tempo;
             }
-            set
+            private set
             {
                 if (_isDisposed)
                 {
@@ -97,8 +98,14 @@ namespace JUMO.Playback
 
         #endregion
 
-        public MasterSequencer()
+        public MasterSequencer(Song song)
         {
+            _song = song ?? throw new ArgumentNullException(nameof(song));
+
+            _song.PropertyChanged += OnSongPropertyChanged;
+            _clock.Tick += OnClockTick;
+
+            UpdateTimingProperties();
             throw new NotImplementedException();
         }
 
@@ -130,6 +137,27 @@ namespace JUMO.Playback
             }
 
             throw new NotImplementedException();
+        }
+
+        private void UpdateTimingProperties()
+        {
+            if (!_isDisposed)
+            {
+                return;
+            }
+
+            TimeResolution = _song.TimeResolution;
+            MidiTempo = _song.MidiTempo;
+        }
+
+        private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            UpdateTimingProperties();
+        }
+
+        private void OnClockTick(object sender, EventArgs e)
+        {
+            OnPropertyChanged(nameof(Position));
         }
 
         private void OnPropertyChanged(string propertyName)
