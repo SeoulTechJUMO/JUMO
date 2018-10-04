@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
@@ -16,6 +14,7 @@ namespace JUMO.Vst
     {
         private readonly IVstPluginContext _ctx;
         private readonly VolumeSampleProvider _volume;
+        private readonly BlockingCollection<VstEvent[]> _bc = new BlockingCollection<VstEvent[]>();
 
         private bool _isDisposed = false;
         private string _name;
@@ -64,26 +63,47 @@ namespace JUMO.Vst
             Name = PluginCommandStub.GetEffectName();
             _volume = new VolumeSampleProvider(new VstSampleProvider(this));
             SampleProvider = _volume;
+
+            new Thread(WorkerMethod) { Name = $"Worker thread for VST plugin {Name}" }.Start();
         }
 
         public void NoteOn(byte value, byte velocity)
         {
-            PluginCommandStub.StartProcess();
-            PluginCommandStub.ProcessEvents(new VstEvent[]
+            _bc.Add(new VstEvent[]
             {
                 new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, velocity)
             });
-            PluginCommandStub.StopProcess();
         }
 
         public void NoteOff(byte value, byte velocity)
         {
-            PluginCommandStub.StartProcess();
-            PluginCommandStub.ProcessEvents(new VstEvent[]
+            _bc.Add(new VstEvent[]
             {
                 new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, velocity, 0x00 }, 0, velocity)
             });
-            PluginCommandStub.StopProcess();
+        }
+
+        public void SendEvents(VstEvent[] events) => _bc.Add(events);
+
+        private void WorkerMethod()
+        {
+            while (!_bc.IsCompleted)
+            {
+                VstEvent[] nextEvents = null;
+
+                try
+                {
+                    nextEvents = _bc.Take();
+                }
+                catch (InvalidOperationException) { }
+
+                if (nextEvents != null)
+                {
+                    PluginCommandStub.StartProcess();
+                    PluginCommandStub.ProcessEvents(nextEvents);
+                    PluginCommandStub.StopProcess();
+                }
+            }
         }
 
         private void OnPropertyChanged(string propertyName)
@@ -100,6 +120,8 @@ namespace JUMO.Vst
 
             if (disposing)
             {
+                _bc.CompleteAdding();
+                _bc.Dispose();
                 PluginCommandStub.MainsChanged(false);
                 PluginCommandStub.Close();
             }
