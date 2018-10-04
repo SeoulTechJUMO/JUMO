@@ -16,6 +16,8 @@ namespace JUMO.Vst
     {
         private readonly IVstPluginContext _ctx;
         private readonly VolumeSampleProvider _volume;
+
+        private bool _isDisposed = false;
         private string _name;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -84,13 +86,32 @@ namespace JUMO.Vst
             PluginCommandStub.StopProcess();
         }
 
-        public void Dispose()
-        {
-            PluginCommandStub.MainsChanged(false);
-            PluginCommandStub.Close();
-        }
-
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        #region IDisposable Support
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                PluginCommandStub.MainsChanged(false);
+                PluginCommandStub.Close();
+            }
+
+            _isDisposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        #endregion
     }
 }
