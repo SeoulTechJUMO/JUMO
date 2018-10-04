@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChordMagicianModel;
 using JUMO.UI;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Views
 {
@@ -47,6 +48,17 @@ namespace JUMO.UI.Views
         private void InsertButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void SmartMelodyClick(object sender, RoutedEventArgs e)
+        {
+            SmartMelodyView sv = new SmartMelodyView
+            {
+                DataContext = new SmartMelodyViewModel((ChordMagicViewModel)this.DataContext)
+            };
+            sv.ShowDialog();
+
+            System.Diagnostics.Debug.WriteLine("ddd");
         }
     }
 }

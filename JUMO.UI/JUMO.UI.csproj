@@ -59,6 +59,12 @@
     <Reference Include="Jacobi.Vst.Interop, Version=1.1.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
       <HintPath>..\packages\VST.NET.x86.1.1\lib\net40\Jacobi.Vst.Interop.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors">
+      <HintPath>..\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf">
+      <HintPath>..\packages\MaterialDesignThemes.2.4.1.1101\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -115,6 +121,7 @@
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
+    <Compile Include="ViewModels\SmartMelodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\ChannelRackItemView.xaml.cs">
       <DependentUpon>ChannelRackItemView.xaml</DependentUpon>
@@ -144,6 +151,9 @@
       <DependentUpon>PlaylistView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
+    <Compile Include="Views\SmartMelodyView.xaml.cs">
+      <DependentUpon>SmartMelodyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
     <Page Include="Layouts\MainWindow.xaml">
@@ -194,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaylistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SmartMelodyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChordTools.cs" />
+    <Compile Include="CreateMelody.cs" />
     <Compile Include="getAPI.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="Progress.cs" />
@@ -87,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Hooktheory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Melody\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

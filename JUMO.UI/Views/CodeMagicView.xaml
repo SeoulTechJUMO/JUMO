@@ -9,7 +9,7 @@
         Title="코드 마법사" Height="600" Width="550" ResizeMode="NoResize">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
-            <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0"/>
+            <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Click="SmartMelodyClick"/>
             <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick" Command="{Binding Insert2Pianoroll}"/>
             <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
