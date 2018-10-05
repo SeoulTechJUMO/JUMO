@@ -18,9 +18,10 @@ namespace JUMO.Playback
     {
         private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
         private readonly Song _song;
+        private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
 
         private bool _isDisposed = false;
-        private long _position = 0;
+        private bool _isPlaying = false;
 
         #region Properties
 
@@ -70,7 +71,7 @@ namespace JUMO.Playback
 
         public long Position
         {
-            get => _position;
+            get => _clock.Ticks;
             set
             {
                 if (_isDisposed)
@@ -78,9 +79,31 @@ namespace JUMO.Playback
                     throw new ObjectDisposedException(nameof(MasterSequencer));
                 }
 
-                throw new NotImplementedException();
+                bool wasPlaying;
+                
+                wasPlaying = IsPlaying;
+                Stop();
+                _clock.SetTicks((int)value);
+
+                if (wasPlaying)
+                {
+                    Continue();
+                }
 
                 OnPropertyChanged(nameof(Position));
+            }
+        }
+
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            private set
+            {
+                if (_isPlaying != value)
+                {
+                    _isPlaying = value;
+                    OnPropertyChanged(nameof(IsPlaying));
+                }
             }
         }
 
@@ -106,7 +129,6 @@ namespace JUMO.Playback
             _clock.Tick += OnClockTick;
 
             UpdateTimingProperties();
-            throw new NotImplementedException();
         }
 
         public void Start()
@@ -116,7 +138,9 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            Stop();
+            Position = 0;
+            Continue();
         }
 
         public void Continue()
@@ -126,7 +150,18 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            Stop();
+            _trackEnumerators.Clear();
+
+            foreach (Track track in _song.Tracks)
+            {
+                _trackEnumerators.Add(track.GetTickIterator(Position).GetEnumerator());
+            }
+
+            UpdateTimingProperties();
+            _clock.Start();
+
+            IsPlaying = true;
         }
 
         public void Stop()
@@ -136,12 +171,19 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            _clock.Stop();
+
+            IsPlaying = false;
         }
 
         private void UpdateTimingProperties()
         {
-            if (!_isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
@@ -157,6 +199,16 @@ namespace JUMO.Playback
 
         private void OnClockTick(object sender, EventArgs e)
         {
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            foreach (IEnumerator<long> enumerator in _trackEnumerators)
+            {
+                enumerator.MoveNext();
+            }
+
             OnPropertyChanged(nameof(Position));
         }
 
