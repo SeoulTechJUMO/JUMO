@@ -4,8 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
         Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
+
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelody}"/>
@@ -13,10 +15,54 @@
             <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
 
-        <StackPanel VerticalAlignment="Center">
-            <ProgressBar Height="20" Visibility="{Binding ProgressVisible}" Value="70">
-            </ProgressBar>
-        </StackPanel>
+        <Grid>
+            <StackPanel Margin="20">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ProgressVisible}" Value="Visible">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <BlurEffect Radius="30" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <StackPanel Orientation="Horizontal" Margin="20">
+                    <TextBlock x:Name="text1" Height="20" FontSize="14"><Run Text="선택한 패턴: "/></TextBlock>
+                    <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
+                </StackPanel>
+                <Rectangle Height="100" Fill="Azure" Stroke="Gray">
+                </Rectangle>
+                <Button Content="재생" Width="40" Margin="0,20,0,20"/>
+                <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
+                <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
+                <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Margin="0,20,0,0" Background="Azure">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding}" Width="60" Height="75"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Width="500"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Margin="20" VerticalAlignment="Center">
+                <Border Visibility="{Binding ProgressVisible}" BorderBrush="LightGray" BorderThickness="1" Padding="10">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                        <TextBlock HorizontalAlignment="Center" FontSize="16">코드진행을 기반으로 멜로디를 생성하고 있습니다.</TextBlock>
+                        <ProgressBar Width="400" Height="20" IsIndeterminate="True" Margin="0,20,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
     </DockPanel>
-
 </Window>

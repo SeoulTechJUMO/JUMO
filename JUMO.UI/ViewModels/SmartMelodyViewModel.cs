@@ -17,7 +17,6 @@ namespace JUMO.UI.ViewModels
         {
             _ViewModel = vm;
             _ProgressVisible = Visibility.Hidden;
-            
         }
 
         //코드진행 뷰모델
@@ -44,6 +43,8 @@ namespace JUMO.UI.ViewModels
             }
         }
 
+
+        //사용 커맨드
         private RelayCommand _GetMelody;
         public RelayCommand GetMelody
         {
@@ -70,9 +71,16 @@ namespace JUMO.UI.ViewModels
 
             Task.Run(() =>
             {
-                new CreateMelody().RunMagenta(Chord);
+                CreateMelody cm = new CreateMelody();
+                cm.RunMagenta(Chord, 5);
+                MakeScore();
                 ProgressVisible = Visibility.Hidden;
             });
+        }
+
+        public void MakeScore()
+        {
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
