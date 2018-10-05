@@ -15,11 +15,6 @@ namespace JUMO
         public long AbsoluteTick;
         public long Value;
         public long velocuty;
-
-        public ChannelMessage()
-        {
-
-        }
     }
 
     class MakeNote
