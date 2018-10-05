@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MidiToolkit = Sanford.Multimedia.Midi;
 
@@ -16,11 +18,14 @@ namespace JUMO.Playback
 
     class MasterSequencer : INotifyPropertyChanged, IDisposable
     {
-        private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
         private readonly Song _song;
+        private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
+        private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
+        private readonly BlockingCollection<Pattern> _patternQueue = new BlockingCollection<Pattern>();
+        private readonly List<PatternSequencer> _playingPatterns = new List<PatternSequencer>();
 
         private bool _isDisposed = false;
-        private long _position = 0;
+        private bool _isPlaying = false;
 
         #region Properties
 
@@ -70,7 +75,7 @@ namespace JUMO.Playback
 
         public long Position
         {
-            get => _position;
+            get => _clock.Ticks;
             set
             {
                 if (_isDisposed)
@@ -78,9 +83,31 @@ namespace JUMO.Playback
                     throw new ObjectDisposedException(nameof(MasterSequencer));
                 }
 
-                throw new NotImplementedException();
+                bool wasPlaying;
+                
+                wasPlaying = IsPlaying;
+                Stop();
+                _clock.SetTicks((int)value);
+
+                if (wasPlaying)
+                {
+                    Continue();
+                }
 
                 OnPropertyChanged(nameof(Position));
+            }
+        }
+
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            private set
+            {
+                if (_isPlaying != value)
+                {
+                    _isPlaying = value;
+                    OnPropertyChanged(nameof(IsPlaying));
+                }
             }
         }
 
@@ -106,7 +133,8 @@ namespace JUMO.Playback
             _clock.Tick += OnClockTick;
 
             UpdateTimingProperties();
-            throw new NotImplementedException();
+
+            new Thread(PatternSequencerConsumer) { Name = "PatternSequencer Consumer for MasterSequencer" }.Start();
         }
 
         public void Start()
@@ -116,7 +144,9 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            Stop();
+            Position = 0;
+            Continue();
         }
 
         public void Continue()
@@ -126,7 +156,18 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            Stop();
+            _trackEnumerators.Clear();
+
+            foreach (Track track in _song.Tracks)
+            {
+                _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
+            }
+
+            UpdateTimingProperties();
+            _clock.Start();
+
+            IsPlaying = true;
         }
 
         public void Stop()
@@ -136,18 +177,51 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            throw new NotImplementedException();
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            _clock.Stop();
+            _playingPatterns.Clear();
+            // TODO: stop all sounds (NoteOff)
+
+            IsPlaying = false;
+        }
+
+        internal void EnqueuePattern(Pattern pattern)
+        {
+            _patternQueue.Add(pattern);
         }
 
         private void UpdateTimingProperties()
         {
-            if (!_isDisposed)
+            if (_isDisposed)
             {
                 return;
             }
 
             TimeResolution = _song.TimeResolution;
             MidiTempo = _song.MidiTempo;
+        }
+
+        private void PatternSequencerConsumer()
+        {
+            while (!_patternQueue.IsCompleted)
+            {
+                Pattern pattern = null;
+
+                try
+                {
+                    pattern = _patternQueue.Take();
+                }
+                catch (InvalidOperationException) { }
+
+                if (pattern != null)
+                {
+                    _playingPatterns.Add(new PatternSequencer(this, pattern));
+                }
+            }
         }
 
         private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -157,6 +231,16 @@ namespace JUMO.Playback
 
         private void OnClockTick(object sender, EventArgs e)
         {
+            if (!IsPlaying)
+            {
+                return;
+            }
+
+            foreach (IEnumerator<long> enumerator in _trackEnumerators)
+            {
+                enumerator.MoveNext();
+            }
+
             OnPropertyChanged(nameof(Position));
         }
 
@@ -175,6 +259,8 @@ namespace JUMO.Playback
             if (disposing)
             {
                 _clock.Dispose();
+                _patternQueue.CompleteAdding();
+                _patternQueue.Dispose();
             }
 
             _isDisposed = true;
