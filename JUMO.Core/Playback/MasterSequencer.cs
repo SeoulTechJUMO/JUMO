@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MidiToolkit = Sanford.Multimedia.Midi;
 
@@ -16,9 +18,11 @@ namespace JUMO.Playback
 
     class MasterSequencer : INotifyPropertyChanged, IDisposable
     {
-        private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
         private readonly Song _song;
+        private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
         private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
+        private readonly BlockingCollection<Pattern> _patternQueue = new BlockingCollection<Pattern>();
+        private readonly List<PatternSequencer> _playingPatterns = new List<PatternSequencer>();
 
         private bool _isDisposed = false;
         private bool _isPlaying = false;
@@ -129,6 +133,8 @@ namespace JUMO.Playback
             _clock.Tick += OnClockTick;
 
             UpdateTimingProperties();
+
+            new Thread(PatternSequencerConsumer) { Name = "PatternSequencer Consumer for MasterSequencer" }.Start();
         }
 
         public void Start()
@@ -155,7 +161,7 @@ namespace JUMO.Playback
 
             foreach (Track track in _song.Tracks)
             {
-                _trackEnumerators.Add(track.GetTickIterator(Position).GetEnumerator());
+                _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
             }
 
             UpdateTimingProperties();
@@ -177,8 +183,15 @@ namespace JUMO.Playback
             }
 
             _clock.Stop();
+            _playingPatterns.Clear();
+            // TODO: stop all sounds (NoteOff)
 
             IsPlaying = false;
+        }
+
+        internal void EnqueuePattern(Pattern pattern)
+        {
+            _patternQueue.Add(pattern);
         }
 
         private void UpdateTimingProperties()
@@ -190,6 +203,25 @@ namespace JUMO.Playback
 
             TimeResolution = _song.TimeResolution;
             MidiTempo = _song.MidiTempo;
+        }
+
+        private void PatternSequencerConsumer()
+        {
+            while (!_patternQueue.IsCompleted)
+            {
+                Pattern pattern = null;
+
+                try
+                {
+                    pattern = _patternQueue.Take();
+                }
+                catch (InvalidOperationException) { }
+
+                if (pattern != null)
+                {
+                    _playingPatterns.Add(new PatternSequencer(this, pattern));
+                }
+            }
         }
 
         private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -227,6 +259,8 @@ namespace JUMO.Playback
             if (disposing)
             {
                 _clock.Dispose();
+                _patternQueue.CompleteAdding();
+                _patternQueue.Dispose();
             }
 
             _isDisposed = true;

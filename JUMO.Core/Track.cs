@@ -55,7 +55,7 @@ namespace JUMO
             Name = name;
         }
 
-        public IEnumerable<long> GetTickIterator(long startPosition)
+        internal IEnumerable<long> GetTickIterator(Playback.MasterSequencer masterSequener, long startPosition)
         {
             IEnumerator<PatternPlacement> enumerator = PlacedPatterns.GetEnumerator();
 
@@ -83,6 +83,7 @@ namespace JUMO
                 while (hasNext && enumerator.Current.Start == ticks)
                 {
                     System.Diagnostics.Debug.WriteLine($"[{ticks,-8}] Track({Name}): 이번에 재생할 패턴은 '{enumerator.Current.Pattern.Name}");
+                    masterSequener.EnqueuePattern(enumerator.Current.Pattern);
 
                     hasNext = enumerator.MoveNext();
                 }
