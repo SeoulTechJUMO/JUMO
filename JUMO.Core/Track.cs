@@ -55,6 +55,42 @@ namespace JUMO
             Name = name;
         }
 
+        public IEnumerable<long> GetTickIterator(long startPosition)
+        {
+            IEnumerator<PatternPlacement> enumerator = PlacedPatterns.GetEnumerator();
+
+            bool hasNext;
+
+            for (hasNext = enumerator.MoveNext();
+                 hasNext && enumerator.Current.Start < startPosition;
+                 hasNext = enumerator.MoveNext()) { }
+
+            // TODO: chase
+
+            long ticks = startPosition;
+
+            while (hasNext)
+            {
+                while (ticks < enumerator.Current.Start)
+                {
+                    yield return ticks;
+
+                    ticks++;
+                }
+
+                yield return ticks;
+
+                while (hasNext && enumerator.Current.Start == ticks)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[{ticks,-8}] Track({Name}): 이번에 재생할 패턴은 '{enumerator.Current.Pattern.Name}");
+
+                    hasNext = enumerator.MoveNext();
+                }
+
+                ticks++;
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
