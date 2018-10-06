@@ -90,6 +90,20 @@ namespace JUMO
 
                 ticks++;
             }
+
+            if (enumerator.Current != null)
+            {
+                long lastPatternEnd = enumerator.Current.Start + enumerator.Current.Length;
+
+                while (ticks < lastPatternEnd)
+                {
+                    yield return ticks;
+
+                    ticks++;
+                }
+            }
+
+            masterSequener.HandleFinishedTrack();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

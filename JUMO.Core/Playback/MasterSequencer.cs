@@ -17,7 +17,10 @@ namespace JUMO.Playback
     {
         private readonly Song _song;
         private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
+
         private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
+        private int _numOfPlayingTracks;
+
         private readonly BlockingCollection<Pattern> _patternQueue = new BlockingCollection<Pattern>();
         private readonly List<PatternSequencer> _playingPatterns = new List<PatternSequencer>();
 
@@ -178,6 +181,8 @@ namespace JUMO.Playback
                     _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
                 }
 
+                _numOfPlayingTracks = Song.NumOfTracks;
+
                 UpdateTimingProperties();
                 _clock.Start();
 
@@ -205,11 +210,27 @@ namespace JUMO.Playback
 
                 IsPlaying = false;
             }
+
+            System.Diagnostics.Debug.WriteLine("MasterSequencer: Playback stopped");
         }
 
         internal void EnqueuePattern(Pattern pattern)
         {
             _patternQueue.Add(pattern);
+        }
+
+        internal void HandleFinishedTrack()
+        {
+            lock (_lock)
+            {
+                _numOfPlayingTracks--;
+
+                if (_numOfPlayingTracks == 0)
+                {
+                    // TODO: 멈추지 말고 처음으로 돌아가서 다시 재생 (use Start())
+                    Stop();
+                }
+            }
         }
 
         private void UpdateTimingProperties()
