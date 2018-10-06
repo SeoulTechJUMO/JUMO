@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MidiToolkit = Sanford.Multimedia.Midi;
+using Jacobi.Vst.Core;
 
 namespace JUMO.Playback
 {
@@ -38,6 +36,7 @@ namespace JUMO.Playback
         private IEnumerable<long> GetTickIterator(MidiToolkit.Track track, Vst.Plugin plugin, int startPosition)
         {
             IEnumerator<MidiToolkit.MidiEvent> enumerator = track.Iterator().GetEnumerator();
+            List<VstEvent> simultaneousEvents = new List<VstEvent>();
 
             bool hasNext;
 
@@ -58,11 +57,18 @@ namespace JUMO.Playback
 
                 yield return ticks;
 
+                simultaneousEvents.Clear();
+
                 while (hasNext && enumerator.Current.AbsoluteTicks == ticks)
                 {
-                    System.Diagnostics.Debug.WriteLine($"{Pattern.Name}[{plugin.Name}]: Ticks = {ticks}, Message = {string.Join(", ", enumerator.Current.MidiMessage.GetBytes())}");
+                    simultaneousEvents.Add(new VstMidiEvent(0, 0, 0, enumerator.Current.MidiMessage.GetBytes(), 0, 64));
 
                     hasNext = enumerator.MoveNext();
+                }
+
+                if (simultaneousEvents.Count > 0)
+                {
+                    plugin.SendEvents(simultaneousEvents.ToArray());
                 }
 
                 ticks++;
