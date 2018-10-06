@@ -2,10 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using MidiToolkit = Sanford.Multimedia.Midi;
 
 namespace JUMO.Playback
@@ -23,6 +20,8 @@ namespace JUMO.Playback
         private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
         private readonly BlockingCollection<Pattern> _patternQueue = new BlockingCollection<Pattern>();
         private readonly List<PatternSequencer> _playingPatterns = new List<PatternSequencer>();
+
+        private readonly object _lock = new object();
 
         private bool _isDisposed = false;
         private bool _isPlaying = false;
@@ -84,14 +83,21 @@ namespace JUMO.Playback
                 }
 
                 bool wasPlaying;
-                
-                wasPlaying = IsPlaying;
-                Stop();
-                _clock.SetTicks((int)value);
 
-                if (wasPlaying)
+                lock (_lock)
                 {
-                    Continue();
+                    wasPlaying = IsPlaying;
+
+                    Stop();
+                    _clock.SetTicks((int)value);
+                }
+
+                lock (_lock)
+                {
+                    if (wasPlaying)
+                    {
+                        Continue();
+                    }
                 }
 
                 OnPropertyChanged(nameof(Position));
@@ -103,10 +109,13 @@ namespace JUMO.Playback
             get => _isPlaying;
             private set
             {
-                if (_isPlaying != value)
+                lock (_lock)
                 {
-                    _isPlaying = value;
-                    OnPropertyChanged(nameof(IsPlaying));
+                    if (_isPlaying != value)
+                    {
+                        _isPlaying = value;
+                        OnPropertyChanged(nameof(IsPlaying));
+                    }
                 }
             }
         }
@@ -144,9 +153,12 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            Stop();
-            Position = 0;
-            Continue();
+            lock (_lock)
+            {
+                Stop();
+                Position = 0;
+                Continue();
+            }
         }
 
         public void Continue()
@@ -156,18 +168,21 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            Stop();
-            _trackEnumerators.Clear();
-
-            foreach (Track track in _song.Tracks)
+            lock (_lock)
             {
-                _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
+                Stop();
+                _trackEnumerators.Clear();
+
+                foreach (Track track in _song.Tracks)
+                {
+                    _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
+                }
+
+                UpdateTimingProperties();
+                _clock.Start();
+
+                IsPlaying = true;
             }
-
-            UpdateTimingProperties();
-            _clock.Start();
-
-            IsPlaying = true;
         }
 
         public void Stop()
@@ -177,16 +192,19 @@ namespace JUMO.Playback
                 throw new ObjectDisposedException(nameof(MasterSequencer));
             }
 
-            if (!IsPlaying)
+            lock (_lock)
             {
-                return;
+                if (!IsPlaying)
+                {
+                    return;
+                }
+
+                _clock.Stop();
+                _playingPatterns.Clear();
+                // TODO: stop all sounds (NoteOff)
+
+                IsPlaying = false;
             }
-
-            _clock.Stop();
-            _playingPatterns.Clear();
-            // TODO: stop all sounds (NoteOff)
-
-            IsPlaying = false;
         }
 
         internal void EnqueuePattern(Pattern pattern)
@@ -231,14 +249,17 @@ namespace JUMO.Playback
 
         private void OnClockTick(object sender, EventArgs e)
         {
-            if (!IsPlaying)
+            lock (_lock)
             {
-                return;
-            }
+                if (!IsPlaying)
+                {
+                    return;
+                }
 
-            foreach (IEnumerator<long> enumerator in _trackEnumerators)
-            {
-                enumerator.MoveNext();
+                foreach (IEnumerator<long> enumerator in _trackEnumerators)
+                {
+                    enumerator.MoveNext();
+                }
             }
 
             OnPropertyChanged(nameof(Position));
@@ -258,9 +279,13 @@ namespace JUMO.Playback
 
             if (disposing)
             {
-                _clock.Dispose();
-                _patternQueue.CompleteAdding();
-                _patternQueue.Dispose();
+                lock (_lock)
+                {
+                    Stop();
+                    _clock.Dispose();
+                    _patternQueue.CompleteAdding();
+                    _patternQueue.Dispose();
+                }
             }
 
             _isDisposed = true;
