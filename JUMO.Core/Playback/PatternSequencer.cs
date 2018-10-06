@@ -5,9 +5,11 @@ using Jacobi.Vst.Core;
 
 namespace JUMO.Playback
 {
-    class PatternSequencer
+    class PatternSequencer : IDisposable
     {
+        private readonly MasterSequencer _masterSequencer;
         private readonly List<IEnumerator<long>> _enumerators = new List<IEnumerator<long>>();
+        private int _numOfPlayingScores = 0;
         private int _position = 0;
 
         #region Properties
@@ -18,18 +20,15 @@ namespace JUMO.Playback
 
         public PatternSequencer(MasterSequencer masterSequencer, Pattern pattern)
         {
-            if (masterSequencer == null)
-            {
-                throw new ArgumentNullException(nameof(masterSequencer));
-            }
-
+            _masterSequencer = masterSequencer ?? throw new ArgumentNullException(nameof(masterSequencer));
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
-            masterSequencer.Tick += OnMasterClockTick;
+            _masterSequencer.Tick += OnMasterClockTick;
 
             foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
             {
                 _enumerators.Add(GetTickIterator(Pattern[plugin].MidiTrack, plugin, 0).GetEnumerator());
+                _numOfPlayingScores++;
             }
         }
 
@@ -73,16 +72,29 @@ namespace JUMO.Playback
 
                 ticks++;
             }
+
+            _numOfPlayingScores--;
         }
 
         private void OnMasterClockTick(object sender, EventArgs e)
         {
+            if (_numOfPlayingScores <= 0)
+            {
+                Dispose();
+            }
+
             _position++;
 
             foreach (IEnumerator<long> enumerator in _enumerators)
             {
                 enumerator.MoveNext();
             }
+        }
+
+        public void Dispose()
+        {
+            _masterSequencer.Tick -= OnMasterClockTick;
+            _masterSequencer.HandleFinishedPattern(this);
         }
     }
 }

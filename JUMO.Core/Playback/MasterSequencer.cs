@@ -209,7 +209,11 @@ namespace JUMO.Playback
                 }
 
                 _clock.Stop();
-                _playingPatterns.Clear();
+
+                foreach (PatternSequencer pseq in _playingPatterns.ToArray())
+                {
+                    pseq.Dispose();
+                }
                 // TODO: stop all sounds (NoteOff)
 
                 IsPlaying = false;
@@ -235,6 +239,8 @@ namespace JUMO.Playback
                 }
             });
         }
+
+        internal void HandleFinishedPattern(PatternSequencer sender) => EnqueueWork(() => _playingPatterns.Remove(sender));
 
         private void UpdateTimingProperties()
         {
