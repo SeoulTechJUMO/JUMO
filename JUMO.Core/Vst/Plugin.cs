@@ -59,6 +59,7 @@ namespace JUMO.Vst
             PluginCommandStub.SetSampleRate(44100.0f);
             PluginCommandStub.SetBlockSize(2048);
             PluginCommandStub.MainsChanged(true);
+            PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
             _volume = new VolumeSampleProvider(new VstSampleProvider(this));
@@ -99,9 +100,7 @@ namespace JUMO.Vst
 
                 if (nextEvents != null)
                 {
-                    PluginCommandStub.StartProcess();
                     PluginCommandStub.ProcessEvents(nextEvents);
-                    PluginCommandStub.StopProcess();
                 }
             }
         }
@@ -122,6 +121,7 @@ namespace JUMO.Vst
             {
                 _bc.CompleteAdding();
                 _bc.Dispose();
+                PluginCommandStub.StopProcess();
                 PluginCommandStub.MainsChanged(false);
                 PluginCommandStub.Close();
             }

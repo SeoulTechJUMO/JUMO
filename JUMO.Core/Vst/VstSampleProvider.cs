@@ -23,9 +23,7 @@ namespace JUMO.Vst
             VstAudioBuffer[] inBuf = inBufMgr.ToArray();
             VstAudioBuffer[] outBuf = outBufMgr.ToArray();
 
-            _cmdstub.StartProcess();
             _cmdstub.ProcessReplacing(inBuf, outBuf);
-            _cmdstub.StopProcess();
 
             for (int i = 0; i < count; i++)
             {
