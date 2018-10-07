@@ -7,13 +7,13 @@ using MidiToolkit = Sanford.Multimedia.Midi;
 
 namespace JUMO.Playback
 {
-    enum PlaybackMode
+    public enum PlaybackMode
     {
         Pattern,
         Song
     }
 
-    class MasterSequencer : INotifyPropertyChanged, IDisposable
+    public class MasterSequencer : INotifyPropertyChanged, IDisposable
     {
         #region Fields
 
@@ -138,7 +138,7 @@ namespace JUMO.Playback
 
         #endregion
 
-        public MasterSequencer(Song song)
+        internal MasterSequencer(Song song)
         {
             _song = song ?? throw new ArgumentNullException(nameof(song));
 
@@ -188,7 +188,7 @@ namespace JUMO.Playback
                 _numOfPlayingTracks = Song.NumOfTracks;
 
                 UpdateTimingProperties();
-                _clock.Start();
+                _clock.Continue();
 
                 IsPlaying = true;
             });
