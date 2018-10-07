@@ -18,16 +18,27 @@ namespace JUMO.Vst
 
         public int Read(float[] buffer, int offset, int count)
         {
-            VstAudioBufferManager inBufMgr = new VstAudioBufferManager(2, count);
-            VstAudioBufferManager outBufMgr = new VstAudioBufferManager(2, count);
+            int halfCount = count >> 1;
+            VstAudioBufferManager inBufMgr = new VstAudioBufferManager(2, halfCount);
+            VstAudioBufferManager outBufMgr = new VstAudioBufferManager(2, halfCount);
             VstAudioBuffer[] inBuf = inBufMgr.ToArray();
             VstAudioBuffer[] outBuf = outBufMgr.ToArray();
 
             _cmdstub.ProcessReplacing(inBuf, outBuf);
 
-            for (int i = 0; i < count; i++)
+            unsafe
             {
-                buffer[i] = outBuf[i % 2][i];
+                float* vstLBuf = ((IDirectBufferAccess32)outBuf[0]).Buffer;
+                float* vstRBuf = ((IDirectBufferAccess32)outBuf[1]).Buffer;
+
+                fixed (float* audioBuf = &buffer[0])
+                {
+                    for (int i = 0, j = 0; i < halfCount; i++)
+                    {
+                        *(audioBuf + j++) = *(vstLBuf + i);
+                        *(audioBuf + j++) = *(vstRBuf + i);
+                    }
+                }
             }
 
             inBufMgr.Dispose();
