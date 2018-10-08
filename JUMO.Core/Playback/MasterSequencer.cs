@@ -24,8 +24,6 @@ namespace JUMO.Playback
         private int _numOfPlayingTracks;
 
         private readonly BlockingCollection<Action> _workQueue = new BlockingCollection<Action>();
-        private readonly BlockingCollection<Pattern> _patternQueue = new BlockingCollection<Pattern>();
-        private readonly List<PatternSequencer> _playingPatterns = new List<PatternSequencer>();
 
         private readonly Thread _workerThread;
 
@@ -147,9 +145,11 @@ namespace JUMO.Playback
 
             UpdateTimingProperties();
 
-            new Thread(PatternSequencerConsumer) { Name = "PatternSequencer Consumer for MasterSequencer" }.Start();
-
-            _workerThread = new Thread(Worker) { Name = "PatternSequencer Worker" };
+            _workerThread = new Thread(Worker)
+            {
+                Name = "MasterSequencer Worker",
+                IsBackground = true
+            };
             _workerThread.Start();
         }
 
@@ -210,10 +210,6 @@ namespace JUMO.Playback
 
                 _clock.Stop();
 
-                foreach (PatternSequencer pseq in _playingPatterns.ToArray())
-                {
-                    pseq.Dispose();
-                }
                 // TODO: stop all sounds (NoteOff)
 
                 IsPlaying = false;
@@ -222,10 +218,7 @@ namespace JUMO.Playback
             });
         }
 
-        internal void EnqueuePattern(Pattern pattern)
-        {
-            _patternQueue.Add(pattern);
-        }
+        internal void EnqueuePattern(Pattern pattern) => new PatternSequencer(this, pattern);
 
         internal void HandleFinishedTrack()
         {
@@ -239,8 +232,6 @@ namespace JUMO.Playback
                 }
             });
         }
-
-        internal void HandleFinishedPattern(PatternSequencer sender) => EnqueueWork(() => _playingPatterns.Remove(sender));
 
         private void UpdateTimingProperties()
         {
@@ -262,25 +253,6 @@ namespace JUMO.Playback
             else
             {
                 _workQueue.Add(work);
-            }
-        }
-
-        private void PatternSequencerConsumer()
-        {
-            while (!_patternQueue.IsCompleted)
-            {
-                Pattern pattern = null;
-
-                try
-                {
-                    pattern = _patternQueue.Take();
-                }
-                catch (InvalidOperationException) { }
-
-                if (pattern != null)
-                {
-                    _playingPatterns.Add(new PatternSequencer(this, pattern));
-                }
             }
         }
 
@@ -338,8 +310,6 @@ namespace JUMO.Playback
                 _clock.Dispose();
                 _workQueue.CompleteAdding();
                 _workQueue.Dispose();
-                _patternQueue.CompleteAdding();
-                _patternQueue.Dispose();
             }
 
             _isDisposed = true;

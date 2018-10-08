@@ -81,6 +81,8 @@ namespace JUMO.Playback
             if (_numOfPlayingScores <= 0)
             {
                 Dispose();
+
+                return;
             }
 
             _position++;
@@ -94,7 +96,7 @@ namespace JUMO.Playback
         public void Dispose()
         {
             _masterSequencer.Tick -= OnMasterClockTick;
-            _masterSequencer.HandleFinishedPattern(this);
+            _enumerators.Clear();
         }
     }
 }
