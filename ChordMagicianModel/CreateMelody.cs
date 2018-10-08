@@ -1,61 +1,56 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.IO;
+using System.Diagnostics;
 
 namespace ChordMagicianModel
 {
-    public class CreateMelody
+    public static class CreateMelody
     {
         //JUMO 프로젝트 안에 마젠타를 포함시킨 경우
-        public void RunMagenta(string Progress, int NumOfFiles)
+        public static void RunMagenta(string progress, int numOfFiles)
         {
-            string StartUp = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-            string MelodyPath = StartUp + "/ChordMagicianModel/Melody ";
+            string startup = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+            string melodyPath = startup + "/ChordMagicianModel/Melody";
+            string fileName = startup + "/improv_rnn_generate/improv_rnn_generate.exe";
 
-            string FileName = StartUp + "/improv_rnn_generate/improv_rnn_generate.exe";
-            string Args = "--config=chord_pitches_improv " +
-                "--bundle_file=" + StartUp + "/improv_rnn_generate/chord_pitches_improv.mag " +
-                "--output_dir=" + MelodyPath +
-                "--num_outputs=" + NumOfFiles + " " +
-                "--backing_chords=\"" + Progress + "\" "+
+            string args =
+                "--config=chord_pitches_improv " +
+                $"--bundle_file={startup}/improv_rnn_generate/chord_pitches_improv.mag " +
+                $"--output_dir={melodyPath} " +
+                $"--num_outputs={numOfFiles} " +
+                $"--backing_chords=\"{progress}\" " +
                 //이부분은 추후 삭제
                 "--render_chords";
 
             //이미 생성된 멜로디 파일이 있다면 지워준다
-            if (System.IO.Directory.Exists(MelodyPath))
+            if (Directory.Exists(melodyPath))
             {
                 string[] files = GetMelodyPath();
 
                 foreach (string s in files)
                 {
-                    System.IO.File.Delete(s);
+                    File.Delete(s);
                 }
             }
 
-            RunProcess(FileName, Args);
+            RunProcess(fileName, args);
         }
 
         //생성된 미디파일 경로 얻기
-        public string[] GetMelodyPath()
+        public static string[] GetMelodyPath()
         {
-            string StartUp = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-            string MelodyPath = StartUp + "/ChordMagicianModel/Melody ";
+            string startup = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+            string melodyPath = $"{startup}/ChordMagicianModel/Melody";
 
-            string[] files = System.IO.Directory.GetFiles(MelodyPath);
-            return files;
+            return Directory.GetFiles(melodyPath);
         }
 
-        public int RunProcess(String FileName, String Args)
+        public static int RunProcess(String fileName, String args)
         {
             Process p = new Process();
 
-            p.StartInfo.FileName = FileName;
-            p.StartInfo.Arguments = Args;
-
+            p.StartInfo.FileName = fileName;
+            p.StartInfo.Arguments = args;
             p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
             p.Start();
@@ -63,7 +58,5 @@ namespace ChordMagicianModel
 
             return p.ExitCode;
         }
-
-        
     }
 }

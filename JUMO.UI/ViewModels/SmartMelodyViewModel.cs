@@ -95,9 +95,8 @@ namespace JUMO.UI.ViewModels
 
             Task.Run(() =>
             {
-                CreateMelody cm = new CreateMelody();
-                cm.RunMagenta(Chord, 5);
-                MakeScore(cm.GetMelodyPath());
+                CreateMelody.RunMagenta(Chord, 5);
+                MakeScore(CreateMelody.GetMelodyPath());
                 ProgressVisible = Visibility.Hidden;
             });
         }
