@@ -43,6 +43,30 @@ namespace JUMO.UI.ViewModels
             }
         }
 
+        //생성된 멜로디 표시 스코어
+        private List<Score> _GeneratedScore = new List<Score>();
+        public List<Score> GeneratedScore
+        {
+            get => _GeneratedScore;
+            set
+            {
+                _GeneratedScore = value;
+                OnPropertyChanged(nameof(GeneratedScore));
+            }
+        }
+
+        //선택중인 멜로디 스코어
+        private Score _CurrentScore;
+        public Score CurrentScore
+        {
+            get => _CurrentScore;
+            set
+            {
+                _CurrentScore = value;
+                OnPropertyChanged(nameof(CurrentScore));
+            }
+        }
+
 
         //사용 커맨드
         private RelayCommand _GetMelody;
@@ -73,14 +97,34 @@ namespace JUMO.UI.ViewModels
             {
                 CreateMelody cm = new CreateMelody();
                 cm.RunMagenta(Chord, 5);
-                MakeScore();
+                MakeScore(cm.GetMelodyPath());
                 ProgressVisible = Visibility.Hidden;
             });
         }
 
-        public void MakeScore()
+        public void MakeScore(string[] files)
         {
+            GeneratedScore.Clear();
 
+            //생성할 스코어에 삽입할 임시 노트 리스트
+            List<Note> Notes = new List<Note>();
+
+            //사용할 도구 객체
+            MakeNote nm = new MakeNote();
+
+            foreach (string s in files)
+            {
+                //TODO: 파일별로 가상 스코어를 생성해 줘야함
+                //InsertNote를 파일 수 만큼 돌려준다
+            }
+        }
+
+        public List<Note> InsertNote(string FilePath)
+        {
+            List<Note> Notes = new List<Note>();
+            Notes = new MakeNote().MakeScore(FilePath);
+
+            return Notes;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

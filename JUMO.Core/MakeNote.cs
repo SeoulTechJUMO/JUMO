@@ -17,9 +17,21 @@ namespace JUMO
         public long velocuty;
     }
 
-    class MakeNote
+    public class MakeNote
     {
-        public void NoteMake(MidiToolKit.Sequence sq)
+        public List<Note> MakeScore(string FilePath)
+        {
+            List<Note> Score = new List<Note>();
+
+            MidiToolKit.Sequence sq = new MidiToolKit.Sequence();
+            sq.LoadAsync(FilePath);
+
+            Score = NoteMake(sq);
+
+            return Score;
+        }
+
+        public List<Note> NoteMake(MidiToolKit.Sequence sq)
         {
             List<ChannelMessage> list_cm = new List<ChannelMessage>();
             List<Note> list_note = new List<Note>();
@@ -57,11 +69,11 @@ namespace JUMO
                     }
                 }
             }
-            
-            for (int i = 0; i < list_note.Count; i++) {
-                Debug.WriteLine("Value : {0}, Start : {1}, Length : {2}, Velocity : {3}", list_note[i].Value, list_note[i].Start, list_note[i].Length, list_note[i].Velocity);
-            }
-            
+
+            //for (int i = 0; i < list_note.Count; i++) {
+            //    Debug.WriteLine("Value : {0}, Start : {1}, Length : {2}, Velocity : {3}", list_note[i].Value, list_note[i].Start, list_note[i].Length, list_note[i].Velocity);
+            //}
+            return list_note;
         }
 
     }

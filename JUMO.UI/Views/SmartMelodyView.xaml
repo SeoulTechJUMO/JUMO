@@ -31,8 +31,12 @@
                     </Style>
                 </StackPanel.Style>
                 <StackPanel Orientation="Horizontal" Margin="20">
-                    <TextBlock x:Name="text1" Height="20" FontSize="14"><Run Text="선택한 패턴: "/></TextBlock>
+                    <TextBlock Height="20" FontSize="14"><Run Text="선택한 패턴 : "/></TextBlock>
                     <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
+                    <TextBlock Height="20" FontSize="14"><Run Text="생성된 패턴 : "/></TextBlock>
+                    <ComboBox Width="100" Margin="0,0,0,0">
+                        
+                    </ComboBox>
                 </StackPanel>
                 <Rectangle Height="100" Fill="Azure" Stroke="Gray">
                 </Rectangle>
