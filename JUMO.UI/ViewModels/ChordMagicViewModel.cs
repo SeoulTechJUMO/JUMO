@@ -245,7 +245,7 @@ namespace JUMO.UI
                 //child path 만들기
                 foreach (Progress i in CurrentProgress)
                 {
-                    cp += i.ID;
+                    cp += i.Id;
                     i.ChildPath = cp;
                     cp += ",";
                 }
