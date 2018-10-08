@@ -35,7 +35,11 @@ namespace JUMO.UI
             get => _length;
             set
             {
-                throw new NotSupportedException();
+                if (_length != value)
+                {
+                    _length = value;
+                    OnPropertyChanged(nameof(Length));
+                }
             }
         }
 
@@ -56,9 +60,7 @@ namespace JUMO.UI
         {
             Source = source;
             Start = Source.Start;
-            // 플레이리스트에 배치된 패턴의 길이를 변경하는 것은 아직 구현되지 않음.
-            // Length = Source.Length;
-            _length = Source.Length;
+            Length = Source.Length;
             Pattern = Source.Pattern;
             TrackIndex = Source.TrackIndex;
 

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO
 {
@@ -17,7 +14,7 @@ namespace JUMO
 
         private Song()
         {
-            Tempo = 120;
+            SetTempo(6, 120);
 
             for (int i = 0; i < NumOfTracks; i++)
             {
@@ -27,7 +24,7 @@ namespace JUMO
 
             for (int i = 0; i < 16; i++)
             {
-                Patterns.Add(new Pattern($"패턴 {i + 1}"));
+                Patterns.Add(new Pattern(this, $"패턴 {i + 1}"));
             }
             CurrentPattern = Patterns[0];
 
@@ -46,14 +43,13 @@ namespace JUMO
         /// </summary>
         public const int NumOfTracks = 64;
 
-        private int _tempo;
         private string _title = "제목 없음";
         private string _artist = "";
         private string _genre = "";
         private string _description = "";
         private int _numerator = 4;
         private int _denominator = 4;
-        private int _timeResolution = 480;
+        private int _timeResolution = 96;
         private long _length = 0;
         private Pattern _currentPattern;
 
@@ -117,19 +113,21 @@ namespace JUMO
         public NameValueCollection MiscMetadata { get; } = new NameValueCollection() { };
 
         /// <summary>
-        /// 곡의 템포를 BPM 단위로 가져오거나 설정합니다.
+        /// 곡의 템포를 가져옵니다.
         /// </summary>
-        public int Tempo
-        {
-            get => _tempo;
-            set
-            {
-                _tempo = value;
-                MidiTempo = (int)Math.Round(60_000_000.0 / _tempo);
-                OnPropertyChanged(nameof(Tempo));
-                OnPropertyChanged(nameof(MidiTempo));
-            }
-        }
+        public double Tempo { get; private set; }
+
+        /// <summary>
+        /// 템포의 기준이 되는 박자의 길이를 가져옵니다.
+        /// 4분음표 네 개의 길이는 24로 정의합니다.
+        /// </summary>
+        public int TempoBeat { get; private set; }
+
+        /// <summary>
+        /// 곡의 템포를 MIDI 템포 형식으로 가져오거나 설정합니다.
+        /// 4분음표 하나가 연주되는 시간을 마이크로초 단위로 나타낸 값입니다.
+        /// </summary>
+        public int MidiTempo { get; private set; }
 
         /// <summary>
         /// 곡의 박자표 중 분자를 가져오거나 설정합니다.
@@ -210,10 +208,20 @@ namespace JUMO
         }
 
         /// <summary>
-        /// 곡의 템포를 MIDI 템포 형식으로 가져오거나 설정합니다.
-        /// 4분음표 하나가 연주되는 시간을 마이크로초 단위로 나타낸 값입니다.
+        /// 곡의 템포를 설정합니다.
         /// </summary>
-        public int MidiTempo { get; private set; }
+        /// <param name="tempoBeat">템포의 기준이 되는 박자의 길이</param>
+        /// <param name="tempo">템포 값</param>
+        public void SetTempo(int tempoBeat, double tempo)
+        {
+            TempoBeat = tempoBeat;
+            Tempo = tempo;
+            MidiTempo = (int)Math.Round(10_000_000.0 * TempoBeat / Tempo);
+
+            OnPropertyChanged(nameof(Tempo));
+            OnPropertyChanged(nameof(TempoBeat));
+            OnPropertyChanged(nameof(MidiTempo));
+        }
 
         private void UpdateLength() => Length = Tracks.Select(track => track.Length).Max();
 

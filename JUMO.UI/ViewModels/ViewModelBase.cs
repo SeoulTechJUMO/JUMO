@@ -36,4 +36,9 @@ namespace JUMO.UI
             }
         }
     }
+
+    public abstract class SettingsGroupViewModel : ViewModelBase
+    {
+        public abstract void SaveSettings();
+    }
 }

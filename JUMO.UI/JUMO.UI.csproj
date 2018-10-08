@@ -91,7 +91,6 @@
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
-    <Compile Include="Controls\ScoreThumbnail.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
@@ -100,12 +99,18 @@
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
     <Compile Include="Data\EnumHelper.cs" />
+    <Compile Include="Data\TempoBeatOptionCollection.cs" />
     <Compile Include="Layouts\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layouts\PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ThumbnailManager.cs" />
+    <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
@@ -119,8 +124,13 @@
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
+    <Compile Include="ViewModels\ProjectSettingsViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SmartMelodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AudioSettingsView.xaml.cs">
+      <DependentUpon>AudioSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ChannelRackItemView.xaml.cs">
       <DependentUpon>ChannelRackItemView.xaml</DependentUpon>
     </Compile>
@@ -142,11 +152,20 @@
     <Compile Include="Views\PatternPlacementView.xaml.cs">
       <DependentUpon>PatternPlacementView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PatternThumbnailView.xaml.cs">
+      <DependentUpon>PatternThumbnailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlaylistView.xaml.cs">
       <DependentUpon>PlaylistView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProjectSettingsView.xaml.cs">
+      <DependentUpon>ProjectSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ScoreThumbnailView.xaml.cs">
+      <DependentUpon>ScoreThumbnailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
     <Compile Include="Views\SmartMelodyView.xaml.cs">
@@ -163,12 +182,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Layouts\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\NoteIcons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\SettingsViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Controls\MusicalGrid.cs" />
     <Compile Include="Controls\PluginEditorHost.cs" />
+    <Page Include="Views\AudioSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ChannelRackItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,11 +232,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PatternThumbnailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PianoRollView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PlaylistView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProjectSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ScoreThumbnailView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -239,10 +286,6 @@
     <ProjectReference Include="..\ChordMagicianModel\ChordMagicianModel.csproj">
       <Project>{bc746a92-1979-42f7-924e-fbdb62c6ad85}</Project>
       <Name>ChordMagicianModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
-      <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
-      <Name>JUMO.Media</Name>
     </ProjectReference>
     <ProjectReference Include="..\JUMO.Core\JUMO.Core.csproj">
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>

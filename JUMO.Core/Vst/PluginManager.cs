@@ -4,7 +4,7 @@ using System.ComponentModel;
 using Microsoft.Win32;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
-using JUMO.Media.Audio;
+using JUMO.Audio;
 
 namespace JUMO.Vst
 {

@@ -84,6 +84,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Audio\AudioManager.cs" />
+    <Compile Include="Audio\AudioOutputDevice.cs" />
+    <Compile Include="Audio\AudioOutputEngine.cs" />
     <Compile Include="IMusicalItem.cs" />
     <Compile Include="MakeNote.cs" />
     <Compile Include="Pattern.cs" />
@@ -123,12 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\JUMO.Media\JUMO.Media.csproj">
-      <Project>{52b76347-0e14-4d40-ac6b-53cc63ceafbe}</Project>
-      <Name>JUMO.Media</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

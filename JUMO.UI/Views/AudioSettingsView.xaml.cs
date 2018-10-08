@@ -12,27 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Win32;
-using JUMO.Vst;
 
-namespace VstHostTest
+namespace JUMO.UI.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for AudioSettingsView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AudioSettingsView : UserControl
     {
-        public MainWindow()
+        public AudioSettingsView()
         {
             InitializeComponent();
-
-            // TODO: Remove when you're done!!!
-            //new JUMO.UI.Layouts.MainWindow().Show();
-        }
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
-        {
-            (DataContext as MainViewModel).ChangeCurrentAudioOutputDevice();
         }
     }
 }

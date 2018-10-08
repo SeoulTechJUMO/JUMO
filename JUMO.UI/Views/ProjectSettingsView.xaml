@@ -1,0 +1,118 @@
+﻿<UserControl x:Class="JUMO.UI.Views.ProjectSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Views"
+             xmlns:proj="clr-namespace:JUMO.UI"
+             xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             xmlns:data="clr-namespace:JUMO.UI.Data"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance Type={x:Type proj:ProjectSettingsViewModel}}">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
+                <ResourceDictionary Source="../Resources/NoteIcons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <data:TempoBeatOptionCollection x:Key="TempoBeatOptions">
+                <data:TempoBeatOption Value="12" Icon="{StaticResource EighthNoteGeometry}" />
+                <data:TempoBeatOption Value="8" Icon="{StaticResource DottedEighthNoteGeometry}" />
+                <data:TempoBeatOption Value="6" Icon="{StaticResource QuarterNoteGeometry}" />
+                <data:TempoBeatOption Value="4" Icon="{StaticResource DottedQuarterNoteGeometry}" />
+                <data:TempoBeatOption Value="3" Icon="{StaticResource HalfNoteGeometry}" />
+                <data:TempoBeatOption Value="2" Icon="{StaticResource DottedHalfNoteGeometry}" />
+            </data:TempoBeatOptionCollection>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="제목" />
+        <Label Grid.Row="1" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="작곡가" />
+        <Label Grid.Row="2" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="장르" />
+        <Label Grid.Row="3" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="설명" />
+        <Label Grid.Row="5" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="템포" />
+        <Label Grid.Row="6" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
+               Content="박자" />
+
+        <TextBox Grid.Row="0" Grid.Column="1"
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Title, Mode=TwoWay}" />
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Artist, Mode=TwoWay}" />
+        <TextBox Grid.Row="2" Grid.Column="1"
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Genre, Mode=TwoWay}" />
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 Height="80"
+                 AcceptsReturn="True" TextWrapping="Wrap"
+                 HorizontalScrollBarVisibility="Disabled"
+                 VerticalScrollBarVisibility="Auto"
+                 Style="{StaticResource SettingsItem}"
+                 Text="{Binding Description, Mode=TwoWay}" />
+        <Separator Grid.Row="4" Grid.Column="1"
+                   Style="{StaticResource SettingsItemSeparator}" />
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource SettingsItem}">
+            <ComboBox ItemsSource="{StaticResource TempoBeatOptions}"
+                      SelectedValuePath="Value"
+                      SelectedValue="{Binding TempoBeat}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="2" Width="16" Height="24">
+                            <Path Fill="Black" Data="{Binding Icon}" Stretch="Uniform" HorizontalAlignment="Left" SnapsToDevicePixels="True" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Label Content="=" />
+            <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" MinValue="10" MaxValue="500" />
+        </StackPanel>
+        <StackPanel Grid.Row="6" Grid.Column="1"
+                    Orientation="Horizontal"
+                    Style="{StaticResource SettingsItem}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0"
+                        BorderBrush="Black" BorderThickness="0,0,0,2">
+                    <ctrl:NumericUpDown Margin="3" Width="40"
+                                        MinValue="2" MaxValue="32"
+                                        Value="{Binding Numerator}" />
+                </Border>
+                <ctrl:NumericUpDown Grid.Row="1" Margin="3" Width="40"
+                                    MinValue="2" MaxValue="32"
+                                    Value="{Binding Denominator}" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 using JUMO.Vst;
 
 namespace JUMO.UI
@@ -13,8 +9,7 @@ namespace JUMO.UI
     public class ChannelRackViewModel : ViewModelBase
     {
         private readonly Song _song = Song.Current;
-        private readonly IEnumerable<Plugin> _plugins = PluginManager.Instance.Plugins;
-        private ICollectionView _pluginsView;
+        private readonly ObservableCollection<Plugin> _plugins = PluginManager.Instance.Plugins;
 
         public override string DisplayName => $"패턴: {Pattern.Name}";
 
@@ -56,12 +51,11 @@ namespace JUMO.UI
 
         public ChannelRackViewModel()
         {
-            _pluginsView = CollectionViewSource.GetDefaultView(_plugins);
-            _pluginsView.CollectionChanged += PluginsView_CollectionChanged;
+            _plugins.CollectionChanged += OnPluginsCollectionChanged;
             _song.PropertyChanged += OnSongPropertyChanged;
         }
 
-        private void PluginsView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void OnPluginsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged(nameof(Plugins));
         }

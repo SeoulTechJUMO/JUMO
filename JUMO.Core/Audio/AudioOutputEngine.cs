@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 
-namespace JUMO.Media.Audio
+namespace JUMO.Audio
 {
     public class AudioOutputEngine : IDisposable
     {
@@ -16,7 +12,7 @@ namespace JUMO.Media.Audio
         private readonly IWavePlayer outputDevice;
         private readonly MixingSampleProvider mixer;
 
-        public AudioOutputEngine(IAudioOutputDevice device)
+        public AudioOutputEngine(AudioOutputDevice device)
         {
             System.Diagnostics.Debug.WriteLine($"Initializing a new audio output engine with {device.FriendlyName}");
             switch (device.Type)
@@ -27,7 +23,7 @@ namespace JUMO.Media.Audio
                 case AudioOutputDeviceType.DirectSound:
                     outputDevice = new DirectSoundOut((Guid)device.Identifier);
                     break;
-                case AudioOutputDeviceType.ASIO:
+                case AudioOutputDeviceType.Asio:
                     outputDevice = new AsioOut((string)device.Identifier);
                     break;
             }
