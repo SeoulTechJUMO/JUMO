@@ -14,7 +14,7 @@ namespace JUMO.UI
 {
     public class ChordMagicViewModel : INotifyPropertyChanged
     {
-        public ChordMagicViewModel(string key, string mode, getAPI API, ObservableCollection<Progress> progress, PianoRollViewModel vm)
+        public ChordMagicViewModel(string key, string mode, GetAPI API, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
             _Key = key;
             _Mode = mode;
@@ -64,8 +64,8 @@ namespace JUMO.UI
         }
 
         //사용중인 API Bearer
-        private getAPI _API;
-        public getAPI API
+        private GetAPI _API;
+        public GetAPI API
         {
             get => _API;
             set

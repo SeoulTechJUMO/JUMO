@@ -12,7 +12,7 @@ using System.IO;
 
 namespace ChordMagicianModel
 {
-    public class getAPI
+    public class GetAPI
     {
         public WebClient wc;
 

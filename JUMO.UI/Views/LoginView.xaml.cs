@@ -53,7 +53,7 @@ namespace JUMO.UI.Views
         {
             try
             {
-                var API = new getAPI();
+                var API = new GetAPI();
                 var progress_list = API.Request(username, password);
                 if (AutoLogin.IsChecked == true)
                 {

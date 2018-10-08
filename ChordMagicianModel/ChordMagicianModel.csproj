@@ -60,7 +60,7 @@
   <ItemGroup>
     <Compile Include="ChordTools.cs" />
     <Compile Include="CreateMelody.cs" />
-    <Compile Include="getAPI.cs" />
+    <Compile Include="GetAPI.cs" />
     <Compile Include="Naming.cs" />
     <Compile Include="Progress.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
