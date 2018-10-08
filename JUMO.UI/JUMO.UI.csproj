@@ -291,10 +291,6 @@
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VstHostTest\VstHostTest.csproj">
-      <Project>{46aa49f2-b0a3-4b0d-8a4b-d37d5228ab1b}</Project>
-      <Name>VstHostTest</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Views\Hooktheory.png" />
