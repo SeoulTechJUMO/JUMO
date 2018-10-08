@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 
@@ -16,7 +11,7 @@ namespace ChordMagicianModel
     {
         public WebClient wc;
 
-        public WebClient getAuth(string username, string password)
+        public WebClient GetAuth(string username, string password)
         {
             var json = new JObject();
             json.Add("username", username);
@@ -35,7 +30,7 @@ namespace ChordMagicianModel
             return wc;
         }
 
-        public JArray makeProgress(WebClient wc)
+        public JArray MakeProgress(WebClient wc)
         {
             string uri = "https://api.hooktheory.com/v1/trends/nodes";
             Stream stream = wc.OpenRead(uri);
@@ -45,7 +40,7 @@ namespace ChordMagicianModel
             return response;
         }
 
-        public JArray makeProgress(WebClient wc, string cp)
+        public JArray MakeProgress(WebClient wc, string cp)
         {
             string uri = "https://api.hooktheory.com/v1/trends/nodes?cp=" + cp;
             Stream stream = wc.OpenRead(uri);
@@ -70,20 +65,20 @@ namespace ChordMagicianModel
 
         public ObservableCollection<Progress> Request(string username, string password)
         {
-            wc = getAuth(username, password);
-            var progress = makeProgress(wc);
+            wc = GetAuth(username, password);
+            var progress = MakeProgress(wc);
             var progress_list = ConvertToProgress(progress);
             return progress_list;
         }
 
         public ObservableCollection<Progress> Request(string cp)
         {
-            var progress = makeProgress(wc, cp);
+            var progress = MakeProgress(wc, cp);
             var progress_list = ConvertToProgress(progress);
             return progress_list;
         }
 
-        public void show_list(ObservableCollection<Progress> progress_list)
+        public void ShowList(ObservableCollection<Progress> progress_list)
         {
             foreach (var i in progress_list)
             {
