@@ -9,9 +9,24 @@ namespace ChordMagicianModel
 {
     public class GetAPI
     {
-        public WebClient wc;
+        private WebClient _client;
 
-        public WebClient GetAuth(string username, string password)
+        public ObservableCollection<Progress> Request(string username, string password)
+        {
+            _client = GetAuth(username, password);
+            var progress = MakeProgress(_client);
+            var progress_list = ConvertToProgress(progress);
+            return progress_list;
+        }
+
+        public ObservableCollection<Progress> Request(string cp)
+        {
+            var progress = MakeProgress(_client, cp);
+            var progress_list = ConvertToProgress(progress);
+            return progress_list;
+        }
+
+        private WebClient GetAuth(string username, string password)
         {
             var json = new JObject();
             json.Add("username", username);
@@ -30,7 +45,7 @@ namespace ChordMagicianModel
             return wc;
         }
 
-        public JArray MakeProgress(WebClient wc)
+        private JArray MakeProgress(WebClient wc)
         {
             string uri = "https://api.hooktheory.com/v1/trends/nodes";
             Stream stream = wc.OpenRead(uri);
@@ -40,7 +55,7 @@ namespace ChordMagicianModel
             return response;
         }
 
-        public JArray MakeProgress(WebClient wc, string cp)
+        private JArray MakeProgress(WebClient wc, string cp)
         {
             string uri = "https://api.hooktheory.com/v1/trends/nodes?cp=" + cp;
             Stream stream = wc.OpenRead(uri);
@@ -50,7 +65,7 @@ namespace ChordMagicianModel
             return response;
         }
 
-        public ObservableCollection<Progress> ConvertToProgress(JArray JProgress)
+        private ObservableCollection<Progress> ConvertToProgress(JArray JProgress)
         {
             var progress = new ObservableCollection<Progress>();
 
@@ -61,21 +76,6 @@ namespace ChordMagicianModel
             }
 
             return progress;
-        }
-
-        public ObservableCollection<Progress> Request(string username, string password)
-        {
-            wc = GetAuth(username, password);
-            var progress = MakeProgress(wc);
-            var progress_list = ConvertToProgress(progress);
-            return progress_list;
-        }
-
-        public ObservableCollection<Progress> Request(string cp)
-        {
-            var progress = MakeProgress(wc, cp);
-            var progress_list = ConvertToProgress(progress);
-            return progress_list;
         }
 
         public void ShowList(ObservableCollection<Progress> progress_list)
