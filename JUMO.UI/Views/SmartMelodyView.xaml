@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:JUMO.UI.Views"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
+        x:Name="window"
         Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
 
     <DockPanel>
@@ -30,12 +31,16 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <StackPanel Orientation="Horizontal" Margin="20">
+                <StackPanel Orientation="Horizontal" Margin="20,20,0,20">
                     <TextBlock Height="20" FontSize="14"><Run Text="선택한 패턴 : "/></TextBlock>
                     <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
                     <TextBlock Height="20" FontSize="14"><Run Text="생성된 패턴 : "/></TextBlock>
-                    <ComboBox Width="100" Margin="0,0,0,0">
-                        
+                    <ComboBox Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Key}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
                 <Rectangle Height="100" Fill="Azure" Stroke="Gray">
@@ -46,7 +51,7 @@
                 <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Margin="0,20,0,0" Background="Azure">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75"/>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.ViewModel.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>

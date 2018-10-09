@@ -8,6 +8,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using ChordMagicianModel;
 using System.Windows;
+using System.Windows.Threading;
+using System.Collections.Specialized;
 
 namespace JUMO.UI.ViewModels
 {
@@ -43,30 +45,29 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        //생성된 멜로디 표시 스코어
-        private List<Score> _GeneratedScore = new List<Score>();
-        public List<Score> GeneratedScore
+        //생성된 멜로디 딕셔너리
+        private Dictionary<string, List<Note>> _GeneratedMelody = new Dictionary<string, List<Note>>();
+        public Dictionary<string, List<Note>> GeneratedMelody
         {
-            get => _GeneratedScore;
+            get => _GeneratedMelody;
             set
             {
-                _GeneratedScore = value;
-                OnPropertyChanged(nameof(GeneratedScore));
+                _GeneratedMelody = value;
+                OnPropertyChanged(nameof(GeneratedMelody));
             }
         }
 
-        //선택중인 멜로디 스코어
-        private Score _CurrentScore;
-        public Score CurrentScore
+        //선택된 멜로디 딕셔너리
+        private string _CurrentMelody;
+        public string CurrentMelody
         {
-            get => _CurrentScore;
+            get => _CurrentMelody;
             set
             {
-                _CurrentScore = value;
-                OnPropertyChanged(nameof(CurrentScore));
+                _CurrentMelody = value;
+                OnPropertyChanged(nameof(CurrentMelody));
             }
         }
-
 
         //사용 커맨드
         private RelayCommand _GetMelody;
@@ -95,28 +96,33 @@ namespace JUMO.UI.ViewModels
 
             Task.Run(() =>
             {
-                CreateMelody cm = new CreateMelody();
-                cm.RunMagenta(Chord, 5);
-                MakeScore(cm.GetMelodyPath());
+                CreateMelody.RunMagenta(Chord, 5);
+                MakeScore(CreateMelody.GetMelodyPath());
                 ProgressVisible = Visibility.Hidden;
             });
         }
 
         public void MakeScore(string[] files)
         {
-            GeneratedScore.Clear();
+            GeneratedMelody.Clear();
 
-            //생성할 스코어에 삽입할 임시 노트 리스트
+            //삽입할 노트 리스트
             List<Note> Notes = new List<Note>();
+            int Count = 0;
 
             //사용할 도구 객체
             MakeNote nm = new MakeNote();
 
             foreach (string s in files)
             {
-                //TODO: 파일별로 가상 스코어를 생성해 줘야함
-                //InsertNote를 파일 수 만큼 돌려준다
+                Count++;
+                string MelodyName = "";
+                MelodyName += "멜로디 " + Count;
+                Notes = InsertNote(s);
+
+                GeneratedMelody.Add(MelodyName,Notes);
             }
+            CurrentMelody = GeneratedMelody.Keys.ElementAt(0);
         }
 
         public List<Note> InsertNote(string FilePath)
