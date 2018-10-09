@@ -112,6 +112,7 @@
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicViewModel.cs" />
+    <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
