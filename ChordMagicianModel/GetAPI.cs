@@ -6,6 +6,7 @@ using System.Net;
 
 namespace ChordMagicianModel
 {
+    // TODO: Token을 테스트하는 메서드 구현
     public class GetAPI
     {
         private const string API_BASE = "https://api.hooktheory.com/v1/";
@@ -29,7 +30,7 @@ namespace ChordMagicianModel
 
         public GetAPI()
         {
-            // Token = Properties.Settings.Default.Token;
+            Token = Properties.Settings.Default.Token;
 
             _clientEx.Encoding = Encoding.UTF8;
             _clientEx.Headers[HttpRequestHeader.Accept] = "application/json";
@@ -51,9 +52,7 @@ namespace ChordMagicianModel
 
                 Token = (string)responseJson["activkey"];
 
-                Properties.Settings.Default.username = username;
-                Properties.Settings.Default.password = password;
-                // Properties.Settings.Default.Token = Token;
+                Properties.Settings.Default.Token = Token;
                 Properties.Settings.Default.Save();
 
                 OnWebSuccess();
