@@ -46,8 +46,8 @@ namespace JUMO.UI.ViewModels
         }
 
         //생성된 멜로디 딕셔너리
-        private Dictionary<string, List<Note>> _GeneratedMelody = new Dictionary<string, List<Note>>();
-        public Dictionary<string, List<Note>> GeneratedMelody
+        private ObservableCollection<KeyValuePair<string, List<Note>>> _GeneratedMelody = new ObservableCollection<KeyValuePair<string, List<Note>>>();
+        public ObservableCollection<KeyValuePair<string, List<Note>>> GeneratedMelody
         {
             get => _GeneratedMelody;
             set
@@ -57,17 +57,25 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        //선택된 멜로디 딕셔너리
+        //선택된 멜로디
         private string _CurrentMelody;
         public string CurrentMelody
         {
             get => _CurrentMelody;
             set
             {
+                if (_CurrentMelody != null)
+                {
+                    ChangeScore(_CurrentMelody, true);
+                }
                 _CurrentMelody = value;
+                ChangeScore(_CurrentMelody);
                 OnPropertyChanged(nameof(CurrentMelody));
             }
         }
+
+        //삽입여부
+        public bool InsertFlag = false;
 
         //사용 커맨드
         private RelayCommand _GetMelody;
@@ -88,16 +96,21 @@ namespace JUMO.UI.ViewModels
             ProgressVisible = Visibility.Visible;
             string Chord = "";
 
+            Dispatcher dispatcher = Application.Current.Dispatcher;
+
             foreach (Progress progress in ViewModel.CurrentProgress)
             {
                 Chord += progress.Chord;
                 Chord += " ";
             }
 
-            Task.Run(() =>
-            {
+            Task.Run(() => {
                 CreateMelody.RunMagenta(Chord, 5);
-                MakeScore(CreateMelody.GetMelodyPath());
+                dispatcher.BeginInvoke((Action)(() =>
+                {
+                    MakeScore(CreateMelody.GetMelodyPath());
+                    
+                }));
                 ProgressVisible = Visibility.Hidden;
             });
         }
@@ -120,9 +133,9 @@ namespace JUMO.UI.ViewModels
                 MelodyName += "멜로디 " + Count;
                 Notes = InsertNote(s);
 
-                GeneratedMelody.Add(MelodyName,Notes);
+                GeneratedMelody.Add(new KeyValuePair<string, List<Note>> (MelodyName,Notes));
             }
-            CurrentMelody = GeneratedMelody.Keys.ElementAt(0);
+            CurrentMelody = GeneratedMelody[0].Key;
         }
 
         public List<Note> InsertNote(string FilePath)
@@ -131,6 +144,61 @@ namespace JUMO.UI.ViewModels
             Notes = new MakeNote().MakeScore(FilePath);
 
             return Notes;
+        }
+
+        private RelayCommand _Cancel;
+        public RelayCommand Cancel
+        {
+            get
+            {
+                if (_Cancel == null)
+                {
+                    _Cancel = new RelayCommand(_ => ChangeScore(CurrentMelody, true));
+                }
+                return _Cancel;
+            }
+        }
+
+        private RelayCommand _Insert;
+        public RelayCommand Insert
+        {
+            get
+            {
+                if (_Insert == null)
+                {
+                    _Insert = new RelayCommand(_ => InsertFlag = true);
+                }
+                return _Insert;
+            }
+        }
+
+        public void ChangeScore(string Current, bool Remove=false)
+        {
+            List<Note> Notes = new List<Note>();
+            foreach (KeyValuePair<string, List<Note>> i in GeneratedMelody)
+            {
+                if (i.Key == Current)
+                {
+                    Notes = i.Value;
+                    break;
+                }
+            }
+
+            if (Remove == false)
+            {
+                foreach (Note i in Notes)
+                {
+                    ViewModel.ViewModel.AddNote(i);
+                }
+            }
+            else
+            {
+                foreach (Note i in Notes)
+                {
+                    ViewModel.ViewModel.RemoveNote(i);
+                }
+            }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace JUMO
 {
     //채널 메시지 임시저장 클래스
-    class ChannelMessage
+    public struct ChannelMessage
     {
         public string command;
         public long AbsoluteTick;
@@ -86,8 +86,8 @@ namespace JUMO
             int Count = 0;
             foreach (Note i in list_note)
             {
-                list_note[Count].Start = (long)((double)i.Start * ((double)sq.Division / (double)Song.Current.TimeResolution));
-                list_note[Count].Length = (long)((double)i.Length * ((double)sq.Division / (double)Song.Current.TimeResolution));
+                list_note[Count].Start = (long)((double)i.Start * ((double)Song.Current.TimeResolution) / (double)sq.Division);
+                list_note[Count].Length = (long)((double)i.Length * ((double)Song.Current.TimeResolution) / (double)sq.Division);
                 Count++;
             }
 

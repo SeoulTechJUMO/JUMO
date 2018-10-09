@@ -12,8 +12,8 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelody}"/>
-            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick"/>
-            <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
+            <Button Content="확인" Height="20" Width="70" Command="{Binding Insert}"  Margin="180,0,0,0" Click="InsertButtonClick"/>
+            <Button Content="취소" Height="20" Width="70" Command="{Binding Cancel}" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
 
         <Grid>
@@ -43,8 +43,7 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <Rectangle Height="100" Fill="Azure" Stroke="Gray">
-                </Rectangle>
+                <ctrl:ScoreThumbnail Score="{Binding ViewModel.ViewModel.Score}" Height="100" Background="Azure"/>
                 <Button Content="재생" Width="40" Margin="0,20,0,20"/>
                 <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
                 <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
