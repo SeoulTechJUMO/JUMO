@@ -9,7 +9,67 @@ namespace ChordMagicianModel
 {
     public class GetAPI
     {
+        private const string API_BASE = "https://api.hooktheory.com/v1/";
+
+        private readonly WebClient _clientEx = new WebClient();
+
         private WebClient _client;
+
+        private string _token = "";
+
+        private string Token
+        {
+            get => _token;
+            set
+            {
+                _token = value;
+                _clientEx.Headers[HttpRequestHeader.Authorization] = $"Bearer {_token}";
+            }
+        }
+
+        public WebExceptionStatus LastError { get; private set; } = WebExceptionStatus.Success;
+        public HttpStatusCode LastStatus { get; private set; } = HttpStatusCode.OK;
+
+        public GetAPI()
+        {
+            // Token = Properties.Settings.Default.Token;
+
+            _clientEx.Encoding = Encoding.UTF8;
+            _clientEx.Headers[HttpRequestHeader.Accept] = "application/json";
+            _clientEx.Headers[HttpRequestHeader.ContentType] = "application/json";
+        }
+
+        public bool SignIn(string username, string password)
+        {
+            var json = new JObject()
+            {
+                { "username", username },
+                { "password", password }
+            };
+
+            try
+            {
+                string responseText = _clientEx.UploadString(API_BASE + "users/auth", json.ToString());
+                JObject responseJson = JObject.Parse(responseText);
+
+                Token = (string)responseJson["activkey"];
+
+                Properties.Settings.Default.username = username;
+                Properties.Settings.Default.password = password;
+                // Properties.Settings.Default.Token = Token;
+                Properties.Settings.Default.Save();
+
+                OnWebSuccess();
+
+                return true;
+            }
+            catch (WebException e)
+            {
+                OnWebException(e);
+
+                return false;
+            }
+        }
 
         public ObservableCollection<Progress> Request(string username, string password)
         {
@@ -45,6 +105,25 @@ namespace ChordMagicianModel
             return wc;
         }
 
+        public ObservableCollection<Progress> GetProgress(string childPath)
+        {
+            try
+            {
+                string responseText = _clientEx.DownloadString(API_BASE + "trends/nodes?cp=" + childPath);
+                JArray responseJson = JArray.Parse(responseText);
+
+                OnWebSuccess();
+
+                return ConvertToProgress(responseJson);
+            }
+            catch (WebException e)
+            {
+                OnWebException(e);
+
+                return null;
+            }
+        }
+
         private JArray MakeProgress(WebClient wc)
         {
             string uri = "https://api.hooktheory.com/v1/trends/nodes";
@@ -65,26 +144,35 @@ namespace ChordMagicianModel
             return response;
         }
 
-        private ObservableCollection<Progress> ConvertToProgress(JArray JProgress)
+        private ObservableCollection<Progress> ConvertToProgress(JArray progresses)
         {
             var progress = new ObservableCollection<Progress>();
 
-            foreach (JObject i in JProgress)
+            foreach (JObject i in progresses)
             {
-                var k = new Progress((string)i["chord_ID"], (string)i["chord_HTML"],(double)i["probability"],(string)i["child_path"]);
+                var k = new Progress((string)i["chord_ID"], (string)i["chord_HTML"], (double)i["probability"], (string)i["child_path"]);
+
                 progress.Add(k);
             }
 
             return progress;
         }
 
-        public void ShowList(ObservableCollection<Progress> progress_list)
+        private void OnWebSuccess()
         {
-            foreach (var i in progress_list)
+            LastError = WebExceptionStatus.Success;
+            LastStatus = HttpStatusCode.OK;
+        }
+
+        private void OnWebException(WebException e)
+        {
+            Debug.WriteLine(e.ToString());
+
+            LastError = e.Status;
+
+            if (e.Response is HttpWebResponse response)
             {
-                Debug.WriteLine("==================");
-                Debug.WriteLine(i);
-                Debug.WriteLine("==================");
+                LastStatus = response.StatusCode;
             }
         }
     }
