@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using System.Net;
-using System.IO;
 
 namespace ChordMagicianModel
 {
@@ -12,8 +11,6 @@ namespace ChordMagicianModel
         private const string API_BASE = "https://api.hooktheory.com/v1/";
 
         private readonly WebClient _clientEx = new WebClient();
-
-        private WebClient _client;
 
         private string _token = "";
 
@@ -71,40 +68,6 @@ namespace ChordMagicianModel
             }
         }
 
-        public ObservableCollection<Progress> Request(string username, string password)
-        {
-            _client = GetAuth(username, password);
-            var progress = MakeProgress(_client);
-            var progress_list = ConvertToProgress(progress);
-            return progress_list;
-        }
-
-        public ObservableCollection<Progress> Request(string cp)
-        {
-            var progress = MakeProgress(_client, cp);
-            var progress_list = ConvertToProgress(progress);
-            return progress_list;
-        }
-
-        private WebClient GetAuth(string username, string password)
-        {
-            var json = new JObject();
-            json.Add("username", username);
-            json.Add("password", password);
-
-            string uri = "https://api.hooktheory.com/v1/users/auth";
-            string requestJson = json.ToString();
-            WebClient wc = new WebClient();
-            wc.Headers[HttpRequestHeader.Accept] = "application/json";
-            wc.Headers[HttpRequestHeader.ContentType] = "application/json";
-            wc.Encoding = UTF8Encoding.UTF8;
-            string responseJSON = wc.UploadString(uri, requestJson);
-            var auth = JObject.Parse(responseJSON);
-            wc.Headers[HttpRequestHeader.Authorization] = "Bearer " + (string)auth["activkey"];
-
-            return wc;
-        }
-
         public ObservableCollection<Progress> GetProgress(string childPath)
         {
             try
@@ -122,26 +85,6 @@ namespace ChordMagicianModel
 
                 return null;
             }
-        }
-
-        private JArray MakeProgress(WebClient wc)
-        {
-            string uri = "https://api.hooktheory.com/v1/trends/nodes";
-            Stream stream = wc.OpenRead(uri);
-            string responseJSON = new StreamReader(stream).ReadToEnd();
-            var response = JArray.Parse(responseJSON);
-
-            return response;
-        }
-
-        private JArray MakeProgress(WebClient wc, string cp)
-        {
-            string uri = "https://api.hooktheory.com/v1/trends/nodes?cp=" + cp;
-            Stream stream = wc.OpenRead(uri);
-            string responseJSON = new StreamReader(stream).ReadToEnd();
-            var response = JArray.Parse(responseJSON);
-
-            return response;
         }
 
         private ObservableCollection<Progress> ConvertToProgress(JArray progresses)
