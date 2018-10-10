@@ -8,17 +8,16 @@ namespace ChordMagicianModel
         public static Progress GetChordName(Progress p, string key, string mode)
         {
             string id = p.Id;
-            string ChordName = "";
 
             // 계산할 스케일 
-            List<byte> Scale = Naming.CalScale(key, mode);
+            List<byte> scale = Naming.CalScale(key, mode);
 
             // 코드 구성음을 담은 리스트
-            List<byte> Chord = new List<byte>();
+            List<byte> chord = new List<byte>();
 
-            bool First = true;
-            bool SlashFlag = false;
-            bool FlatFlag = false;
+            bool isFirst = true;
+            bool hasSlash = false;
+            bool hasFlat = false;
             byte num = 0;
             byte last = 0;
             string inversion = "";
@@ -30,16 +29,16 @@ namespace ChordMagicianModel
                 {
                     if (mode == "Major")
                     {
-                        Scale = Naming.CalScale(key, "Minor");
+                        scale = Naming.CalScale(key, "Minor");
                     }
                     else
                     {
-                        Scale = Naming.CalScale(key, "Major");
+                        scale = Naming.CalScale(key, "Major");
                     }
                 }
                 else
                 {
-                    Scale = Naming.CalScale(key, Naming.Scale[Char.ToString(id[0])]);
+                    scale = Naming.CalScale(key, Naming.Scale[Char.ToString(id[0])]);
                 }
             }
 
@@ -55,13 +54,13 @@ namespace ChordMagicianModel
                 }
                 else if (i == '/')
                 {
-                    SlashFlag = true;
+                    hasSlash = true;
 
                     continue;
                 }
-                else if (i == 'b' & !First)
+                else if (i == 'b' & !isFirst)
                 {
-                    FlatFlag = true;
+                    hasFlat = true;
 
                     continue;
                 }
@@ -70,27 +69,27 @@ namespace ChordMagicianModel
                     continue;
                 }
 
-                if (First == true)
+                if (isFirst == true)
                 {
                     // Triad 코드 만들기
-                    Chord.Add(Scale[num]);
-                    Chord.Add(Scale[(byte)((num + 2) % 7)]);
-                    Chord.Add(Scale[(byte)((num + 4) % 7)]);
+                    chord.Add(scale[num]);
+                    chord.Add(scale[(byte)((num + 2) % 7)]);
+                    chord.Add(scale[(byte)((num + 4) % 7)]);
 
                     last = (byte)((num + 4) % 7);
-                    First = false;
+                    isFirst = false;
                 }
-                else if (SlashFlag == true)
+                else if (hasSlash == true)
                 {
                     // 실제 움직여야 하는 pitch를 스케일로 계산
                     // Scale[(byte)((Scale.IndexOf(Chord[0]) + num) % 7)] => 가야하는 타겟 음정 (pitch)
                     // Chord[0] => 원래 음정 (pitch)
-                    num = Scale[(byte)((Scale.IndexOf(Chord[0]) + num) % 7)];
+                    num = scale[(byte)((scale.IndexOf(chord[0]) + num) % 7)];
 
                     // pitch 간격 계산
                     for (int k = 0; ; k++)
                     {
-                        if ((Chord[0] + k) % 12 == num)
+                        if ((chord[0] + k) % 12 == num)
                         {
                             num = (byte)k;
 
@@ -98,14 +97,14 @@ namespace ChordMagicianModel
                         }
                     }
 
-                    for (int k = 0; k < Chord.Count; k++)
+                    for (int k = 0; k < chord.Count; k++)
                     {
                         // pitch 이동
 
-                        Chord[k] = (byte)((Chord[k] + num) % 12);
+                        chord[k] = (byte)((chord[k] + num) % 12);
                     }
 
-                    SlashFlag = false;
+                    hasSlash = false;
                 }
                 else
                 {
@@ -113,33 +112,33 @@ namespace ChordMagicianModel
                     // 인버전이 7th인경우 7th 추가
                     if (inversion == "65" || inversion == "43" || inversion == "42")
                     {
-                        Chord.Add(Scale[(byte)((last + 2) % 7)]);
+                        chord.Add(scale[(byte)((last + 2) % 7)]);
                     }
 
                     if (i == '7')
                     {
                         // 7th 노트 추가
 
-                        if (FlatFlag == true)
+                        if (hasFlat == true)
                         {
                             // 반음 내린 경우
 
-                            Chord.Add(Scale[(byte)((last + 2) % 7)]);
+                            chord.Add(scale[(byte)((last + 2) % 7)]);
 
-                            if (Chord[Chord.Count - 1] != 0)
+                            if (chord[chord.Count - 1] != 0)
                             {
-                                Chord[Chord.Count - 1] -= 1;
+                                chord[chord.Count - 1] -= 1;
                             }
                             else
                             {
-                                Chord[Chord.Count - 1] = 11;
+                                chord[chord.Count - 1] = 11;
                             }
 
-                            FlatFlag = false;
+                            hasFlat = false;
                         }
                         else
                         {
-                            Chord.Add(Scale[(byte)((last + 2) % 7)]);
+                            chord.Add(scale[(byte)((last + 2) % 7)]);
                         }
                     }
                     else
@@ -155,14 +154,14 @@ namespace ChordMagicianModel
             if (inversion == "65" || inversion == "43" || inversion == "42")
             {
                 // 7th가 있어야 하는데 없는 경우 추가
-                if (Chord.Count < 4)
+                if (chord.Count < 4)
                 {
-                    Chord.Add(Scale[(byte)((last + 2) % 7)]);
+                    chord.Add(scale[(byte)((last + 2) % 7)]);
                 }
             }
 
             // 코드명 입력
-            ChordName = CalChord(Chord);
+            string chordName = CalChord(chord);
 
             if (inversion != "")
             {
@@ -174,11 +173,11 @@ namespace ChordMagicianModel
 
                     for(int k = 0; k < 1; k++)
                     {
-                        Chord.Add(Chord[0]);
-                        Chord.RemoveAt(0);
+                        chord.Add(chord[0]);
+                        chord.RemoveAt(0);
                     }
 
-                    ChordName += "/" + Naming.KeyName[Chord[0]];
+                    chordName += "/" + Naming.KeyName[chord[0]];
                 }
                 else if (inversion == "64")
                 {
@@ -186,11 +185,11 @@ namespace ChordMagicianModel
 
                     for (int k = 0; k < 2; k++)
                     {
-                        Chord.Add(Chord[0]);
-                        Chord.RemoveAt(0);
+                        chord.Add(chord[0]);
+                        chord.RemoveAt(0);
                     }
 
-                    ChordName += "/" + Naming.KeyName[Chord[0]];
+                    chordName += "/" + Naming.KeyName[chord[0]];
                 }
                 else if (inversion == "65")
                 {
@@ -198,11 +197,11 @@ namespace ChordMagicianModel
 
                     for (int k = 0; k < 1; k++)
                     {
-                        Chord.Add(Chord[0]);
-                        Chord.RemoveAt(0);
+                        chord.Add(chord[0]);
+                        chord.RemoveAt(0);
                     }
 
-                    ChordName += "/" + Naming.KeyName[Chord[0]];
+                    chordName += "/" + Naming.KeyName[chord[0]];
                 }
                 else if (inversion == "43")
                 {
@@ -210,11 +209,11 @@ namespace ChordMagicianModel
 
                     for (int k = 0; k < 2; k++)
                     {
-                        Chord.Add(Chord[0]);
-                        Chord.RemoveAt(0);
+                        chord.Add(chord[0]);
+                        chord.RemoveAt(0);
                     }
 
-                    ChordName += "/" + Naming.KeyName[Chord[0]];
+                    chordName += "/" + Naming.KeyName[chord[0]];
                 }
                 else if (inversion == "42")
                 {
@@ -222,16 +221,16 @@ namespace ChordMagicianModel
 
                     for (int k = 0; k < 3; k++)
                     {
-                        Chord.Add(Chord[0]);
-                        Chord.RemoveAt(0);
+                        chord.Add(chord[0]);
+                        chord.RemoveAt(0);
                     }
 
-                    ChordName += "/" + Naming.KeyName[Chord[0]];
+                    chordName += "/" + Naming.KeyName[chord[0]];
                 }
             }
 
-            p.Chord = ChordName;
-            p.ChordNotes = Chord;
+            p.Chord = chordName;
+            p.ChordNotes = chord;
 
             return p;
         }
