@@ -1,148 +1,178 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
-using ChordMagicianModel;
-using System.Windows.Input;
-using System.Windows;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using ChordMagicianModel;
 
 namespace JUMO.UI
 {
-    public class ChordMagicViewModel : INotifyPropertyChanged
+    public class ChordMagicViewModel : ViewModelBase
     {
-        public ChordMagicViewModel(string key, string mode, GetAPI API, ObservableCollection<Progress> progress, PianoRollViewModel vm)
-        {
-            _Key = key;
-            _Mode = mode;
-            _API = API;
-            _progress = progress;
-            _ViewModel = vm;
-            _Octave = 4;
-            progress = ChangeChordName(progress);
-        }
+        private string _key;
+        private string _mode;
+        private int _octave;
+        private ObservableCollection<Progress> _progress;
+        private ObservableCollection<Progress> _currentProgress = new ObservableCollection<Progress>();
+        private Progress _currentChord;
+
+        private RelayCommand _insertProgressCommand;
+        private RelayCommand _playChordCommand;
+        private RelayCommand _resetCommand;
+        private RelayCommand _removeCommand;
+        private RelayCommand _playSelectedChordCommand;
+        private RelayCommand _insertToPianoRollCommand;
+        private RelayCommand _octaveDownCommand;
+        private RelayCommand _octaveUpCommand;
+
+        #region Properties
+
+        public override string DisplayName => "코드 마법사";
+
+        //사용중인 API Bearer
+        public GetAPI API { get; }
+
+        //현재 피아노롤 뷰모델
+        public PianoRollViewModel ViewModel { get; }
 
         //선택된 조성의 키값
-        private string _Key;
         public string Key
         {
-            get => _Key;
+            get => _key;
             set
             {
-                _Key = value;
+                _key = value;
                 OnPropertyChanged(nameof(Key));
                 ChangeAllChordName();
             }
         }
 
         //선택된 조성의 스케일
-        private string _Mode;
         public string Mode
         {
-            get => _Mode;
+            get => _mode;
             set
             {
-                _Mode = value;
+                _mode = value;
                 OnPropertyChanged(nameof(Mode));
                 ChangeAllChordName();
             }
         }
 
         //재생, 생성 노트 옥타브
-        private int _Octave;
         public int Octave
         {
-            get => _Octave;
+            get => _octave;
             set
             {
-                _Octave = value;
+                _octave = value;
                 OnPropertyChanged(nameof(Octave));
             }
         }
 
-        //사용중인 API Bearer
-        private GetAPI _API;
-        public GetAPI API
-        {
-            get => _API;
-            set
-            {
-                _API = value;
-                OnPropertyChanged(nameof(API));
-            }
-        }
-
         //받아온 코드진행 리스트
-        private ObservableCollection<Progress> _progress;
-        public ObservableCollection<Progress> progress
+        public ObservableCollection<Progress> Progress
         {
             get => _progress;
             set
             {
                 _progress = value;
-                OnPropertyChanged(nameof(progress));
+                OnPropertyChanged(nameof(Progress));
             }
         }
 
         //입력된 코드진행 리스트
-        private ObservableCollection<Progress> _CurrentProgress = new ObservableCollection<Progress>();
         public ObservableCollection<Progress> CurrentProgress
         {
-            get => _CurrentProgress;
+            get => _currentProgress;
             set
             {
-                _CurrentProgress = value;
+                _currentProgress = value;
                 OnPropertyChanged(nameof(CurrentProgress));
             }
         }
 
         //현재 선택중인 코드
-        private Progress _CurrentChord;
         public Progress CurrentChord
         {
-            get => _CurrentChord;
+            get => _currentChord;
             set
             {
-                _CurrentChord = value;
+                _currentChord = value;
                 OnPropertyChanged(nameof(CurrentChord));
             }
         }
 
-        //현재 피아노롤 뷰모델
-        private PianoRollViewModel _ViewModel;
-        public PianoRollViewModel ViewModel
-        {
-            get => _ViewModel;
-            set
-            {
-                _ViewModel = value;
-                OnPropertyChanged(nameof(ViewModel));
-            }
-        }
+        #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        //사용 커맨드
+        #region Command Properties
 
         //코드 진행 삽입
-        private RelayCommand _InsertProgress;
-        public RelayCommand InsertProgress
+        public RelayCommand InsertProgressCommand
+            => _insertProgressCommand ?? (_insertProgressCommand = new RelayCommand(
+                progress => InsertChord(progress as Progress),
+                _ => Progress.Any()
+            ));
+
+        //코드 재생
+        public RelayCommand PlayChordCommand
+            => _playChordCommand ?? (_playChordCommand = new RelayCommand(progress => Play(progress as Progress)));
+
+        //선택 코드진행 리셋
+        public RelayCommand ResetCommand
+            => _resetCommand ?? (_resetCommand = new RelayCommand(
+                progress => ChordReset(),
+                _ => CurrentProgress.Any()
+            ));
+
+        //선택한 코드진행만 삭제
+        public RelayCommand RemoveCommand
+            => _removeCommand ?? (_removeCommand = new RelayCommand(
+                progress => ChordRemove(progress as Progress),
+                _ => CurrentProgress.Any()
+            ));
+
+        //선택한 진행 재생
+        public RelayCommand PlaySelectedChordCommand
+            => _playSelectedChordCommand ?? (_playSelectedChordCommand = new RelayCommand(
+                progress => ProgressPlay(),
+                _ => CurrentProgress.Any()
+            ));
+
+        //코드 진행을 스코어에 삽입
+        public RelayCommand Insert2Pianoroll
+            => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
+                _ => MakeNote(),
+                _ => CurrentProgress.Any()
+            ));
+
+        //옥타브 +,-
+        public RelayCommand OctaveMinus
+            => _octaveDownCommand ?? (_octaveDownCommand = new RelayCommand(
+                _ => --Octave,
+                _ => 0 < Octave
+            ));
+
+        public RelayCommand OctavePlus
+            => _octaveUpCommand ?? (_octaveUpCommand = new RelayCommand(
+                _ => ++Octave,
+                _ => 9 > Octave
+            ));
+
+        #endregion
+
+        public ChordMagicViewModel(string key, string mode, GetAPI api, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
-            get
-            {
-                if (_InsertProgress == null)
-                {
-                    _InsertProgress = new RelayCommand(progress => InsertChord(progress as Progress), _ => progress.Any());
-                }
-                return _InsertProgress;        
-            }
+            API = api;
+            ViewModel = vm;
+
+            _key = key;
+            _mode = mode;
+            _progress = progress;
+            _octave = 4;
+            Progress = ChangeChordName(progress);
         }
+
         public void InsertChord(Progress chord)
         {
             if (chord != null)
@@ -151,7 +181,7 @@ namespace JUMO.UI
                 // progress = API.Request(chord.ChildPath);
                 ChangeAllChordName();
 
-                if (progress.Count == 0)
+                if (Progress.Count == 0)
                 {
                     MessageBox.Show("다음으로 적합한 코드진행이 없습니다.");
                 }
@@ -163,19 +193,6 @@ namespace JUMO.UI
             }
         }
 
-        //코드 재생
-        private RelayCommand _PlayChord;
-        public RelayCommand PlayChord
-        {
-            get
-            {
-                if (_PlayChord == null)
-                {
-                    _PlayChord = new RelayCommand(progress => Play(progress as Progress));
-                }
-                return _PlayChord;
-            }
-        }
         public void Play(Progress p)
         {
             CurrentChord = p;
@@ -202,19 +219,6 @@ namespace JUMO.UI
             });
         }
 
-        //선택 코드진행 리셋
-        private RelayCommand _Reset;
-        public RelayCommand Reset
-        {
-            get
-            {
-                if (_Reset == null)
-                {
-                    _Reset = new RelayCommand(progress => ChordReset(), _ => CurrentProgress.Any());
-                }
-                return _Reset;
-            }
-        }
         public void ChordReset()
         {
             CurrentProgress.Clear();
@@ -222,19 +226,6 @@ namespace JUMO.UI
             ChangeAllChordName();
         }
 
-        //선택한 코드진행만 삭제
-        private RelayCommand _Remove;
-        public RelayCommand Remove
-        {
-            get
-            {
-                if (_Remove == null)
-                {
-                    _Remove = new RelayCommand(progress => ChordRemove(progress as Progress), _ => CurrentProgress.Any());
-                }
-                return _Remove;
-            }
-        }
         public void ChordRemove(Progress chord)
         {
             if (chord != null)
@@ -262,19 +253,6 @@ namespace JUMO.UI
             }
         }
 
-        //선택한 진행 재생
-        private RelayCommand _SelectedChordPlay;
-        public RelayCommand SelectedChordPlay
-        {
-            get
-            {
-                if (_SelectedChordPlay == null)
-                {
-                    _SelectedChordPlay = new RelayCommand(progress => ProgressPlay(), _ => CurrentProgress.Any());
-                }
-                return _SelectedChordPlay;
-            }
-        }
         public void ProgressPlay()
         {
             foreach (Progress p in CurrentProgress)
@@ -284,19 +262,6 @@ namespace JUMO.UI
             }
         }
 
-        //코드 진행을 스코어에 삽입
-        private RelayCommand _Insert2Pianoroll;
-        public RelayCommand Insert2Pianoroll
-        {
-            get
-            {
-                if (_Insert2Pianoroll == null)
-                {
-                    _Insert2Pianoroll = new RelayCommand(_ => MakeNote(), _ => CurrentProgress.Any());
-                }
-                return _Insert2Pianoroll;
-            }
-        }
         public void MakeNote()
         {
             long Start = 0;
@@ -316,32 +281,6 @@ namespace JUMO.UI
             }
         }
 
-        //옥타브 +,-
-        private RelayCommand _OctaveMinus;
-        public RelayCommand OctaveMinus
-        {
-            get
-            {
-                if (_OctaveMinus == null)
-                {
-                    _OctaveMinus = new RelayCommand(_ => --Octave, _ => 0 < Octave);
-                }
-                return _OctaveMinus;
-            }
-        }
-        private RelayCommand _OctavePlus;
-        public RelayCommand OctavePlus
-        {
-            get
-            {
-                if (_OctavePlus == null)
-                {
-                    _OctavePlus = new RelayCommand(_ => ++Octave, _ => 9 > Octave);
-                }
-                return _OctavePlus;
-            }
-        }
-
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
         public ObservableCollection<Progress> ChangeChordName(ObservableCollection<Progress> old_p)
         {
@@ -356,9 +295,9 @@ namespace JUMO.UI
         //조성이 바뀔시에 모든 코드이름 업데이트
         public void ChangeAllChordName()
         {
-            if (progress != null)
+            if (Progress != null)
             {
-                progress = ChangeChordName(progress);
+                Progress = ChangeChordName(Progress);
             }
             if (CurrentProgress != null)
             {
