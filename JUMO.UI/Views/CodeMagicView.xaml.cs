@@ -38,8 +38,8 @@ namespace JUMO.UI.Views
 
         private void Logout(object sender, RoutedEventArgs e)
         {
-            ChordMagicianModel.Properties.Settings.Default.username = "";
-            ChordMagicianModel.Properties.Settings.Default.password = "";
+            // ChordMagicianModel.Properties.Settings.Default.username = "";
+            // ChordMagicianModel.Properties.Settings.Default.password = "";
             ChordMagicianModel.Properties.Settings.Default.Save();
             new LoginView(_vm).Show();
             this.Close();

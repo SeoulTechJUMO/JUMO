@@ -148,7 +148,7 @@ namespace JUMO.UI
             if (chord != null)
             {
                 CurrentProgress.Add(chord);
-                progress = API.Request(chord.ChildPath);
+                // progress = API.Request(chord.ChildPath);
                 ChangeAllChordName();
 
                 if (progress.Count == 0)
@@ -218,7 +218,7 @@ namespace JUMO.UI
         public void ChordReset()
         {
             CurrentProgress.Clear();
-            progress = API.Request("");
+            // progress = API.Request("");
             ChangeAllChordName();
         }
 
@@ -253,7 +253,7 @@ namespace JUMO.UI
                 {
                     cp = cp.Substring(0, cp.Length - 1);
                 }
-                progress = API.Request(cp);
+                // progress = API.Request(cp);
                 ChangeAllChordName();
             }
             else
