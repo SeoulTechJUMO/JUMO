@@ -6,35 +6,21 @@ using System.Net;
 
 namespace ChordMagicianModel
 {
-    // TODO: Token을 테스트하는 메서드 구현
     public class GetAPI
     {
         private const string API_BASE = "https://api.hooktheory.com/v1/";
 
-        private readonly WebClient _clientEx = new WebClient();
+        private readonly WebClient _client = new WebClient();
 
         private string _token = "";
-
-        private string Token
-        {
-            get => _token;
-            set
-            {
-                _token = value;
-                _clientEx.Headers[HttpRequestHeader.Authorization] = $"Bearer {_token}";
-            }
-        }
 
         public WebExceptionStatus LastError { get; private set; } = WebExceptionStatus.Success;
         public HttpStatusCode LastStatus { get; private set; } = HttpStatusCode.OK;
 
         public GetAPI()
         {
-            Token = Properties.Settings.Default.Token;
-
-            _clientEx.Encoding = Encoding.UTF8;
-            _clientEx.Headers[HttpRequestHeader.Accept] = "application/json";
-            _clientEx.Headers[HttpRequestHeader.ContentType] = "application/json";
+            _token = Properties.Settings.Default.Token;
+            _client.Encoding = Encoding.UTF8;
         }
 
         public bool SignIn(string username, string password)
@@ -47,12 +33,14 @@ namespace ChordMagicianModel
 
             try
             {
-                string responseText = _clientEx.UploadString(API_BASE + "users/auth", json.ToString());
+                SetRequestHeaders();
+
+                string responseText = _client.UploadString(API_BASE + "users/auth", json.ToString());
                 JObject responseJson = JObject.Parse(responseText);
 
-                Token = (string)responseJson["activkey"];
+                _token = (string)responseJson["activkey"];
 
-                Properties.Settings.Default.Token = Token;
+                Properties.Settings.Default.Token = _token;
                 Properties.Settings.Default.Save();
 
                 OnWebSuccess();
@@ -71,7 +59,9 @@ namespace ChordMagicianModel
         {
             try
             {
-                string responseText = _clientEx.DownloadString(API_BASE + "trends/nodes?cp=" + childPath);
+                SetRequestHeaders();
+
+                string responseText = _client.DownloadString(API_BASE + "trends/nodes?cp=" + childPath);
                 JArray responseJson = JArray.Parse(responseText);
 
                 OnWebSuccess();
@@ -98,6 +88,13 @@ namespace ChordMagicianModel
             }
 
             return progress;
+        }
+
+        private void SetRequestHeaders()
+        {
+            _client.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {_token}");
+            _client.Headers.Add(HttpRequestHeader.Accept, "application/json");
+            _client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
         }
 
         private void OnWebSuccess()
