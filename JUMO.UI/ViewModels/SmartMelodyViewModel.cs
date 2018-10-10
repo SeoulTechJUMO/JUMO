@@ -19,6 +19,8 @@ namespace JUMO.UI.ViewModels
         {
             _ViewModel = vm;
             _ProgressVisible = Visibility.Hidden;
+            _MelodyCount = 5;
+            _ChordCount = 1;
         }
 
         //코드진행 뷰모델
@@ -74,6 +76,30 @@ namespace JUMO.UI.ViewModels
             }
         }
 
+        //멜로디 파일 생성 개수
+        private byte _MelodyCount;
+        public byte MelodyCount
+        {
+            get => _MelodyCount;
+            set
+            {
+                _MelodyCount = value;
+                OnPropertyChanged(nameof(MelodyCount));
+            }
+        }
+
+        //코드진행 반복 횟수
+        private byte _ChordCount;
+        public byte ChordCount
+        {
+            get => _ChordCount;
+            set
+            {
+                _ChordCount = value;
+                OnPropertyChanged(nameof(ChordCount));
+            }
+        }
+
         //삽입여부
         public bool InsertFlag = false;
 
@@ -98,14 +124,17 @@ namespace JUMO.UI.ViewModels
 
             Dispatcher dispatcher = Application.Current.Dispatcher;
 
-            foreach (Progress progress in ViewModel.CurrentProgress)
+            for (int i=0;i<ChordCount;i++)
             {
-                Chord += progress.Chord;
-                Chord += " ";
+                foreach (Progress progress in ViewModel.CurrentProgress)
+                {
+                    Chord += progress.Chord;
+                    Chord += " ";
+                }
             }
 
             Task.Run(() => {
-                CreateMelody.RunMagenta(Chord, 5);
+                CreateMelody.RunMagenta(Chord, MelodyCount);
                 dispatcher.BeginInvoke((Action)(() =>
                 {
                     MakeScore(CreateMelody.GetMelodyPath());
