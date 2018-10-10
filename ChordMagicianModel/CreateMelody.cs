@@ -6,11 +6,12 @@ namespace ChordMagicianModel
 {
     public static class CreateMelody
     {
+        public static string startup = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+        public static string melodyPath = startup + "/ChordMagicianModel/Melody ";
+
         //JUMO 프로젝트 안에 마젠타를 포함시킨 경우
         public static void RunMagenta(string progress, int numOfFiles)
         {
-            string startup = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-            string melodyPath = startup + "/ChordMagicianModel/Melody";
             string fileName = startup + "/improv_rnn_generate/improv_rnn_generate.exe";
 
             string args =
@@ -39,10 +40,8 @@ namespace ChordMagicianModel
         //생성된 미디파일 경로 얻기
         public static string[] GetMelodyPath()
         {
-            string startup = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-            string melodyPath = $"{startup}/ChordMagicianModel/Melody";
-
-            return Directory.GetFiles(melodyPath);
+            string[] files = Directory.GetFiles(melodyPath);
+            return files;
         }
 
         public static int RunProcess(String fileName, String args)

@@ -6,13 +6,14 @@
         xmlns:local="clr-namespace:JUMO.UI.Views"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
+        x:Name="window"
         Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
 
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelody}"/>
-            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick"/>
-            <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
+            <Button Content="확인" Height="20" Width="70" Command="{Binding Insert}"  Margin="180,0,0,0" Click="InsertButtonClick"/>
+            <Button Content="취소" Height="20" Width="70" Command="{Binding Cancel}" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
 
         <Grid>
@@ -30,23 +31,26 @@
                         </Style.Triggers>
                     </Style>
                 </StackPanel.Style>
-                <StackPanel Orientation="Horizontal" Margin="20">
+                <StackPanel Orientation="Horizontal" Margin="20,20,0,20">
                     <TextBlock Height="20" FontSize="14"><Run Text="선택한 패턴 : "/></TextBlock>
                     <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
                     <TextBlock Height="20" FontSize="14"><Run Text="생성된 패턴 : "/></TextBlock>
-                    <ComboBox Width="100" Margin="0,0,0,0">
-                        
+                    <ComboBox Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Key}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
                 </StackPanel>
-                <Rectangle Height="100" Fill="Azure" Stroke="Gray">
-                </Rectangle>
+                <ctrl:ScoreThumbnail Score="{Binding ViewModel.ViewModel.Score}" Height="100" Background="Azure"/>
                 <Button Content="재생" Width="40" Margin="0,20,0,20"/>
                 <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
                 <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
                 <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Margin="0,20,0,0" Background="Azure">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75"/>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.ViewModel.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>

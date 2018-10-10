@@ -11,10 +11,10 @@ namespace JUMO.UI
         private Score _score;
         private readonly Dictionary<Note, NoteViewModel> _vmTable = new Dictionary<Note, NoteViewModel>();
 
-        private Score Score
+        public Score Score
         {
             get => _score;
-            set
+            private set
             {
                 if (_score != null)
                 {
@@ -38,6 +38,7 @@ namespace JUMO.UI
                     _score.CollectionChanged += OnScoreCollectionChanged;
                 }
 
+                OnPropertyChanged(nameof(Score));
                 OnPropertyChanged(nameof(Notes));
             }
         }

@@ -52,13 +52,15 @@ namespace JUMO.UI.Views
 
         private void SmartMelodyClick(object sender, RoutedEventArgs e)
         {
-            SmartMelodyView sv = new SmartMelodyView
-            {
-                DataContext = new SmartMelodyViewModel((ChordMagicViewModel)this.DataContext)
-            };
+            SmartMelodyView sv = new SmartMelodyView();
+            SmartMelodyViewModel svm = new SmartMelodyViewModel((ChordMagicViewModel)this.DataContext);
+            sv.DataContext = svm;
             sv.ShowDialog();
 
-            System.Diagnostics.Debug.WriteLine("ddd");
+            if (svm.InsertFlag == true)
+            {
+                this.Close();
+            }
         }
     }
 }

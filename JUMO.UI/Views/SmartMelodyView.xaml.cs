@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JUMO.UI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace JUMO.UI.Views
 
         private void InsertButtonClick(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
