@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChordMagicianModel;
 using JUMO.UI;
-using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Views
 {
@@ -57,7 +56,7 @@ namespace JUMO.UI.Views
             sv.DataContext = svm;
             sv.ShowDialog();
 
-            if (svm.InsertFlag == true)
+            if (svm.WillInsert == true)
             {
                 this.Close();
             }

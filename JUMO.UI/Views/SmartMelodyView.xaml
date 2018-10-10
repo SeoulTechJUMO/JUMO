@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
+        xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
         x:Name="window"
+        d:DataContext="{x:Type proj:SmartMelodyViewModel}"
         Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
-
     <Grid>
         <DockPanel>
             <DockPanel.Style>
@@ -24,9 +26,9 @@
                 </Style>
             </DockPanel.Style>
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
-                <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelody}"/>
-                <Button Content="확인" Height="20" Width="70" Command="{Binding Insert}"  Margin="180,0,0,0" Click="InsertButtonClick"/>
-                <Button Content="취소" Height="20" Width="70" Command="{Binding Cancel}" Click="ExitButtonClick" Margin="10,0,0,0"/>
+                <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelodyCommand}"/>
+                <Button Content="확인" Height="20" Width="70" Command="{Binding InsertCommand}"  Margin="180,0,0,0" Click="InsertButtonClick"/>
+                <Button Content="취소" Height="20" Width="70" Command="{Binding CancelCommand}" Click="ExitButtonClick" Margin="10,0,0,0"/>
             </StackPanel>
             <StackPanel Margin="20">
                 <StackPanel Orientation="Horizontal" Margin="20,20,0,20">
@@ -54,9 +56,9 @@
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Width="500"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
@@ -69,13 +71,13 @@
             </StackPanel>
         </DockPanel>
 
-        <StackPanel Background="Transparent" Height="600" Visibility="{Binding ProgressVisible}">
-            <Border BorderBrush="LightGray" BorderThickness="1" Padding="10" Margin="20,230,20,20">
-                <StackPanel HorizontalAlignment="Stretch">
+        <Grid Background="Transparent" Visibility="{Binding ProgressVisible}">
+            <Border BorderBrush="LightGray" VerticalAlignment="Center" BorderThickness="1" Padding="10">
+                <StackPanel>
                     <TextBlock HorizontalAlignment="Center" FontSize="16">코드진행을 기반으로 멜로디를 생성하고 있습니다.</TextBlock>
                     <ProgressBar Width="400" Height="20" IsIndeterminate="True" Margin="0,20,0,0"/>
                 </StackPanel>
             </Border>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Window>
