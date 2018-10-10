@@ -12,7 +12,6 @@ namespace JUMO.UI
         public override string DisplayName => "Hooktheory에 로그인";
 
         public string Username { get; set; } = "";
-        public bool StaySignedIn { get; set; } = false;
 
         public bool IsBusy
         {
@@ -26,6 +25,8 @@ namespace JUMO.UI
 
         public WebExceptionStatus LastError => _api.LastError;
         public HttpStatusCode LastStatus => _api.LastStatus;
+
+        public RelayCommand OpenHyperlinkCommand { get; } = new RelayCommand(uri => System.Diagnostics.Process.Start((string)uri));
 
         public async Task<bool> TestTokenAsync()
         {

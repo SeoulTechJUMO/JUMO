@@ -4,23 +4,82 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
+        xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Title="HookTheory로 로그인" Height="600" Width="500" ResizeMode="NoResize" Icon="Hooktheory.png">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" Width="400">
-            <Image Source="Hooktheory.png" Width="100" Height="100" Margin="0,20,0,0"/>
-            <Label Content="코드 진행 추천기능을 이용하려면 &#10;HookTheory와의 통신을 위한 로그인이 필요합니다." FontSize="16" Margin="0,30,0,0"/>
-            <StackPanel Height="250" Width="400" Margin="0,20,0,20">
-                <Label Content="유저이름 (닉네임)" HorizontalAlignment="Left" FontSize="24"/>
-                <TextBox x:Name="username" Height="40" TextWrapping="Wrap" Width="400" FontSize="22" AutoWordSelection="True"/>
-                <Label Content="암호" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="24" Margin="0,20,0,0"/>
-                <PasswordBox x:Name="password" Height="40" Width="400" FontSize="24" KeyDown="EnterInput"/>
-                <CheckBox x:Name="AutoLogin" Content="자동로그인" Margin="0,10,0,0" IsChecked="True"/>
-                <Label Margin="0,10,0,0" FontSize="16" HorizontalAlignment="Right">
-                    <Hyperlink RequestNavigate="Signup_RequestNavigate" NavigateUri="https://www.hooktheory.com/signup">회원가입</Hyperlink>
-                </Label>
-            </StackPanel>
-            <Button x:Name="login" Content="로그인" Width="170" Height="50" FontSize="34" Click="login_Click"/>
+        Title="{Binding DisplayName}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize" Icon="Hooktheory.png"
+        Loaded="OnWindowLoaded"
+        FocusManager.FocusedElement="{Binding ElementName=username}">
+    <Window.DataContext>
+        <proj:HooktheoryLoginViewModel />
+    </Window.DataContext>
+    <DockPanel Width="350">
+        <StackPanel DockPanel.Dock="Top">
+            <Image Source="Hooktheory.png" Width="100" Height="100" Margin="0,10" HorizontalAlignment="Center"/>
         </StackPanel>
-    </Grid>
+        <StackPanel DockPanel.Dock="Bottom">
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                </Style>
+            </StackPanel.Resources>
+            <Label Margin="0,10,0,0">
+                <Hyperlink Command="{Binding OpenHyperlinkCommand}" CommandParameter="https://www.hooktheory.com/terms">Hooktheory 이용 약관 (영문)</Hyperlink>
+            </Label>
+            <Label>
+                <Hyperlink Command="{Binding OpenHyperlinkCommand}" CommandParameter="https://www.hooktheory.com/privacy">Hooktheory 개인 정보 보호 정책 (영문)</Hyperlink>
+            </Label>
+            <Label Content="© Hooktheory, LLC 2018" Margin="0,10" />
+        </StackPanel>
+        <Grid Margin="20,10">
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBusy}" Value="true">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Label Margin="0,0,0,10" HorizontalAlignment="Center" FontSize="14">
+                    <Label.Content>
+                        <TextBlock TextAlignment="Center">
+                            코드 진행 추천 기능을 이용하려면<LineBreak />
+                            Hooktheory 서비스에 로그인해야 합니다.
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <Label Content="사용자 이름" HorizontalAlignment="Left" />
+                <TextBox x:Name="username" Padding="2,5" TextWrapping="Wrap" AutoWordSelection="True" Text="{Binding Username}" />
+                <Label Content="암호" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,10,0,0"/>
+                <PasswordBox x:Name="password" Padding="2,5" />
+                <Label Margin="0,10,0,0" HorizontalAlignment="Right">
+                    <Hyperlink Command="{Binding OpenHyperlinkCommand}" CommandParameter="https://www.hooktheory.com/signup">회원가입</Hyperlink>
+                </Label>
+                <Button x:Name="login" Content="로그인" IsDefault="True" Padding="10,5" Click="OnLoginButtonClick"/>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBusy}" Value="false">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Label Margin="0,0,0,10" HorizontalAlignment="Center" FontSize="14">
+                    <Label.Content>
+                        <TextBlock TextAlignment="Center">
+                            로그인 정보를 확인하고 있습니다.<LineBreak />
+                            잠시만 기다려 주세요.
+                        </TextBlock>
+                    </Label.Content>
+                </Label>
+                <ProgressBar IsIndeterminate="True" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
 </Window>
