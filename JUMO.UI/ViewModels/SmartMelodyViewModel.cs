@@ -108,7 +108,7 @@ namespace JUMO.UI.ViewModels
                 CreateMelody.RunMagenta(Chord, 5);
                 dispatcher.BeginInvoke((Action)(() =>
                 {
-                    MakeScore(CreateMelody.GetMelodyPath());
+                    MakeScore(CreateMelody.MelodyPath);
                     
                 }));
                 ProgressVisible = Visibility.Hidden;
