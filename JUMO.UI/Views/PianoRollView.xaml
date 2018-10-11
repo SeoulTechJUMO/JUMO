@@ -48,6 +48,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+            <Button Content="코드 진행 추천" Margin="30,0,0,0" Click="ExcuteChordMagician" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

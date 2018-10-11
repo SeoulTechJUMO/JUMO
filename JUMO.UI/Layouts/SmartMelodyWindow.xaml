@@ -1,0 +1,83 @@
+﻿<Window x:Class="JUMO.UI.Layouts.SmartMelodyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Views"
+        xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        mc:Ignorable="d"
+        x:Name="window"
+        d:DataContext="{x:Type proj:SmartMelodyViewModel}"
+        Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
+    <Grid>
+        <DockPanel>
+            <DockPanel.Style>
+                <Style TargetType="DockPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ProgressVisible}" Value="Visible">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <BlurEffect Radius="30" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
+                <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Command="{Binding GetMelodyCommand}"/>
+                <Button Content="확인" Height="20" Width="70" Command="{Binding InsertCommand}"  Margin="180,0,0,0" Click="InsertButtonClick"/>
+                <Button Content="취소" Height="20" Width="70" Command="{Binding CancelCommand}" Click="ExitButtonClick" Margin="10,0,0,0"/>
+            </StackPanel>
+            <StackPanel Margin="20">
+                <StackPanel Orientation="Horizontal" Margin="20,20,0,20">
+                    <TextBlock Height="20" FontSize="14"><Run Text="선택한 패턴 : "/></TextBlock>
+                    <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" Width="190" FontSize="12"/>
+                    <TextBlock Height="20" FontSize="14"><Run Text="생성된 패턴 : "/></TextBlock>
+                    <ComboBox Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Key}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </StackPanel>
+                <local:ScoreThumbnailView Score="{Binding ViewModel.ViewModel.Score}" Height="100" Background="Azure"/>
+                <Button Content="재생" Width="40" Margin="0,20,0,20"/>
+                <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
+                <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
+                <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Margin="0,20,0,0" Background="Azure">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.ViewModel.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Width="500"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+                <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                    <TextBlock>멜로디 패턴 생성 개수 :</TextBlock>
+                    <ctrl:NumericUpDown Width="50" Margin="10,0,50,0" Value="{Binding MelodyCount}"></ctrl:NumericUpDown>
+                    <TextBlock>코드 진행 반복 횟수 :</TextBlock>
+                    <ctrl:NumericUpDown Width="50" Margin="10,0,0,0" Value="{Binding ChordCount}"></ctrl:NumericUpDown>
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+
+        <Grid Background="Transparent" Visibility="{Binding ProgressVisible}">
+            <Border BorderBrush="LightGray" VerticalAlignment="Center" BorderThickness="1" Padding="10">
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" FontSize="16">코드진행을 기반으로 멜로디를 생성하고 있습니다.</TextBlock>
+                    <ProgressBar Width="400" Height="20" IsIndeterminate="True" Margin="0,20,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
