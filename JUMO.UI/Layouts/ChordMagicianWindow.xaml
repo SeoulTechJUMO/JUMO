@@ -114,7 +114,6 @@
                 </ListBox.ItemsPanel>
             </ListBox>
             <Button Content="진행삽입" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0" Command="{Binding InsertProgressCommand}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}" Style="{StaticResource ButtonDisabledWhenBusy}" />
-            <Button Content="로그아웃" HorizontalAlignment="Left" Margin="20,0,0,0" Click="Logout" Style="{StaticResource ButtonDisabledWhenBusy}" />
         </StackPanel>
     </DockPanel>
 </Window>

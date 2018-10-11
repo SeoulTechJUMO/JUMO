@@ -25,14 +25,6 @@ namespace JUMO.UI.Layouts
             Close();
         }
 
-        private void Logout(object sender, RoutedEventArgs e)
-        {
-            ChordMagicianModel.Properties.Settings.Default.Token = "";
-            ChordMagicianModel.Properties.Settings.Default.Save();
-            new HooktheoryLoginDialog(_vm).Show();
-            Close();
-        }
-
         private void InsertButtonClick(object sender, RoutedEventArgs e)
         {
             Close();
