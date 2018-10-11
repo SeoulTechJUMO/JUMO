@@ -58,9 +58,9 @@ namespace JUMO.UI.Layouts
             ChordMagicianModel.GetAPI api = new ChordMagicianModel.GetAPI();
             var progressList = api.GetProgress("");
 
-            new CodeMagicView(vm)
+            new ChordMagicianWindow(vm)
             {
-                DataContext = new ChordMagicViewModel("C", "Major", api, progressList, vm)
+                DataContext = new ChordMagicianViewModel("C", "Major", api, progressList, vm)
             }.Show();
 
             Close();

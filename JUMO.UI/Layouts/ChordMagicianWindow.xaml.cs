@@ -1,29 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using JUMO.UI.Layouts;
+﻿using System.Windows;
 
-namespace JUMO.UI.Views
+namespace JUMO.UI.Layouts
 {
     /// <summary>
     /// CodeMagic.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class CodeMagicView : Window
+    public partial class ChordMagicianWindow : Window
     {
         PianoRollViewModel _vm;
 
-        public CodeMagicView(PianoRollViewModel vm)
+        public ChordMagicianWindow(PianoRollViewModel vm)
         {
             InitializeComponent();
             _vm = vm;
@@ -31,7 +17,7 @@ namespace JUMO.UI.Views
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ((ChordMagicViewModel)DataContext).ChordChanged += OnChordChanged;
+            ((ChordMagicianViewModel)DataContext).ChordChanged += OnChordChanged;
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
@@ -54,8 +40,8 @@ namespace JUMO.UI.Views
 
         private void SmartMelodyClick(object sender, RoutedEventArgs e)
         {
-            SmartMelodyViewModel svm = new SmartMelodyViewModel((ChordMagicViewModel)DataContext);
-            SmartMelodyView sv = new SmartMelodyView { DataContext = svm };
+            SmartMelodyViewModel svm = new SmartMelodyViewModel((ChordMagicianViewModel)DataContext);
+            SmartMelodyWindow sv = new SmartMelodyWindow { DataContext = svm };
 
             sv.ShowDialog();
 
@@ -65,17 +51,17 @@ namespace JUMO.UI.Views
             }
         }
 
-        private void OnChordChanged(object sender, ChordMagicViewModel.ChordChangedEventArgs e)
+        private void OnChordChanged(object sender, ChordMagicianViewModel.ChordChangedEventArgs e)
         {
-            if (e.ResultCode == ChordMagicViewModel.ChangeChordResult.EmptyResult)
+            if (e.ResultCode == ChordMagicianViewModel.ChangeChordResult.EmptyResult)
             {
                 MessageBox.Show("다음으로 적합한 코드진행이 없습니다.");
             }
-            else if (e.ResultCode == ChordMagicViewModel.ChangeChordResult.MissingInsert)
+            else if (e.ResultCode == ChordMagicianViewModel.ChangeChordResult.MissingInsert)
             {
                 MessageBox.Show("코드를 선택해 주세요.");
             }
-            else if (e.ResultCode == ChordMagicViewModel.ChangeChordResult.MissingRemove)
+            else if (e.ResultCode == ChordMagicianViewModel.ChangeChordResult.MissingRemove)
             {
                 MessageBox.Show("삭제할 코드를 선택해 주세요.");
             }

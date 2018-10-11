@@ -111,7 +111,7 @@
     </Compile>
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
-    <Compile Include="ViewModels\ChordMagicViewModel.cs" />
+    <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
@@ -138,8 +138,8 @@
     <Compile Include="Views\ChannelRackView.xaml.cs">
       <DependentUpon>ChannelRackView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CodeMagicView.xaml.cs">
-      <DependentUpon>CodeMagicView.xaml</DependentUpon>
+    <Compile Include="Layouts\ChordMagicianWindow.xaml.cs">
+      <DependentUpon>ChordMagicianWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layouts\HooktheoryLoginDialog.xaml.cs">
       <DependentUpon>HooktheoryLoginDialog.xaml</DependentUpon>
@@ -169,8 +169,8 @@
       <DependentUpon>ScoreThumbnailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
-    <Compile Include="Views\SmartMelodyView.xaml.cs">
-      <DependentUpon>SmartMelodyView.xaml</DependentUpon>
+    <Compile Include="Layouts\SmartMelodyWindow.xaml.cs">
+      <DependentUpon>SmartMelodyWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
@@ -213,7 +213,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CodeMagicView.xaml">
+    <Page Include="Layouts\ChordMagicianWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -253,7 +253,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SmartMelodyView.xaml">
+    <Page Include="Layouts\SmartMelodyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

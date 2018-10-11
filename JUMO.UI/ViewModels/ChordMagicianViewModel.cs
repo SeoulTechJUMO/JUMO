@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using ChordMagicianModel;
 
 namespace JUMO.UI
 {
-    public class ChordMagicViewModel : ViewModelBase
+    public class ChordMagicianViewModel : ViewModelBase
     {
         #region Nested Types
 
@@ -229,7 +228,7 @@ namespace JUMO.UI
 
         #endregion
 
-        public ChordMagicViewModel(string key, string mode, GetAPI api, ObservableCollection<Progress> progress, PianoRollViewModel vm)
+        public ChordMagicianViewModel(string key, string mode, GetAPI api, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
             API = api;
             ViewModel = vm;

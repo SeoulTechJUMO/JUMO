@@ -1,4 +1,4 @@
-﻿<Window x:Class="JUMO.UI.Views.CodeMagicView"
+﻿<Window x:Class="JUMO.UI.Layouts.ChordMagicianWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance Type=proj:ChordMagicViewModel}"
+        d:DataContext="{d:DesignInstance Type=proj:ChordMagicianViewModel}"
         x:Name="window"
         Loaded="OnLoaded"
         Title="코드 마법사" Height="600" Width="550" ResizeMode="NoResize">

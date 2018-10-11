@@ -25,7 +25,7 @@ namespace JUMO.UI
         public override string DisplayName => "스마트 멜로디 생성";
 
         //코드진행 뷰모델
-        public ChordMagicViewModel ViewModel { get; }
+        public ChordMagicianViewModel ViewModel { get; }
 
         //프로그래스 이미지 표시유무
         public Visibility ProgressVisible
@@ -99,7 +99,7 @@ namespace JUMO.UI
 
         #endregion
 
-        public SmartMelodyViewModel(ChordMagicViewModel vm)
+        public SmartMelodyViewModel(ChordMagicianViewModel vm)
         {
             ViewModel = vm;
             _progressVisible = Visibility.Hidden;
