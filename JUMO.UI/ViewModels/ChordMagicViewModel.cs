@@ -1,20 +1,32 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using ChordMagicianModel;
 
 namespace JUMO.UI
 {
     public class ChordMagicViewModel : ViewModelBase
     {
+        #region Nested Types
+
         public enum ChangeChordResult
         {
             Success,        // 성공
             EmptyResult,    // "다음으로 적합한 코드진행이 없습니다."
-            MissingArgument // "{,삭제할 }코드를 선택해 주세요."
+            MissingInsert,  // "코드를 선택해 주세요."
+            MissingRemove   // "삭제할 코드를 선택해 주세요."
         }
+
+        public class ChordChangedEventArgs : EventArgs
+        {
+            public ChangeChordResult ResultCode { get; }
+
+            public ChordChangedEventArgs(ChangeChordResult resultCode) => ResultCode = resultCode;
+        }
+
+        #endregion
 
         private string _key;
         private string _mode;
@@ -117,7 +129,7 @@ namespace JUMO.UI
         //코드 진행 삽입
         public RelayCommand InsertProgressCommand
             => _insertProgressCommand ?? (_insertProgressCommand = new RelayCommand(
-                progress => InsertChord(progress as Progress),
+                async progress => await InsertChord(progress as Progress),
                 _ => Progress.Any()
             ));
 
@@ -128,14 +140,14 @@ namespace JUMO.UI
         //선택 코드진행 리셋
         public RelayCommand ResetCommand
             => _resetCommand ?? (_resetCommand = new RelayCommand(
-                progress => ResetChords(),
+                async progress => await ResetChords(),
                 _ => CurrentProgress.Any()
             ));
 
         //선택한 코드진행만 삭제
         public RelayCommand RemoveCommand
             => _removeCommand ?? (_removeCommand = new RelayCommand(
-                progress => RemoveChord(progress as Progress),
+                async progress => await RemoveChord(progress as Progress),
                 _ => CurrentProgress.Any()
             ));
 
@@ -168,6 +180,12 @@ namespace JUMO.UI
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<ChordChangedEventArgs> ChordChanged;
+
+        #endregion
+
         public ChordMagicViewModel(string key, string mode, GetAPI api, ObservableCollection<Progress> progress, PianoRollViewModel vm)
         {
             API = api;
@@ -180,26 +198,66 @@ namespace JUMO.UI
             Progress = ChangeChordName(progress);
         }
 
-        private ChangeChordResult InsertChord(Progress chord)
+        private async Task InsertChord(Progress chord)
         {
             if (chord == null)
             {
-                return ChangeChordResult.MissingArgument;
+                OnChordChanged(ChangeChordResult.MissingInsert);
+
+                return;
             }
 
             CurrentProgress.Add(chord);
 
-            Progress = API.GetProgress(chord.ChildPath);
+            Progress = await Task.Run(() => API.GetProgress(chord.ChildPath));
+
             ChangeAllChordName();
-
-            if (Progress.Count == 0)
-            {
-                return ChangeChordResult.EmptyResult;
-            }
-
-            return ChangeChordResult.Success;
+            OnChordChanged(Progress.Count == 0 ? ChangeChordResult.EmptyResult : ChangeChordResult.Success);
         }
 
+        private async Task RemoveChord(Progress chord)
+        {
+            if (chord == null)
+            {
+                OnChordChanged(ChangeChordResult.MissingRemove);
+
+                return;
+            }
+
+            //현재 진행 리스트에서 선택된 객체 삭제
+            CurrentProgress.Remove(chord);
+
+            //child path 만들기
+            string cp = "";
+
+            foreach (Progress i in CurrentProgress)
+            {
+                cp += i.Id;
+                i.ChildPath = cp;
+                cp += ",";
+            }
+
+            if (cp.Length > 0)
+            {
+                cp = cp.Substring(0, cp.Length - 1);
+            }
+
+            Progress = await Task.Run(() => API.GetProgress(cp));
+
+            ChangeAllChordName();
+            OnChordChanged(ChangeChordResult.Success);
+        }
+
+        private async Task ResetChords()
+        {
+            CurrentProgress.Clear();
+
+            Progress = await Task.Run(() => API.GetProgress(""));
+
+            ChangeAllChordName();
+        }
+
+        // TODO: 비동기 메서드로 변환할 것!!!!!!
         private void Play(Progress p)
         {
             CurrentChord = p;
@@ -215,57 +273,16 @@ namespace JUMO.UI
                 ViewModel.Plugin.NoteOn((byte)(i + 12 * Octave), 100);
             }
 
-            Task.Run(() =>
+            Thread.Sleep(1000);
+
+            foreach (byte i in p.ChordNotes)
             {
-                Thread.Sleep(1000);
-                foreach (byte i in p.ChordNotes)
+                if (i == p.ChordNotes[0])
                 {
-                    if (i == p.ChordNotes[0])
-                    {
-                        ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)), 100);
-                    }
-                    ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave), 100);
-                }
-            });
-        }
-
-        private void ResetChords()
-        {
-            CurrentProgress.Clear();
-            Progress = API.GetProgress("");
-            ChangeAllChordName();
-        }
-
-        private ChangeChordResult RemoveChord(Progress chord)
-        {
-            if (chord != null)
-            {
-                //현재 진행 리스트에서 선택된 객체 삭제
-                CurrentProgress.Remove(chord);
-
-                //child path 만들기
-                string cp = "";
-
-                foreach (Progress i in CurrentProgress)
-                {
-                    cp += i.Id;
-                    i.ChildPath = cp;
-                    cp += ",";
+                    ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)), 100);
                 }
 
-                if (cp.Length > 0)
-                {
-                    cp = cp.Substring(0, cp.Length - 1);
-                }
-
-                Progress = API.GetProgress(cp);
-                ChangeAllChordName();
-
-                return ChangeChordResult.Success;
-            }
-            else
-            {
-                return ChangeChordResult.MissingArgument;
+                ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave), 100);
             }
         }
 
@@ -274,7 +291,6 @@ namespace JUMO.UI
             foreach (Progress p in CurrentProgress)
             {
                 Play(p);
-                Thread.Sleep(1050);
             }
         }
 
@@ -325,5 +341,8 @@ namespace JUMO.UI
                 CurrentProgress = ChangeChordName(CurrentProgress);
             }
         }
+
+        private void OnChordChanged(ChangeChordResult resultCode)
+            => ChordChanged?.Invoke(this, new ChordChangedEventArgs(resultCode));
     }
 }
