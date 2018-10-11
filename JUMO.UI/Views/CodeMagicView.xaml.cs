@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using JUMO.UI;
+using JUMO.UI.Layouts;
 
 namespace JUMO.UI.Views
 {
@@ -43,7 +43,7 @@ namespace JUMO.UI.Views
         {
             ChordMagicianModel.Properties.Settings.Default.Token = "";
             ChordMagicianModel.Properties.Settings.Default.Save();
-            new LoginView(_vm).Show();
+            new HooktheoryLoginDialog(_vm).Show();
             Close();
         }
 

@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using JUMO.UI.Controls;
-using JUMO.UI.Views;
+using JUMO.UI.Layouts;
 
 namespace JUMO.UI.Views
 {
@@ -96,7 +96,7 @@ namespace JUMO.UI.Views
             PianoRollViewModel vm = (PianoRollViewModel)DataContext;
             try
             {
-                new LoginView(vm).Show();
+                new HooktheoryLoginDialog(vm).Show();
             }
             catch
             {

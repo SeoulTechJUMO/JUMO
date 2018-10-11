@@ -1,14 +1,15 @@
 ﻿using System.Windows;
 using System.Net;
+using JUMO.UI.Views;
 
-namespace JUMO.UI.Views
+namespace JUMO.UI.Layouts
 {
-    public partial class LoginView : Window
+    public partial class HooktheoryLoginDialog : Window
     {
         //전달받은 피아노롤 vm
         PianoRollViewModel vm;
 
-        public LoginView(PianoRollViewModel _vm)
+        public HooktheoryLoginDialog(PianoRollViewModel _vm)
         {
             InitializeComponent();
             vm = _vm;

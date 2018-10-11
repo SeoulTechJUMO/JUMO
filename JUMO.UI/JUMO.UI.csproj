@@ -141,8 +141,8 @@
     <Compile Include="Views\CodeMagicView.xaml.cs">
       <DependentUpon>CodeMagicView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
-      <DependentUpon>LoginView.xaml</DependentUpon>
+    <Compile Include="Layouts\HooktheoryLoginDialog.xaml.cs">
+      <DependentUpon>HooktheoryLoginDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NoteVelocityView.xaml.cs">
       <DependentUpon>NoteVelocityView.xaml</DependentUpon>
@@ -217,7 +217,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="Layouts\HooktheoryLoginDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -294,7 +294,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Views\Hooktheory.png" />
+    <Resource Include="Resources\Hooktheory.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
