@@ -105,9 +105,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Hooktheory.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Melody\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
