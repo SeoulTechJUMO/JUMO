@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
+        xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=proj:ChordMagicViewModel}"
         x:Name="window"
         Title="코드 마법사" Height="600" Width="550" ResizeMode="NoResize">
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="20">
             <Button Content="스마트 멜로디 생성" Height="20" Width="150" Margin="10,0,0,0" Click="SmartMelodyClick"/>
-            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick" Command="{Binding Insert2Pianoroll}"/>
+            <Button Content="확인" Height="20" Width="70" Margin="180,0,0,0" Click="InsertButtonClick" Command="{Binding InsertToPianorollCommand}"/>
             <Button Content="취소" Height="20" Width="70" Click="ExitButtonClick" Margin="10,0,0,0"/>
         </StackPanel>
 
@@ -37,52 +39,54 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Height="20" Margin="20,0,0,5">
                 <TextBlock Text="옥타브   " FontSize="12" VerticalAlignment="Center"/>
-                <Button Content="-" Width="20" Command="{Binding OctaveMinus}"/>
+                <Button Content="-" Width="20" Command="{Binding OctaveDownCommand}"/>
                 <Border BorderBrush="{x:Static SystemColors.ActiveBorderBrush}" BorderThickness="1" Width="30">
                     <TextBlock Text="{Binding Octave}" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                 </Border>
-                <Button Content="+" Width="20"  Command="{Binding OctavePlus}"/>
+                <Button Content="+" Width="20"  Command="{Binding OctaveUpCommand}"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Center">
-                <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure" SelectedItem="{Binding CurrentChord}">
+                <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" Background="Azure" SelectedItem="{Binding CurrentChord, Mode=TwoWay}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
+                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Width="500"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
                 <StackPanel Margin="0,20,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="재생" Width="40" Margin="0,0,300,0" Command="{Binding SelectedChordPlay}"/>
-                    <Button Content="삭제" Width="70" Command="{Binding Remove}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}"/>
-                    <Button Content="리셋" Width="70" Margin="10,0,0,0" HorizontalAlignment="Right" Command="{Binding Reset}"/>
+                    <Button Content="재생" Width="40" Margin="0,0,300,0" Command="{Binding PlaySelectedChordCommand}"/>
+                    <Button Content="삭제" Width="70" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}"/>
+                    <Button Content="리셋" Width="70" Margin="10,0,0,0" HorizontalAlignment="Right" Command="{Binding ResetCommand}"/>
                 </StackPanel>
-                <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="코드 진행을 바탕으로 다음 코드를 찾았습니다."/></TextBlock>
-                <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="코드 버튼을 클릭하면 미리 들을 수 있습니다."/></TextBlock>
+                <TextBlock Width="400" FontSize="14">
+                    코드 진행을 바탕으로 다음 코드를 찾았습니다.<LineBreak />
+                    코드 버튼을 클릭하면 미리 들을 수 있습니다.
+                </TextBlock>
             </StackPanel>
-            <ListBox x:Name="chord_list" ItemsSource="{Binding progress}" Margin="20" Height="100" SelectedItem="{Binding CurrentChord}">
+            <ListBox x:Name="chord_list" ItemsSource="{Binding Progress}" Margin="20" Height="100" SelectedItem="{Binding CurrentChord, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
+                        <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel Width="500"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <Button Content="진행삽입" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0" Command="{Binding InsertProgress}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}"/>
+            <Button Content="진행삽입" Width="100" HorizontalAlignment="Right" Margin="0,0,20,0" Command="{Binding InsertProgressCommand}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}"/>
             <Button Content="로그아웃" HorizontalAlignment="Left" Margin="20,0,0,0" Click="Logout"/>
         </StackPanel>
     </DockPanel>
