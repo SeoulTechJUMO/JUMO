@@ -92,9 +92,9 @@ namespace ChordMagicianModel
 
         private void SetRequestHeaders()
         {
-            _client.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {_token}");
-            _client.Headers.Add(HttpRequestHeader.Accept, "application/json");
-            _client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+            _client.Headers.Set(HttpRequestHeader.Authorization, $"Bearer {_token}");
+            _client.Headers.Set(HttpRequestHeader.Accept, "application/json");
+            _client.Headers.Set(HttpRequestHeader.ContentType, "application/json");
         }
 
         private void OnWebSuccess()
