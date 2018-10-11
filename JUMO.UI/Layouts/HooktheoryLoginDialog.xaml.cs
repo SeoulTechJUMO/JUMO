@@ -1,47 +1,42 @@
 ﻿using System.Windows;
 using System.Net;
-using JUMO.UI.Views;
 
 namespace JUMO.UI.Layouts
 {
     public partial class HooktheoryLoginDialog : Window
     {
-        //전달받은 피아노롤 vm
-        PianoRollViewModel vm;
-
-        public HooktheoryLoginDialog(PianoRollViewModel _vm)
+        public HooktheoryLoginDialog()
         {
             InitializeComponent();
-            vm = _vm;
         }
 
         private async void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            HooktheoryLoginViewModel vmEx = (HooktheoryLoginViewModel)DataContext;
+            HooktheoryLoginViewModel vm = (HooktheoryLoginViewModel)DataContext;
 
-            if (await vmEx.TestTokenAsync())
+            if (await vm.TestTokenAsync())
             {
-                ShowChordMagicianWindow();
+                OnLoginSuccess();
             }
         }
 
         private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
         {
-            HooktheoryLoginViewModel vmEx = (HooktheoryLoginViewModel)DataContext;
+            HooktheoryLoginViewModel vm = (HooktheoryLoginViewModel)DataContext;
 
-            if (await vmEx.SignInAsync(username.Text, password.Password))
+            if (await vm.SignInAsync(username.Text, password.Password))
             {
-                ShowChordMagicianWindow();
+                OnLoginSuccess();
             }
             else
             {
-                if (vmEx.LastError == WebExceptionStatus.ProtocolError
-                    && vmEx.LastStatus >= HttpStatusCode.BadRequest
-                    && vmEx.LastStatus < HttpStatusCode.InternalServerError)
+                if (vm.LastError == WebExceptionStatus.ProtocolError
+                    && vm.LastStatus >= HttpStatusCode.BadRequest
+                    && vm.LastStatus < HttpStatusCode.InternalServerError)
                 {
                     MessageBox.Show("로그인 정보가 잘못되었습니다. 다시 확인 후 입력해주세요.");
                 }
-                else if (vmEx.LastError == WebExceptionStatus.NameResolutionFailure)
+                else if (vm.LastError == WebExceptionStatus.NameResolutionFailure)
                 {
                     MessageBox.Show("인터넷 연결을 확인해주세요.");
                 }
@@ -52,16 +47,9 @@ namespace JUMO.UI.Layouts
             }
         }
 
-        private void ShowChordMagicianWindow()
+        private void OnLoginSuccess()
         {
-            // TODO: 재설계!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            ChordMagicianModel.GetAPI api = new ChordMagicianModel.GetAPI();
-            var progressList = api.GetProgress("");
-
-            new ChordMagicianWindow(vm)
-            {
-                DataContext = new ChordMagicianViewModel("C", "Major", api, progressList, vm)
-            }.Show();
+            DialogResult = true;
 
             Close();
         }
