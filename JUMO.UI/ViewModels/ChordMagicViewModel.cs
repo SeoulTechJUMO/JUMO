@@ -34,6 +34,7 @@ namespace JUMO.UI
         private ObservableCollection<Progress> _progress;
         private ObservableCollection<Progress> _currentProgress = new ObservableCollection<Progress>();
         private Progress _currentChord;
+        private bool _isClientBusy = false;
 
         private RelayCommand _insertProgressCommand;
         private RelayCommand _playChordCommand;
@@ -119,6 +120,17 @@ namespace JUMO.UI
             {
                 _currentChord = value;
                 OnPropertyChanged(nameof(CurrentChord));
+            }
+        }
+
+        // WebClient가 사용 중인지 여부
+        public bool IsClientBusy
+        {
+            get => _isClientBusy;
+            set
+            {
+                _isClientBusy = value;
+                OnPropertyChanged(nameof(IsClientBusy));
             }
         }
 
@@ -209,7 +221,9 @@ namespace JUMO.UI
 
             CurrentProgress.Add(chord);
 
+            IsClientBusy = true;
             Progress = await Task.Run(() => API.GetProgress(chord.ChildPath));
+            IsClientBusy = false;
 
             ChangeAllChordName();
             OnChordChanged(Progress.Count == 0 ? ChangeChordResult.EmptyResult : ChangeChordResult.Success);
@@ -242,7 +256,9 @@ namespace JUMO.UI
                 cp = cp.Substring(0, cp.Length - 1);
             }
 
+            IsClientBusy = true;
             Progress = await Task.Run(() => API.GetProgress(cp));
+            IsClientBusy = false;
 
             ChangeAllChordName();
             OnChordChanged(ChangeChordResult.Success);
@@ -252,7 +268,9 @@ namespace JUMO.UI
         {
             CurrentProgress.Clear();
 
+            IsClientBusy = true;
             Progress = await Task.Run(() => API.GetProgress(""));
+            IsClientBusy = false;
 
             ChangeAllChordName();
         }
