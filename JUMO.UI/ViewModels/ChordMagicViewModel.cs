@@ -166,13 +166,13 @@ namespace JUMO.UI
             ));
 
         //옥타브 +,-
-        public RelayCommand OctaveMinusCommand
+        public RelayCommand OctaveDownCommand
             => _octaveDownCommand ?? (_octaveDownCommand = new RelayCommand(
                 _ => --Octave,
                 _ => 0 < Octave
             ));
 
-        public RelayCommand OctavePlusCommand
+        public RelayCommand OctaveUpCommand
             => _octaveUpCommand ?? (_octaveUpCommand = new RelayCommand(
                 _ => ++Octave,
                 _ => 9 > Octave
