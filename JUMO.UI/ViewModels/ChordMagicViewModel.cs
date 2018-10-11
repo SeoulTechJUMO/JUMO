@@ -35,12 +35,14 @@ namespace JUMO.UI
         private ObservableCollection<Progress> _currentProgress = new ObservableCollection<Progress>();
         private Progress _currentChord;
         private bool _isClientBusy = false;
+        private bool _isPlaying = false;
 
         private RelayCommand _insertProgressCommand;
-        private RelayCommand _playChordCommand;
         private RelayCommand _resetCommand;
         private RelayCommand _removeCommand;
+        private RelayCommand _playChordCommand;
         private RelayCommand _playSelectedChordCommand;
+        private RelayCommand _stopCommand;
         private RelayCommand _insertToPianoRollCommand;
         private RelayCommand _octaveDownCommand;
         private RelayCommand _octaveUpCommand;
@@ -134,6 +136,21 @@ namespace JUMO.UI
             }
         }
 
+        // 재생 중인 음표가 있는지 여부
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                _isPlaying = value;
+                OnPropertyChanged(nameof(IsPlaying));
+                PlayChordCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        // 재생을 멈출 것을 요청받았는지 여부
+        public bool StopRequested { get; private set; } = false;
+
         #endregion
 
         #region Command Properties
@@ -144,10 +161,6 @@ namespace JUMO.UI
                 async progress => await InsertChord(progress as Progress),
                 _ => Progress.Any()
             ));
-
-        //코드 재생
-        public RelayCommand PlayChordCommand
-            => _playChordCommand ?? (_playChordCommand = new RelayCommand(progress => Play(progress as Progress)));
 
         //선택 코드진행 리셋
         public RelayCommand ResetCommand
@@ -163,11 +176,29 @@ namespace JUMO.UI
                 _ => CurrentProgress.Any()
             ));
 
+        //코드 재생
+        public RelayCommand PlayChordCommand
+            => _playChordCommand ?? (_playChordCommand = new RelayCommand(
+                async progress => {
+                    IsPlaying = true;
+                    await Play(progress as Progress);
+                    IsPlaying = false;
+                },
+                _ => !IsPlaying
+            ));
+
         //선택한 진행 재생
         public RelayCommand PlaySelectedChordCommand
             => _playSelectedChordCommand ?? (_playSelectedChordCommand = new RelayCommand(
-                progress => ProgressPlay(),
-                _ => CurrentProgress.Any()
+                async progress => await ProgressPlay(),
+                _ => !IsPlaying && CurrentProgress.Any()
+            ));
+
+        //재생 중인 코드진행을 멈추도록 요청
+        public RelayCommand StopCommand
+            => _stopCommand ?? (_stopCommand = new RelayCommand(
+                _ => StopRequested = true,
+                _ => IsPlaying && !StopRequested && CurrentProgress.Any()
             ));
 
         //코드 진행을 스코어에 삽입
@@ -275,8 +306,7 @@ namespace JUMO.UI
             ChangeAllChordName();
         }
 
-        // TODO: 비동기 메서드로 변환할 것!!!!!!
-        private void Play(Progress p)
+        private async Task Play(Progress p)
         {
             CurrentChord = p;
 
@@ -285,13 +315,13 @@ namespace JUMO.UI
                 //근음 추가
                 if (i == p.ChordNotes[0])
                 {
-                    ViewModel.Plugin.NoteOn((byte)(i + 12*(Octave-1)), 100);
+                    ViewModel.Plugin.NoteOn((byte)(i + 12 * (Octave - 1)), 100);
                 }
 
                 ViewModel.Plugin.NoteOn((byte)(i + 12 * Octave), 100);
             }
 
-            Thread.Sleep(1000);
+            await Task.Delay(1000);
 
             foreach (byte i in p.ChordNotes)
             {
@@ -304,12 +334,23 @@ namespace JUMO.UI
             }
         }
 
-        private void ProgressPlay()
+        private async Task ProgressPlay()
         {
+            IsPlaying = true;
+
             foreach (Progress p in CurrentProgress)
             {
-                Play(p);
+                if (StopRequested)
+                {
+                    StopRequested = false;
+
+                    break;
+                }
+
+                await Play(p);
             }
+
+            IsPlaying = false;
         }
 
         private void MakeNote()

@@ -79,11 +79,16 @@
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
                 </ListBox>
-                <StackPanel Margin="0,20,0,20" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="재생" Width="40" Margin="0,0,300,0" Command="{Binding PlaySelectedChordCommand}"/>
-                    <Button Content="삭제" Width="70" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}" Style="{StaticResource ButtonDisabledWhenBusy}" />
-                    <Button Content="리셋" Width="70" Margin="10,0,0,0" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
-                </StackPanel>
+                <DockPanel Margin="0,20,0,20">
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <Button Content="재생" Width="40" Command="{Binding PlaySelectedChordCommand}"/>
+                        <Button Content="정지" Command="{Binding StopCommand}" />
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="삭제" Width="70" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                        <Button Content="리셋" Width="70" Margin="10,0,0,0" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                    </StackPanel>
+                </DockPanel>
                 <TextBlock Width="400" FontSize="14">
                     코드 진행을 바탕으로 다음 코드를 찾았습니다.<LineBreak />
                     코드 버튼을 클릭하면 미리 들을 수 있습니다.
