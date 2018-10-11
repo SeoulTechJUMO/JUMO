@@ -9,6 +9,13 @@ namespace JUMO.UI
 {
     public class ChordMagicViewModel : ViewModelBase
     {
+        public enum ChangeChordResult
+        {
+            Success,        // 성공
+            EmptyResult,    // "다음으로 적합한 코드진행이 없습니다."
+            MissingArgument // "{,삭제할 }코드를 선택해 주세요."
+        }
+
         private string _key;
         private string _mode;
         private int _octave;
@@ -121,14 +128,14 @@ namespace JUMO.UI
         //선택 코드진행 리셋
         public RelayCommand ResetCommand
             => _resetCommand ?? (_resetCommand = new RelayCommand(
-                progress => ChordReset(),
+                progress => ResetChords(),
                 _ => CurrentProgress.Any()
             ));
 
         //선택한 코드진행만 삭제
         public RelayCommand RemoveCommand
             => _removeCommand ?? (_removeCommand = new RelayCommand(
-                progress => ChordRemove(progress as Progress),
+                progress => RemoveChord(progress as Progress),
                 _ => CurrentProgress.Any()
             ));
 
@@ -140,20 +147,20 @@ namespace JUMO.UI
             ));
 
         //코드 진행을 스코어에 삽입
-        public RelayCommand Insert2Pianoroll
+        public RelayCommand InsertToPianorollCommand
             => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
                 _ => MakeNote(),
                 _ => CurrentProgress.Any()
             ));
 
         //옥타브 +,-
-        public RelayCommand OctaveMinus
+        public RelayCommand OctaveMinusCommand
             => _octaveDownCommand ?? (_octaveDownCommand = new RelayCommand(
                 _ => --Octave,
                 _ => 0 < Octave
             ));
 
-        public RelayCommand OctavePlus
+        public RelayCommand OctavePlusCommand
             => _octaveUpCommand ?? (_octaveUpCommand = new RelayCommand(
                 _ => ++Octave,
                 _ => 9 > Octave
@@ -173,29 +180,30 @@ namespace JUMO.UI
             Progress = ChangeChordName(progress);
         }
 
-        public void InsertChord(Progress chord)
+        private ChangeChordResult InsertChord(Progress chord)
         {
-            if (chord != null)
+            if (chord == null)
             {
-                CurrentProgress.Add(chord);
-                // progress = API.Request(chord.ChildPath);
-                ChangeAllChordName();
+                return ChangeChordResult.MissingArgument;
+            }
 
-                if (Progress.Count == 0)
-                {
-                    MessageBox.Show("다음으로 적합한 코드진행이 없습니다.");
-                }
-                
-            }
-            else
+            CurrentProgress.Add(chord);
+
+            Progress = API.GetProgress(chord.ChildPath);
+            ChangeAllChordName();
+
+            if (Progress.Count == 0)
             {
-                MessageBox.Show("코드를 선택해주세요.");
+                return ChangeChordResult.EmptyResult;
             }
+
+            return ChangeChordResult.Success;
         }
 
-        public void Play(Progress p)
+        private void Play(Progress p)
         {
             CurrentChord = p;
+
             foreach (byte i in p.ChordNotes)
             {
                 //근음 추가
@@ -203,9 +211,11 @@ namespace JUMO.UI
                 {
                     ViewModel.Plugin.NoteOn((byte)(i + 12*(Octave-1)), 100);
                 }
+
                 ViewModel.Plugin.NoteOn((byte)(i + 12 * Octave), 100);
             }
-            Task.Run(()=> 
+
+            Task.Run(() =>
             {
                 Thread.Sleep(1000);
                 foreach (byte i in p.ChordNotes)
@@ -219,41 +229,47 @@ namespace JUMO.UI
             });
         }
 
-        public void ChordReset()
+        private void ResetChords()
         {
             CurrentProgress.Clear();
-            // progress = API.Request("");
+            Progress = API.GetProgress("");
             ChangeAllChordName();
         }
 
-        public void ChordRemove(Progress chord)
+        private ChangeChordResult RemoveChord(Progress chord)
         {
             if (chord != null)
             {
-                string cp = "";
                 //현재 진행 리스트에서 선택된 객체 삭제
                 CurrentProgress.Remove(chord);
+
                 //child path 만들기
+                string cp = "";
+
                 foreach (Progress i in CurrentProgress)
                 {
                     cp += i.Id;
                     i.ChildPath = cp;
                     cp += ",";
                 }
+
                 if (cp.Length > 0)
                 {
                     cp = cp.Substring(0, cp.Length - 1);
                 }
-                // progress = API.Request(cp);
+
+                Progress = API.GetProgress(cp);
                 ChangeAllChordName();
+
+                return ChangeChordResult.Success;
             }
             else
             {
-                MessageBox.Show("삭제할 코드를 선택해주세요.");
+                return ChangeChordResult.MissingArgument;
             }
         }
 
-        public void ProgressPlay()
+        private void ProgressPlay()
         {
             foreach (Progress p in CurrentProgress)
             {
@@ -262,9 +278,9 @@ namespace JUMO.UI
             }
         }
 
-        public void MakeNote()
+        private void MakeNote()
         {
-            long Start = 0;
+            long start = 0;
 
             foreach (Progress p in CurrentProgress)
             {
@@ -273,32 +289,37 @@ namespace JUMO.UI
                     if (i == p.ChordNotes[0])
                     {
                         //근음 추가
-                        ViewModel.AddNote(new Note((byte)(i + 12 * (Octave-1)), 100, Start, Song.Current.TimeResolution*4));
+                        ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
                     }
-                    ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, Start, Song.Current.TimeResolution * 4));
+
+                    ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
                 }
-                Start += Song.Current.TimeResolution * 4;
+
+                start += Song.Current.TimeResolution * 4;
             }
         }
 
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
-        public ObservableCollection<Progress> ChangeChordName(ObservableCollection<Progress> old_p)
+        private ObservableCollection<Progress> ChangeChordName(ObservableCollection<Progress> old_p)
         {
             ObservableCollection<Progress> new_p = new ObservableCollection<Progress>();
+
             foreach (Progress i in old_p)
             {
                 new_p.Add(ChordTools.GetChordName(i, Key, Mode));
             }
+
             return new_p;
         }
 
         //조성이 바뀔시에 모든 코드이름 업데이트
-        public void ChangeAllChordName()
+        private void ChangeAllChordName()
         {
             if (Progress != null)
             {
                 Progress = ChangeChordName(Progress);
             }
+
             if (CurrentProgress != null)
             {
                 CurrentProgress = ChangeChordName(CurrentProgress);
