@@ -53,11 +53,15 @@ namespace JUMO.UI.Views
 
         private void ShowChordMagicianWindow()
         {
-            // var progress_list = API.Request(username, password);
-            // CodeMagicView cm = new CodeMagicView(vm);
-            // cm.DataContext = new ChordMagicViewModel("C", "Major", API, progress_list, vm);
+            // TODO: 재설계!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            ChordMagicianModel.GetAPI api = new ChordMagicianModel.GetAPI();
+            var progressList = api.GetProgress("");
 
-            new CodeMagicView(vm).Show();
+            new CodeMagicView(vm)
+            {
+                DataContext = new ChordMagicViewModel("C", "Major", api, progressList, vm)
+            }.Show();
+
             Close();
         }
     }
