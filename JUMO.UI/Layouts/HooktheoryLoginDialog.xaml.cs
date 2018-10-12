@@ -1,20 +1,25 @@
 ﻿using System.Windows;
 using System.Net;
+using ChordMagicianModel;
 
 namespace JUMO.UI.Layouts
 {
     public partial class HooktheoryLoginDialog : Window
     {
-        public HooktheoryLoginDialog()
+        private readonly GetAPI _api;
+        private readonly HooktheoryLoginViewModel _viewModel;
+
+        public HooktheoryLoginDialog(GetAPI api)
         {
             InitializeComponent();
+
+            _api = api;
+            DataContext = _viewModel = new HooktheoryLoginViewModel(_api);
         }
 
         private async void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
-            HooktheoryLoginViewModel vm = (HooktheoryLoginViewModel)DataContext;
-
-            if (await vm.TestTokenAsync())
+            if (await _viewModel.TestTokenAsync())
             {
                 OnLoginSuccess();
             }
@@ -22,21 +27,19 @@ namespace JUMO.UI.Layouts
 
         private async void OnLoginButtonClick(object sender, RoutedEventArgs e)
         {
-            HooktheoryLoginViewModel vm = (HooktheoryLoginViewModel)DataContext;
-
-            if (await vm.SignInAsync(username.Text, password.Password))
+            if (await _viewModel.SignInAsync(username.Text, password.Password))
             {
                 OnLoginSuccess();
             }
             else
             {
-                if (vm.LastError == WebExceptionStatus.ProtocolError
-                    && vm.LastStatus >= HttpStatusCode.BadRequest
-                    && vm.LastStatus < HttpStatusCode.InternalServerError)
+                if (_viewModel.LastError == WebExceptionStatus.ProtocolError
+                    && _viewModel.LastStatus >= HttpStatusCode.BadRequest
+                    && _viewModel.LastStatus < HttpStatusCode.InternalServerError)
                 {
                     MessageBox.Show("로그인 정보가 잘못되었습니다. 다시 확인 후 입력해주세요.");
                 }
-                else if (vm.LastError == WebExceptionStatus.NameResolutionFailure)
+                else if (_viewModel.LastError == WebExceptionStatus.NameResolutionFailure)
                 {
                     MessageBox.Show("인터넷 연결을 확인해주세요.");
                 }

@@ -6,14 +6,12 @@
         xmlns:local="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=proj:HooktheoryLoginViewModel}"
         Title="{Binding DisplayName}"
         SizeToContent="WidthAndHeight"
         ResizeMode="NoResize" Icon="/JUMO.UI;component/Resources/Hooktheory.png"
         Loaded="OnWindowLoaded"
         FocusManager.FocusedElement="{Binding ElementName=username}">
-    <Window.DataContext>
-        <proj:HooktheoryLoginViewModel />
-    </Window.DataContext>
     <DockPanel Width="350">
         <StackPanel DockPanel.Dock="Top">
             <Image Source="/JUMO.UI;component/Resources/Hooktheory.png" Width="100" Height="100" Margin="0,10" HorizontalAlignment="Center"/>

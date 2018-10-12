@@ -93,15 +93,7 @@ namespace JUMO.UI.Views
 
         private void ExcuteChordMagician(object sender, RoutedEventArgs e)
         {
-            PianoRollViewModel vm = (PianoRollViewModel)DataContext;
-            try
-            {
-                new HooktheoryLoginDialog(vm).Show();
-            }
-            catch
-            {
-                //오류 무시
-            }
+            new ChordMagicianWindow((PianoRollViewModel)DataContext).Show();
         }
     }
 }

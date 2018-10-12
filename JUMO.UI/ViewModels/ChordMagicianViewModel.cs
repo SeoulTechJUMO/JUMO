@@ -158,21 +158,21 @@ namespace JUMO.UI
         public RelayCommand InsertProgressCommand
             => _insertProgressCommand ?? (_insertProgressCommand = new RelayCommand(
                 async progress => await InsertChord(progress as Progress),
-                _ => Progress.Any()
+                _ => Progress?.Any() ?? false
             ));
 
         //선택 코드진행 리셋
         public RelayCommand ResetCommand
             => _resetCommand ?? (_resetCommand = new RelayCommand(
                 async progress => await ResetChords(),
-                _ => CurrentProgress.Any()
+                _ => CurrentProgress?.Any() ?? false
             ));
 
         //선택한 코드진행만 삭제
         public RelayCommand RemoveCommand
             => _removeCommand ?? (_removeCommand = new RelayCommand(
                 async progress => await RemoveChord(progress as Progress),
-                _ => CurrentProgress.Any()
+                _ => CurrentProgress?.Any() ?? false
             ));
 
         //코드 재생
@@ -190,21 +190,21 @@ namespace JUMO.UI
         public RelayCommand PlaySelectedChordCommand
             => _playSelectedChordCommand ?? (_playSelectedChordCommand = new RelayCommand(
                 async progress => await ProgressPlay(),
-                _ => !IsPlaying && CurrentProgress.Any()
+                _ => !IsPlaying && (CurrentProgress?.Any() ?? false)
             ));
 
         //재생 중인 코드진행을 멈추도록 요청
         public RelayCommand StopCommand
             => _stopCommand ?? (_stopCommand = new RelayCommand(
                 _ => StopRequested = true,
-                _ => IsPlaying && !StopRequested && CurrentProgress.Any()
+                _ => IsPlaying && !StopRequested && (CurrentProgress?.Any() ?? false)
             ));
 
         //코드 진행을 스코어에 삽입
         public RelayCommand InsertToPianorollCommand
             => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
                 _ => MakeNote(),
-                _ => CurrentProgress.Any()
+                _ => CurrentProgress?.Any() ?? false
             ));
 
         //옥타브 +,-
@@ -228,16 +228,25 @@ namespace JUMO.UI
 
         #endregion
 
-        public ChordMagicianViewModel(string key, string mode, GetAPI api, ObservableCollection<Progress> progress, PianoRollViewModel vm)
+        public ChordMagicianViewModel(GetAPI api, PianoRollViewModel pianoRollVM)
         {
             API = api;
-            ViewModel = vm;
+            ViewModel = pianoRollVM;
 
-            _key = key;
-            _mode = mode;
-            _progress = progress;
+            _key = "C";
+            _mode = "Major";
             _octave = 4;
-            Progress = ChangeChordName(progress);
+        }
+
+        public async Task ResetChords()
+        {
+            CurrentProgress.Clear();
+
+            IsClientBusy = true;
+            Progress = await Task.Run(() => API.GetProgress(""));
+            IsClientBusy = false;
+
+            ChangeAllChordName();
         }
 
         private async Task InsertChord(Progress chord)
@@ -292,17 +301,6 @@ namespace JUMO.UI
 
             ChangeAllChordName();
             OnChordChanged(ChangeChordResult.Success);
-        }
-
-        private async Task ResetChords()
-        {
-            CurrentProgress.Clear();
-
-            IsClientBusy = true;
-            Progress = await Task.Run(() => API.GetProgress(""));
-            IsClientBusy = false;
-
-            ChangeAllChordName();
         }
 
         private async Task Play(Progress p)

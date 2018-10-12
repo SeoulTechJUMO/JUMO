@@ -6,8 +6,10 @@ namespace JUMO.UI
 {
     class HooktheoryLoginViewModel : ViewModelBase
     {
-        private readonly GetAPI _api = new GetAPI();
+        private readonly GetAPI _api;
         private bool _isBusy = false;
+
+        #region Properties
 
         public override string DisplayName => "Hooktheory에 로그인";
 
@@ -27,6 +29,13 @@ namespace JUMO.UI
         public HttpStatusCode LastStatus => _api.LastStatus;
 
         public RelayCommand OpenHyperlinkCommand { get; } = new RelayCommand(uri => System.Diagnostics.Process.Start((string)uri));
+
+        #endregion
+
+        public HooktheoryLoginViewModel(GetAPI api)
+        {
+            _api = api;
+        }
 
         public async Task<bool> TestTokenAsync()
         {

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using ChordMagicianModel;
 
 namespace JUMO.UI.Layouts
 {
@@ -7,17 +8,27 @@ namespace JUMO.UI.Layouts
     /// </summary>
     public partial class ChordMagicianWindow : Window
     {
-        PianoRollViewModel _vm;
+        private readonly GetAPI _api = new GetAPI();
+        private readonly ChordMagicianViewModel _viewModel;
 
-        public ChordMagicianWindow(PianoRollViewModel vm)
+        public ChordMagicianWindow(PianoRollViewModel pianoRollVM)
         {
             InitializeComponent();
-            _vm = vm;
+
+            DataContext = _viewModel = new ChordMagicianViewModel(_api, pianoRollVM);
+            _viewModel.ChordChanged += OnChordChanged;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ((ChordMagicianViewModel)DataContext).ChordChanged += OnChordChanged;
+            if (new HooktheoryLoginDialog(_api).ShowDialog() ?? false)
+            {
+                await _viewModel.ResetChords();
+            }
+            else
+            {
+                Close();
+            }
         }
 
         private void ExitButtonClick(object sender, RoutedEventArgs e)
