@@ -240,7 +240,31 @@ namespace JUMO
 
         private void OnPlacedPatternsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.OldItems != null)
+            {
+                foreach (PatternPlacement pp in e.OldItems)
+                {
+                    pp.PropertyChanged -= OnPatternPlacementPropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (PatternPlacement pp in e.NewItems)
+                {
+                    pp.PropertyChanged += OnPatternPlacementPropertyChanged;
+                }
+            }
+
             UpdateLength();
+        }
+
+        private void OnPatternPlacementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(PatternPlacement.Start) || e.PropertyName == nameof(PatternPlacement.Length))
+            {
+                UpdateLength();
+            }
         }
 
         private void OnPropertyChanged(string propertyName)

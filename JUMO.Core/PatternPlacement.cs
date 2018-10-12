@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO
 {
@@ -78,7 +74,12 @@ namespace JUMO
         }
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
-            => OnPropertyChanged(e.PropertyName);
+        {
+            if (e.PropertyName == nameof(Pattern.Length))
+            {
+                OnPropertyChanged(nameof(Length));
+            }
+        }
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

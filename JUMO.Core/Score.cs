@@ -112,7 +112,11 @@ namespace JUMO
 
         private void OnNotePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateLength();
+            if (e.PropertyName == nameof(Note.Start) || e.PropertyName == nameof(Note.Length))
+            {
+                UpdateLength();
+            }
+
             NotePropertyChanged?.Invoke(this, EventArgs.Empty);
 
             _isStale = true;
