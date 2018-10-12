@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using JUMO.UI.Controls;
+using JUMO.UI.Layouts;
 
 namespace JUMO.UI.Views
 {
@@ -88,6 +89,11 @@ namespace JUMO.UI.Views
 
                 e.Handled = true;
             }
+        }
+
+        private void ExcuteChordMagician(object sender, RoutedEventArgs e)
+        {
+            new ChordMagicianWindow((PianoRollViewModel)DataContext).Show();
         }
     }
 }

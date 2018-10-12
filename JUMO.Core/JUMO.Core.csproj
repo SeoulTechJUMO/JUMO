@@ -90,6 +90,7 @@
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
     <Compile Include="IMusicalItem.cs" />
+    <Compile Include="MakeNote.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
     <Compile Include="Playback\MasterSequencer.cs" />
