@@ -324,10 +324,10 @@ namespace JUMO.UI
             {
                 if (i == p.ChordNotes[0])
                 {
-                    ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)), 100);
+                    ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)));
                 }
 
-                ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave), 100);
+                ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave));
             }
         }
 
