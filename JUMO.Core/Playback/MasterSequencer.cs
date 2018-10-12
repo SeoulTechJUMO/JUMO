@@ -309,7 +309,6 @@ namespace JUMO.Playback
                 Stop();
                 _clock.Dispose();
                 _workQueue.CompleteAdding();
-                _workQueue.Dispose();
             }
 
             _isDisposed = true;

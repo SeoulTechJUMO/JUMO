@@ -120,7 +120,6 @@ namespace JUMO.Vst
             if (disposing)
             {
                 _bc.CompleteAdding();
-                _bc.Dispose();
                 PluginCommandStub.StopProcess();
                 PluginCommandStub.MainsChanged(false);
                 PluginCommandStub.Close();
