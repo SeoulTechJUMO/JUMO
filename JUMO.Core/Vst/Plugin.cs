@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Threading;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using MidiToolkit = Sanford.Multimedia.Midi;
 
 namespace JUMO.Vst
 {
@@ -14,7 +13,7 @@ namespace JUMO.Vst
     {
         private readonly IVstPluginContext _ctx;
         private readonly VolumeSampleProvider _volume;
-        private readonly BlockingCollection<VstEvent[]> _bc = new BlockingCollection<VstEvent[]>();
+        private readonly object _lock = new object();
 
         private bool _isDisposed = false;
         private string _name;
@@ -64,44 +63,45 @@ namespace JUMO.Vst
             Name = PluginCommandStub.GetEffectName();
             _volume = new VolumeSampleProvider(new VstSampleProvider(this));
             SampleProvider = _volume;
-
-            new Thread(WorkerMethod) { Name = $"Worker thread for VST plugin {Name}" }.Start();
         }
 
         public void NoteOn(byte value, byte velocity)
         {
-            _bc.Add(new VstEvent[]
+            lock (_lock)
             {
-                new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, 64)
-            });
+                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, 64) });
+            }
         }
 
         public void NoteOff(byte value)
         {
-            _bc.Add(new VstEvent[]
+            lock (_lock)
             {
-                new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, 64, 0x00 }, 0, 64)
-            });
+                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, 64, 0x00 }, 0, 64) });
+            }
         }
 
-        public void SendEvents(VstEvent[] events) => _bc.Add(events);
-
-        private void WorkerMethod()
+        public void SendEvents(VstEvent[] events)
         {
-            while (!_bc.IsCompleted)
+            lock (_lock)
             {
-                VstEvent[] nextEvents = null;
+                PluginCommandStub.ProcessEvents(events);
+            }
+        }
 
-                try
-                {
-                    nextEvents = _bc.Take();
-                }
-                catch (InvalidOperationException) { }
+        public void SendEvent(VstEvent msg)
+        {
+            lock (_lock)
+            {
+                PluginCommandStub.ProcessEvents(new[] { msg });
+            }
+        }
 
-                if (nextEvents != null)
-                {
-                    PluginCommandStub.ProcessEvents(nextEvents);
-                }
+        public void SendEvent(MidiToolkit.IMidiMessage msg)
+        {
+            lock (_lock)
+            {
+                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, msg.GetBytes(), 0, 64) });
             }
         }
 
@@ -119,7 +119,6 @@ namespace JUMO.Vst
 
             if (disposing)
             {
-                _bc.CompleteAdding();
                 PluginCommandStub.StopProcess();
                 PluginCommandStub.MainsChanged(false);
                 PluginCommandStub.Close();
