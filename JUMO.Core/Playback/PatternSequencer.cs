@@ -24,6 +24,7 @@ namespace JUMO.Playback
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
 
             _masterSequencer.Tick += OnMasterClockTick;
+            _masterSequencer.Stopped += (s, e) => Dispose();
 
             foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
             {

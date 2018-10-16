@@ -129,6 +129,8 @@ namespace JUMO.Playback
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public event EventHandler Stopped;
+
         public event EventHandler Tick
         {
             add => _clock.Tick += value;
@@ -215,6 +217,7 @@ namespace JUMO.Playback
                 IsPlaying = false;
 
                 System.Diagnostics.Debug.WriteLine("MasterSequencer: Playback stopped");
+                Stopped?.Invoke(this, EventArgs.Empty);
             });
         }
 
