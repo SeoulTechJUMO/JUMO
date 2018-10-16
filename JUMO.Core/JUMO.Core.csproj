@@ -95,6 +95,7 @@
     <Compile Include="PatternPlacement.cs" />
     <Compile Include="Playback\MasterSequencer.cs" />
     <Compile Include="Playback\PatternSequencer.cs" />
+    <Compile Include="Playback\VstStopper.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
