@@ -19,6 +19,7 @@ namespace JUMO.Playback
 
         private readonly Song _song;
         private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
+        private readonly VstStopper _stopper = new VstStopper();
 
         private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
         private int _numOfPlayingTracks;
@@ -209,8 +210,7 @@ namespace JUMO.Playback
                 }
 
                 _clock.Stop();
-
-                // TODO: stop all sounds (NoteOff)
+                _stopper.StopAllSound();
 
                 IsPlaying = false;
 
@@ -231,6 +231,18 @@ namespace JUMO.Playback
                     Start();
                 }
             });
+        }
+
+        internal void SendNoteOn(Vst.Plugin plugin, byte value, byte velocity)
+        {
+            plugin.NoteOn(value, velocity);
+            _stopper.MarkNoteOn(plugin, value);
+        }
+
+        internal void SendNoteOff(Vst.Plugin plugin, byte value)
+        {
+            plugin.NoteOff(value);
+            _stopper.MarkNoteOff(plugin, value);
         }
 
         private void UpdateTimingProperties()

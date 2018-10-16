@@ -35,7 +35,6 @@ namespace JUMO.Playback
         private IEnumerable<long> GetTickIterator(MidiToolkit.Track track, Vst.Plugin plugin, int startPosition)
         {
             IEnumerator<MidiToolkit.MidiEvent> enumerator = track.Iterator().GetEnumerator();
-            List<VstEvent> simultaneousEvents = new List<VstEvent>();
 
             bool hasNext;
 
@@ -56,18 +55,21 @@ namespace JUMO.Playback
 
                 yield return ticks;
 
-                simultaneousEvents.Clear();
-
                 while (hasNext && enumerator.Current.AbsoluteTicks == ticks)
                 {
-                    simultaneousEvents.Add(new VstMidiEvent(0, 0, 0, enumerator.Current.MidiMessage.GetBytes(), 0, 64));
+                    if (enumerator.Current.MidiMessage is MidiToolkit.ChannelMessage cm)
+                    {
+                        if (cm.Command == MidiToolkit.ChannelCommand.NoteOn)
+                        {
+                            _masterSequencer.SendNoteOn(plugin, (byte)cm.Data1, (byte)cm.Data2);
+                        }
+                        else if (cm.Command == MidiToolkit.ChannelCommand.NoteOff)
+                        {
+                            _masterSequencer.SendNoteOff(plugin, (byte)cm.Data1);
+                        }
+                    }
 
                     hasNext = enumerator.MoveNext();
-                }
-
-                if (simultaneousEvents.Count > 0)
-                {
-                    plugin.SendEvents(simultaneousEvents.ToArray());
                 }
 
                 ticks++;
