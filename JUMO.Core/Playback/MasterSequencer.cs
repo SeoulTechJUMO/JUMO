@@ -30,6 +30,7 @@ namespace JUMO.Playback
 
         private bool _isDisposed = false;
         private bool _isPlaying = false;
+        private PlaybackMode _mode = PlaybackMode.Song;
 
         #endregion
 
@@ -118,6 +119,25 @@ namespace JUMO.Playback
                     {
                         _isPlaying = value;
                         OnPropertyChanged(nameof(IsPlaying));
+                    }
+                });
+            }
+        }
+
+        public PlaybackMode Mode
+        {
+            get => _mode;
+            set
+            {
+                EnqueueWork(() =>
+                {
+                    if (_mode != value)
+                    {
+                        _mode = value;
+
+                        Stop();
+                        Position = 0;
+                        OnPropertyChanged(nameof(Mode));
                     }
                 });
             }
