@@ -8,7 +8,7 @@ namespace JUMO
     /// <summary>
     /// 패턴을 배치할 수 있는 트랙을 나타냅니다.
     /// </summary>
-    public class Track : INotifyPropertyChanged
+    public class Track : List<PatternPlacement>, INotifyPropertyChanged
     {
         private readonly Song _song;
         private string _name;
@@ -36,10 +36,6 @@ namespace JUMO
             }
         }
 
-        // TODO: It seems to be very inefficient.
-        public IEnumerable<PatternPlacement> PlacedPatterns
-            => _song.PlacedPatterns.Where(pp => pp.TrackIndex == Index).OrderBy(pp => pp.Start);
-
         #endregion
 
         /// <summary>
@@ -57,7 +53,7 @@ namespace JUMO
 
         internal IEnumerable<long> GetTickIterator(Playback.MasterSequencer masterSequener, long startPosition)
         {
-            IEnumerator<PatternPlacement> enumerator = PlacedPatterns.GetEnumerator();
+            IEnumerator<PatternPlacement> enumerator = this.OrderBy(pp => pp.Start).GetEnumerator();
 
             bool hasNext;
 

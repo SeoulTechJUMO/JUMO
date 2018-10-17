@@ -245,6 +245,7 @@ namespace JUMO
                 foreach (PatternPlacement pp in e.OldItems)
                 {
                     pp.PropertyChanged -= OnPatternPlacementPropertyChanged;
+                    Tracks[pp.TrackIndex].Remove(pp);
                 }
             }
 
@@ -253,6 +254,7 @@ namespace JUMO
                 foreach (PatternPlacement pp in e.NewItems)
                 {
                     pp.PropertyChanged += OnPatternPlacementPropertyChanged;
+                    Tracks[pp.TrackIndex].Add(pp);
                 }
             }
 
