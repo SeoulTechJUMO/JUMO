@@ -124,6 +124,7 @@
     <Compile Include="RelayCommand.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
+    <Compile Include="ViewModels\PlaybackTimeViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\ProjectSettingsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -158,6 +159,9 @@
     </Compile>
     <Compile Include="Views\PianoRollView.xaml.cs">
       <DependentUpon>PianoRollView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PlaybackTimeView.xaml.cs">
+      <DependentUpon>PlaybackTimeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PlaylistView.xaml.cs">
       <DependentUpon>PlaylistView.xaml</DependentUpon>
@@ -238,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PianoRollView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PlaybackTimeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
