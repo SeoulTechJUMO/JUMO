@@ -22,6 +22,7 @@ namespace JUMO.Playback
         private readonly VstStopper _stopper = new VstStopper();
 
         private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
+        private Track _patternTrack;
         private int _numOfPlayingTracks;
 
         private readonly BlockingCollection<Action> _workQueue = new BlockingCollection<Action>();
@@ -30,7 +31,7 @@ namespace JUMO.Playback
 
         private bool _isDisposed = false;
         private bool _isPlaying = false;
-        private PlaybackMode _mode = PlaybackMode.Song;
+        private PlaybackMode _mode = PlaybackMode.Pattern;
 
         #endregion
 
@@ -162,6 +163,7 @@ namespace JUMO.Playback
         internal MasterSequencer(Song song)
         {
             _song = song ?? throw new ArgumentNullException(nameof(song));
+            _patternTrack = new Track(_song, 0, "") { new PatternPlacement(_song.CurrentPattern, 0, 0) };
 
             _song.PropertyChanged += OnSongPropertyChanged;
             _clock.Tick += OnClockTick;
@@ -201,15 +203,7 @@ namespace JUMO.Playback
             EnqueueWork(() =>
             {
                 Stop();
-                _trackEnumerators.Clear();
-
-                foreach (Track track in _song.Tracks)
-                {
-                    _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
-                }
-
-                _numOfPlayingTracks = Song.NumOfTracks;
-
+                PrepareTracks();
                 UpdateTimingProperties();
                 _clock.Continue();
 
@@ -279,6 +273,27 @@ namespace JUMO.Playback
             MidiTempo = _song.MidiTempo;
         }
 
+        private void PrepareTracks()
+        {
+            _trackEnumerators.Clear();
+
+            if (Mode == PlaybackMode.Song)
+            {
+                foreach (Track track in _song.Tracks)
+                {
+                    _trackEnumerators.Add(track.GetTickIterator(this, Position).GetEnumerator());
+                }
+
+                _numOfPlayingTracks = Song.NumOfTracks;
+            }
+            else if (Mode == PlaybackMode.Pattern)
+            {
+                _trackEnumerators.Add(_patternTrack.GetTickIterator(this, Position).GetEnumerator());
+
+                _numOfPlayingTracks = 1;
+            }
+        }
+
         private void EnqueueWork(Action work)
         {
             if (Thread.CurrentThread.ManagedThreadId == _workerThread.ManagedThreadId)
@@ -310,6 +325,11 @@ namespace JUMO.Playback
         private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             UpdateTimingProperties();
+
+            if (e.PropertyName == nameof(Song.CurrentPattern))
+            {
+                _patternTrack = new Track(_song, 0, "") { new PatternPlacement(_song.CurrentPattern, 0, 0) };
+            }
         }
 
         private void OnClockTick(object sender, EventArgs e)

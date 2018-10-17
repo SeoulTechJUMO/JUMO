@@ -26,8 +26,8 @@ namespace JUMO
                 Patterns.Add(new Pattern(this, $"패턴 {i + 1}"));
             }
 
-            Sequencer = new Playback.MasterSequencer(this);
             CurrentPattern = Patterns[0];
+            Sequencer = new Playback.MasterSequencer(this);
 
             PlacedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
 
