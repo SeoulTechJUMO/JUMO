@@ -51,7 +51,7 @@ namespace JUMO
             Name = name;
         }
 
-        internal IEnumerable<long> GetTickIterator(Playback.MasterSequencer masterSequener, long startPosition)
+        internal IEnumerable<int> GetTickIterator(Playback.MasterSequencer masterSequener, int startPosition)
         {
             IEnumerator<PatternPlacement> enumerator = this.OrderBy(pp => pp.Start).GetEnumerator();
 
@@ -63,7 +63,7 @@ namespace JUMO
 
             // TODO: chase
 
-            long ticks = startPosition;
+            int ticks = startPosition;
 
             while (hasNext)
             {
@@ -89,7 +89,7 @@ namespace JUMO
 
             if (enumerator.Current != null)
             {
-                long lastPatternEnd = enumerator.Current.Start + enumerator.Current.Length;
+                int lastPatternEnd = enumerator.Current.Start + enumerator.Current.Length;
 
                 while (ticks < lastPatternEnd)
                 {

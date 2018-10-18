@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MidiToolKit = Sanford.Multimedia.Midi;
-using System.Diagnostics;
 
 namespace JUMO
 {
@@ -12,7 +8,7 @@ namespace JUMO
     public struct ChannelMessage
     {
         public string command;
-        public long AbsoluteTick;
+        public int AbsoluteTick;
         public long Value;
         public long velocuty;
     }
@@ -86,13 +82,12 @@ namespace JUMO
             int Count = 0;
             foreach (Note i in list_note)
             {
-                list_note[Count].Start = (long)((double)i.Start * ((double)Song.Current.TimeResolution) / (double)sq.Division);
-                list_note[Count].Length = (long)((double)i.Length * ((double)Song.Current.TimeResolution) / (double)sq.Division);
+                list_note[Count].Start = (int)((double)i.Start * Song.Current.TimeResolution / sq.Division);
+                list_note[Count].Length = (int)((double)i.Length * Song.Current.TimeResolution / sq.Division);
                 Count++;
             }
 
             return list_note;
         }
-
     }
 }

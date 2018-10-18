@@ -2,7 +2,7 @@
 {
     public interface IMusicalItem
     {
-        long Length { get; }
-        long Start { get; }
+        int Length { get; }
+        int Start { get; }
     }
 }

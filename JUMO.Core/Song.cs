@@ -53,7 +53,7 @@ namespace JUMO
         private int _numerator = 4;
         private int _denominator = 4;
         private int _timeResolution = 96;
-        private long _length = 0;
+        private int _length = 0;
         private Pattern _currentPattern;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -174,7 +174,7 @@ namespace JUMO
         /// <summary>
         /// 곡의 총 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length
+        public int Length
         {
             get => _length;
             private set

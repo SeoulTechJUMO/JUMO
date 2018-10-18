@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using MidiToolkit = Sanford.Multimedia.Midi;
-using Jacobi.Vst.Core;
 
 namespace JUMO.Playback
 {
     class PatternSequencer : IDisposable
     {
         private readonly MasterSequencer _masterSequencer;
-        private readonly List<IEnumerator<long>> _enumerators = new List<IEnumerator<long>>();
+        private readonly List<IEnumerator<int>> _enumerators = new List<IEnumerator<int>>();
         private int _numOfPlayingScores = 0;
         private int _position = 0;
 
@@ -33,7 +32,7 @@ namespace JUMO.Playback
             }
         }
 
-        private IEnumerable<long> GetTickIterator(MidiToolkit.Track track, Vst.Plugin plugin, int startPosition)
+        private IEnumerable<int> GetTickIterator(MidiToolkit.Track track, Vst.Plugin plugin, int startPosition)
         {
             IEnumerator<MidiToolkit.MidiEvent> enumerator = track.Iterator().GetEnumerator();
 
@@ -90,7 +89,7 @@ namespace JUMO.Playback
 
             _position++;
 
-            foreach (IEnumerator<long> enumerator in _enumerators)
+            foreach (IEnumerator<int> enumerator in _enumerators)
             {
                 enumerator.MoveNext();
             }

@@ -14,7 +14,7 @@ namespace JUMO
         private readonly Dictionary<Plugin, Score> _scores = new Dictionary<Plugin, Score>();
         private readonly Song _song;
         private string _name;
-        private long _length;
+        private int _length;
 
         public event EventHandler ScoreCreated;
 
@@ -34,7 +34,7 @@ namespace JUMO
         /// <summary>
         /// 패턴의 길이를 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length
+        public int Length
         {
             get => _length;
             set
@@ -124,9 +124,9 @@ namespace JUMO
 
         private void UpdateLength()
         {
-            long ticksPerBar = 4 * _song.TimeResolution * _song.Numerator / _song.Denominator;
-            long maxLength = Math.Max(1, _scores.Values.Select(score => score.Length).DefaultIfEmpty(0).Max());
-            long q = Math.DivRem(maxLength, ticksPerBar, out long r);
+            int ticksPerBar = 4 * _song.TimeResolution * _song.Numerator / _song.Denominator;
+            int maxLength = Math.Max(1, _scores.Values.Select(score => score.Length).DefaultIfEmpty(0).Max());
+            int q = Math.DivRem(maxLength, ticksPerBar, out int r);
 
             Length = (q + (r == 0 ? 0 : 1)) * ticksPerBar;
         }

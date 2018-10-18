@@ -8,8 +8,8 @@ namespace JUMO
     public class Note : IMusicalItem, INotifyPropertyChanged
     {
         private byte _value;
-        private long _length;
-        private long _start;
+        private int _length;
+        private int _start;
         private byte _velocity;
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace JUMO
         /// <summary>
         /// 음표의 시작 시점을 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Start
+        public int Start
         {
             get => _start;
             set
@@ -63,7 +63,7 @@ namespace JUMO
         /// <summary>
         /// 음표의 길이를 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length
+        public int Length
         {
             get => _length;
             set
@@ -83,7 +83,7 @@ namespace JUMO
         /// <param name="velocity">음표의 velocity 값</param>
         /// <param name="start">음표의 시작 시점 (PPQN 기반)</param>
         /// <param name="length">음표의 길이 (PPQN 기반)</param>
-        public Note(byte value, byte velocity, long start, long length)
+        public Note(byte value, byte velocity, int start, int length)
         {
             Value = value;
             Velocity = velocity;

@@ -14,7 +14,7 @@ namespace JUMO
     {
         private readonly MidiToolkit.Track _track = new MidiToolkit.Track();
 
-        private long _length = 0;
+        private int _length = 0;
         private bool _isStale = true;
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace JUMO
         /// <summary>
         /// 이 악보의 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length
+        public int Length
         {
             get => _length;
             private set
@@ -92,7 +92,7 @@ namespace JUMO
             _isStale = true;
         }
 
-        private void UpdateLength() => Length = this.Select(note => note.Start + note.Length).DefaultIfEmpty(0L).Max();
+        private void UpdateLength() => Length = this.Select(note => note.Start + note.Length).DefaultIfEmpty(0).Max();
 
         private void CompileTrack()
         {
@@ -100,8 +100,8 @@ namespace JUMO
 
             foreach (Note note in this)
             {
-                int start = (int)note.Start;
-                int end = start + (int)note.Length;
+                int start = note.Start;
+                int end = start + note.Length;
 
                 _track.Insert(start, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOn, 0, note.Value, note.Velocity));
                 _track.Insert(end, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, note.Value, 64));

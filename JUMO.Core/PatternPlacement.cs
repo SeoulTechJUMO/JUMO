@@ -9,7 +9,7 @@ namespace JUMO
     public class PatternPlacement : IMusicalItem, INotifyPropertyChanged
     {
         private int _trackIndex = -1;
-        private long _start;
+        private int _start;
 
         /// <summary>
         /// 배치된 패턴 인스턴스를 가져옵니다.
@@ -38,7 +38,7 @@ namespace JUMO
         /// <summary>
         /// 배치된 패턴의 시작 시점을 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Start
+        public int Start
         {
             get => _start;
             set
@@ -54,7 +54,7 @@ namespace JUMO
         /// <summary>
         /// 배치된 패턴의 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
         /// </summary>
-        public long Length => Pattern.Length;
+        public int Length => Pattern.Length;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -64,7 +64,7 @@ namespace JUMO
         /// <param name="pattern">배치된 패턴</param>
         /// <param name="trackIndex">패턴이 배치된 트랙의 인덱스</param>
         /// <param name="start">배치된 패턴의 시작 지점 (PPQN 기반)</param>
-        public PatternPlacement(Pattern pattern, int trackIndex, long start)
+        public PatternPlacement(Pattern pattern, int trackIndex, int start)
         {
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
             TrackIndex = trackIndex;

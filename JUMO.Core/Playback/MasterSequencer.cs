@@ -21,7 +21,7 @@ namespace JUMO.Playback
         private readonly MidiToolkit.MidiInternalClock _clock = new MidiToolkit.MidiInternalClock();
         private readonly VstStopper _stopper = new VstStopper();
 
-        private readonly List<IEnumerator<long>> _trackEnumerators = new List<IEnumerator<long>>();
+        private readonly List<IEnumerator<int>> _trackEnumerators = new List<IEnumerator<int>>();
         private Track _patternTrack;
         private int _numOfPlayingTracks;
 
@@ -81,7 +81,7 @@ namespace JUMO.Playback
             }
         }
 
-        public long Position
+        public int Position
         {
             get => _clock.Ticks;
             set
@@ -98,7 +98,7 @@ namespace JUMO.Playback
                     wasPlaying = IsPlaying;
 
                     Stop();
-                    _clock.SetTicks((int)value);
+                    _clock.SetTicks(value);
                     if (wasPlaying)
                     {
                         Continue();
@@ -339,7 +339,7 @@ namespace JUMO.Playback
                 return;
             }
 
-            foreach (IEnumerator<long> enumerator in _trackEnumerators)
+            foreach (IEnumerator<int> enumerator in _trackEnumerators)
             {
                 enumerator.MoveNext();
             }
