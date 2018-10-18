@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
 using JUMO.UI.Data;
@@ -44,7 +45,8 @@ namespace JUMO.UI.Controls
                 "CurrentPosition", typeof(long), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     0L,
-                    FrameworkPropertyMetadataOptions.AffectsRender
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    CurrentPositionPropertyChangedCallback
                 )
             );
 
@@ -53,7 +55,8 @@ namespace JUMO.UI.Controls
                 "ShouldDrawCurrentPosition", typeof(bool), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
                     false,
-                    FrameworkPropertyMetadataOptions.AffectsRender
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    ShouldDrawCurrentPositionPropertyChangedCallback
                 )
             );
 
@@ -166,6 +169,7 @@ namespace JUMO.UI.Controls
 
             _offset.Y = offset;
             _transform.Y = -offset;
+            _playbackBarAdorner.VerticalOffset = offset;
             ScrollOwner?.InvalidateScrollInfo();
             InvalidateVisual();
         }
@@ -189,6 +193,8 @@ namespace JUMO.UI.Controls
         private readonly SelfThrottlingWorker _createWorker;
         private readonly SelfThrottlingWorker _disposeWorker;
         private bool _isAllCreated = true;
+
+        private readonly PlaybackBarAdorner _playbackBarAdorner;
 
         protected double WidthPerTick { get; private set; } = 0;
 
@@ -433,17 +439,8 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            Size renderSize = RenderSize;
-
             Point pt = new Point(-_transform.X, -_transform.Y);
-            dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, renderSize));
-
-            if (ShouldDrawCurrentPosition)
-            {
-                double barPosition = CurrentPosition * WidthPerTick;
-
-                dc.DrawLine(new Pen(Brushes.Black, 1), new Point(barPosition, 0), new Point(barPosition, renderSize.Height));
-            }
+            dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, RenderSize));
         }
 
         #region Visual Host Container Implementation
@@ -581,13 +578,46 @@ namespace JUMO.UI.Controls
             }
         }
 
+        private void OnCurrentPositionChanged(long newPosition)
+        {
+            _playbackBarAdorner.PixelPosition = newPosition * WidthPerTick;
+        }
+
+        private void OnShouldDrawCurrentPositionChanged(bool newFlag)
+        {
+            AdornerLayer layer = AdornerLayer.GetAdornerLayer(this);
+
+            if (newFlag)
+            {
+                layer?.Add(_playbackBarAdorner);
+            }
+            else
+            {
+                layer?.Remove(_playbackBarAdorner);
+            }
+        }
+
+        private static void CurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((MusicalCanvasBase)d).OnCurrentPositionChanged((long)e.NewValue);
+        }
+
+        private static void ShouldDrawCurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((MusicalCanvasBase)d).OnShouldDrawCurrentPositionChanged((bool)e.NewValue);
+        }
+
         public MusicalCanvasBase() : base()
         {
             _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(10), DispatcherPriority.Normal, OnDispatcherTimerTick, Dispatcher);
             _createWorker = new SelfThrottlingWorker(1000, 50, CreateHandler);
             _disposeWorker = new SelfThrottlingWorker(2000, 50, DisposeHandler);
 
+            _playbackBarAdorner = new PlaybackBarAdorner(this);
+
             RenderTransform = _transform;
+
+            System.Windows.Documents.AdornerLayer.GetAdornerLayer(this)?.Add(new PlaybackBarAdorner(this) { PixelPosition = 250 });
         }
     }
 }
