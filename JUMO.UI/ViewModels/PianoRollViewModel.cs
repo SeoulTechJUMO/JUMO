@@ -62,7 +62,7 @@ namespace JUMO.UI
             Score = Song.Current.CurrentPattern[Plugin];
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
 
-            GridStep = Denominator >= 4 ? 4 : 2;
+            GridStep = Song.Denominator >= 4 ? 4 : 2;
         }
 
         public void AddNote(Note note) => _score.Add(note);

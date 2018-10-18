@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
@@ -22,9 +20,7 @@ namespace JUMO.UI
         private RelayCommand _zoomOutCommand;
         private RelayCommand _resetZoomCommand;
 
-        public int Numerator => Song.Current.Numerator;
-        public int Denominator => Song.Current.Denominator;
-        public int TimeResolution => Song.Current.TimeResolution;
+        public Song Song => Song.Current;
 
         public double ZoomFactor { get; private set; }
 

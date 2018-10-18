@@ -8,9 +8,9 @@
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
-          proj:MusicalProps.Denominator="{Binding Denominator}"
-          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+    <Grid proj:MusicalProps.Numerator="{Binding Song.Numerator}"
+          proj:MusicalProps.Denominator="{Binding Song.Denominator}"
+          proj:MusicalProps.TimeResolution="{Binding Song.TimeResolution}"
           proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -88,10 +88,24 @@
                                       ExtentHeightOverride="2560"
                                       GridStep="{Binding GridStep}"
                                       SnapToGrid="{Binding SnapToGrid}"
+                                      CurrentPosition="{Binding Song.Sequencer.Position, Mode=OneWay}"
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
-                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
+                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
+                    <ctrl:PianoRollCanvas.Style>
+                        <Style TargetType="{x:Type ctrl:PianoRollCanvas}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                    <Setter Property="ShouldDrawCurrentPosition" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                    <Setter Property="ShouldDrawCurrentPosition" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ctrl:PianoRollCanvas.Style>
+                </ctrl:PianoRollCanvas>
             </ctrl:MusicalScrollViewer>
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
                 <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
@@ -106,7 +120,21 @@
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
                                          SelectedItems="{Binding SelectedItems}"
-                                         PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
+                                         CurrentPosition="{Binding Song.Sequencer.Position}"
+                                         PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
+                        <ctrl:VelocityCanvas.Style>
+                            <Style TargetType="{x:Type ctrl:VelocityCanvas}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                        <Setter Property="ShouldDrawCurrentPosition" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                        <Setter Property="ShouldDrawCurrentPosition" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ctrl:VelocityCanvas.Style>
+                    </ctrl:VelocityCanvas>
                 </ctrl:MusicalScrollViewer>
             </Border>
         </Grid>
