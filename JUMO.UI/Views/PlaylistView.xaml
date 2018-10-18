@@ -8,9 +8,9 @@
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid proj:MusicalProps.Numerator="{Binding Numerator}"
-          proj:MusicalProps.Denominator="{Binding Denominator}"
-          proj:MusicalProps.TimeResolution="{Binding TimeResolution}"
+    <Grid proj:MusicalProps.Numerator="{Binding Song.Numerator}"
+          proj:MusicalProps.Denominator="{Binding Song.Denominator}"
+          proj:MusicalProps.TimeResolution="{Binding Song.TimeResolution}"
           proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -86,10 +86,24 @@
                                      SelectedItems="{Binding SelectedItems}"
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
+                                     CurrentPosition="{Binding Song.Sequencer.Position}"
                                      PlacePatternRequested="PlaylistCanvas_PlacePatternRequested"
                                      RemovePatternRequested="PlaylistCanvas_RemovePatternRequested"
                                      SelectionChanged="PlaylistCanvas_SelectionChanged"
-                                     PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel" />
+                                     PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
+                    <ctrl:PlaylistCanvas.Style>
+                        <Style TargetType="{x:Type ctrl:PlaylistCanvas}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                    <Setter Property="ShouldDrawCurrentPosition" Value="True" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                    <Setter Property="ShouldDrawCurrentPosition" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ctrl:PlaylistCanvas.Style>
+                </ctrl:PlaylistCanvas>
             </ctrl:MusicalScrollViewer>
         </Grid>
     </Grid>
