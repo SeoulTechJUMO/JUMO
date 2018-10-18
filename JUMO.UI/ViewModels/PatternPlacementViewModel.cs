@@ -7,8 +7,8 @@ namespace JUMO.UI
     {
         private bool _updating = false;
 
-        private long _start;
-        private long _length;
+        private int _start;
+        private int _length;
         private int _trackIndex;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -17,7 +17,7 @@ namespace JUMO.UI
 
         public Pattern Pattern { get; }
 
-        public long Start
+        public int Start
         {
             get => _start;
             set
@@ -30,7 +30,7 @@ namespace JUMO.UI
             }
         }
 
-        public long Length
+        public int Length
         {
             get => _length;
             set

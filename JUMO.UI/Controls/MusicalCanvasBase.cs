@@ -42,9 +42,9 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty CurrentPositionProperty =
             DependencyProperty.Register(
-                "CurrentPosition", typeof(long), typeof(MusicalCanvasBase),
+                "CurrentPosition", typeof(int), typeof(MusicalCanvasBase),
                 new FrameworkPropertyMetadata(
-                    0L,
+                    0,
                     FrameworkPropertyMetadataOptions.AffectsRender,
                     CurrentPositionPropertyChangedCallback
                 )
@@ -79,9 +79,9 @@ namespace JUMO.UI.Controls
             set => SetValue(ExtentHeightOverrideProperty, value);
         }
 
-        public long CurrentPosition
+        public int CurrentPosition
         {
-            get => (long)GetValue(CurrentPositionProperty);
+            get => (int)GetValue(CurrentPositionProperty);
             set => SetValue(CurrentPositionProperty, value);
         }
 
@@ -578,7 +578,7 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void OnCurrentPositionChanged(long newPosition)
+        private void OnCurrentPositionChanged(int newPosition)
         {
             _playbackBarAdorner.PixelPosition = newPosition * WidthPerTick;
         }
@@ -599,7 +599,7 @@ namespace JUMO.UI.Controls
 
         private static void CurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((MusicalCanvasBase)d).OnCurrentPositionChanged((long)e.NewValue);
+            ((MusicalCanvasBase)d).OnCurrentPositionChanged((int)e.NewValue);
         }
 
         private static void ShouldDrawCurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)

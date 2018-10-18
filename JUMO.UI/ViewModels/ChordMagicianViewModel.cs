@@ -352,7 +352,7 @@ namespace JUMO.UI
 
         private void MakeNote()
         {
-            long start = 0;
+            int start = 0;
 
             foreach (Progress p in CurrentProgress)
             {

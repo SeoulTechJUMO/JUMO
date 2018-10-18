@@ -28,7 +28,7 @@ namespace JUMO.UI
             }
         }
 
-        public void PlacePattern(Pattern pattern, int trackIndex, long start) => _placedPatterns.Add(new PatternPlacement(pattern, trackIndex, start));
+        public void PlacePattern(Pattern pattern, int trackIndex, int start) => _placedPatterns.Add(new PatternPlacement(pattern, trackIndex, start));
         public void RemovePattern(PatternPlacement pp) => _placedPatterns.Remove(pp);
 
         private void PlacePatternInternal(PatternPlacement pp)

@@ -46,16 +46,16 @@ namespace JUMO.UI
         private void OnSequencerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Playback.MasterSequencer.Position)) {
-                long totalMilliseconds = (_song.MidiTempo / _song.TimeResolution) * _sequencer.Position / 1000;
-                int totalSeconds = (int)(totalMilliseconds / 1000);
+                int totalMilliseconds = (_song.MidiTempo / _song.TimeResolution) * _sequencer.Position / 1000;
+                int totalSeconds = totalMilliseconds / 1000;
 
-                Milliseconds = (int)(totalMilliseconds - totalSeconds * 1000);
+                Milliseconds = totalMilliseconds - totalSeconds * 1000;
                 Minutes = totalSeconds / 60;
                 Seconds = totalSeconds - Minutes * 60;
 
-                int bars = (int)(_sequencer.Position / _ticksPerBar);
+                int bars = _sequencer.Position / _ticksPerBar;
                 Bars = bars + 1;
-                Beats = (int)(_sequencer.Position - bars * _ticksPerBar) / _ticksPerBeat + 1;
+                Beats = (_sequencer.Position - bars * _ticksPerBar) / _ticksPerBeat + 1;
 
                 OnPropertyChanged(nameof(Milliseconds));
                 OnPropertyChanged(nameof(Seconds));

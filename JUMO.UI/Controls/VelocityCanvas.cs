@@ -22,7 +22,7 @@ namespace JUMO.UI.Controls
 
         protected override double CalculateLogicalLength()
         {
-            long length = Items.OfType<NoteViewModel>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));
+            int length = Items.OfType<NoteViewModel>().Aggregate(0, (acc, note) => Math.Max(acc, note.Start + note.Length));
 
             // 끝에 4분음표 8개 분량의 빈 공간을 둠
             return length + (TimeResolution << 3);

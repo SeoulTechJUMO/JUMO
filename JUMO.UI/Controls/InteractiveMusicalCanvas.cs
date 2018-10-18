@@ -73,9 +73,9 @@ namespace JUMO.UI.Controls
 
         #region Protected Methods
 
-        protected long PixelToTick(double xPos) => (long)(xPos / WidthPerTick);
+        protected int PixelToTick(double xPos) => (int)(xPos / WidthPerTick);
 
-        protected long SnapToGridInternal(long pos)
+        protected int SnapToGridInternal(int pos)
         {
             if (!SnapToGrid)
             {
@@ -218,8 +218,8 @@ namespace JUMO.UI.Controls
             {
                 Rect selectionRect = _selectionHelper.EndBlockSelection();
 
-                long startTick = Math.Max(0L, PixelToTick(selectionRect.Left));
-                long length = PixelToTick(selectionRect.Width);
+                int startTick = Math.Max(0, PixelToTick(selectionRect.Left));
+                int length = PixelToTick(selectionRect.Width);
                 int vLimit1 = Math.Max(MinVerticalValue, Math.Min(FromVerticalPosition(selectionRect.Top), MaxVerticalValue));
                 int vLimit2 = Math.Max(MinVerticalValue, Math.Min(FromVerticalPosition(selectionRect.Bottom), MaxVerticalValue));
 

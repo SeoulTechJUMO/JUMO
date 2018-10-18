@@ -7,8 +7,8 @@ namespace JUMO.UI
         private bool _updating = false;
 
         private byte _value;
-        private long _start;
-        private long _length;
+        private int _start;
+        private int _length;
         private byte _velocity;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,7 +28,7 @@ namespace JUMO.UI
             }
         }
 
-        public long Start
+        public int Start
         {
             get => _start;
             set
@@ -41,7 +41,7 @@ namespace JUMO.UI
             }
         }
 
-        public long Length
+        public int Length
         {
             get => _length;
             set

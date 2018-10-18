@@ -60,8 +60,8 @@ namespace JUMO.UI.Controls
         {
             Pattern pattern = Song.Current.CurrentPattern;
             int trackIndex = FromVerticalPosition(pt.Y);
-            long start = PixelToTick(pt.X);
-            long snap = SnapToGridInternal(start);
+            int start = PixelToTick(pt.X);
+            int snap = SnapToGridInternal(start);
 
             PlacePatternRequested?.Invoke(this, new PlacePatternRequestedEventArgs(pattern, trackIndex, snap));
         }
@@ -75,7 +75,7 @@ namespace JUMO.UI.Controls
 
         public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            long deltaStart = PixelToTick(deltaX);
+            int deltaStart = PixelToTick(deltaX);
             int deltaIndex = FromVerticalDelta(deltaY);
 
             if (deltaX < 0 && _minTick.Start < -deltaStart)
@@ -162,9 +162,9 @@ namespace JUMO.UI.Controls
             _affectedItems = null;
         }
 
-        private void MovePattern(PatternPlacementViewModel pp, long deltaStart, int deltaIndex)
+        private void MovePattern(PatternPlacementViewModel pp, int deltaStart, int deltaIndex)
         {
-            long newStart = SnapToGridInternal(pp.Start + deltaStart);
+            int newStart = SnapToGridInternal(pp.Start + deltaStart);
             int newIndex = pp.TrackIndex + deltaIndex;
 
             pp.Start = Math.Max(0, newStart);
@@ -176,9 +176,9 @@ namespace JUMO.UI.Controls
     {
         public Pattern Pattern { get; }
         public int TrackIndex { get; }
-        public long Start { get; }
+        public int Start { get; }
 
-        public PlacePatternRequestedEventArgs(Pattern pattern, int trackIndex, long start)
+        public PlacePatternRequestedEventArgs(Pattern pattern, int trackIndex, int start)
         {
             Pattern = pattern;
             TrackIndex = trackIndex;

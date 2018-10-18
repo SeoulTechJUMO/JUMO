@@ -13,9 +13,9 @@ namespace JUMO.UI.Controls
         private IEnumerable<NoteViewModel> _affectedNotes;
         private NoteViewModel _minTick;
         private NoteViewModel _minValue, _maxValue;
-        private long _lastLength = -1;
+        private int _lastLength = -1;
 
-        private long LastLength
+        private int LastLength
         {
             get
             {
@@ -47,7 +47,7 @@ namespace JUMO.UI.Controls
 
         protected override double CalculateLogicalLength()
         {
-            long length = Items.OfType<NoteViewModel>().Aggregate(0L, (acc, note) => Math.Max(acc, note.Start + note.Length));
+            int length = Items.OfType<NoteViewModel>().Aggregate(0, (acc, note) => Math.Max(acc, note.Start + note.Length));
 
             // 끝에 4분음표 8개 분량의 빈 공간을 둠
             return length + (TimeResolution << 3);
@@ -85,8 +85,8 @@ namespace JUMO.UI.Controls
         protected override void OnSurfaceClick(Point pt)
         {
             byte value = (byte)FromVerticalPosition(pt.Y);
-            long pos = PixelToTick(pt.X);
-            long snap = SnapToGridInternal(pos);
+            int pos = PixelToTick(pt.X);
+            int snap = SnapToGridInternal(pos);
 
             AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, LastLength)));
         }
@@ -112,7 +112,7 @@ namespace JUMO.UI.Controls
 
         public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
-            long deltaStart = PixelToTick(deltaX);
+            int deltaStart = PixelToTick(deltaX);
             int deltaValue = FromVerticalDelta(deltaY);
 
             if (deltaX < 0 && _minTick.Start < -deltaStart)
@@ -207,8 +207,8 @@ namespace JUMO.UI.Controls
 
         private void ResizeNote(NoteViewModel note, double delta)
         {
-            long end = note.Start + note.Length;
-            long newEnd = SnapToGridInternal(end + PixelToTick(delta));
+            int end = note.Start + note.Length;
+            int newEnd = SnapToGridInternal(end + PixelToTick(delta));
 
             if (newEnd > note.Start)
             {
@@ -216,9 +216,9 @@ namespace JUMO.UI.Controls
             }
         }
 
-        private void MoveNote(NoteViewModel note, long deltaStart, int deltaValue)
+        private void MoveNote(NoteViewModel note, int deltaStart, int deltaValue)
         {
-            long newStart = SnapToGridInternal(note.Start + deltaStart);
+            int newStart = SnapToGridInternal(note.Start + deltaStart);
             int newValue = note.Value + deltaValue;
 
             note.Start = Math.Max(0, newStart);
