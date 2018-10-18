@@ -39,6 +39,24 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty CurrentPositionProperty =
+            DependencyProperty.Register(
+                "CurrentPosition", typeof(long), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(
+                    0L,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
+        public static readonly DependencyProperty ShouldDrawCurrentPositionProperty =
+            DependencyProperty.Register(
+                "ShouldDrawCurrentPosition", typeof(bool), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(
+                    false,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
         #endregion
 
         #region Dependency Property Accessors
@@ -56,6 +74,18 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(ExtentHeightOverrideProperty);
             set => SetValue(ExtentHeightOverrideProperty, value);
+        }
+
+        public long CurrentPosition
+        {
+            get => (long)GetValue(CurrentPositionProperty);
+            set => SetValue(CurrentPositionProperty, value);
+        }
+
+        public bool ShouldDrawCurrentPosition
+        {
+            get => (bool)GetValue(ShouldDrawCurrentPositionProperty);
+            set => SetValue(ShouldDrawCurrentPositionProperty, value);
         }
 
         #endregion
@@ -403,8 +433,17 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
+            Size renderSize = RenderSize;
+
             Point pt = new Point(-_transform.X, -_transform.Y);
-            dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, RenderSize));
+            dc.DrawRectangle(Brushes.Transparent, null, new Rect(pt, renderSize));
+
+            if (ShouldDrawCurrentPosition)
+            {
+                double barPosition = CurrentPosition * WidthPerTick;
+
+                dc.DrawLine(new Pen(Brushes.Black, 1), new Point(barPosition, 0), new Point(barPosition, renderSize.Height));
+            }
         }
 
         #region Visual Host Container Implementation
