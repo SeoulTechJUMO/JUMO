@@ -15,7 +15,7 @@ namespace JUMO.Vst
         private static readonly Lazy<PluginManager> _instance = new Lazy<PluginManager>(() => new PluginManager());
         private PluginManager()
         {
-            AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
+            //AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
         public static PluginManager Instance => _instance.Value;
 
@@ -47,7 +47,9 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
+                //AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
+                MixerManager.Instance.MixerChannels[0].MixerSendInput(plugin.SampleProvider);
+
                 Plugins.Add(plugin);
 
                 return true;
@@ -68,18 +70,69 @@ namespace JUMO.Vst
             }
         }
 
-        private void AudioOutputDeviceChanged(object sender, EventArgs e)
+        //private void AudioOutputDeviceChanged(object sender, EventArgs e)
+        //{
+        //    System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
+
+        //    if (AudioManager.Instance.CurrentOutputDevice == null)
+        //    {
+        //        return;
+        //    }
+
+        //    foreach (var plugin in Plugins)
+        //    {
+        //        AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
+        //    }
+        //}
+    }
+
+    public class EffectPluginManager : IDisposable
+    {
+        public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
+
+        public bool AddPlugin(MixerChannel channel, Action<Exception> onError)
         {
-            System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
-
-            if (AudioManager.Instance.CurrentOutputDevice == null)
+            OpenFileDialog dlg = new OpenFileDialog()
             {
-                return;
-            }
+                Filter = "VST 플러그인 (*.dll)|*.dll"
+            };
 
+            if (dlg.ShowDialog() == true)
+            {
+                return AddPlugin(dlg.FileName, channel, onError);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError)
+        {
+            try
+            {
+                HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
+                Plugin plugin = new Plugin(pluginPath, hostCmdStub);
+
+                channel.MixerSendInput(plugin.SampleProvider);
+
+                Plugins.Add(plugin);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e);
+
+                return false;
+            }
+        }
+
+        public void Dispose()
+        {
             foreach (var plugin in Plugins)
             {
-                AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
+                plugin.Dispose();
             }
         }
     }

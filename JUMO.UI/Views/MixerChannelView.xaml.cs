@@ -1,5 +1,4 @@
-﻿using JUMO.UI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,15 +11,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using JUMO.UI.ViewModels;
 
-namespace JUMO.UI.Layouts
+namespace JUMO.UI.Views
 {
-    public partial class MixerWindow : Window
+    /// <summary>
+    /// MixerChannelView.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class MixerChannelView : UserControl
     {
-        public MixerWindow()
+        public MixerChannelView()
         {
-            DataContext = new MixerViewModel();
             InitializeComponent();
         }
     }
+
+
 }

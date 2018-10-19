@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
+    <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="ViewModels\MusicalCanvasWorkspaceViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\PatternPlacementViewModel.cs" />
@@ -139,6 +140,15 @@
     </Compile>
     <Compile Include="Views\ChannelRackView.xaml.cs">
       <DependentUpon>ChannelRackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\MixerWindow.xaml.cs">
+      <DependentUpon>MixerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MixerChannelView.xaml.cs">
+      <DependentUpon>MixerChannelView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MixerVstView.xaml.cs">
+      <DependentUpon>MixerVstView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Layouts\ChordMagicianWindow.xaml.cs">
       <DependentUpon>ChordMagicianWindow.xaml</DependentUpon>
@@ -174,6 +184,9 @@
       <DependentUpon>ScoreThumbnailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
+    <Compile Include="Views\VolumeMeterView.xaml.cs">
+      <DependentUpon>VolumeMeterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\SmartMelodyWindow.xaml.cs">
       <DependentUpon>SmartMelodyWindow.xaml</DependentUpon>
     </Compile>
@@ -226,6 +239,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Layouts\MixerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MixerChannelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MixerVstView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\NoteVelocityView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -259,6 +284,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScoreThumbnailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VolumeMeterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

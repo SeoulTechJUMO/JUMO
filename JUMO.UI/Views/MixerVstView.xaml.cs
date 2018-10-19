@@ -1,5 +1,4 @@
-﻿using JUMO.UI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace JUMO.UI.Layouts
+namespace JUMO.UI.Views
 {
-    public partial class MixerWindow : Window
+    /// <summary>
+    /// MixerVstView.xaml에 대한 상호 작용 논리
+    /// </summary>
+    public partial class MixerVstView : UserControl
     {
-        public MixerWindow()
+        public MixerVstView()
         {
-            DataContext = new MixerViewModel();
             InitializeComponent();
         }
     }

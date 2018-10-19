@@ -5,13 +5,47 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
-        Title="믹ㅅ서" Height="450" Width="800">
+        Title="믹서">
 
-    <ItemsControl>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <local:MixerChannelView ></local:MixerChannelView>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="900" MinWidth="100"/>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+        </Grid.ColumnDefinitions>
+        <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Width="auto"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:MixerChannelView ></local:MixerChannelView>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ListBox>
+        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
+        <DockPanel Grid.Column="2">
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                <Label Content="현재 채널 OUT : "/>
+            </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="현재 채널 IN : "/>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" MaxHeight="300">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:MixerVstView></local:MixerVstView>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListBox>
+                <Button Content="플러그인 추가" Width="100"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
 </Window>

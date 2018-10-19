@@ -17,7 +17,7 @@
             <MenuItem Header="파일(F)">
                 <MenuItem Header="저장" />
                 <MenuItem Header="열기" />
-                <MenuItem Header="설정" />
+                <MenuItem Header="설정" Click="MenuItem_Click" />
             </MenuItem>
             <MenuItem Header=" 편집(E)" />
             <MenuItem Header=" 보기(V)" />
@@ -90,7 +90,7 @@
             <ComboBox Grid.Row="0" Grid.Column="2" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                <Button BorderBrush="Gray" Content="MX" />
+                <Button BorderBrush="Gray" Content="MX" Click="Mixer_Click" />
                 <Button BorderBrush="Gray" Content="PL" Command="{Binding OpenPlaylistCommand}" />
             </StackPanel>
         </Grid>
