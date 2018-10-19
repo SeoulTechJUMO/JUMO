@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace JUMO.UI
 {
     class PlaybackTimeViewModel : INotifyPropertyChanged
     {
-        private readonly Song _song;
-        private readonly Playback.MasterSequencer _sequencer;
+        private readonly Song _song = Song.Current;
+        private readonly Playback.MasterSequencer _sequencer = Playback.MasterSequencer.Instance;
 
         private int _ticksPerBeat;
         private int _ticksPerBar;
@@ -26,9 +21,6 @@ namespace JUMO.UI
 
         public PlaybackTimeViewModel()
         {
-            _song = Song.Current;
-            _sequencer = _song.Sequencer;
-
             UpdateTickUnits();
 
             _song.PropertyChanged += OnSongPropertyChanged;

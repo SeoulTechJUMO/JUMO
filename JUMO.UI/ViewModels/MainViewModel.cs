@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
@@ -36,6 +31,11 @@ namespace JUMO.UI
         public Song Song { get; } = Song.Current;
 
         /// <summary>
+        /// 곡이나 패턴을 재생할 수 있는 시퀀서 인스턴스를 가져옵니다.
+        /// </summary>
+        public Playback.MasterSequencer Sequencer { get; } = Playback.MasterSequencer.Instance;
+
+        /// <summary>
         /// 플레이리스트 작업 영역을 여는 명령을 가져옵니다.
         /// </summary>
         public RelayCommand OpenPlaylistCommand { get; } =
@@ -63,22 +63,20 @@ namespace JUMO.UI
 
         private void ExecuteTogglePlayback(object _)
         {
-            if (Song.Sequencer.IsPlaying)
+            if (Sequencer.IsPlaying)
             {
-                Song.Sequencer.Stop();
+                Sequencer.Stop();
             }
             else
             {
-                Song.Sequencer.Continue();
+                Sequencer.Continue();
             }
         }
 
         private void ExecuteTogglePlaybackMode(object _)
         {
-            Playback.MasterSequencer sequencer = Song.Sequencer;
-
-            sequencer.Mode =
-                sequencer.Mode == Playback.PlaybackMode.Song
+            Sequencer.Mode =
+                Sequencer.Mode == Playback.PlaybackMode.Song
                 ? Playback.PlaybackMode.Pattern
                 : Playback.PlaybackMode.Song;
         }
