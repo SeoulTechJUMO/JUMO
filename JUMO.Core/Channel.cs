@@ -77,7 +77,7 @@ namespace JUMO
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public class MixerChannel : Channel, ISampleProvider
+    public class MixerChannel : Channel
     {
         public MixerChannel(string name, bool IsMaster=false)
         {
@@ -102,8 +102,6 @@ namespace JUMO
         private bool IsMaster = false;
 
         private EffectPluginManager EffectManager = new EffectPluginManager();
-
-        public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
@@ -131,6 +129,7 @@ namespace JUMO
             set
             {
                 _VolumeSample.Volume = (float)value;
+                System.Diagnostics.Debug.WriteLine(_VolumeSample.Volume);
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -192,11 +191,6 @@ namespace JUMO
         public void MixerInputDisable(ISampleProvider input)
         {
             Mixer.RemoveMixerInput(input);
-        }
-
-        public int Read(float[] buffer, int offset, int count)
-        {
-            return count;
         }
     }
 }

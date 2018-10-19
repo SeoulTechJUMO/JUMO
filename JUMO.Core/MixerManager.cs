@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JUMO.Audio;
 
 namespace JUMO
 {
@@ -25,7 +26,7 @@ namespace JUMO
                 if (i == 0)
                 {
                     MixerChannels.Add(new MixerChannel("마스터", true));
-                    Audio.AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeSample);
+                    AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeSample);
                 }
                 else
                 {
@@ -33,6 +34,7 @@ namespace JUMO
                     MixerChannels[0].MixerSendInput(MixerChannels[i].VolumeSample);
                 }
             }
+            AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
 
         //믹서 채널
@@ -45,6 +47,20 @@ namespace JUMO
                 _MixerChannels = value;
                 OnPropertyChanged(nameof(MixerChannels));
             }
+        }
+
+        private void AudioOutputDeviceChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
+
+            if (AudioManager.Instance.CurrentOutputDevice == null)
+            {
+                return;
+            }
+
+            //현재 마스터 믹스를 해제하고 새로운 디바이스 믹서에 임포트
+            AudioManager.Instance.DisposeMixerInput(MixerChannels[0].VolumeSample);
+            AudioManager.Instance.AddMixerInput(MixerChannels[0].VolumeSample);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
