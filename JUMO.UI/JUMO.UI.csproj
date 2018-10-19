@@ -110,7 +110,11 @@
     <Compile Include="Layouts\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\SkinTestWindow.xaml.cs">
+      <DependentUpon>SkinTestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThumbnailManager.cs" />
+    <Compile Include="ToggleButtonIndicator.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
@@ -192,11 +196,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Layouts\SkinTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\NoteIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\SettingsViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Skin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

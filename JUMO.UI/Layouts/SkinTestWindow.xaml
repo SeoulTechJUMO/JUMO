@@ -1,0 +1,46 @@
+﻿<Window x:Class="JUMO.UI.Layouts.SkinTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Layouts"
+        xmlns:proj="clr-namespace:JUMO.UI"
+        mc:Ignorable="d"
+        Background="{StaticResource LightBackgroundColor}"
+        Title="SkinTestWindow" Height="450" Width="800">
+    <StackPanel Margin="10">
+        <StackPanel Orientation="Horizontal">
+            <Button Content="활성" />
+            <Button Content="비활성" IsEnabled="False" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" />
+            <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" />
+            <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" />
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle2}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle3}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" />
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" />
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle2}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle3}" Content="토글" IsChecked="True" />
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+        </StackPanel>
+    </StackPanel>
+</Window>
