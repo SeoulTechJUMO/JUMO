@@ -16,7 +16,7 @@
             <MenuItem Header="파일(F)">
                 <MenuItem Header="저장" />
                 <MenuItem Header="열기" />
-                <MenuItem Header="설정" />
+                <MenuItem Header="설정" Click="MenuItem_Click" />
             </MenuItem>
             <MenuItem Header=" 편집(E)" />
             <MenuItem Header=" 보기(V)" />
@@ -87,7 +87,7 @@
                     <ComboBoxItem>패턴2</ComboBoxItem>
                     <ComboBoxItem>패턴3</ComboBoxItem>
                 </ComboBox>
-                <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="MX" />
+                <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="MX" Click="Mixer_Click"/>
                 <Button Background="Gray" Width="30" Height="20" Margin="3,0" BorderBrush="Gray" Content="PL" Command="{Binding OpenPlaylistCommand}" />
             </ToolBar>
         </ToolBarTray>
@@ -129,16 +129,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="300" MinWidth="300" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="443*" />
+                <ColumnDefinition Width="148*"/>
             </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Column="0">
+            <TabControl Grid.Column="0" Margin="0,0,0,0.4">
                 <TabItem Header="패턴">
                     <proj:ChannelRackViewModel />
                 </TabItem>
             </TabControl>
-            <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-            <TabControl Grid.Column="2" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
+            <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" Margin="0,0,0.2,0.4" />
+            <TabControl Grid.Column="1" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}" Grid.ColumnSpan="3" Margin="3,0,-0.4,0.4">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
                         <DockPanel>
