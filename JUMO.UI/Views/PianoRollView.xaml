@@ -88,7 +88,7 @@
                                       ExtentHeightOverride="2560"
                                       GridStep="{Binding GridStep}"
                                       SnapToGrid="{Binding SnapToGrid}"
-                                      CurrentPosition="{Binding Song.Sequencer.Position, Mode=OneWay}"
+                                      CurrentPosition="{Binding Sequencer.Position, Mode=OneWay}"
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
@@ -96,10 +96,10 @@
                     <ctrl:PianoRollCanvas.Style>
                         <Style TargetType="{x:Type ctrl:PianoRollCanvas}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                     <Setter Property="ShouldDrawCurrentPosition" Value="True" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                                     <Setter Property="ShouldDrawCurrentPosition" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -120,15 +120,15 @@
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
                                          SelectedItems="{Binding SelectedItems}"
-                                         CurrentPosition="{Binding Song.Sequencer.Position}"
+                                         CurrentPosition="{Binding Sequencer.Position}"
                                          PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
                         <ctrl:VelocityCanvas.Style>
                             <Style TargetType="{x:Type ctrl:VelocityCanvas}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                         <Setter Property="ShouldDrawCurrentPosition" Value="True" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                                         <Setter Property="ShouldDrawCurrentPosition" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>

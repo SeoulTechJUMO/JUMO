@@ -21,6 +21,7 @@ namespace JUMO.UI
         private RelayCommand _resetZoomCommand;
 
         public Song Song => Song.Current;
+        public Playback.MasterSequencer Sequencer => Playback.MasterSequencer.Instance;
 
         public double ZoomFactor { get; private set; }
 

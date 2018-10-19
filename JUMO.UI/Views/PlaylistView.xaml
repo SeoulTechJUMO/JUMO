@@ -86,7 +86,7 @@
                                      SelectedItems="{Binding SelectedItems}"
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
-                                     CurrentPosition="{Binding Song.Sequencer.Position}"
+                                     CurrentPosition="{Binding Sequencer.Position}"
                                      PlacePatternRequested="PlaylistCanvas_PlacePatternRequested"
                                      RemovePatternRequested="PlaylistCanvas_RemovePatternRequested"
                                      SelectionChanged="PlaylistCanvas_SelectionChanged"
@@ -94,10 +94,10 @@
                     <ctrl:PlaylistCanvas.Style>
                         <Style TargetType="{x:Type ctrl:PlaylistCanvas}">
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                                     <Setter Property="ShouldDrawCurrentPosition" Value="True" />
                                 </DataTrigger>
-                                <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                     <Setter Property="ShouldDrawCurrentPosition" Value="False" />
                                 </DataTrigger>
                             </Style.Triggers>

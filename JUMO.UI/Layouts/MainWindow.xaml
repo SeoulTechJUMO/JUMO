@@ -53,11 +53,11 @@
                             <ToggleButton.Style>
                                 <Style TargetType="ToggleButton">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                        <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                             <Setter Property="Content" Value="패턴" />
                                             <Setter Property="IsChecked" Value="True" />
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                        <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                                             <Setter Property="Content" Value="곡" />
                                             <Setter Property="IsChecked" Value="False" />
                                         </DataTrigger>
@@ -65,16 +65,16 @@
                                 </Style>
                             </ToggleButton.Style>
                         </ToggleButton>
-                        <ToggleButton Content="▶" Margin="2,0" Padding="5,0" IsChecked="{Binding Song.Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
+                        <ToggleButton Content="▶" Margin="2,0" Padding="5,0" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
                     </StackPanel>
-                    <Slider Grid.Row="1" Grid.Column="1" Width="200" Minimum="0" Value="{Binding Song.Sequencer.Position, Mode=TwoWay}">
+                    <Slider Grid.Row="1" Grid.Column="1" Width="200" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
                         <Slider.Style>
                             <Style TargetType="Slider">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Pattern">
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                         <Setter Property="Maximum" Value="{Binding Song.CurrentPattern.Length}" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Song.Sequencer.Mode}" Value="Song">
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                                         <Setter Property="Maximum" Value="{Binding Song.Length}" />
                                     </DataTrigger>
                                 </Style.Triggers>
