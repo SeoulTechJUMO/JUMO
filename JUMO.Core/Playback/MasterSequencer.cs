@@ -13,8 +13,16 @@ namespace JUMO.Playback
         Song
     }
 
-    public class MasterSequencer : INotifyPropertyChanged, IDisposable
+    public sealed class MasterSequencer : INotifyPropertyChanged, IDisposable
     {
+        #region Singleton
+
+        private static readonly Lazy<MasterSequencer> _instance = new Lazy<MasterSequencer>(() => new MasterSequencer(Song.Current));
+
+        public static MasterSequencer Instance => _instance.Value;
+
+        #endregion
+
         #region Fields
 
         private readonly Song _song;
@@ -160,7 +168,7 @@ namespace JUMO.Playback
 
         #endregion
 
-        internal MasterSequencer(Song song)
+        private MasterSequencer(Song song)
         {
             _song = song ?? throw new ArgumentNullException(nameof(song));
             _patternTrack = new Track(_song, 0, "") { new PatternPlacement(_song.CurrentPattern, 0, 0) };
@@ -352,7 +360,7 @@ namespace JUMO.Playback
 
         #region IDisposable Support
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (_isDisposed)
             {

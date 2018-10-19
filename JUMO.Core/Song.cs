@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace JUMO
 {
-    public sealed class Song : INotifyPropertyChanged, IDisposable
+    public sealed class Song : INotifyPropertyChanged
     {
         #region Singleton
 
@@ -27,7 +27,6 @@ namespace JUMO
             }
 
             CurrentPattern = Patterns[0];
-            Sequencer = new Playback.MasterSequencer(this);
 
             PlacedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
 
@@ -216,11 +215,6 @@ namespace JUMO
         }
 
         /// <summary>
-        /// 이 Song을 재생할 수 있는 시퀀서를 가져옵니다.
-        /// </summary>
-        public Playback.MasterSequencer Sequencer { get; }
-
-        /// <summary>
         /// 곡의 템포를 설정합니다.
         /// </summary>
         /// <param name="tempoBeat">템포의 기준이 되는 박자의 길이</param>
@@ -271,10 +265,5 @@ namespace JUMO
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        public void Dispose()
-        {
-            Sequencer.Dispose();
-        }
     }
 }

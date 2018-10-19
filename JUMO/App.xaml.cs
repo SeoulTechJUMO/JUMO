@@ -8,7 +8,7 @@ namespace JUMO
         {
             Audio.AudioManager.Instance.CurrentOutputDevice = null;
             Vst.PluginManager.Instance.Dispose();
-            Song.Current.Sequencer.Dispose();
+            Playback.MasterSequencer.Instance.Dispose();
 
             base.OnExit(e);
         }
