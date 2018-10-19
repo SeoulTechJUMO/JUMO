@@ -42,6 +42,11 @@ namespace JUMO.Audio
             mixer.AddMixerInput(input);
         }
 
+        public void DisposeMixerInput(ISampleProvider input)
+        {
+            mixer.RemoveMixerInput(input);
+        }
+
         public void Dispose()
         {
             System.Diagnostics.Debug.WriteLine("Disposing the current audio output engine");
