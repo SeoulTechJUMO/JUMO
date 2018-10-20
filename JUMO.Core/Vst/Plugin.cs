@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
@@ -13,10 +14,13 @@ namespace JUMO.Vst
     {
         private readonly IVstPluginContext _ctx;
         private readonly VolumeSampleProvider _volume;
+        private readonly List<VstMidiEvent> _pendingEvents = new List<VstMidiEvent>();
+
         private readonly object _lock = new object();
 
         private bool _isDisposed = false;
         private string _name;
+        private int _firstTick = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -56,7 +60,7 @@ namespace JUMO.Vst
             PluginCommandStub = _ctx.PluginCommandStub;
             PluginCommandStub.Open();
             PluginCommandStub.SetSampleRate(44100.0f);
-            PluginCommandStub.SetBlockSize(2048);
+            PluginCommandStub.SetBlockSize(256);
             PluginCommandStub.MainsChanged(true);
             PluginCommandStub.StartProcess();
 
@@ -65,43 +69,53 @@ namespace JUMO.Vst
             SampleProvider = _volume;
         }
 
-        public void NoteOn(byte value, byte velocity)
+        public void NoteOn(byte value, byte velocity) => NoteOn(0, value, velocity);
+
+        public void NoteOff(byte value) => NoteOff(0, value);
+
+        public void NoteOn(int tick, byte value, byte velocity)
+        {
+            SendEvent(tick, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOn, 0, value, velocity));
+        }
+
+        public void NoteOff(int tick, byte value)
+        {
+            SendEvent(tick, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, value, 64));
+        }
+
+        public void SendEvent(int tick, MidiToolkit.IMidiMessage msg)
         {
             lock (_lock)
             {
-                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, new byte[] { 0x90, value, velocity, 0x00 }, 0, 64) });
+                if (_firstTick == -1)
+                {
+                    _firstTick = tick;
+                }
+
+                int deltaFrames = (int)(44100 * (tick - _firstTick) * Song.Current.SecondsPerTick);
+
+                _pendingEvents.Add(new VstMidiEvent(deltaFrames, 0, 0, msg.GetBytes(), 0, 0));
             }
         }
 
-        public void NoteOff(byte value)
+        public bool FetchEvents(out VstEvent[] events)
         {
             lock (_lock)
             {
-                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, new byte[] { 0x80, value, 64, 0x00 }, 0, 64) });
-            }
-        }
+                _firstTick = -1;
 
-        public void SendEvents(VstEvent[] events)
-        {
-            lock (_lock)
-            {
-                PluginCommandStub.ProcessEvents(events);
-            }
-        }
+                if (_pendingEvents.Count == 0)
+                {
+                    events = null;
 
-        public void SendEvent(VstEvent msg)
-        {
-            lock (_lock)
-            {
-                PluginCommandStub.ProcessEvents(new[] { msg });
-            }
-        }
+                    return false;
+                }
 
-        public void SendEvent(MidiToolkit.IMidiMessage msg)
-        {
-            lock (_lock)
-            {
-                PluginCommandStub.ProcessEvents(new[] { new VstMidiEvent(0, 0, 0, msg.GetBytes(), 0, 64) });
+                events = _pendingEvents.ToArray();
+
+                _pendingEvents.Clear();
+
+                return true;
             }
         }
 

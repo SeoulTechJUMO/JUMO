@@ -101,7 +101,7 @@ namespace JUMO
             foreach (Note note in this)
             {
                 int start = note.Start;
-                int end = start + note.Length;
+                int end = start + note.Length - 1;
 
                 _track.Insert(start, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOn, 0, note.Value, note.Velocity));
                 _track.Insert(end, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, note.Value, 64));

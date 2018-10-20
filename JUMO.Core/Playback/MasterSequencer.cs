@@ -260,13 +260,13 @@ namespace JUMO.Playback
 
         internal void SendNoteOn(Vst.Plugin plugin, byte value, byte velocity)
         {
-            plugin.NoteOn(value, velocity);
+            plugin.NoteOn(Position, value, velocity);
             _stopper.MarkNoteOn(plugin, value);
         }
 
         internal void SendNoteOff(Vst.Plugin plugin, byte value)
         {
-            plugin.NoteOff(value);
+            plugin.NoteOff(Position, value);
             _stopper.MarkNoteOff(plugin, value);
         }
 
