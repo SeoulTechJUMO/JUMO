@@ -12,8 +12,30 @@ using NAudio.Wave.SampleProviders;
 
 namespace JUMO
 {
-    public class Channel : INotifyPropertyChanged
+    public class MixerChannel : INotifyPropertyChanged
     {
+        public MixerChannel(string name, int Number, bool IsMaster=false)
+        {
+            Name = name;
+            ChannelNumber = Number;
+
+            if(IsMaster)
+            {
+                //마스터 채널일때 초기화
+                this.IsMaster = true;
+                _VolumeSample = new VolumeSampleProvider(Mixer);
+                _VolumeMeter = new MeteringSampleProvider(Mixer,10);
+                Plugins = EffectManager.Plugins; 
+            }
+            else
+            {
+                //일반 채널에서 초기화
+                _VolumeSample = new VolumeSampleProvider(Mixer);
+                _VolumeMeter = new MeteringSampleProvider(Mixer, 10);
+                Plugins = EffectManager.Plugins;
+            }
+        }
+
         /// <summary>
         /// 채널의 이름
         /// </summary>
@@ -52,6 +74,9 @@ namespace JUMO
             set
             {
                 _IsMuted = value;
+
+                ToggleMute();
+                
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
@@ -71,46 +96,23 @@ namespace JUMO
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //마스터 여부
+        public readonly bool IsMaster = false;
 
-        public void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public class MixerChannel : Channel
-    {
-        public MixerChannel(string name, bool IsMaster=false)
-        {
-            Name = name;
-            if(IsMaster)
-            {
-                //마스터 채널일때 초기화
-                this.IsMaster = true;
-                _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer,10);
-                Plugins = EffectManager.Plugins; 
-            }
-            else
-            {
-                //일반 채널에서 초기화
-                _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer, 10);
-                Plugins = EffectManager.Plugins;
-            }
-        }
-
-        private bool IsMaster = false;
-
+        //이팩트 플러그인 관리자
         private EffectPluginManager EffectManager = new EffectPluginManager();
 
+        //내부 믹서 프로바이더
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
+        //볼륨 샘플
         private VolumeSampleProvider _VolumeSample;
         public VolumeSampleProvider VolumeSample
         {
             get => _VolumeSample;
         }
 
+        //볼륨 Meter
         private MeteringSampleProvider _VolumeMeter;
         public MeteringSampleProvider VolumeMeter
         {
@@ -148,39 +150,17 @@ namespace JUMO
             }
         }
 
-
-        //채널 솔로 활성화 & 비활성화
-        public void ToggleSolo(MixerChannel CurrentChannel, List<MixerChannel> ChannelList)
-        {
-            if (!IsSolo)
-            {
-                //다른 채널 isMuted 활성화
-                foreach (MixerChannel c in ChannelList)
-                {
-                    if(c != CurrentChannel && !c.IsMaster)
-                    {
-                        c.IsMuted = true;
-                    }
-                }
-                IsSolo = true;
-            }
-            else
-            {
-                //다른 채널 isMuted 활성화 해제
-                foreach (MixerChannel c in ChannelList)
-                {
-                    if (c != CurrentChannel && !c.IsMaster)
-                    {
-                        c.IsMuted = false;
-                    }
-                }
-                IsSolo = false;
-            }
-        }
-
         public void ToggleMute()
         {
             //음소거 처리
+            if (_IsMuted)
+            {
+                //뮤트 처리
+            }
+            else
+            {
+                //뮤트 해제
+            }
         }
 
         public void MixerSendInput(ISampleProvider input)
@@ -188,9 +168,14 @@ namespace JUMO
             Mixer.AddMixerInput(input);
         }
 
-        public void MixerInputDisable(ISampleProvider input)
+        public void MixerInputDispose(ISampleProvider input)
         {
             Mixer.RemoveMixerInput(input);
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

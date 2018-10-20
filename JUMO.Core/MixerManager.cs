@@ -25,12 +25,12 @@ namespace JUMO
             {
                 if (i == 0)
                 {
-                    MixerChannels.Add(new MixerChannel("마스터", true));
+                    MixerChannels.Add(new MixerChannel("마스터", i, true));
                     AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeSample);
                 }
                 else
                 {
-                    MixerChannels.Add(new MixerChannel($"채널 {i}"));
+                    MixerChannels.Add(new MixerChannel($"채널 {i}", i));
                     MixerChannels[0].MixerSendInput(MixerChannels[i].VolumeSample);
                 }
             }
@@ -49,6 +49,36 @@ namespace JUMO
             }
         }
 
+        //채널 솔로 활성화 & 비활성화
+        public void ToggleSolo(MixerChannel CurrentChannel, List<MixerChannel> ChannelList)
+        {
+            if (!CurrentChannel.IsSolo)
+            {
+                //다른 채널 isMuted 활성화
+                foreach (MixerChannel c in ChannelList)
+                {
+                    if (c != CurrentChannel && !c.IsMaster)
+                    {
+                        c.IsMuted = true;
+                    }
+                }
+                CurrentChannel.IsSolo = true;
+            }
+            else
+            {
+                //다른 채널 isMuted 활성화 해제
+                foreach (MixerChannel c in ChannelList)
+                {
+                    if (c != CurrentChannel && !c.IsMaster)
+                    {
+                        c.IsMuted = false;
+                    }
+                }
+                CurrentChannel.IsSolo = false;
+            }
+        }
+
+        //오디오 디바이스가 바뀔경우
         private void AudioOutputDeviceChanged(object sender, EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
