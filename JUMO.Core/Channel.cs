@@ -110,6 +110,11 @@ namespace JUMO
         public VolumeSampleProvider VolumeSample
         {
             get => _VolumeSample;
+            set
+            {
+                _VolumeSample = value;
+
+            }
         }
 
         //볼륨 Meter
