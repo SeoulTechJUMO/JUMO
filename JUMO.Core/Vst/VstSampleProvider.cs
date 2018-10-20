@@ -11,6 +11,8 @@ namespace JUMO.Vst
 
         public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
+        public ISampleProvider Source { get; set; }
+
         public VstSampleProvider(Plugin plugin)
         {
             _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
@@ -31,6 +33,27 @@ namespace JUMO.Vst
             if (_plugin.FetchEvents(out VstEvent[] events))
             {
                 _plugin.PluginCommandStub.ProcessEvents(events);
+            }
+
+            if (Source != null)
+            {
+                float[] tempBuf = new float[count];
+                Source.Read(tempBuf, offset, count);
+
+                unsafe
+                {
+                    float* inLBuf = ((IDirectBufferAccess32)inBuf[0]).Buffer;
+                    float* inRBuf = ((IDirectBufferAccess32)inBuf[1]).Buffer;
+
+                    fixed (float* audioBuf = &tempBuf[0])
+                    {
+                        for (int i = 0, j = 0; i < halfCount; i++)
+                        {
+                            *(inLBuf + j++) = *(audioBuf + i);
+                            *(inRBuf + j++) = *(audioBuf + i);
+                        }
+                    }
+                }
             }
 
             _plugin.PluginCommandStub.ProcessReplacing(inBuf, outBuf);
