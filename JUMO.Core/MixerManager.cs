@@ -81,15 +81,14 @@ namespace JUMO
         //오디오 디바이스가 바뀔경우
         private void AudioOutputDeviceChanged(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
+            System.Diagnostics.Debug.WriteLine("MixerManager: Audio output device has changed.");
 
             if (AudioManager.Instance.CurrentOutputDevice == null)
             {
                 return;
             }
 
-            //현재 마스터 믹스를 해제하고 새로운 디바이스 믹서에 임포트
-            AudioManager.Instance.DisposeMixerInput(MixerChannels[0].VolumeSample);
+            //새로운 디바이스 믹서에 임포트
             AudioManager.Instance.AddMixerInput(MixerChannels[0].VolumeSample);
         }
 
