@@ -132,6 +132,11 @@ namespace JUMO
         public int MidiTempo { get; private set; }
 
         /// <summary>
+        /// 1 tick의 실제 길이(초)를 가져옵니다. Tick 당 오디오 샘플 수를 계산하는 데 사용될 수 있습니다.
+        /// </summary>
+        public double SecondsPerTick { get; private set; }
+
+        /// <summary>
         /// 곡의 박자표 중 분자를 가져오거나 설정합니다.
         /// </summary>
         public int Numerator
@@ -224,6 +229,7 @@ namespace JUMO
             TempoBeat = tempoBeat;
             Tempo = tempo;
             MidiTempo = (int)Math.Round(10_000_000.0 * TempoBeat / Tempo);
+            SecondsPerTick = 1.0e-6 * MidiTempo / TimeResolution;
 
             OnPropertyChanged(nameof(Tempo));
             OnPropertyChanged(nameof(TempoBeat));
