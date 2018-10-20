@@ -55,9 +55,6 @@ namespace JUMO.Audio
         public void AddMixerInput(ISampleProvider input)
             => _outputEngine?.AddMixerInput(input);
 
-        public void DisposeMixerInput(ISampleProvider input)
-            => _outputEngine?.DisposeMixerInput(input);
-
         private void PopulateAudioOutputDevices()
         {
             int numOfWaveOutDevices = WaveOut.DeviceCount;
@@ -76,6 +73,8 @@ namespace JUMO.Audio
             {
                 _outputDevices.Add(new AsioOutputDevice(asio));
             }
+
+            CurrentOutputDevice = _outputDevices?[0];
         }
 
         private void OnPropertyChanged(string propertyName)

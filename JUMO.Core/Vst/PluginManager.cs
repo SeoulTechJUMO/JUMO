@@ -47,7 +47,6 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                //AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
                 MixerManager.Instance.MixerChannels[0].MixerSendInput(plugin.SampleProvider);
 
                 Plugins.Add(plugin);
@@ -69,21 +68,6 @@ namespace JUMO.Vst
                 plugin.Dispose();
             }
         }
-
-        //private void AudioOutputDeviceChanged(object sender, EventArgs e)
-        //{
-        //    System.Diagnostics.Debug.WriteLine("PluginManager: Audio output device has changed.");
-
-        //    if (AudioManager.Instance.CurrentOutputDevice == null)
-        //    {
-        //        return;
-        //    }
-
-        //    foreach (var plugin in Plugins)
-        //    {
-        //        AudioManager.Instance.AddMixerInput(plugin.SampleProvider);
-        //    }
-        //}
     }
 
     public class EffectPluginManager : IDisposable
@@ -115,6 +99,7 @@ namespace JUMO.Vst
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
                 channel.MixerSendInput(plugin.SampleProvider);
+                //플러그인에 이전 source를 추가해줘야함
 
                 Plugins.Add(plugin);
 
