@@ -43,6 +43,9 @@ namespace JUMO.Vst
         public IVstPluginCommandStub PluginCommandStub { get; }
         public ISampleProvider SampleProvider { get; }
 
+        //input오디오 소스
+        public ISampleProvider source;
+
         public int ChannelNum
         {
             get => _ChannelNum;
@@ -78,7 +81,16 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
-            _volume = new VolumeSampleProvider(new VstSampleProvider(this));
+
+            if (source != null)
+            {
+                _volume = new VolumeSampleProvider(new VstSampleProvider(this, source));
+            }
+            else
+            {
+                _volume = new VolumeSampleProvider(new VstSampleProvider(this));
+            }
+
             SampleProvider = _volume;
         }
 

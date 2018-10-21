@@ -18,6 +18,12 @@ namespace JUMO.Vst
             _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
         }
 
+        public VstSampleProvider(Plugin plugin, ISampleProvider source)
+        {
+            Source = source;
+            _cmdstub = plugin.PluginCommandStub;
+        }
+
         public int Read(float[] buffer, int offset, int count)
         {
             int halfCount = count >> 1;

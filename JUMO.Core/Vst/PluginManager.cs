@@ -101,6 +101,7 @@ namespace JUMO.Vst
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
                 //플러그인에 이전 source를 추가해줘야함
+                plugin.source = source;
                 channel.MixerSendInput(plugin.SampleProvider);
                 
                 Plugins.Add(plugin);
