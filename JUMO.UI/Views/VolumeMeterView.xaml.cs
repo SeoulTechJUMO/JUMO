@@ -20,26 +20,6 @@ namespace JUMO.UI.Views
     /// </summary>
     public partial class VolumeMeterView : UserControl
     {
-        #region Dependency Properties
-
-        //public static readonly DependencyProperty PluginProperty =
-        //    DependencyProperty.Register(
-        //        "Plugin", typeof(Vst.Plugin), typeof(ChannelRackItemView)
-        //    );
-        #endregion
-
-        #region Properties
-
-        //public double LeftVolume
-        //{
-        //    get => (double)GetValue(PluginProperty);
-        //    set => SetValue(PluginProperty, value);
-        //}
-
-
-
-        #endregion
-
         public VolumeMeterView()
         {
             InitializeComponent();
