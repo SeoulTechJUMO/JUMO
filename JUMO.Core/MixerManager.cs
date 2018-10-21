@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using JUMO.Audio;
+using JUMO.Vst;
 
 namespace JUMO
 {
@@ -76,6 +77,13 @@ namespace JUMO
                 }
                 CurrentChannel.IsSolo = false;
             }
+        }
+
+        //플러그인 채널 채인지
+        public void ChangeChannel(Plugin plugin, int TargetChannelNum)
+        {
+            MixerChannels[plugin.ChannelNum].MixerInputDispose(plugin.SampleProvider);
+            MixerChannels[TargetChannelNum].MixerSendInput(plugin.SampleProvider);
         }
 
         //오디오 디바이스가 바뀔경우

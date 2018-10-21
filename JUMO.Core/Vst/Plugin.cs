@@ -17,6 +17,7 @@ namespace JUMO.Vst
 
         private bool _isDisposed = false;
         private string _name;
+        private int _ChannelNum = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,6 +39,16 @@ namespace JUMO.Vst
         public IVstPluginCommandStub PluginCommandStub { get; }
         public ISampleProvider SampleProvider { get; }
 
+        public int ChannelNum
+        {
+            get => _ChannelNum;
+            set
+            {
+                _ChannelNum = value;
+                OnPropertyChanged(nameof(ChannelNum));
+            }
+        }
+        
         public float Volume
         {
             get => _volume.Volume;
