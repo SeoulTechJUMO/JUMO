@@ -47,7 +47,7 @@
     </UserControl.Resources>
     
     <StackPanel Orientation="Horizontal">
-        <ProgressBar Width="20" Height="200" Value="{Binding LeftVolume}" Maximum="6.0" Minimum="-60.0" Orientation="Vertical" Style="{StaticResource VolumeMeter}"/>
-        <ProgressBar Width="20" Height="200" Value="{Binding RightVolume}" Maximum="6.0" Minimum="-60.0" Orientation="Vertical" Style="{StaticResource VolumeMeter}" />
+        <ProgressBar Width="20" Height="200" Value="{Binding DataContext.LeftVolume, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Maximum="6.0" Minimum="-60.0" Orientation="Vertical" Style="{StaticResource VolumeMeter}"/>
+        <ProgressBar Width="20" Height="200" Value="{Binding DataContext.RightVolume, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}" Maximum="6.0" Minimum="-60.0" Orientation="Vertical" Style="{StaticResource VolumeMeter}" />
     </StackPanel>
 </UserControl>

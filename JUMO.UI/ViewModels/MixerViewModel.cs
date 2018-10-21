@@ -40,5 +40,10 @@ namespace JUMO.UI.ViewModels
                 OnPropertyChanged(nameof(CurrentChannel));
             }
         }
+
+        //사용 커맨드
+        private RelayCommand _Solo;
+        public RelayCommand Solo
+            => _Solo ?? (_Solo = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
     }
 }

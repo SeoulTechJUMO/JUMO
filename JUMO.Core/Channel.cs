@@ -14,28 +14,18 @@ namespace JUMO
 {
     public class MixerChannel : INotifyPropertyChanged
     {
-        public MixerChannel(string name, int Number, bool IsMaster=false)
+        public MixerChannel(string name, bool IsMaster=false)
         {
             Name = name;
-            ChannelNumber = Number;
             Mixer.ReadFully = true;
 
-            if(IsMaster)
-            {
-                //마스터 채널일때 초기화
-                this.IsMaster = true;
-                _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer,1000);
-                Plugins = EffectManager.Plugins; 
-            }
-            else
-            {
-                //일반 채널에서 초기화
-                _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer, 1000);
-                Plugins = EffectManager.Plugins;
-            }
+            //마스터 채널일때 초기화
+            if (IsMaster) { this.IsMaster = true; }
 
+            //일반 채널에서 초기화
+            _VolumeSample = new VolumeSampleProvider(Mixer);
+            _VolumeMeter = new MeteringSampleProvider(Mixer, 1000);
+            Plugins = EffectManager.Plugins;
             Volume = 0.8f;
             _VolumeMeter.StreamVolume += OnPostVolumeMeter;
         }
@@ -85,20 +75,6 @@ namespace JUMO
         }
 
         /// <summary>
-        /// 채널의 번호
-        /// </summary>
-        private int _ChannelNumber;
-        public int ChannelNumber
-        {
-            get => _ChannelNumber;
-            set
-            {
-                _ChannelNumber = value;
-                OnPropertyChanged(nameof(ChannelNumber));
-            }
-        }
-
-        /// <summary>
         /// 채널의 음소거 여부
         /// </summary>
         private bool _IsMuted = false;
@@ -109,39 +85,25 @@ namespace JUMO
             {
                 _IsMuted = value;
 
-                //if (_IsMuted)
-                //{
-                //    //뮤트 처리
-                //    tempVol = Volume;
-                //    VolumeSample.Volume = 0f;
-                //}
-                //else
-                //{
-                //    //뮤트 해제
-                //    VolumeSample.Volume = (float)tempVol;
-                //}
+                if (_IsMuted)
+                {
+                    //뮤트 처리
                     
+                }
+                else
+                {
+                    //뮤트 해제
+
+                }
+
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
 
-        //뮤트용 임시 볼륨
-        public double tempVol = 0.8f;
-
         /// <summary>
         /// 채널의 솔로 여부
         /// </summary>
-
-        private bool _IsSolo = false;
-        public bool IsSolo
-        {
-            get => _IsSolo;
-            set
-            {
-                _IsSolo = value;
-                OnPropertyChanged(nameof(IsSolo));
-            }
-        }
+        public bool IsSolo = false;
 
         //마스터 여부
         public readonly bool IsMaster = false;
@@ -151,6 +113,9 @@ namespace JUMO
 
         //내부 믹서 프로바이더
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+
+        //내부 이팩트간의 샘플프로바이더 리스트
+        private ObservableCollection<ISampleProvider> inSamples = new ObservableCollection<ISampleProvider>();
 
         //볼륨 샘플
         private VolumeSampleProvider _VolumeSample;
