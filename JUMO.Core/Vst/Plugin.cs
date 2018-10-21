@@ -44,6 +44,8 @@ namespace JUMO.Vst
             get => _ChannelNum;
             set
             {
+                MixerManager.Instance.ChangeChannel(this, value);
+
                 _ChannelNum = value;
                 OnPropertyChanged(nameof(ChannelNum));
             }
