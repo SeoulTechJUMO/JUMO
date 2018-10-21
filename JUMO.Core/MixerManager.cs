@@ -26,12 +26,12 @@ namespace JUMO
             {
                 if (i == 0)
                 {
-                    MixerChannels.Add(new MixerChannel("마스터", i, true));
+                    MixerChannels.Add(new MixerChannel("마스터", true));
                     AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeSample);
                 }
                 else
                 {
-                    MixerChannels.Add(new MixerChannel($"채널 {i}", i));
+                    MixerChannels.Add(new MixerChannel($"채널 {i}"));
                     MixerChannels[0].MixerSendInput(MixerChannels[i].VolumeSample);
                 }
             }
@@ -51,32 +51,28 @@ namespace JUMO
         }
 
         //채널 솔로 활성화 & 비활성화
-        public void ToggleSolo(MixerChannel CurrentChannel, List<MixerChannel> ChannelList)
+        public void ToggleSolo(MixerChannel CurrentChannel)
         {
             if (!CurrentChannel.IsSolo)
             {
-                //다른 채널 isMuted 활성화
-                foreach (MixerChannel c in ChannelList)
+                foreach (MixerChannel c in MixerChannels)
                 {
-                    if (c != CurrentChannel && !c.IsMaster)
-                    {
-                        c.IsMuted = true;
-                    }
+                    c.IsMuted = true;
+                    c.IsSolo = false;
                 }
+                CurrentChannel.IsMuted = false;
                 CurrentChannel.IsSolo = true;
             }
             else
             {
-                //다른 채널 isMuted 활성화 해제
-                foreach (MixerChannel c in ChannelList)
+                foreach (MixerChannel c in MixerChannels)
                 {
-                    if (c != CurrentChannel && !c.IsMaster)
-                    {
-                        c.IsMuted = false;
-                    }
+                    c.IsMuted = false;
+                    c.IsSolo = false;
                 }
-                CurrentChannel.IsSolo = false;
             }
+
+            if(!CurrentChannel.IsMaster) { MixerChannels[0].IsMuted = false; }
         }
 
         //플러그인 채널 채인지

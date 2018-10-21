@@ -25,6 +25,4 @@ namespace JUMO.UI.Views
             InitializeComponent();
         }
     }
-
-
 }
