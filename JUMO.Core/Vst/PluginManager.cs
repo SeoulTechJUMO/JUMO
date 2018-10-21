@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Audio;
+using NAudio.Wave;
 
 namespace JUMO.Vst
 {
@@ -13,10 +14,6 @@ namespace JUMO.Vst
         #region Singleton
 
         private static readonly Lazy<PluginManager> _instance = new Lazy<PluginManager>(() => new PluginManager());
-        private PluginManager()
-        {
-            //AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
-        }
         public static PluginManager Instance => _instance.Value;
 
         #endregion
@@ -74,7 +71,7 @@ namespace JUMO.Vst
     {
         public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
 
-        public bool AddPlugin(MixerChannel channel, Action<Exception> onError)
+        public bool AddPlugin(MixerChannel channel, ISampleProvider source, Action<Exception> onError)
         {
             OpenFileDialog dlg = new OpenFileDialog()
             {
@@ -83,7 +80,7 @@ namespace JUMO.Vst
 
             if (dlg.ShowDialog() == true)
             {
-                return AddPlugin(dlg.FileName, channel, onError);
+                return AddPlugin(dlg.FileName, channel, source, onError);
             }
             else
             {
@@ -91,16 +88,16 @@ namespace JUMO.Vst
             }
         }
 
-        public bool AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError)
+        public bool AddPlugin(string pluginPath, MixerChannel channel, ISampleProvider source, Action<Exception> onError)
         {
             try
             {
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                channel.MixerSendInput(plugin.SampleProvider);
                 //플러그인에 이전 source를 추가해줘야함
-
+                channel.MixerSendInput(plugin.SampleProvider);
+                
                 Plugins.Add(plugin);
 
                 return true;

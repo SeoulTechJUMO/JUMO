@@ -18,23 +18,57 @@ namespace JUMO
         {
             Name = name;
             ChannelNumber = Number;
+            Mixer.ReadFully = true;
 
             if(IsMaster)
             {
                 //마스터 채널일때 초기화
                 this.IsMaster = true;
                 _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer,10);
+                _VolumeMeter = new MeteringSampleProvider(Mixer,1000);
                 Plugins = EffectManager.Plugins; 
             }
             else
             {
                 //일반 채널에서 초기화
                 _VolumeSample = new VolumeSampleProvider(Mixer);
-                _VolumeMeter = new MeteringSampleProvider(Mixer, 10);
+                _VolumeMeter = new MeteringSampleProvider(Mixer, 1000);
                 Plugins = EffectManager.Plugins;
             }
+
+            Volume = 0.8f;
+            _VolumeMeter.StreamVolume += OnPostVolumeMeter;
         }
+
+        void OnPostVolumeMeter(object sender, StreamVolumeEventArgs e)
+        {
+            // we know it is stereo
+            LeftVolume = e.MaxSampleValues[0];
+            RightVolume = e.MaxSampleValues[1];
+        }
+
+        private double _LeftVolume;
+        public double LeftVolume
+        {
+            get => _LeftVolume;
+            set
+            {
+                _LeftVolume = value;
+                OnPropertyChanged(nameof(LeftVolume));
+            }
+        }
+
+        private double _RightVolume;
+        public double RightVolume
+        {
+            get => _RightVolume;
+            set
+            {
+                _RightVolume = value;
+                OnPropertyChanged(nameof(RightVolume));
+            }
+        }
+
 
         /// <summary>
         /// 채널의 이름
@@ -75,11 +109,24 @@ namespace JUMO
             {
                 _IsMuted = value;
 
-                ToggleMute();
-                
+                //if (_IsMuted)
+                //{
+                //    //뮤트 처리
+                //    tempVol = Volume;
+                //    VolumeSample.Volume = 0f;
+                //}
+                //else
+                //{
+                //    //뮤트 해제
+                //    VolumeSample.Volume = (float)tempVol;
+                //}
+                    
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
+
+        //뮤트용 임시 볼륨
+        public double tempVol = 0.8f;
 
         /// <summary>
         /// 채널의 솔로 여부
@@ -113,7 +160,6 @@ namespace JUMO
             set
             {
                 _VolumeSample = value;
-
             }
         }
 
@@ -136,7 +182,6 @@ namespace JUMO
             set
             {
                 _VolumeSample.Volume = (float)value;
-                System.Diagnostics.Debug.WriteLine(_VolumeSample.Volume);
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -152,19 +197,6 @@ namespace JUMO
             {
                 _Plugins = value;
                 OnPropertyChanged(nameof(Plugins));
-            }
-        }
-
-        public void ToggleMute()
-        {
-            //음소거 처리
-            if (_IsMuted)
-            {
-                //뮤트 처리
-            }
-            else
-            {
-                //뮤트 해제
             }
         }
 

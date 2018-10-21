@@ -13,13 +13,11 @@
         <TextBlock Margin="0,20,0,0" FontSize="12" Text="{Binding Name}"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
-            <local:VolumeMeterView>
-            </local:VolumeMeterView>
+            <local:VolumeMeterView />
         </StackPanel>
 
         <StackPanel>
             <CheckBox Content="Mute" Width="70" IsChecked="{Binding IsMuted}"/>
-
             <Slider x:Name="Volume" Orientation="Vertical" Height="100" HorizontalAlignment="Center" Margin="0,20,0,20" Value="{Binding Volume}" Minimum="0.0" Maximum="1.0"/>
             <Slider x:Name="Panning" Margin="0,0,0,20"/>
         </StackPanel>
