@@ -94,7 +94,7 @@ namespace JUMO.Vst
 
                 int deltaFrames = (int)(44100 * (tick - _firstTick) * Song.Current.SecondsPerTick);
 
-                _pendingEvents.Add(new VstMidiEvent(deltaFrames, 0, 0, msg.GetBytes(), 0, 0));
+                _pendingEvents.Add(new VstMidiEvent(Math.Max(0, deltaFrames), 0, 0, msg.GetBytes(), 0, 0));
             }
         }
 
