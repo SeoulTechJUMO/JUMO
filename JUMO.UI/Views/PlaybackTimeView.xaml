@@ -8,24 +8,30 @@
              xmlns:proj="clr-namespace:JUMO.UI"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=proj:PlaybackTimeViewModel}"
-             d:DesignWidth="120" d:DesignHeight="50">
-    <Grid Margin="5,0">
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Run Text="{Binding Minutes, Mode=OneWay, StringFormat={}{0,3:D3}}" />:<Run Text="{Binding Seconds, Mode=OneWay, StringFormat={}{0,2:D2}}" />.<Run FontSize="18" Text="{Binding Milliseconds, Mode=OneWay, StringFormat={}{0,3:D3}}" />
-        </TextBlock>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Margin="0,0,10,0">
-                <Run FontWeight="Bold">마디</Run>
+             d:DesignWidth="240" d:DesignHeight="150">
+    <Grid>
+        <Grid Margin="20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Run Text="{Binding Minutes, Mode=OneWay, StringFormat={}{0,3:D3}}" /><!--
+             --><Run Foreground="{Binding SecondaryForeground, ElementName=root}">:</Run><!--
+             --><Run Text="{Binding Seconds, Mode=OneWay, StringFormat={}{0,2:D2}}" /><!--
+             --><Run Foreground="{Binding SecondaryForeground, ElementName=root}">.</Run><!--
+             --><Run FontSize="18" Text="{Binding Milliseconds, Mode=OneWay, StringFormat={}{0,3:D3}}" />
+            </TextBlock>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Margin="0,0,10,0">
+                <Run Foreground="{Binding SecondaryForeground, ElementName=root}" FontWeight="Bold">마디</Run>
                 <Run Text="{Binding Bars, Mode=OneWay, StringFormat={}{0,3:D3}}" />
-            </TextBlock>
-            <TextBlock Margin="0,0,0,4">
-                <Run FontWeight="Bold">박</Run>
+                </TextBlock>
+                <TextBlock Margin="0,0,0,4">
+                <Run Foreground="{Binding SecondaryForeground, ElementName=root}" FontWeight="Bold">박</Run>
                 <Run Text="{Binding Beats, Mode=OneWay, StringFormat={}{0,2:D2}}" />
-            </TextBlock>
-        </StackPanel>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
