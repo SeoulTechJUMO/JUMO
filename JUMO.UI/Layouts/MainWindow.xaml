@@ -8,6 +8,7 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:view="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
+        Background="{StaticResource LightBackgroundColor}"
         Title="{Binding DisplayName}" Height="600" Width="900">
     <Window.DataContext>
         <proj:MainViewModel />
@@ -24,7 +25,7 @@
             <MenuItem Header=" 도구(T)" />
             <MenuItem Header=" 도움말(H)" />
         </Menu>
-        <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top" Margin="3">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -45,7 +46,7 @@
 
                 <ToggleButton Grid.Column="0" Command="{Binding TogglePlaybackModeCommand}">
                     <ToggleButton.Style>
-                        <Style TargetType="ToggleButton">
+                        <Style TargetType="ToggleButton" BasedOn="{StaticResource FaceToggleButtonStyle2}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                     <Setter Property="Content" Value="패턴" />
@@ -59,11 +60,11 @@
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
-                <ToggleButton Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
-                <ctrl:NumericUpDown Grid.Column="2" MinValue="20" MaxValue="500" Value="{Binding Song.Tempo}" />
+                <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
+                <ctrl:NumericUpDown Grid.Column="2" Margin="3" MinValue="20" MaxValue="500" Value="{Binding Song.Tempo}" />
             </Grid>
 
-            <Slider Grid.Row="1" Grid.Column="0" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
+            <Slider Grid.Row="1" Grid.Column="0" Margin="3" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
                 <Slider.Style>
                     <Style TargetType="Slider">
                         <Style.Triggers>
@@ -78,20 +79,20 @@
                 </Slider.Style>
             </Slider>
 
-            <ContentControl Grid.Column="1" Grid.RowSpan="2">
+            <ContentControl Grid.Column="1" Grid.RowSpan="2" Margin="3">
                 <ContentControl.ContentTemplate>
                     <DataTemplate DataType="{x:Type proj:PlaybackTimeViewModel}">
-                        <view:PlaybackTimeView />
+                        <view:PlaybackTimeView Background="{StaticResource DarkBackgroundColor}" Foreground="{StaticResource DarkPrimaryTextColor}" />
                     </DataTemplate>
                 </ContentControl.ContentTemplate>
                 <proj:PlaybackTimeViewModel />
             </ContentControl>
 
-            <ComboBox Grid.Row="0" Grid.Column="2" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
+            <ComboBox Grid.Row="0" Grid.Column="2" Margin="3" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                <Button BorderBrush="Gray" Content="MX" />
-                <Button BorderBrush="Gray" Content="PL" Command="{Binding OpenPlaylistCommand}" />
+                <Button Content="MX" />
+                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" />
             </StackPanel>
         </Grid>
         <Grid>
