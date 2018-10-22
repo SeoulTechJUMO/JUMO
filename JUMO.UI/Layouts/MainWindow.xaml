@@ -14,7 +14,7 @@
         <proj:MainViewModel />
     </Window.DataContext>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Background="{StaticResource LightBackgroundColor}">
             <MenuItem Header="파일(F)">
                 <MenuItem Header="저장" />
                 <MenuItem Header="열기" />
@@ -101,29 +101,29 @@
                 <Button Content="PL" Command="{Binding OpenPlaylistCommand}" />
             </StackPanel>
         </Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" MinWidth="300" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Column="0">
-                <TabItem Header="패턴">
-                    <proj:ChannelRackViewModel />
-                </TabItem>
-            </TabControl>
-            <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-            <TabControl Grid.Column="2" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" Command="{Binding CloseCommand}" />
-                            <TextBlock Text="{Binding DisplayName}" />
-                        </DockPanel>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-            </TabControl>
-        </Grid>
+                <TabControl Grid.Column="0" Margin="{StaticResource ControlMargin}">
+                    <TabItem Header="패턴">
+                        <proj:ChannelRackViewModel />
+                    </TabItem>
+                </TabControl>
+                <TabControl Grid.Column="1" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" Command="{Binding CloseCommand}" />
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                </TabControl>
+            </Grid>
+        </Border>
     </DockPanel>
 </Window>
