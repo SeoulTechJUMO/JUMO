@@ -54,6 +54,8 @@ namespace JUMO
         private int _timeResolution = 96;
         private int _length = 0;
         private Pattern _currentPattern;
+        private double _tempo = 120;
+        private int _tempoBeat = 6;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -117,13 +119,45 @@ namespace JUMO
         /// <summary>
         /// 곡의 템포를 가져옵니다.
         /// </summary>
-        public double Tempo { get; private set; }
+        public double Tempo
+        {
+            get => _tempo;
+            set
+            {
+                if (_tempo != value)
+                {
+                    _tempo = value;
+
+                    MidiTempo = CalculateMidiTempo(_tempoBeat, _tempo);
+                    SecondsPerTick = CalculateSecondsPerTick(MidiTempo, TimeResolution);
+
+                    OnPropertyChanged(nameof(Tempo));
+                    OnPropertyChanged(nameof(MidiTempo));
+                }
+            }
+        }
 
         /// <summary>
         /// 템포의 기준이 되는 박자의 길이를 가져옵니다.
         /// 4분음표 네 개의 길이는 24로 정의합니다.
         /// </summary>
-        public int TempoBeat { get; private set; }
+        public int TempoBeat
+        {
+            get => _tempoBeat;
+            set
+            {
+                if (_tempoBeat != value)
+                {
+                    _tempoBeat = value;
+
+                    MidiTempo = CalculateMidiTempo(_tempoBeat, _tempo);
+                    SecondsPerTick = CalculateSecondsPerTick(MidiTempo, TimeResolution);
+
+                    OnPropertyChanged(nameof(TempoBeat));
+                    OnPropertyChanged(nameof(MidiTempo));
+                }
+            }
+        }
 
         /// <summary>
         /// 곡의 템포를 MIDI 템포 형식으로 가져오거나 설정합니다.
@@ -228,13 +262,17 @@ namespace JUMO
         {
             TempoBeat = tempoBeat;
             Tempo = tempo;
-            MidiTempo = (int)Math.Round(10_000_000.0 * TempoBeat / Tempo);
-            SecondsPerTick = 1.0e-6 * MidiTempo / TimeResolution;
+            MidiTempo = CalculateMidiTempo(TempoBeat, Tempo);
+            SecondsPerTick = CalculateSecondsPerTick(MidiTempo, TimeResolution);
 
             OnPropertyChanged(nameof(Tempo));
             OnPropertyChanged(nameof(TempoBeat));
             OnPropertyChanged(nameof(MidiTempo));
         }
+
+        private int CalculateMidiTempo(int tempoBeat, double tempo) => (int)Math.Round(10_000_000.0 * tempoBeat / tempo);
+
+        private double CalculateSecondsPerTick(int midiTempo, int timeResolution) => 1.0e-6 * midiTempo / timeResolution;
 
         private void UpdateLength() => Length = PlacedPatterns.Select(pp => pp.Start + pp.Length).DefaultIfEmpty(0).Max();
 
