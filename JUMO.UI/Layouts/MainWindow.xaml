@@ -79,14 +79,20 @@
                 </Slider.Style>
             </Slider>
 
-            <ContentControl Grid.Column="1" Grid.RowSpan="2" Margin="3">
-                <ContentControl.ContentTemplate>
-                    <DataTemplate DataType="{x:Type proj:PlaybackTimeViewModel}">
-                        <view:PlaybackTimeView Background="{StaticResource DarkBackgroundColor}" Foreground="{StaticResource DarkPrimaryTextColor}" />
-                    </DataTemplate>
-                </ContentControl.ContentTemplate>
-                <proj:PlaybackTimeViewModel />
-            </ContentControl>
+            <Grid Grid.Column="1" Grid.RowSpan="2" Margin="3">
+                <Rectangle x:Name="playbackTimeViewMask" RadiusX="10" RadiusY="2147483647" Fill="{StaticResource LightBackgroundColor}" />
+                <ContentControl>
+                    <ContentControl.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=playbackTimeViewMask}" />
+                    </ContentControl.OpacityMask>
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate DataType="{x:Type proj:PlaybackTimeViewModel}">
+                            <view:PlaybackTimeView Background="{StaticResource DarkBackgroundColor}" Foreground="{StaticResource DarkPrimaryTextColor}" SecondaryForeground="{StaticResource DarkSecondaryTextColor}" />
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                    <proj:PlaybackTimeViewModel />
+                </ContentControl>
+            </Grid>
 
             <ComboBox Grid.Row="0" Grid.Column="2" Margin="3" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
 
