@@ -17,19 +17,19 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
-            <Button Content="-" Padding="10,3" Command="{Binding ZoomOutCommand}" />
-            <Border BorderBrush="{x:Static SystemColors.ActiveBorderBrush}"
-                    Background="{x:Static SystemColors.WindowBrush}"
-                    Width="50"
-                    BorderThickness="1">
-                <Border.InputBindings>
+            <Button Content="-" Command="{Binding ZoomOutCommand}" proj:SkinHelper.Segment="Left" />
+            <TextBox Width="50"
+                     Text="{Binding ZoomPercent, Mode=OneWay, StringFormat={}{0}%}"
+                     IsReadOnly="True"
+                     HorizontalContentAlignment="Center"
+                     proj:SkinHelper.Segment="Center">
+                <TextBox.InputBindings>
                     <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
-                </Border.InputBindings>
-                <TextBlock Text="{Binding ZoomPercent, StringFormat={}{0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Border>
-            <Button Content="+" Padding="8,3" Command="{Binding ZoomInCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
             <Label Content="눈금" />
-            <ComboBox Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
+            <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -48,7 +48,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
-            <Button Content="코드 진행 추천" Margin="30,0,0,0" Click="ExcuteChordMagician" />
+            <Button Content="코드 진행 추천" Click="ExcuteChordMagician" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
