@@ -28,9 +28,16 @@
                     <local:MixerChannelView ></local:MixerChannelView>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="BorderBrush" Value="Gray"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Background" Value="LightGray"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
         <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-        <DockPanel Grid.Column="2">
+        <DockPanel Grid.Column="2" HorizontalAlignment="Center">
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
                 <Label Content="현재 채널 OUT : "/>
             </StackPanel>
@@ -38,14 +45,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="현재 채널 IN : "/>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" MaxHeight="300" MinHeight="100" Width="250">
+                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" Height="350" Padding="10" Margin="10">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <local:MixerVstView></local:MixerVstView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ListBox>
-                <Button Content="플러그인 추가" Width="100" Command="{Binding AddPluginCommand}"/>
+                <Button Content="플러그인 추가" Padding="3" Margin="80,0,80,0" Command="{Binding AddPluginCommand}"/>
             </StackPanel>
         </DockPanel>
     </Grid>
