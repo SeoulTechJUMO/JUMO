@@ -35,7 +35,7 @@ namespace JUMO.Mixer
             this.source = source;
             Volume = 1.0f;
             Panning = 0.0f;
-            Mute = true;
+            Mute = false;
 
             channels = source.WaveFormat.Channels;
             maxSamples = new float[channels];
@@ -58,24 +58,23 @@ namespace JUMO.Mixer
         public int Read(float[] buffer, int offset, int sampleCount)
         {
             int samplesRead = source.Read(buffer, offset, sampleCount);
-            float temp;
+            float[] tempBuf = new float[sampleCount];
 
             if (Volume != 1f)
             {
                 for (int n = 0; n < sampleCount; n++)
                 {
-                    if (Panning == 0) { break; }
                     if (Panning > 0)
                     {
                         if ((offset + n) % 2 == 0)
                         {
                             //왼쪽
-                            temp = buffer[offset + n] * (1 - Panning);
+                            tempBuf[offset + n] = buffer[offset + n] * (1 - Panning);
                         }
                         else
                         {
                             //오른쪽
-                            temp = buffer[offset + n];
+                            tempBuf[offset + n] = buffer[offset + n];
                         }
                     }
                     else
@@ -83,15 +82,17 @@ namespace JUMO.Mixer
                         if ((offset + n) % 2 == 0)
                         {
                             //왼쪽
-                            temp = buffer[offset + n];
+                            tempBuf[offset + n] = buffer[offset + n];
                         }
                         else
                         {
                             //오른쪽
-                            temp = buffer[offset + n] * (1 - (-Panning));
+                            tempBuf[offset + n] = buffer[offset + n] * (1 - (-Panning));
                         }
                     }
-                    buffer[offset + n] = temp * Volume;
+                    tempBuf[offset + n] *= Volume;
+                    if (Mute) { buffer[offset + n] = 0; }
+                    else { buffer[offset + n] = tempBuf[offset + n]; }
                 }
             }
 
@@ -101,7 +102,7 @@ namespace JUMO.Mixer
                 {
                     for (int channel = 0; channel < channels; channel++)
                     {
-                        float sampleValue = Math.Abs(buffer[offset + index + channel]);
+                        float sampleValue = Math.Abs(tempBuf[offset + index + channel]);
                         maxSamples[channel] = Math.Max(maxSamples[channel], sampleValue);
                     }
                     sampleCount++;

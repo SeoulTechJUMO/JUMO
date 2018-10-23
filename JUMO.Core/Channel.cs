@@ -27,6 +27,7 @@ namespace JUMO
             _VolumePanningSample = new VolumePanningProvider(Mixer,1000);
             Plugins = EffectManager.Plugins;
             Volume = 0.8f;
+            IsMuted = false;
             _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
             inSamples = _VolumePanningSample;
         }
@@ -85,25 +86,12 @@ namespace JUMO
         /// <summary>
         /// 채널의 음소거 여부
         /// </summary>
-        private bool _IsMuted = false;
         public bool IsMuted
         {
-            get => _IsMuted;
+            get => _VolumePanningSample.Mute;
             set
             {
-                _IsMuted = value;
-
-                if (_IsMuted)
-                {
-                    //뮤트 처리
-                    
-                }
-                else
-                {
-                    //뮤트 해제
-
-                }
-
+                _VolumePanningSample.Mute = value;
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
