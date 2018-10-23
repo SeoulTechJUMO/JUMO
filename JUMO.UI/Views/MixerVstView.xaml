@@ -6,11 +6,13 @@
              xmlns:local="clr-namespace:JUMO.UI.Views"
              mc:Ignorable="d">
 
-    <StackPanel Width="200" Height="20" Orientation="Horizontal" Margin="2">
-        <StackPanel.InputBindings>
-            <MouseBinding Gesture="LeftClick" Command="{Binding DataContext.OpenPluginEditorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
-        </StackPanel.InputBindings>
-        <TextBlock Text="{Binding Name}" Width="180"/>
-        <Button Padding="4,2" Content="+" HorizontalAlignment="Center" Command="{Binding DataContext.AddPluginCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
-    </StackPanel>
+    <Border BorderBrush="Gray" BorderThickness="1">
+        <StackPanel Width="200" Height="20" Orientation="Horizontal" Margin="2">
+            <StackPanel.InputBindings>
+                <MouseBinding Gesture="LeftClick" Command="{Binding DataContext.OpenPluginEditorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
+            </StackPanel.InputBindings>
+            <TextBlock Text="{Binding Name}" Width="180"/>
+            <Button Padding="4,2" Content="+" HorizontalAlignment="Center" Command="{Binding DataContext.AddPluginCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
+        </StackPanel>
+    </Border>
 </UserControl>

@@ -7,9 +7,10 @@
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
              x:Name="root"
-             d:DesignWidth="100">
+             d:DesignWidth="100"
+             >
 
-    <StackPanel HorizontalAlignment="Center">
+    <StackPanel HorizontalAlignment="Center" >
         <TextBlock Margin="0,20,0,0" FontSize="12" Text="{Binding Name}"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
