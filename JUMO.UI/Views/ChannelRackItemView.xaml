@@ -53,10 +53,13 @@
         </Button>
 
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
-                Margin="5,5,5,0" Height="32"
-                BorderBrush="Black" BorderThickness="1"
+                Margin="5,5,5,0" Padding="1" Height="32"
+                BorderBrush="{StaticResource LightControlBorderColor}"
+                Background="{StaticResource LightControlFaceColor}"
+                BorderThickness="1"
+                CornerRadius="{StaticResource ControlBorderRadius}"
                 SnapsToDevicePixels="True">
-            <local:ScoreThumbnailView Score="{Binding Score}" Background="AliceBlue" Foreground="Navy">
+            <local:ScoreThumbnailView Score="{Binding Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}">
                 <local:ScoreThumbnailView.InputBindings>
                     <MouseBinding Gesture="LeftClick"
                                   Command="{Binding OpenPianoRoll}"
