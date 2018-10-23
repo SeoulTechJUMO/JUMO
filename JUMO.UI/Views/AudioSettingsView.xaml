@@ -73,7 +73,7 @@
                   Style="{StaticResource SettingsItem}" />
         <StackPanel Grid.Row="5" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <ctrl:NumericUpDown Width="100" IsEnabled="False" Style="{StaticResource SettingsItem}"/>
+                <ctrl:NumericUpDownEx Width="100" IsEnabled="False" Style="{StaticResource SettingsItem}"/>
                 <Label Style="{StaticResource SettingsItem}" Content="밀리초" />
             </StackPanel>
             <TextBlock Style="{StaticResource SettingsItemHelpText}">
