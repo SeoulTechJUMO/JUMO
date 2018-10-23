@@ -42,5 +42,10 @@
             <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
             <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
         </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <TextBox Text="활성 텍스트 상자" />
+            <TextBox Text="비활성 텍스트 상자" IsEnabled="False" />
+        </StackPanel>
     </StackPanel>
 </Window>
