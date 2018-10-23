@@ -114,7 +114,7 @@
       <DependentUpon>SkinTestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ThumbnailManager.cs" />
-    <Compile Include="ToggleButtonIndicator.cs" />
+    <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
