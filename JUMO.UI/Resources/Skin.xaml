@@ -337,6 +337,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}" />
+                            <Setter Property="BorderBrush" Value="{StaticResource LightDisabledControlBorderColor}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
