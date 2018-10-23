@@ -22,8 +22,17 @@
     <!-- Common UI Metrics -->
     <sys:Double x:Key="UIFontSize">12.0</sys:Double>
     <Thickness x:Key="ControlMargin">3</Thickness>
+    <Thickness x:Key="LeftSegmentControlMargin">3,3,0,3</Thickness>
+    <Thickness x:Key="CenterSegmentControlMargin">0,3</Thickness>
+    <Thickness x:Key="RightSegmentControlMargin">0,3,3,3</Thickness>
     <Thickness x:Key="ControlBorderThickness">1,1,1,2</Thickness>
+    <Thickness x:Key="LeftSegmentControlBorderThickness">1,1,0,2</Thickness>
+    <Thickness x:Key="CenterSegmentControlBorderThickness">1,1,0,2</Thickness>
+    <Thickness x:Key="RightSegmentControlBorderThickness">1,1,1,2</Thickness>
     <CornerRadius x:Key="ControlBorderRadius">2</CornerRadius>
+    <CornerRadius x:Key="LeftSegmentControlBorderRadius">2,0,0,2</CornerRadius>
+    <CornerRadius x:Key="CenterSegmentControlBorderRadius">0</CornerRadius>
+    <CornerRadius x:Key="RightSegmentControlBorderRadius">0,2,2,0</CornerRadius>
 
     <!-- Button Metrics -->
     <Thickness x:Key="ButtonPadding">8,3</Thickness>
@@ -42,17 +51,38 @@
     <!-- TextBox Metrics -->
     <Thickness x:Key="TextBoxPadding">5,3</Thickness>
 
+    <Style x:Key="SegmentedControlStyle" TargetType="Control">
+        <Style.Triggers>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Left">
+                <Setter Property="Margin" Value="{StaticResource LeftSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource LeftSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource LeftSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Center">
+                <Setter Property="Margin" Value="{StaticResource CenterSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource CenterSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource CenterSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Right">
+                <Setter Property="Margin" Value="{StaticResource RightSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource RightSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource RightSegmentControlBorderRadius}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Button Styles -->
-    <Style TargetType="ButtonBase">
+    <Style TargetType="ButtonBase" BasedOn="{StaticResource SegmentedControlStyle}">
         <Setter Property="Background" Value="{StaticResource LightControlFaceColor}" />
         <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
         <Setter Property="FontSize" Value="{StaticResource UIFontSize}" />
+        <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource ControlBorderRadius}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </Border>
@@ -85,13 +115,14 @@
         <Setter Property="Padding" Value="{StaticResource DialogButtonPadding}" />
     </Style>
 
-    <Style TargetType="ToggleButton">
+    <Style TargetType="ToggleButton" BasedOn="{StaticResource SegmentedControlStyle}">
         <Setter Property="Background" Value="{StaticResource LightControlFaceColor}" />
         <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
         <Setter Property="FontSize" Value="{StaticResource UIFontSize}" />
         <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         <Setter Property="BorderThickness" Value="{StaticResource ControlBorderThickness}" />
+        <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource ControlBorderRadius}" />
     </Style>
 
     <Style x:Key="BulletToggleButtonStyleBase" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -100,7 +131,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
                                 <Grid HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
                                     <Ellipse x:Name="indicatorLight" Stroke="{StaticResource LightSecondaryTextColor}" StrokeThickness="1" Fill="{StaticResource LightSecondaryTextColor}" />
@@ -137,7 +168,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
                                 <Grid VerticalAlignment="Bottom" Margin="{StaticResource ToggleButtonBarMargin}" Height="3">
                                     <Border x:Name="indicatorLight" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="1" CornerRadius="1" Background="{StaticResource LightSecondaryTextColor}" />
@@ -174,7 +205,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </Border>
@@ -237,7 +268,7 @@
     </Style>
 
     <!-- TextBox Styles -->
-    <Style TargetType="{x:Type TextBox}">
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource SegmentedControlStyle}">
         <Setter Property="Background" Value="White"/>
         <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}"/>
         <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}"/>
@@ -250,10 +281,11 @@
         <Setter Property="AllowDrop" Value="true"/>
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
         <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource ControlBorderRadius}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource ControlBorderRadius}" Background="{StaticResource LightBackgroundColor}" SnapsToDevicePixels="True" ClipToBounds="True">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource LightBackgroundColor}" SnapsToDevicePixels="True" ClipToBounds="True">
                         <Grid>
                             <Rectangle Margin="0,1,0,0" RadiusX="1.4" RadiusY="1.4" Fill="{TemplateBinding Background}" />
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
