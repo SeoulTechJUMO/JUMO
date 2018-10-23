@@ -92,7 +92,7 @@
     <Compile Include="Channel.cs" />
     <Compile Include="IMusicalItem.cs" />
     <Compile Include="MakeNote.cs" />
-    <Compile Include="MixerManager.cs" />
+    <Compile Include="Mixer\MixerManager.cs" />
     <Compile Include="Pattern.cs" />
     <Compile Include="PatternPlacement.cs" />
     <Compile Include="Playback\MasterSequencer.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="Mixer\VolumePanningProvider.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
     <Compile Include="Vst\Plugin.cs" />
     <Compile Include="Vst\PluginManager.cs" />

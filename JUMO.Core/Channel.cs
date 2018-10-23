@@ -9,6 +9,7 @@ using JUMO.Vst;
 using NAudio.Wave;
 using NAudio.Gui;
 using NAudio.Wave.SampleProviders;
+using JUMO.Mixer;
 
 namespace JUMO
 {
@@ -23,15 +24,14 @@ namespace JUMO
             if (IsMaster) { this.IsMaster = true; }
 
             //일반 채널에서 초기화
-            _VolumeSample = new VolumeSampleProvider(Mixer);
-            _VolumeMeterSample = new MeteringSampleProvider(VolumeSample,1000);
+            _VolumePanningSample = new VolumePanningProvider(Mixer,1000);
             Plugins = EffectManager.Plugins;
             Volume = 0.8f;
-            _VolumeMeterSample.StreamVolume += OnPostVolumeMeter;
-            inSamples = VolumeMeterSample;
+            _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
+            inSamples = _VolumePanningSample;
         }
 
-        void OnPostVolumeMeter(object sender, StreamVolumeEventArgs e)
+        void OnPostVolumeMeter(object sender, VolumePanningProvider.StreamVolumeEventArgs e)
         {
             LeftVolume = e.MaxSampleValues[0];
             RightVolume = e.MaxSampleValues[1];
@@ -55,6 +55,16 @@ namespace JUMO
             {
                 _RightVolume = value;
                 OnPropertyChanged(nameof(RightVolume));
+            }
+        }
+
+        public float Panning
+        {
+            get => _VolumePanningSample.Panning;
+            set
+            {
+                _VolumePanningSample.Panning = value;
+                OnPropertyChanged(nameof(Panning));
             }
         }
 
@@ -115,36 +125,24 @@ namespace JUMO
         //내부 이팩트간의 샘플프로바이더 
         private ISampleProvider inSamples;
 
-        //볼륨 샘플
-        private VolumeSampleProvider _VolumeSample;
-        public VolumeSampleProvider VolumeSample
+        //통합 샘플 프로바이더
+        private VolumePanningProvider _VolumePanningSample;
+        public VolumePanningProvider VolumePanningSample
         {
-            get => _VolumeSample;
+            get => _VolumePanningSample;
             set
             {
-                _VolumeSample = value;
-            }
-        }
-
-        //볼륨 Meter
-        private MeteringSampleProvider _VolumeMeterSample;
-        public MeteringSampleProvider VolumeMeterSample
-        {
-            get => _VolumeMeterSample;
-            set
-            {
-                _VolumeMeterSample = value;
-                OnPropertyChanged(nameof(VolumeMeterSample));
+                _VolumePanningSample = value;
             }
         }
 
         //채널 볼륨
         public double Volume
         {
-            get => _VolumeSample.Volume;
+            get => _VolumePanningSample.Volume;
             set
             {
-                _VolumeSample.Volume = (float)value;
+                _VolumePanningSample.Volume = (float)value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
