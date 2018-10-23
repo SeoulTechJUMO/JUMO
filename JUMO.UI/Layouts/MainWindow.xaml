@@ -44,7 +44,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton Grid.Column="0" Command="{Binding TogglePlaybackModeCommand}">
+                <ToggleButton Grid.Column="0" Command="{Binding TogglePlaybackModeCommand}" proj:SkinHelper.Segment="Left">
                     <ToggleButton.Style>
                         <Style TargetType="ToggleButton" BasedOn="{StaticResource FaceToggleButtonStyle2}">
                             <Style.Triggers>
@@ -60,7 +60,7 @@
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
-                <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
+                <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" proj:SkinHelper.Segment="Right" />
                 <ctrl:NumericUpDown Grid.Column="2" Margin="3" Minimum="20" Maximum="500" Value="{Binding Song.Tempo}" />
             </Grid>
 
@@ -97,9 +97,9 @@
             <ComboBox Grid.Row="0" Grid.Column="2" Margin="3" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                <Button Content="MX" />
-                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" />
-                <Button Content="스킨 테스트" Click="Button_Click" />
+                <Button Content="MX" proj:SkinHelper.Segment="Left" />
+                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" proj:SkinHelper.Segment="Center" />
+                <Button Content="스킨 테스트" Click="Button_Click" proj:SkinHelper.Segment="Right" />
             </StackPanel>
         </Grid>
         <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
@@ -109,11 +109,11 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TabControl Grid.Column="0" Margin="{StaticResource ControlMargin}">
-                    <TabItem Header="패턴">
+                <Border Grid.Column="0" Margin="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}">
+                    <ContentControl>
                         <proj:ChannelRackViewModel />
-                    </TabItem>
-                </TabControl>
+                    </ContentControl>
+                </Border>
                 <TabControl Grid.Column="1" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
                     <TabControl.ItemTemplate>
                         <DataTemplate>
