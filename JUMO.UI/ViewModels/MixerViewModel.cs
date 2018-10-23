@@ -48,7 +48,6 @@ namespace JUMO.UI.ViewModels
             => _Solo ?? (_Solo = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
 
         private RelayCommand _AddPluginCommand;
-
         public RelayCommand AddPluginCommand => _AddPluginCommand ?? (_AddPluginCommand = new RelayCommand(_ => CurrentChannel.AddEffect()));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
