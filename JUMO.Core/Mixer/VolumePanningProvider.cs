@@ -8,22 +8,21 @@ namespace JUMO.Mixer
         private readonly ISampleProvider source;
 
         private readonly float[] maxSamples;
-        private int sampleCount;
         private readonly int channels;
         private readonly StreamVolumeEventArgs args;
 
         /// <summary>
-        /// Number of Samples per notification
+        /// 샘플 확인 주기
         /// </summary>
         public int SamplesPerNotification { get; set; }
 
         /// <summary>
-        /// Raised periodically to inform the user of the max volume
+        /// 이벤트 발생시에 최대 볼륨 값을 알려주는 이벤트
         /// </summary>
         public event EventHandler<StreamVolumeEventArgs> StreamVolume;
 
         /// <summary>
-        /// Initializes a new instance of VolumeSampleProvider
+        /// 믹서 채널용 생성자
         /// </summary>
         /// <param name="source">Source Sample Provider</param>
         public VolumePanningProvider(ISampleProvider source, int samplesPerNotification)
@@ -39,6 +38,10 @@ namespace JUMO.Mixer
             args = new StreamVolumeEventArgs() { MaxSampleValues = maxSamples };
         }
 
+        /// <summary>
+        /// 플러그인용 생성자
+        /// </summary>
+        /// <param name="source"></param>
         public VolumePanningProvider(ISampleProvider source)
         {
             this.source = source;
@@ -123,7 +126,7 @@ namespace JUMO.Mixer
         }
 
         /// <summary>
-        /// Allows adjusting the volume, 1.0f = full volume
+        /// 볼륨 값, 1.0f = full volume
         /// </summary>
         public float Volume { get; set; }
         /// <summary>
