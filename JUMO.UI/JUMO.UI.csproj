@@ -95,6 +95,7 @@
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
+    <Compile Include="Controls\VolumeMeter.cs" />
     <Compile Include="Data\BinaryPartition.cs" />
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
@@ -184,9 +185,6 @@
       <DependentUpon>ScoreThumbnailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectableView.cs" />
-    <Compile Include="Views\VolumeMeterView.xaml.cs">
-      <DependentUpon>VolumeMeterView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\SmartMelodyWindow.xaml.cs">
       <DependentUpon>SmartMelodyWindow.xaml</DependentUpon>
     </Compile>
@@ -284,10 +282,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ScoreThumbnailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VolumeMeterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

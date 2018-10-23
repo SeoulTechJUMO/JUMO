@@ -27,12 +27,12 @@ namespace JUMO
                 if (i == 0)
                 {
                     MixerChannels.Add(new MixerChannel("마스터", true));
-                    AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeSample);
+                    AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumeMeterSample);
                 }
                 else
                 {
                     MixerChannels.Add(new MixerChannel($"채널 {i}"));
-                    MixerChannels[0].MixerSendInput(MixerChannels[i].VolumeSample);
+                    MixerChannels[0].MixerSendInput(MixerChannels[i].VolumeMeterSample);
                 }
             }
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;

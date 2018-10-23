@@ -13,7 +13,9 @@
         <TextBlock Margin="0,20,0,0" FontSize="12" Text="{Binding Name}"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
-            <local:VolumeMeterView />
+            <ctrl:VolumeMeter Width="20" Height="200" Amplitude="{Binding LeftVolume}" />
+            <Rectangle Stroke="DarkGray" StrokeThickness="1"/>
+            <ctrl:VolumeMeter Width="20" Height="200" Amplitude="{Binding RightVolume}" />
         </StackPanel>
 
         <StackPanel>
