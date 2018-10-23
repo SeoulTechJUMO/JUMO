@@ -24,21 +24,21 @@ namespace JUMO
 
             //일반 채널에서 초기화
             _VolumeSample = new VolumeSampleProvider(Mixer);
-            _VolumeMeter = new MeteringSampleProvider(Mixer, 1000);
+            _VolumeMeterSample = new MeteringSampleProvider(VolumeSample,1000);
             Plugins = EffectManager.Plugins;
             Volume = 0.8f;
-            _VolumeMeter.StreamVolume += OnPostVolumeMeter;
+            _VolumeMeterSample.StreamVolume += OnPostVolumeMeter;
+            inSamples = VolumeMeterSample;
         }
 
         void OnPostVolumeMeter(object sender, StreamVolumeEventArgs e)
         {
-            // we know it is stereo
             LeftVolume = e.MaxSampleValues[0];
             RightVolume = e.MaxSampleValues[1];
         }
 
-        private double _LeftVolume;
-        public double LeftVolume
+        private float _LeftVolume;
+        public float LeftVolume
         {
             get => _LeftVolume;
             set
@@ -47,9 +47,8 @@ namespace JUMO
                 OnPropertyChanged(nameof(LeftVolume));
             }
         }
-
-        private double _RightVolume;
-        public double RightVolume
+        private float _RightVolume;
+        public float RightVolume
         {
             get => _RightVolume;
             set
@@ -58,7 +57,6 @@ namespace JUMO
                 OnPropertyChanged(nameof(RightVolume));
             }
         }
-
 
         /// <summary>
         /// 채널의 이름
@@ -109,13 +107,13 @@ namespace JUMO
         public readonly bool IsMaster = false;
 
         //이팩트 플러그인 관리자
-        private EffectPluginManager EffectManager = new EffectPluginManager();
+        public EffectPluginManager EffectManager = new EffectPluginManager();
 
-        //내부 믹서 프로바이더
+        //내부 믹서 프로바이더, 채널 최종 출력
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
-        //내부 이팩트간의 샘플프로바이더 리스트
-        private ObservableCollection<ISampleProvider> inSamples = new ObservableCollection<ISampleProvider>();
+        //내부 이팩트간의 샘플프로바이더 
+        private ISampleProvider inSamples;
 
         //볼륨 샘플
         private VolumeSampleProvider _VolumeSample;
@@ -129,14 +127,14 @@ namespace JUMO
         }
 
         //볼륨 Meter
-        private MeteringSampleProvider _VolumeMeter;
-        public MeteringSampleProvider VolumeMeter
+        private MeteringSampleProvider _VolumeMeterSample;
+        public MeteringSampleProvider VolumeMeterSample
         {
-            get => _VolumeMeter;
+            get => _VolumeMeterSample;
             set
             {
-                _VolumeMeter = value;
-                OnPropertyChanged(nameof(VolumeMeter));
+                _VolumeMeterSample = value;
+                OnPropertyChanged(nameof(VolumeMeterSample));
             }
         }
 
@@ -173,6 +171,18 @@ namespace JUMO
         public void MixerInputDispose(ISampleProvider input)
         {
             Mixer.RemoveMixerInput(input);
+        }
+
+        public void AddEffect()
+        {
+            if (Plugins.Count != 0)
+            {
+                EffectManager.AddPlugin(this, Plugins[Plugins.Count - 1].SampleProvider, null);
+            }
+            else
+            {
+                EffectManager.AddPlugin(this, inSamples, null);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

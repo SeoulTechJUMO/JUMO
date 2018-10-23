@@ -77,16 +77,24 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
+            _volume = new VolumeSampleProvider(new VstSampleProvider(this));
+            SampleProvider = _volume;
+        }
 
-            if (source != null)
-            {
-                _volume = new VolumeSampleProvider(new VstSampleProvider(this, source));
-            }
-            else
-            {
-                _volume = new VolumeSampleProvider(new VstSampleProvider(this));
-            }
+        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub, ISampleProvider source)
+        {
+            PluginPath = pluginPath;
 
+            _ctx = VstPluginContext.Create(PluginPath, hostCmdStub);
+            PluginCommandStub = _ctx.PluginCommandStub;
+            PluginCommandStub.Open();
+            PluginCommandStub.SetSampleRate(44100.0f);
+            PluginCommandStub.SetBlockSize(2048);
+            PluginCommandStub.MainsChanged(true);
+            PluginCommandStub.StartProcess();
+
+            Name = PluginCommandStub.GetEffectName();
+            _volume = new VolumeSampleProvider(new VstSampleProvider(this, source));
             SampleProvider = _volume;
         }
 

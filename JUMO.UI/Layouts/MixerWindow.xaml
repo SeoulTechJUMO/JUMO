@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
+        Width="1200"
         Title="믹서">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="900" MinWidth="100"/>
+            <ColumnDefinition Width="900"/>
             <ColumnDefinition Width="3"/>
-            <ColumnDefinition Width="200" MinWidth="200" MaxWidth="300"/>
+            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
         <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}">
             <ItemsControl.ItemsPanel>
@@ -37,14 +38,14 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="현재 채널 IN : "/>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" MaxHeight="300">
+                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" MaxHeight="300" MinHeight="100" Width="250">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <local:MixerVstView></local:MixerVstView>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ListBox>
-                <Button Content="플러그인 추가" Width="100"/>
+                <Button Content="플러그인 추가" Width="100" Command="{Binding AddPluginCommand}"/>
             </StackPanel>
         </DockPanel>
     </Grid>
