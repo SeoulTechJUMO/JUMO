@@ -90,8 +90,8 @@
     <Compile Include="Controls\IMusicalViewCallback.cs" />
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
-    <Compile Include="Controls\NumericUpDownEx.xaml.cs">
-      <DependentUpon>NumericUpDownEx.xaml</DependentUpon>
+    <Compile Include="Controls\NumericUpDown.xaml.cs">
+      <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PlaybackBarAdorner.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
@@ -185,7 +185,7 @@
     </Compile>
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
-    <Page Include="Controls\NumericUpDownEx.xaml">
+    <Page Include="Controls\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

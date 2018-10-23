@@ -5,13 +5,13 @@ using System.Windows.Input;
 
 namespace JUMO.UI.Controls
 {
-    public partial class NumericUpDownEx : UserControl
+    public partial class NumericUpDown : UserControl
     {
         #region Dependency Properties
 
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
-                "Value", typeof(double), typeof(NumericUpDownEx),
+                "Value", typeof(double), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(
                     0.0,
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
@@ -22,19 +22,19 @@ namespace JUMO.UI.Controls
 
         public static readonly DependencyProperty MinimumProperty =
             DependencyProperty.Register(
-                "Minimum", typeof(double), typeof(NumericUpDownEx),
+                "Minimum", typeof(double), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(0.0, MinimumPropertyChangedCallback)
             );
 
         public static readonly DependencyProperty MaximumProperty =
             DependencyProperty.Register(
-                "Maximum", typeof(double), typeof(NumericUpDownEx),
+                "Maximum", typeof(double), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(10.0, MaximumPropertyChangedCallback)
             );
 
         public static readonly DependencyProperty DeltaProperty =
             DependencyProperty.Register(
-                "Delta", typeof(double), typeof(NumericUpDownEx),
+                "Delta", typeof(double), typeof(NumericUpDown),
                 new FrameworkPropertyMetadata(1.0, DeltaPropertyChangedCallback)
             );
 
@@ -68,7 +68,7 @@ namespace JUMO.UI.Controls
 
         #endregion
 
-        public NumericUpDownEx()
+        public NumericUpDown()
         {
             InitializeComponent();
         }
@@ -86,12 +86,12 @@ namespace JUMO.UI.Controls
 
         private static void MinimumPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            CoerceValueCallback(d, ((NumericUpDownEx)d).Value);
+            CoerceValueCallback(d, ((NumericUpDown)d).Value);
         }
 
         private static void MaximumPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            CoerceValueCallback(d, ((NumericUpDownEx)d).Value);
+            CoerceValueCallback(d, ((NumericUpDown)d).Value);
         }
 
         private static void DeltaPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -104,7 +104,7 @@ namespace JUMO.UI.Controls
 
         private static object CoerceValueCallback(DependencyObject d, object baseValue)
         {
-            NumericUpDownEx ctrl = (NumericUpDownEx)d;
+            NumericUpDown ctrl = (NumericUpDown)d;
             double clamp(double min, double x, double max) => Math.Max(min, Math.Min(x, max));
 
             switch (baseValue)

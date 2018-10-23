@@ -61,7 +61,7 @@
                     </ToggleButton.Style>
                 </ToggleButton>
                 <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
-                <ctrl:NumericUpDownEx Grid.Column="2" Margin="3" Minimum="20" Maximum="500" Value="{Binding Song.Tempo}" />
+                <ctrl:NumericUpDown Grid.Column="2" Margin="3" Minimum="20" Maximum="500" Value="{Binding Song.Tempo}" />
             </Grid>
 
             <Slider Grid.Row="1" Grid.Column="0" Margin="3" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
