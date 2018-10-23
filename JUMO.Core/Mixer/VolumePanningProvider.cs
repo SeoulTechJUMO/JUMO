@@ -64,41 +64,40 @@ namespace JUMO.Mixer
             int samplesRead = source.Read(buffer, offset, sampleCount);
             float[] tempBuf = new float[sampleCount];
 
-            if (Volume != 1f)
+
+            for (int n = 0; n < sampleCount; n++)
             {
-                for (int n = 0; n < sampleCount; n++)
+                if (Panning > 0)
                 {
-                    if (Panning > 0)
+                    if ((offset + n) % 2 == 0)
                     {
-                        if ((offset + n) % 2 == 0)
-                        {
-                            //왼쪽
-                            tempBuf[offset + n] = buffer[offset + n] * (1 - Panning);
-                        }
-                        else
-                        {
-                            //오른쪽
-                            tempBuf[offset + n] = buffer[offset + n];
-                        }
+                        //왼쪽
+                        tempBuf[offset + n] = buffer[offset + n] * (1 - Panning);
                     }
                     else
                     {
-                        if ((offset + n) % 2 == 0)
-                        {
-                            //왼쪽
-                            tempBuf[offset + n] = buffer[offset + n];
-                        }
-                        else
-                        {
-                            //오른쪽
-                            tempBuf[offset + n] = buffer[offset + n] * (1 - (-Panning));
-                        }
+                        //오른쪽
+                        tempBuf[offset + n] = buffer[offset + n];
                     }
-                    tempBuf[offset + n] *= Volume;
-                    if (Mute) { buffer[offset + n] = 0; }
-                    else { buffer[offset + n] = tempBuf[offset + n]; }
                 }
+                else
+                {
+                    if ((offset + n) % 2 == 0)
+                    {
+                        //왼쪽
+                        tempBuf[offset + n] = buffer[offset + n];
+                    }
+                    else
+                    {
+                        //오른쪽
+                        tempBuf[offset + n] = buffer[offset + n] * (1 - (-Panning));
+                    }
+                }
+                tempBuf[offset + n] *= Volume;
+                if (Mute) { buffer[offset + n] = 0; }
+                else { buffer[offset + n] = tempBuf[offset + n]; }
             }
+
 
             if (StreamVolume != null)
             {
