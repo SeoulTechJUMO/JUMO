@@ -25,7 +25,7 @@
                 </CheckBox.InputBindings>
             </CheckBox>
             <Slider x:Name="Volume" Orientation="Vertical" Height="100" HorizontalAlignment="Center" Margin="0,20,0,20" Value="{Binding Volume}" Minimum="0.0" Maximum="1.0"/>
-            <Slider x:Name="Panning" Margin="0,0,0,20" Value="5"/>
+            <Slider x:Name="Panning" Margin="0,0,0,20" Value="{Binding Panning}" Minimum="-1.0" Maximum="1.0"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
