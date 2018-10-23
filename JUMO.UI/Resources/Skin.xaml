@@ -48,8 +48,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
-                    <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <Border x:Name="pushEffectBorder">
+                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsDefaulted" Value="True">
@@ -57,11 +59,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="1" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Padding" TargetName="pushEffectBorder" Value="0,1,0,0" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Background" TargetName="border" Value="{StaticResource LightDisabledControlFaceColor}"/>
@@ -98,13 +96,15 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
-                    <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <Grid>
-                            <Grid HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
-                                <Ellipse x:Name="indicatorLight" Stroke="{StaticResource LightSecondaryTextColor}" StrokeThickness="1" Fill="{StaticResource LightSecondaryTextColor}" />
+                    <Border x:Name="pushEffectBorder">
+                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
+                                    <Ellipse x:Name="indicatorLight" Stroke="{StaticResource LightSecondaryTextColor}" StrokeThickness="1" Fill="{StaticResource LightSecondaryTextColor}" />
+                                </Grid>
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Grid>
+                        </Border>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsDefaulted" Value="True">
@@ -112,11 +112,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="1" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Padding" TargetName="pushEffectBorder" Value="0,1,0,0" />
                         </Trigger>
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Fill" TargetName="indicatorLight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:ToggleButtonIndicator.Brush)}" />
@@ -137,13 +133,15 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
-                    <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <Grid>
-                            <Grid VerticalAlignment="Bottom" Margin="{StaticResource ToggleButtonBarMargin}" Height="3">
-                                <Border x:Name="indicatorLight" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="1" CornerRadius="1" Background="{StaticResource LightSecondaryTextColor}" />
+                    <Border x:Name="pushEffectBorder">
+                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid VerticalAlignment="Bottom" Margin="{StaticResource ToggleButtonBarMargin}" Height="3">
+                                    <Border x:Name="indicatorLight" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="1" CornerRadius="1" Background="{StaticResource LightSecondaryTextColor}" />
+                                </Grid>
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
-                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Grid>
+                        </Border>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsDefaulted" Value="True">
@@ -151,11 +149,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="1" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Padding" TargetName="pushEffectBorder" Value="0,1,0,0" />
                         </Trigger>
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Background" TargetName="indicatorLight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:ToggleButtonIndicator.Brush)}" />
@@ -176,8 +170,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
-                    <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                        <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    <Border x:Name="pushEffectBorder">
+                        <Border x:Name="border" CornerRadius="{StaticResource ControlBorderRadius}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsDefaulted" Value="True">
@@ -185,11 +181,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="1" />
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Padding" TargetName="pushEffectBorder" Value="0,1,0,0" />
                         </Trigger>
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Background" TargetName="border" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:ToggleButtonIndicator.Brush)}" />
