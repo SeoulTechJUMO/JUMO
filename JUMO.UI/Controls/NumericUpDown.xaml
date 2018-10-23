@@ -8,6 +8,9 @@
              xmlns:proj="clr-namespace:JUMO.UI"
              d:DesignWidth="100"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </UserControl.Resources>
     <Grid DataContext="{Binding ElementName=root}">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -22,6 +25,7 @@
                  Margin="0"
                  TextAlignment="Right"
                  proj:SkinHelper.Segment="Left"
+                 VerticalContentAlignment="Center"
                  MouseWheel="OnTextBoxMouseWheel"
                  Text="{Binding Value, UpdateSourceTrigger=LostFocus}" />
         <RepeatButton Grid.Row="0" Grid.Column="1"
