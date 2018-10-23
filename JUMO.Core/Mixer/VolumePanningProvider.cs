@@ -1,9 +1,5 @@
 ﻿using NAudio.Wave;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.Mixer
 {
@@ -41,6 +37,14 @@ namespace JUMO.Mixer
             maxSamples = new float[channels];
             SamplesPerNotification = samplesPerNotification;
             args = new StreamVolumeEventArgs() { MaxSampleValues = maxSamples };
+        }
+
+        public VolumePanningProvider(ISampleProvider source)
+        {
+            this.source = source;
+            Volume = 1.0f;
+            Panning = 0.0f;
+            Mute = false;
         }
 
         /// <summary>

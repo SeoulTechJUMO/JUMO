@@ -7,14 +7,15 @@ using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using MidiToolkit = Sanford.Multimedia.Midi;
+using JUMO.Mixer;
 
 namespace JUMO.Vst
 {
     public class Plugin : IDisposable, INotifyPropertyChanged
     {
         private readonly IVstPluginContext _ctx;
-        private readonly VolumeSampleProvider _volume;
         private readonly List<VstMidiEvent> _pendingEvents = new List<VstMidiEvent>();
+        private readonly VolumePanningProvider _volume;
 
         private readonly object _lock = new object();
 
@@ -68,6 +69,26 @@ namespace JUMO.Vst
             }
         }
 
+        public float Panning
+        {
+            get => _volume.Panning;
+            set
+            {
+                _volume.Panning = value;
+                OnPropertyChanged(nameof(Panning));
+            }
+        }
+
+        public bool Mute
+        {
+            get => _volume.Mute;
+            set
+            {
+                _volume.Mute = value;
+                OnPropertyChanged(nameof(Mute));
+            }
+        }
+
         public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub)
         {
             PluginPath = pluginPath;
@@ -81,7 +102,10 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
-            _volume = new VolumeSampleProvider(new VstSampleProvider(this));
+            _volume = new VolumePanningProvider(new VstSampleProvider(this));
+            Volume = 0.8f;
+            Panning = 0.0f;
+            Mute = false;
             SampleProvider = _volume;
         }
 
@@ -98,7 +122,10 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
-            _volume = new VolumeSampleProvider(new VstSampleProvider(this, source));
+            _volume = new VolumePanningProvider(new VstSampleProvider(this, source));
+            Volume = 0.8f;
+            Panning = 0.0f;
+            Mute = false;
             SampleProvider = _volume;
         }
 

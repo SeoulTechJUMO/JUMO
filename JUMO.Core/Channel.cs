@@ -29,7 +29,6 @@ namespace JUMO
             Volume = 0.8f;
             IsMuted = false;
             _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
-            inSamples = _VolumePanningSample;
         }
 
         void OnPostVolumeMeter(object sender, VolumePanningProvider.StreamVolumeEventArgs e)
@@ -107,11 +106,11 @@ namespace JUMO
         //이팩트 플러그인 관리자
         public EffectPluginManager EffectManager = new EffectPluginManager();
 
-        //내부 믹서 프로바이더, 채널 최종 출력
+        //내부 믹서 프로바이더
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
-        //내부 이팩트간의 샘플프로바이더 
-        private ISampleProvider inSamples;
+        //채널의 최종 출력
+        public ISampleProvider ChannelOut { get; private set; }
 
         //통합 샘플 프로바이더
         private VolumePanningProvider _VolumePanningSample;
@@ -167,7 +166,7 @@ namespace JUMO
             }
             else
             {
-                EffectManager.AddPlugin(this, inSamples, null);
+                EffectManager.AddPlugin(this, Mixer, null);
             }
         }
 
