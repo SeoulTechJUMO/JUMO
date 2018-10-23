@@ -99,6 +99,7 @@
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
                 <Button Content="MX" />
                 <Button Content="PL" Command="{Binding OpenPlaylistCommand}" />
+                <Button Content="스킨 테스트" Click="Button_Click" />
             </StackPanel>
         </Grid>
         <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
