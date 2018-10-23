@@ -43,6 +43,11 @@
             <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
         </StackPanel>
         <StackPanel Orientation="Horizontal">
+            <Button Content="하나" proj:SkinHelper.Segment="Left" />
+            <Button Content="둘" proj:SkinHelper.Segment="Center" />
+            <Button Content="셋" proj:SkinHelper.Segment="Right" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
             <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="하나" IsChecked="True" proj:SkinHelper.Segment="Left" />
             <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" />
             <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" />
