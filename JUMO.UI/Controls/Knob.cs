@@ -12,16 +12,14 @@ namespace JUMO.UI.Controls
     class Knob : RangeBase
     {
         private const double MinimumKnobRadius = 5.0;
-        private const double Sqrt2 = 1.414213562373095;
-        private const double AspectRatio = 1.171572875253809;
 
         private static readonly ControlTemplate _thumbTemplate;
 
         private readonly VisualCollection _visuals;
-        private readonly Ellipse _indicatorEllipse = new Ellipse() { SnapsToDevicePixels = true };
-        private readonly Ellipse _faceEllipse = new Ellipse() { SnapsToDevicePixels = true };
-        private readonly Ellipse _borderEllipse1 = new Ellipse() { SnapsToDevicePixels = true };
-        private readonly Ellipse _borderEllipse2 = new Ellipse() { SnapsToDevicePixels = true };
+        private readonly Ellipse _indicatorEllipse = new Ellipse();
+        private readonly Ellipse _faceEllipse = new Ellipse();
+        private readonly Ellipse _borderEllipse1 = new Ellipse();
+        private readonly Ellipse _borderEllipse2 = new Ellipse();
 
         private readonly Thumb _thumb = new Thumb()
         {
@@ -189,25 +187,16 @@ namespace JUMO.UI.Controls
 
                 if (double.IsInfinity(cWidth) && double.IsInfinity(cHeight))
                 {
-                    // There is no size constraint; just report the smallest size possible.
-
                     _knobRadius = MinimumKnobRadius;
                     _totalRadius = _knobRadius + trackSize;
                 }
-                else if (cWidth / cHeight >= AspectRatio)
+                else if (cWidth > cHeight)
                 {
-                    // Calculate KnobRadius using constraint.Height
-
-                    double k1 = (2 - Sqrt2) * cHeight - trackSize;
-                    double k2 = (cHeight - trackSize) / 2;
-
-                    _knobRadius = trackSize / k1 > Sqrt2 - 1 ? k1 : k2;
-                    _totalRadius = _knobRadius + trackSize;
+                    _totalRadius = cHeight / 2;
+                    _knobRadius = _totalRadius - trackSize;
                 }
                 else
                 {
-                    // Calculate KnobRadius using constraint.Width
-
                     _totalRadius = cWidth / 2;
                     _knobRadius = _totalRadius - trackSize;
                 }
@@ -218,30 +207,27 @@ namespace JUMO.UI.Controls
                 _totalRadius = _knobRadius + trackSize;
             }
 
-            return new Size(2 * _totalRadius, _totalRadius + Math.Max(_totalRadius * Sqrt2 / 2, _knobRadius));
+            return new Size(2 * _totalRadius, 2 * _totalRadius);
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            double centerX = arrangeBounds.Width / 2;
-            double centerY = arrangeBounds.Height / 2;
             double diameter = 2 * _knobRadius;
 
             double valueAngle = (1.25 - 1.5 * (Value - Minimum) / (Maximum - Minimum)) * Math.PI;
-            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + centerX;
-            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + centerY;
+            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + _totalRadius;
+            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + _totalRadius;
 
-            double faceStartX = centerX - _knobRadius;
-            double faceStartY = centerY - _knobRadius;
-            Rect knobFaceRect = new Rect(faceStartX, faceStartY, diameter, diameter);
+            double faceStart = _totalRadius - _knobRadius;
+            Rect knobFaceRect = new Rect(faceStart, faceStart, diameter, diameter);
 
-            _borderEllipse1.Arrange(new Rect(faceStartX - 1, faceStartY - 1, diameter + 2, diameter + 2));
-            _borderEllipse2.Arrange(new Rect(faceStartX - 1, faceStartY, diameter + 2, diameter + 2));
+            _borderEllipse1.Arrange(new Rect(faceStart - 1, faceStart - 1, diameter + 2, diameter + 2));
+            _borderEllipse2.Arrange(new Rect(faceStart - 1, faceStart, diameter + 2, diameter + 2));
             _faceEllipse.Arrange(knobFaceRect);
             _indicatorEllipse.Arrange(new Rect(indicatorX, indicatorY, 2, 2));
             _thumb.Arrange(knobFaceRect);
 
-            return arrangeBounds;
+            return new Size(2 * _totalRadius, 2 * _totalRadius);
         }
 
         protected override void OnRender(DrawingContext dc)
