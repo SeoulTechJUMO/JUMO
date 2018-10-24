@@ -377,9 +377,14 @@
         </Style.Triggers>
     </Style>
 
+    <!-- NumericUpDown Style -->
+    <Style TargetType="{x:Type ctrl:NumericUpDown}">
+        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+    </Style>
+
     <!-- Knob Styles -->
     <Style TargetType="{x:Type ctrl:Knob}">
-        <Setter Property="Margin" Value="3" />
+        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         <Setter Property="KnobRadius" Value="8" />
         <Setter Property="TrackPadding" Value="4" />
         <Setter Property="TrackLength" Value="4" />
