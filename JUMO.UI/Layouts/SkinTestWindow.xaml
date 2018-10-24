@@ -8,72 +8,86 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
         Background="{StaticResource LightBackgroundColor}"
-        Title="SkinTestWindow" Height="450" Width="800">
-    <StackPanel Margin="10">
-        <StackPanel Orientation="Horizontal">
-            <Button Content="활성" />
-            <Button Content="비활성" IsEnabled="False" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" />
-            <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" />
-            <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" />
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle2}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle3}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" />
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle2}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle3}" Content="토글" IsChecked="True" />
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
-            <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <Button Content="하나" proj:SkinHelper.Segment="Left" />
-            <Button Content="둘" proj:SkinHelper.Segment="Center" />
-            <Button Content="셋" proj:SkinHelper.Segment="Right" />
-        </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="하나" IsChecked="True" proj:SkinHelper.Segment="Left" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" />
-            <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" />
-        </StackPanel>
+        Title="SkinTestWindow" Height="450" Width="600">
+    <TabControl Margin="3">
+        <TabItem Header="버튼">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="활성" />
+                    <Button Content="비활성" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" />
+                    <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" />
+                    <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="하나" proj:SkinHelper.Segment="Left" />
+                    <Button Content="둘" proj:SkinHelper.Segment="Center" />
+                    <Button Content="셋" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="하나" IsChecked="True" proj:SkinHelper.Segment="Left" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="텍스트 상자">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="활성 텍스트 상자" />
+                    <TextBox Text="비활성 텍스트 상자" IsEnabled="False" />
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal">
-            <TextBox Text="활성 텍스트 상자" />
-            <TextBox Text="비활성 텍스트 상자" IsEnabled="False" />
-        </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="Wow" IsChecked="True" proj:SkinHelper.Segment="Left" />
+                    <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal">
-            <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="Wow" IsChecked="True" proj:SkinHelper.Segment="Left" />
-            <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Right" />
-        </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Left" />
+                    <Button Content="Open" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
 
-        <StackPanel Orientation="Horizontal">
-            <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Left" />
-            <Button Content="Open" proj:SkinHelper.Segment="Right" />
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal">
-            <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource TracklessKnobStyle}" />
-            <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource DottedTrackKnobStyle}" />
-            <ctrl:Knob x:Name="knob" Minimum="0" Maximum="12" />
-            <ProgressBar Width="200" Height="16" Margin="3" Minimum="0" Maximum="12" Value="{Binding Value, ElementName=knob}" />
-        </StackPanel>
-    </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ctrl:NumericUpDown Width="60" Minimum="0" Maximum="100" Value="42" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="노브">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource TracklessKnobStyle}" />
+                    <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource DottedTrackKnobStyle}" />
+                    <ctrl:Knob x:Name="knob" Minimum="0" Maximum="12" />
+                    <ProgressBar Width="200" Height="16" Margin="3" Minimum="0" Maximum="12" Value="{Binding Value, ElementName=knob}" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
 </Window>
