@@ -207,7 +207,7 @@ namespace JUMO.UI.Controls
             double centerY = arrangeBounds.Height / 2;
             double diameter = 2 * _knobRadius;
 
-            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
+            double valueAngle = (1.25 - 1.5 * (Value - Minimum) / (Maximum - Minimum)) * Math.PI;
             double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + centerX;
             double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + centerY;
 
