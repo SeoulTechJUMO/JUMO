@@ -11,9 +11,12 @@ namespace JUMO.UI.Controls
 {
     class Knob : RangeBase
     {
-        private const double MinimumKnobRadius = 1.0;
+        private const double MinimumKnobRadius = 5.0;
         private const double Sqrt2 = 1.414213562373095;
         private const double AspectRatio = 1.171572875253809;
+
+        private double _totalRadius;
+        private double _knobRadius;
 
         #region Dependency Properties
 
@@ -118,8 +121,6 @@ namespace JUMO.UI.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            double totalRadius;
-            double knobRadius;
             double trackSize = TrackPadding + TrackLength;
 
             if (double.IsNaN(KnobRadius))
@@ -133,8 +134,8 @@ namespace JUMO.UI.Controls
                 {
                     // There is no size constraint; just report the smallest size possible.
 
-                    knobRadius = MinimumKnobRadius;
-                    totalRadius = knobRadius + trackSize;
+                    _knobRadius = MinimumKnobRadius;
+                    _totalRadius = _knobRadius + trackSize;
                 }
                 else if (cWidth / cHeight >= AspectRatio)
                 {
@@ -143,24 +144,24 @@ namespace JUMO.UI.Controls
                     double k1 = (2 - Sqrt2) * cHeight - trackSize;
                     double k2 = (cHeight - trackSize) / 2;
 
-                    knobRadius = trackSize / k1 > Sqrt2 - 1 ? k1 : k2;
-                    totalRadius = knobRadius + trackSize;
+                    _knobRadius = trackSize / k1 > Sqrt2 - 1 ? k1 : k2;
+                    _totalRadius = _knobRadius + trackSize;
                 }
                 else
                 {
                     // Calculate KnobRadius using constraint.Width
 
-                    totalRadius = cWidth / 2;
-                    knobRadius = totalRadius - trackSize;
+                    _totalRadius = cWidth / 2;
+                    _knobRadius = _totalRadius - trackSize;
                 }
             }
             else
             {
-                knobRadius = KnobRadius;
-                totalRadius = knobRadius + trackSize;
+                _knobRadius = KnobRadius;
+                _totalRadius = _knobRadius + trackSize;
             }
 
-            return new Size(2 * totalRadius, totalRadius + Math.Max(totalRadius * Sqrt2 / 2, knobRadius));
+            return new Size(2 * _totalRadius, _totalRadius + Math.Max(_totalRadius * Sqrt2 / 2, _knobRadius));
         }
 
         protected override Size ArrangeOverride(Size arrangeBounds)
@@ -172,7 +173,44 @@ namespace JUMO.UI.Controls
 
         protected override void OnRender(DrawingContext dc)
         {
-            dc.DrawRectangle(Brushes.White, null, new Rect(new Point(0, 0), RenderSize));
+            dc.DrawRectangle(Background, null, new Rect(new Point(0, 0), RenderSize));
+
+            double renderWidth = RenderSize.Width;
+            double renderHeight = RenderSize.Height;
+            double centerX = renderWidth / 2;
+            double centerY = renderHeight / 2;
+
+            Vector knobCenter = new Vector(renderWidth / 2, renderHeight / 2);
+            double trackStartR = _knobRadius + TrackPadding;
+
+            Pen trackPen = new Pen(Foreground, TrackThickness);
+
+            if (TrackLength > 0)
+            {
+                double trackEndR = trackStartR + TrackLength;
+
+                for (int i = -2; i <= 10; i++)
+                {
+                    double angle = i * Math.PI / 8;
+                    double cosA = Math.Cos(angle);
+                    double sinA = -Math.Sin(angle);
+                    Point start = new Point(trackStartR * cosA, trackStartR * sinA + 1) + knobCenter;
+                    Point end = new Point(trackEndR * cosA, trackEndR * sinA + 1) + knobCenter;
+
+                    dc.DrawLine(trackPen, start, end);
+                }
+            }
+
+            dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY), _knobRadius + 1, _knobRadius + 1);
+            dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY + 1), _knobRadius + 1, _knobRadius + 1);
+            dc.DrawEllipse(KnobFace, null, new Point(centerX, centerY), _knobRadius, _knobRadius);
+
+            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
+            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle);
+            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle);
+            Point indicatorPoint = new Point(indicatorX, indicatorY) + knobCenter;
+
+            dc.DrawEllipse(Indicator, null, indicatorPoint, 1, 1);
         }
 
         private static void TrackMetricsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
