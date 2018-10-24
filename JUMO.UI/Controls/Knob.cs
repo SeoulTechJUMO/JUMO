@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -17,14 +15,23 @@ namespace JUMO.UI.Controls
         private const double Sqrt2 = 1.414213562373095;
         private const double AspectRatio = 1.171572875253809;
 
+        private static readonly ControlTemplate _thumbTemplate;
+
         private readonly VisualCollection _visuals;
         private readonly Ellipse _indicatorEllipse = new Ellipse() { SnapsToDevicePixels = true };
         private readonly Ellipse _faceEllipse = new Ellipse() { SnapsToDevicePixels = true };
         private readonly Ellipse _borderEllipse1 = new Ellipse() { SnapsToDevicePixels = true };
         private readonly Ellipse _borderEllipse2 = new Ellipse() { SnapsToDevicePixels = true };
 
+        private readonly Thumb _thumb = new Thumb()
+        {
+            SnapsToDevicePixels = true,
+            Template = _thumbTemplate
+        };
+
         private double _totalRadius;
         private double _knobRadius;
+        private double _startRelativeDragPos;
 
         #region Dependency Properties
 
@@ -127,6 +134,14 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        static Knob()
+        {
+            string thumbTemplateXaml =
+                "<ControlTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TargetType=\"Thumb\"><Border><Rectangle Fill=\"Transparent\" /></Border></ControlTemplate>";
+
+            _thumbTemplate = (ControlTemplate)XamlReader.Parse(thumbTemplateXaml);
+        }
+
         public Knob()
         {
             _visuals = new VisualCollection(this)
@@ -134,7 +149,8 @@ namespace JUMO.UI.Controls
                 _borderEllipse1,
                 _borderEllipse2,
                 _faceEllipse,
-                _indicatorEllipse
+                _indicatorEllipse,
+                _thumb
             };
 
             Binding borderBinding = new Binding() { Path = new PropertyPath(BorderBrushProperty), Source = this };
@@ -143,6 +159,10 @@ namespace JUMO.UI.Controls
             _faceEllipse.SetBinding(Shape.FillProperty, new Binding() { Path = new PropertyPath(KnobFaceProperty), Source = this });
             _borderEllipse1.SetBinding(Shape.FillProperty, borderBinding);
             _borderEllipse2.SetBinding(Shape.FillProperty, borderBinding);
+
+            _thumb.DragStarted += OnThumbDragStarted;
+            _thumb.DragCompleted += OnThumbDragCompleted;
+            _thumb.DragDelta += OnThumbDragDelta;
         }
 
         protected override int VisualChildrenCount => _visuals.Count;
@@ -213,11 +233,13 @@ namespace JUMO.UI.Controls
 
             double faceStartX = centerX - _knobRadius;
             double faceStartY = centerY - _knobRadius;
+            Rect knobFaceRect = new Rect(faceStartX, faceStartY, diameter, diameter);
 
             _borderEllipse1.Arrange(new Rect(faceStartX - 1, faceStartY - 1, diameter + 2, diameter + 2));
             _borderEllipse2.Arrange(new Rect(faceStartX - 1, faceStartY, diameter + 2, diameter + 2));
-            _faceEllipse.Arrange(new Rect(faceStartX, faceStartY, diameter, diameter));
+            _faceEllipse.Arrange(knobFaceRect);
             _indicatorEllipse.Arrange(new Rect(indicatorX, indicatorY, 2, 2));
+            _thumb.Arrange(knobFaceRect);
 
             return arrangeBounds;
         }
@@ -251,6 +273,20 @@ namespace JUMO.UI.Controls
                     dc.DrawLine(trackPen, start, end);
                 }
             }
+        }
+
+        private void OnThumbDragStarted(object sender, DragStartedEventArgs e)
+        {
+            _startRelativeDragPos = 150 * (Value - Minimum) / (Maximum - Minimum);
+        }
+
+        private void OnThumbDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+        }
+
+        private void OnThumbDragDelta(object sender, DragDeltaEventArgs e)
+        {
+            Value = (_startRelativeDragPos - e.VerticalChange) * (Maximum - Minimum) / 150 + Minimum;
         }
 
         private static void TrackMetricsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
