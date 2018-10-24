@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace JUMO.UI.Controls
 {
@@ -14,6 +16,9 @@ namespace JUMO.UI.Controls
         private const double MinimumKnobRadius = 5.0;
         private const double Sqrt2 = 1.414213562373095;
         private const double AspectRatio = 1.171572875253809;
+
+        private readonly VisualCollection _visuals;
+        private readonly Ellipse _indicatorEllipse = new Ellipse() { SnapsToDevicePixels = true };
 
         private double _totalRadius;
         private double _knobRadius;
@@ -119,6 +124,27 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        public Knob()
+        {
+            _visuals = new VisualCollection(this)
+            {
+                _indicatorEllipse
+            };
+
+            BindingOperations.SetBinding(_indicatorEllipse, Shape.FillProperty, new Binding() { Path = new PropertyPath(IndicatorProperty), Source = this });
+        }
+
+        protected override int VisualChildrenCount => _visuals.Count;
+
+        protected override Visual GetVisualChild(int index) => _visuals[index];
+
+        protected override void OnValueChanged(double oldValue, double newValue)
+        {
+            InvalidateArrange();
+
+            base.OnValueChanged(oldValue, newValue);
+        }
+
         protected override Size MeasureOverride(Size constraint)
         {
             double trackSize = TrackPadding + TrackLength;
@@ -166,9 +192,13 @@ namespace JUMO.UI.Controls
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            System.Diagnostics.Debug.WriteLine($"Knob::ArrangeOverride arrangeBounds = {arrangeBounds}");
+            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
+            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + arrangeBounds.Width / 2;
+            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + arrangeBounds.Height / 2;
 
-            return base.ArrangeOverride(arrangeBounds);
+            _indicatorEllipse.Arrange(new Rect(indicatorX, indicatorY, 2, 2));
+
+            return arrangeBounds;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -204,13 +234,6 @@ namespace JUMO.UI.Controls
             dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY), _knobRadius + 1, _knobRadius + 1);
             dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY + 1), _knobRadius + 1, _knobRadius + 1);
             dc.DrawEllipse(KnobFace, null, new Point(centerX, centerY), _knobRadius, _knobRadius);
-
-            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
-            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle);
-            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle);
-            Point indicatorPoint = new Point(indicatorX, indicatorY) + knobCenter;
-
-            dc.DrawEllipse(Indicator, null, indicatorPoint, 1, 1);
         }
 
         private static void TrackMetricsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
