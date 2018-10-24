@@ -89,6 +89,7 @@
     <Compile Include="Controls\BlockSelectionAdorner.cs" />
     <Compile Include="Controls\IMusicalViewCallback.cs" />
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
+    <Compile Include="Controls\Knob.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
