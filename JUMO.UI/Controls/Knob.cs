@@ -234,27 +234,21 @@ namespace JUMO.UI.Controls
         {
             dc.DrawRectangle(Background, null, new Rect(new Point(0, 0), RenderSize));
 
-            double renderWidth = RenderSize.Width;
-            double renderHeight = RenderSize.Height;
-            double centerX = renderWidth / 2;
-            double centerY = renderHeight / 2;
-
-            Vector knobCenter = new Vector(renderWidth / 2, renderHeight / 2);
-            double trackStartR = _knobRadius + TrackPadding;
-
-            Pen trackPen = new Pen(Foreground, TrackThickness);
+            Vector ccenter = new Vector(RenderSize.Width / 2, RenderSize.Height / 2);
 
             if (TrackLength > 0)
             {
+                double trackStartR = _knobRadius + TrackPadding;
                 double trackEndR = trackStartR + TrackLength;
+                Pen trackPen = new Pen(Foreground, TrackThickness);
 
                 for (int i = -2; i <= 10; i++)
                 {
                     double angle = i * Math.PI / 8;
                     double cosA = Math.Cos(angle);
                     double sinA = -Math.Sin(angle);
-                    Point start = new Point(trackStartR * cosA, trackStartR * sinA) + knobCenter;
-                    Point end = new Point(trackEndR * cosA, trackEndR * sinA) + knobCenter;
+                    Point start = new Point(trackStartR * cosA, trackStartR * sinA) + ccenter;
+                    Point end = new Point(trackEndR * cosA, trackEndR * sinA) + ccenter;
 
                     dc.DrawLine(trackPen, start, end);
                 }
