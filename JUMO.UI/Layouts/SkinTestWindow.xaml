@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
         Background="{StaticResource LightBackgroundColor}"
         Title="SkinTestWindow" Height="450" Width="800">
@@ -66,6 +67,13 @@
         <StackPanel Orientation="Horizontal">
             <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Left" />
             <Button Content="Open" proj:SkinHelper.Segment="Right" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+            <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource TracklessKnobStyle}" />
+            <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource DottedTrackKnobStyle}" />
+            <ctrl:Knob x:Name="knob" Minimum="0" Maximum="12" />
+            <ProgressBar Width="200" Height="16" Margin="3" Minimum="0" Maximum="12" Value="{Binding Value, ElementName=knob}" />
         </StackPanel>
     </StackPanel>
 </Window>
