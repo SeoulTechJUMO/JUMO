@@ -19,6 +19,9 @@ namespace JUMO.UI.Controls
 
         private readonly VisualCollection _visuals;
         private readonly Ellipse _indicatorEllipse = new Ellipse() { SnapsToDevicePixels = true };
+        private readonly Ellipse _faceEllipse = new Ellipse() { SnapsToDevicePixels = true };
+        private readonly Ellipse _borderEllipse1 = new Ellipse() { SnapsToDevicePixels = true };
+        private readonly Ellipse _borderEllipse2 = new Ellipse() { SnapsToDevicePixels = true };
 
         private double _totalRadius;
         private double _knobRadius;
@@ -128,10 +131,18 @@ namespace JUMO.UI.Controls
         {
             _visuals = new VisualCollection(this)
             {
+                _borderEllipse1,
+                _borderEllipse2,
+                _faceEllipse,
                 _indicatorEllipse
             };
 
-            BindingOperations.SetBinding(_indicatorEllipse, Shape.FillProperty, new Binding() { Path = new PropertyPath(IndicatorProperty), Source = this });
+            Binding borderBinding = new Binding() { Path = new PropertyPath(BorderBrushProperty), Source = this };
+
+            _indicatorEllipse.SetBinding(Shape.FillProperty, new Binding() { Path = new PropertyPath(IndicatorProperty), Source = this });
+            _faceEllipse.SetBinding(Shape.FillProperty, new Binding() { Path = new PropertyPath(KnobFaceProperty), Source = this });
+            _borderEllipse1.SetBinding(Shape.FillProperty, borderBinding);
+            _borderEllipse2.SetBinding(Shape.FillProperty, borderBinding);
         }
 
         protected override int VisualChildrenCount => _visuals.Count;
@@ -192,10 +203,20 @@ namespace JUMO.UI.Controls
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
-            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + arrangeBounds.Width / 2;
-            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + arrangeBounds.Height / 2;
+            double centerX = arrangeBounds.Width / 2;
+            double centerY = arrangeBounds.Height / 2;
+            double diameter = 2 * _knobRadius;
 
+            double valueAngle = (1.25 - 1.5 * Value / (Maximum - Minimum)) * Math.PI;
+            double indicatorX = (_knobRadius - 3) * Math.Cos(valueAngle) - 1 + centerX;
+            double indicatorY = (_knobRadius - 3) * -Math.Sin(valueAngle) - 1 + centerY;
+
+            double faceStartX = centerX - _knobRadius;
+            double faceStartY = centerY - _knobRadius;
+
+            _borderEllipse1.Arrange(new Rect(faceStartX - 1, faceStartY - 1, diameter + 2, diameter + 2));
+            _borderEllipse2.Arrange(new Rect(faceStartX - 1, faceStartY, diameter + 2, diameter + 2));
+            _faceEllipse.Arrange(new Rect(faceStartX, faceStartY, diameter, diameter));
             _indicatorEllipse.Arrange(new Rect(indicatorX, indicatorY, 2, 2));
 
             return arrangeBounds;
@@ -224,16 +245,12 @@ namespace JUMO.UI.Controls
                     double angle = i * Math.PI / 8;
                     double cosA = Math.Cos(angle);
                     double sinA = -Math.Sin(angle);
-                    Point start = new Point(trackStartR * cosA, trackStartR * sinA + 1) + knobCenter;
-                    Point end = new Point(trackEndR * cosA, trackEndR * sinA + 1) + knobCenter;
+                    Point start = new Point(trackStartR * cosA, trackStartR * sinA) + knobCenter;
+                    Point end = new Point(trackEndR * cosA, trackEndR * sinA) + knobCenter;
 
                     dc.DrawLine(trackPen, start, end);
                 }
             }
-
-            dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY), _knobRadius + 1, _knobRadius + 1);
-            dc.DrawEllipse(BorderBrush, null, new Point(centerX, centerY + 1), _knobRadius + 1, _knobRadius + 1);
-            dc.DrawEllipse(KnobFace, null, new Point(centerX, centerY), _knobRadius, _knobRadius);
         }
 
         private static void TrackMetricsPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
