@@ -118,7 +118,7 @@
                     <TabControl.ItemTemplate>
                         <DataTemplate>
                             <DockPanel>
-                                <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" Command="{Binding CloseCommand}" />
+                                <Button DockPanel.Dock="Right" Style="{StaticResource CloseTabButtonStyle}" Command="{Binding CloseCommand}" />
                                 <TextBlock Text="{Binding DisplayName}" />
                             </DockPanel>
                         </DataTemplate>

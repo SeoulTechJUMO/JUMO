@@ -502,4 +502,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="CloseTabButtonStyle" TargetType="Button">
+        <Setter Property="Margin" Value="10,0,0,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="14" />
+        <Setter Property="Height" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="Transparent">
+                        <Canvas x:Name="glyphCanvas" Width="10" Height="8" Opacity="0">
+                            <Path Fill="{StaticResource IndicatorLightColor2}" Data="M0,0L2,0L5,3L8,0L10,0L6,4L10,8L8,8L5,5L2,8L0,8L4,4Z" />
+                        </Canvas>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" TargetName="glyphCanvas" Value="1" />
+                        </Trigger>
+                        <Trigger Property="ButtonBase.IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="glyphCanvas" Value="0.75" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
