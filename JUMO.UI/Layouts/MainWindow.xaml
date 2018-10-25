@@ -8,8 +8,15 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:view="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
-        Background="{StaticResource LightBackgroundColor}"
+        Background="{DynamicResource LightBackgroundColor}"
         Title="{Binding DisplayName}" Height="600" Width="900">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.DataContext>
         <proj:MainViewModel />
     </Window.DataContext>

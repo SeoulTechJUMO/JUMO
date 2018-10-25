@@ -7,6 +7,13 @@
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
              d:DesignWidth="350">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid x:Name="root" Margin="0,5">
         <Grid.RowDefinitions>
             <RowDefinition />

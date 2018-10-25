@@ -7,8 +7,11 @@
         xmlns:proj="clr-namespace:JUMO.UI"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
-        Background="{StaticResource LightBackgroundColor}"
+        Background="{DynamicResource LightBackgroundColor}"
         Title="SkinTestWindow" Height="450" Width="600">
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </Window.Resources>
     <TabControl Margin="3">
         <TabItem Header="버튼">
             <StackPanel>

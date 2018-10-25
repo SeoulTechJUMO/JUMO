@@ -10,11 +10,16 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="450">
     <UserControl.Resources>
-        <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        </ResourceDictionary>
     </UserControl.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-            <Button Content="플러그인 추가" Margin="5" Padding="8,3" Command="{Binding AddPluginCommand}" />
+        <StackPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
+            <Button Content="플러그인 추가" Command="{Binding AddPluginCommand}" />
         </StackPanel>
         <Grid>
             <ItemsControl ItemsSource="{Binding Plugins}">
