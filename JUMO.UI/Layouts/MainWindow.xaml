@@ -71,9 +71,9 @@
                 <ctrl:NumericUpDown Grid.Column="2" Margin="3" Minimum="20" Maximum="500" Value="{Binding Song.Tempo}" />
             </Grid>
 
-            <Slider Grid.Row="1" Grid.Column="0" Margin="3" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
+            <Slider Grid.Row="1" Grid.Column="0" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}" VerticalAlignment="Center">
                 <Slider.Style>
-                    <Style TargetType="Slider">
+                    <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                 <Setter Property="Maximum" Value="{Binding Song.CurrentPattern.Length}" />
