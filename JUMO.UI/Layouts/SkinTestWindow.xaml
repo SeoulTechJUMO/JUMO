@@ -82,13 +82,21 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="노브">
+        <TabItem Header="노브/슬라이더">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource TracklessKnobStyle}" />
                     <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource DottedTrackKnobStyle}" />
                     <ctrl:Knob x:Name="knob" Minimum="0" Maximum="12" />
                     <ProgressBar Width="200" Height="16" Margin="3" Minimum="0" Maximum="12" Value="{Binding Value, ElementName=knob}" />
+                </StackPanel>
+
+                <StackPanel Width="200" HorizontalAlignment="Left">
+                    <Slider Minimum="0" Maximum="4" Value="0" />
+                    <Slider Minimum="0" Maximum="4" Value="1" />
+                    <Slider Minimum="0" Maximum="4" Value="2" IsSelectionRangeEnabled="True" SelectionStart="0.5" SelectionEnd="1.5" />
+                    <Slider Minimum="0" Maximum="4" Value="3" IsSelectionRangeEnabled="True" SelectionStart="1" SelectionEnd="2" IsEnabled="False" />
+                    <Slider Minimum="0" Maximum="4" Value="4" IsEnabled="False" />
                 </StackPanel>
             </StackPanel>
         </TabItem>
