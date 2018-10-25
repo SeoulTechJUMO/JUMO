@@ -98,6 +98,39 @@
                     <Slider Minimum="0" Maximum="4" Value="3" IsSelectionRangeEnabled="True" SelectionStart="1" SelectionEnd="2" IsEnabled="False" />
                     <Slider Minimum="0" Maximum="4" Value="4" IsEnabled="False" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="200">
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="3" ViewportSize="2" IsEnabled="False" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="4" ViewportSize="2" IsEnabled="False" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="3" ViewportSize="2" IsEnabled="False" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="4" ViewportSize="2" IsEnabled="False" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Width="200">
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="3" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="4" ViewportSize="2" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="3" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="4" ViewportSize="2" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
         </TabItem>
     </TabControl>
