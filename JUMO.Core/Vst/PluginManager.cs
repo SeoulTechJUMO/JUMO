@@ -100,7 +100,7 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub, source);
 
-                channel.MixerSendInput(plugin.SampleProvider);
+                //channel.MixerSendInput(plugin.SampleProvider);
                 
                 Plugins.Add(plugin);
 

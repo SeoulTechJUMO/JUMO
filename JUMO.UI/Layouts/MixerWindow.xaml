@@ -45,7 +45,7 @@
                 <StackPanel Orientation="Horizontal">
                     <Label Content="현재 채널 IN : "/>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" Height="350" Padding="10" Margin="10">
+                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" Height="350" Margin="10">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <local:MixerVstView></local:MixerVstView>

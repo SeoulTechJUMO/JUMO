@@ -67,7 +67,6 @@ namespace JUMO.Mixer
             int samplesRead = source.Read(buffer, offset, sampleCount);
             float[] tempBuf = new float[sampleCount];
 
-
             for (int n = 0; n < sampleCount; n++)
             {
                 if (Panning > 0)

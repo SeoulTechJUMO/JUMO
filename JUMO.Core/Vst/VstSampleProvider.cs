@@ -2,6 +2,7 @@
 using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
+using System;
 
 namespace JUMO.Vst
 {
@@ -12,6 +13,7 @@ namespace JUMO.Vst
         public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
 
         public ISampleProvider Source { get; set; }
+        public float EffectMix { get; set; }
 
         public VstSampleProvider(Plugin plugin)
         {
@@ -22,6 +24,7 @@ namespace JUMO.Vst
         {
             Source = source;
             _cmdstub = plugin.PluginCommandStub;
+            EffectMix = 1.0f;
         }
 
         public int Read(float[] buffer, int offset, int count)
@@ -31,10 +34,10 @@ namespace JUMO.Vst
             VstAudioBufferManager outBufMgr = new VstAudioBufferManager(2, halfCount);
             VstAudioBuffer[] inBuf = inBufMgr.ToArray();
             VstAudioBuffer[] outBuf = outBufMgr.ToArray();
+            float[] tempBuf = new float[count];
 
             if (Source != null)
             {
-                float[] tempBuf = new float[count];
                 Source.Read(tempBuf, offset, count);
 
                 unsafe
@@ -64,8 +67,16 @@ namespace JUMO.Vst
                 {
                     for (int i = 0, j = 0; i < halfCount; i++)
                     {
-                        *(audioBuf + j++) = *(vstLBuf + i);
-                        *(audioBuf + j++) = *(vstRBuf + i);
+                        if (Source != null)
+                        {
+                            *(audioBuf + j++) = (*(vstLBuf + i)) * (EffectMix - 1) + tempBuf[j] * EffectMix;
+                            *(audioBuf + j++) = (*(vstRBuf + i)) * (EffectMix - 1) + tempBuf[j] * EffectMix;
+                        }
+                        else
+                        {
+                            *(audioBuf + j++) = *(vstLBuf + i);
+                            *(audioBuf + j++) = *(vstRBuf + i);
+                        }
                     }
                 }
             }
