@@ -26,10 +26,6 @@ namespace JUMO.Vst
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // TODO: NAudio에서 제공하는 PanningSampleProvider는 Mono to Stereo 전용.
-        //       Stereo to Stereo를 별도로 구현해야 함.
-        // private readonly PanningSampleProvider _pan;
-
         public string Name
         {
             get => _name;
@@ -91,6 +87,18 @@ namespace JUMO.Vst
             }
         }
 
+        public float EffectMix
+        {
+            get => VstSample.EffectMix;
+            set
+            {
+                VstSample.EffectMix = value;
+                OnPropertyChanged(nameof(EffectMix));
+            }
+        }
+
+        private VstSampleProvider VstSample { get; set; }
+
         public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub)
         {
             PluginPath = pluginPath;
@@ -124,7 +132,8 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
-            _volume = new VolumePanningProvider(new VstSampleProvider(this, source));
+            VstSample = new VstSampleProvider(this, source);
+            _volume = new VolumePanningProvider(VstSample);
             Volume = 0.8f;
             Panning = 0.0f;
             Mute = false;
