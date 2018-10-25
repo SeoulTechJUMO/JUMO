@@ -116,11 +116,13 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Margin="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}">
-                    <ContentControl>
-                        <proj:ChannelRackViewModel />
-                    </ContentControl>
-                </Border>
+                <TabControl Grid.Column="0" Margin="{StaticResource ControlMargin}">
+                    <TabItem Header="{Binding Song.CurrentPattern.Name}">
+                        <ContentControl>
+                            <proj:ChannelRackViewModel />
+                        </ContentControl>
+                    </TabItem>
+                </TabControl>
                 <TabControl Grid.Column="1" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
                     <TabControl.ItemTemplate>
                         <DataTemplate>

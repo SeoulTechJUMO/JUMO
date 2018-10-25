@@ -21,8 +21,8 @@
         <StackPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
             <Button Content="플러그인 추가" Command="{Binding AddPluginCommand}" />
         </StackPanel>
-        <Grid>
-            <ItemsControl ItemsSource="{Binding Plugins}">
+        <ScrollViewer VerticalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding Plugins}" Margin="{StaticResource ControlMargin}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <view:ChannelRackItemView Plugin="{Binding Key}"
@@ -32,6 +32,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        </Grid>
+        </ScrollViewer>
     </DockPanel>
 </UserControl>
