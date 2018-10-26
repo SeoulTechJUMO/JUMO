@@ -127,7 +127,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </Border>
@@ -175,7 +175,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
                                 <Grid HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
                                     <Ellipse x:Name="indicatorLight" Stroke="{StaticResource LightSecondaryTextColor}" StrokeThickness="1" Fill="{StaticResource LightSecondaryTextColor}" />
@@ -212,7 +212,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
                                 <Grid VerticalAlignment="Bottom" Margin="{StaticResource ToggleButtonBarMargin}" Height="3">
                                     <Border x:Name="indicatorLight" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="1" CornerRadius="1" Background="{StaticResource LightSecondaryTextColor}" />
@@ -249,7 +249,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
                     <Border x:Name="pushEffectBorder">
-                        <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                         </Border>
                     </Border>
@@ -315,7 +315,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ButtonBase}">
-                    <Border x:Name="border" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                    <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                         <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -351,7 +351,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding (proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource LightBackgroundColor}" SnapsToDevicePixels="True">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" Background="{StaticResource LightBackgroundColor}" SnapsToDevicePixels="True">
                         <Grid>
                             <Rectangle Margin="0,1,0,0" RadiusX="1.4" RadiusY="1.4" Fill="{TemplateBinding Background}" />
                             <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
@@ -593,17 +593,14 @@
                                     <Thumb x:Name="Thumb" Focusable="False" Height="18" OverridesDefaultStyle="True" VerticalAlignment="Center" Width="11">
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <ControlTemplate.Resources>
+                                                    <StreamGeometry x:Key="gripGeometry">
+                                                        M 2 0 L 8 0 A 2 2 0 0 1 10 2 L 10 11.171573 A 2 2 0 0 1 9.414214 12.585786 L 6.414214 15.585786 A 2 2 0 0 1 3.585786 15.585786 L 0.585786 12.585786 A 2 2 0 0 1 0 11.171573 L 0 2 A 2 2 0 0 1 2 0 Z
+                                                    </StreamGeometry>
+                                                </ControlTemplate.Resources>
                                                 <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                    <Rectangle x:Name="gripShadow" Width="10" Height="17" Fill="{StaticResource LightControlBorderColor}" Margin="0,1,0,0">
-                                                        <Rectangle.OpacityMask>
-                                                            <VisualBrush Visual="{Binding ElementName=grip}" />
-                                                        </Rectangle.OpacityMask>
-                                                    </Rectangle>
-                                                    <Path x:Name="grip" Width="10" Height="17" Fill="{StaticResource LightControlFaceColor}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource LightControlBorderColor}" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                        <Path.Data>
-                                                            M 2 0 L 8 0 A 2 2 0 0 1 10 2 L 10 11.171573 A 2 2 0 0 1 9.414214 12.585786 L 6.414214 15.585786 A 2 2 0 0 1 3.585786 15.585786 L 0.585786 12.585786 A 2 2 0 0 1 0 11.171573 L 0 2 A 2 2 0 0 1 2 0 Z
-                                                        </Path.Data>
-                                                    </Path>
+                                                    <Path x:Name="gripShadow" Margin="0,1,0,0" Width="10" Height="17" Fill="{StaticResource LightControlBorderColor}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource LightControlBorderColor}" StrokeThickness="1" Data="{StaticResource gripGeometry}" UseLayoutRounding="True" VerticalAlignment="Center" />
+                                                    <Path x:Name="grip" Width="10" Height="17" Fill="{StaticResource LightControlFaceColor}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource LightControlBorderColor}" StrokeThickness="1" Data="{StaticResource gripGeometry}" UseLayoutRounding="True" VerticalAlignment="Center" />
                                                 </Grid>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsDragging" Value="True">
