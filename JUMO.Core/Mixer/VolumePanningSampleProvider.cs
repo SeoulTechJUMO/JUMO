@@ -10,6 +10,7 @@ namespace JUMO.Mixer
         private readonly float[] _maxSamples;
         private readonly int _channels;
         private readonly StreamVolumeEventArgs _eventArgs;
+        private int _sampleCount = 0;
 
         #region Properties
 
@@ -79,14 +80,14 @@ namespace JUMO.Mixer
         /// </summary>
         /// <param name="buffer">Sample buffer</param>
         /// <param name="offset">Offset into sample buffer</param>
-        /// <param name="sampleCount">Number of samples desired</param>
+        /// <param name="count">Number of samples desired</param>
         /// <returns>Number of samples read</returns>
-        public int Read(float[] buffer, int offset, int sampleCount)
+        public int Read(float[] buffer, int offset, int count)
         {
-            int samplesRead = source.Read(buffer, offset, sampleCount);
-            float[] tempBuf = new float[sampleCount];
+            int samplesRead = source.Read(buffer, offset, count);
+            float[] tempBuf = new float[samplesRead];
 
-            for (int n = 0; n < sampleCount; n++)
+            for (int n = 0; n < samplesRead; n++)
             {
                 if (Panning > 0)
                 {
@@ -129,11 +130,15 @@ namespace JUMO.Mixer
                         float sampleValue = Math.Abs(tempBuf[offset + index + channel]);
                         _maxSamples[channel] = Math.Max(_maxSamples[channel], sampleValue);
                     }
-                    sampleCount++;
-                    if (sampleCount >= SamplesPerNotification)
+
+                    _sampleCount++;
+
+                    if (_sampleCount >= SamplesPerNotification)
                     {
                         StreamVolume(this, _eventArgs);
-                        sampleCount = 0;
+
+                        _sampleCount = 0;
+
                         // n.b. we avoid creating new instances of anything here
                         Array.Clear(_maxSamples, 0, _channels);
                     }
