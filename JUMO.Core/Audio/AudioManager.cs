@@ -73,6 +73,8 @@ namespace JUMO.Audio
             {
                 _outputDevices.Add(new AsioOutputDevice(asio));
             }
+
+            CurrentOutputDevice = _outputDevices?[0];
         }
 
         private void OnPropertyChanged(string propertyName)

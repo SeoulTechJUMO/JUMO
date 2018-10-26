@@ -95,5 +95,10 @@ namespace JUMO.UI.Views
         {
             new ChordMagicianWindow((PianoRollViewModel)DataContext).Show();
         }
+
+        private void NoteToolboxButtonClick(object sender, RoutedEventArgs e)
+        {
+            Toolbox.ContextMenu.IsOpen = true;
+        }
     }
 }
