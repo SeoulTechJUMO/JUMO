@@ -147,7 +147,8 @@ namespace JUMO
             {
                 _ChannelOut = value;
                 //요 밑에꺼는 channelOut내에 Mixing Sample Provider가 바뀔때 내부적으로 적용되는지 확인해야함
-                VolumePanningSample = new VolumePanningProvider(_ChannelOut, 1000);
+                _ChannelOut = new VolumePanningProvider(_ChannelOut, 1000);
+                ((VolumePanningProvider)_ChannelOut).StreamVolume += OnPostVolumeMeter;
             }
         }
 
@@ -159,7 +160,6 @@ namespace JUMO
             set
             {
                 _VolumePanningSample = value;
-                _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
             }
         }
 
