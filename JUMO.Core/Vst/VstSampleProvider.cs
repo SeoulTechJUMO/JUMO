@@ -2,7 +2,6 @@
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Interop.Host;
 using NAudio.Wave;
-using System;
 
 namespace JUMO.Vst
 {
@@ -15,13 +14,11 @@ namespace JUMO.Vst
         public ISampleProvider Source { get; set; }
         public float EffectMix { get; set; }
 
-        public VstSampleProvider(Plugin plugin)
-        {
-            _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
-        }
+        public VstSampleProvider(Plugin plugin) : this(plugin, null) { }
 
         public VstSampleProvider(Plugin plugin, ISampleProvider source)
         {
+            _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             Source = source;
             EffectMix = 1.0f;
         }
