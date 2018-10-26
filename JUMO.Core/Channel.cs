@@ -30,6 +30,7 @@ namespace JUMO
             IsMuted = false;
             //샘플 변경 확인시 호출 메소드 등록
             _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
+            _ChannelOut = VolumePanningSample;
         }
 
         //볼륨 이벤트 발생시 실행 메소드
@@ -137,8 +138,17 @@ namespace JUMO
         //내부 믹서 프로바이더
         private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
-        //채널의 최종 출력
-        public ISampleProvider ChannelOut { get; private set; }
+        //채널의 현재 최종 출력
+        private ISampleProvider _ChannelOut;
+        public ISampleProvider ChannelOut
+        {
+            get => _ChannelOut;
+            set
+            {
+                _ChannelOut = value;
+                VolumePanningSample = new VolumePanningProvider(_ChannelOut, 1000);
+            }
+        }
 
         //통합 샘플 프로바이더
         private VolumePanningProvider _VolumePanningSample;
@@ -148,6 +158,7 @@ namespace JUMO
             set
             {
                 _VolumePanningSample = value;
+                _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
             }
         }
 
