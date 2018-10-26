@@ -7,14 +7,33 @@ namespace JUMO.Mixer
     {
         private readonly ISampleProvider source;
 
-        private readonly float[] maxSamples;
-        private readonly int channels;
-        private readonly StreamVolumeEventArgs args;
+        private readonly float[] _maxSamples;
+        private readonly int _channels;
+        private readonly StreamVolumeEventArgs _eventArgs;
+
+        #region Properties
 
         /// <summary>
         /// 샘플 확인 주기
         /// </summary>
         public int SamplesPerNotification { get; set; }
+
+        /// <summary>
+        /// 볼륨 값, 1.0f = full volume
+        /// </summary>
+        public float Volume { get; set; }
+
+        /// <summary>
+        /// panning정보 0이 센터
+        /// </summary>
+        public float Panning { get; set; }
+
+        /// <summary>
+        /// 뮤트
+        /// </summary>
+        public bool Mute { get; set; }
+
+        #endregion
 
         /// <summary>
         /// 이벤트 발생시에 최대 볼륨 값을 알려주는 이벤트
@@ -32,10 +51,10 @@ namespace JUMO.Mixer
             Panning = 0.0f;
             Mute = false;
 
-            channels = source.WaveFormat.Channels;
-            maxSamples = new float[channels];
+            _channels = source.WaveFormat.Channels;
+            _maxSamples = new float[_channels];
             SamplesPerNotification = samplesPerNotification;
-            args = new StreamVolumeEventArgs() { MaxSampleValues = maxSamples };
+            _eventArgs = new StreamVolumeEventArgs() { MaxSampleValues = _maxSamples };
         }
 
         /// <summary>
@@ -103,40 +122,26 @@ namespace JUMO.Mixer
 
             if (StreamVolume != null)
             {
-                for (int index = 0; index < samplesRead; index += channels)
+                for (int index = 0; index < samplesRead; index += _channels)
                 {
-                    for (int channel = 0; channel < channels; channel++)
+                    for (int channel = 0; channel < _channels; channel++)
                     {
                         float sampleValue = Math.Abs(tempBuf[offset + index + channel]);
-                        maxSamples[channel] = Math.Max(maxSamples[channel], sampleValue);
+                        _maxSamples[channel] = Math.Max(_maxSamples[channel], sampleValue);
                     }
                     sampleCount++;
                     if (sampleCount >= SamplesPerNotification)
                     {
-                        StreamVolume(this, args);
+                        StreamVolume(this, _eventArgs);
                         sampleCount = 0;
                         // n.b. we avoid creating new instances of anything here
-                        Array.Clear(maxSamples, 0, channels);
+                        Array.Clear(_maxSamples, 0, _channels);
                     }
                 }
             }
 
             return samplesRead;
         }
-
-        /// <summary>
-        /// 볼륨 값, 1.0f = full volume
-        /// </summary>
-        public float Volume { get; set; }
-        /// <summary>
-        /// panning정보 0이 센터
-        /// </summary>
-        public float Panning { get; set; }
-
-        /// <summary>
-        /// 뮤트
-        /// </summary>
-        public bool Mute { get; set; }
 
         /// <summary>
         /// Event args for aggregated stream volume

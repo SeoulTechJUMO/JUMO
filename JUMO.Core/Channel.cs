@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JUMO.Vst;
 using NAudio.Wave;
-using NAudio.Gui;
 using NAudio.Wave.SampleProviders;
 using JUMO.Mixer;
 
@@ -15,41 +9,33 @@ namespace JUMO
 {
     public class MixerChannel : INotifyPropertyChanged
     {
-        public MixerChannel(string name, bool IsMaster=false)
-        {
-            Name = name;
-            Mixer.ReadFully = true;
+        //내부 믹서 프로바이더
+        private readonly MixingSampleProvider _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
-            //마스터 채널일때 초기화
-            if (IsMaster) { this.IsMaster = true; }
+        //이팩트 플러그인 관리자
+        private EffectPluginManager _effectManager = new EffectPluginManager();
 
-            //일반 채널에서 초기화
-            ChannelOut = new VolumePanningProvider(Mixer,1000);
-            Plugins = EffectManager.Plugins;
-            Volume = 0.8f;
-            IsMuted = false;
-            //샘플 변경 확인시 호출 메소드 등록
-            ((VolumePanningProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
-        }
+        private float _leftVolume;
+        private float _rightVolume;
+        private string _name;
+        private ISampleProvider _channelOut;
 
-        //볼륨 이벤트 발생시 실행 메소드
-        void OnPostVolumeMeter(object sender, VolumePanningProvider.StreamVolumeEventArgs e)
-        {
-            LeftVolume = e.MaxSampleValues[0];
-            RightVolume = e.MaxSampleValues[1];
-        }
+        #region Properties
 
+        /// <summary>
+        /// 마스터 채널 여부
+        /// </summary>
+        public bool IsMaster { get; }
 
         /// <summary>
         /// 좌 볼륨 미터 값
         /// </summary>
-        private float _LeftVolume;
         public float LeftVolume
         {
-            get => _LeftVolume;
+            get => _leftVolume;
             set
             {
-                _LeftVolume = value;
+                _leftVolume = value;
                 OnPropertyChanged(nameof(LeftVolume));
             }
         }
@@ -57,13 +43,12 @@ namespace JUMO
         /// <summary>
         /// 우 볼륨 미터 값
         /// </summary>
-        private float _RightVolume;
         public float RightVolume
         {
-            get => _RightVolume;
+            get => _rightVolume;
             set
             {
-                _RightVolume = value;
+                _rightVolume = value;
                 OnPropertyChanged(nameof(RightVolume));
             }
         }
@@ -97,13 +82,12 @@ namespace JUMO
         /// <summary>
         /// 채널의 이름
         /// </summary>
-        private string _Name = "";
         public string Name
         {
-            get => _Name;
+            get => _name;
             set
             {
-                _Name = value;
+                _name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
@@ -124,70 +108,77 @@ namespace JUMO
         /// <summary>
         /// 채널의 솔로 여부
         /// </summary>
-        public bool IsSolo = false;
+        public bool IsSolo { get; internal set; } = false;
 
         /// <summary>
-        /// 마스터 채널 여부
+        /// 채널의 현재 최종 출력
         /// </summary>
-        public readonly bool IsMaster = false;
-
-        //이팩트 플러그인 관리자
-        public EffectPluginManager EffectManager = new EffectPluginManager();
-
-        //내부 믹서 프로바이더
-        private MixingSampleProvider Mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-
-        //채널의 현재 최종 출력
-        private ISampleProvider _ChannelOut;
         public ISampleProvider ChannelOut
         {
-            get => _ChannelOut;
+            get => _channelOut;
             set
             {
-                _ChannelOut = value;
+                _channelOut = value;
                 //요 밑에꺼는 channelOut내에 Mixing Sample Provider가 바뀔때 내부적으로 적용되는지 확인해야함
-                _ChannelOut = new VolumePanningProvider(_ChannelOut, 1000);
-                ((VolumePanningProvider)_ChannelOut).StreamVolume += OnPostVolumeMeter;
+                _channelOut = new VolumePanningProvider(_channelOut, 1000);
+                ((VolumePanningProvider)_channelOut).StreamVolume += OnPostVolumeMeter;
             }
         }
 
         /// <summary>
-        /// 채널에 로드된 vst 리스트
+        /// 채널에 로드된 VST 리스트
         /// </summary>
-        private ObservableCollection<Plugin> _Plugins = new ObservableCollection<Plugin>();
-        public ObservableCollection<Plugin> Plugins
+        public ObservableCollection<Plugin> Plugins => _effectManager.Plugins;
+
+        #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public MixerChannel(string name, bool isMaster=false)
         {
-            get => _Plugins;
-            set
-            {
-                _Plugins = value;
-                OnPropertyChanged(nameof(Plugins));
-            }
+            Name = name;
+            _mixer.ReadFully = true;
+
+            //마스터 채널일때 초기화
+            IsMaster = isMaster;
+
+            //일반 채널에서 초기화
+            ChannelOut = new VolumePanningProvider(_mixer,1000);
+            Volume = 0.8f;
+            IsMuted = false;
+
+            //샘플 변경 확인시 호출 메소드 등록
+            ((VolumePanningProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
         }
 
         public void MixerSendInput(ISampleProvider input)
         {
-            Mixer.AddMixerInput(input);
+            _mixer.AddMixerInput(input);
         }
 
         public void MixerInputDispose(ISampleProvider input)
         {
-            Mixer.RemoveMixerInput(input);
+            _mixer.RemoveMixerInput(input);
         }
 
         public void AddEffect()
         {
             if (Plugins.Count != 0)
             {
-                EffectManager.AddPlugin(this, Plugins[Plugins.Count - 1].SampleProvider, null);
+                _effectManager.AddPlugin(this, Plugins[Plugins.Count - 1].SampleProvider, null);
             }
             else
             {
-                EffectManager.AddPlugin(this, Mixer, null);
+                _effectManager.AddPlugin(this, _mixer, null);
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //볼륨 이벤트 발생시 실행 메소드
+        private void OnPostVolumeMeter(object sender, VolumePanningProvider.StreamVolumeEventArgs e)
+        {
+            LeftVolume = e.MaxSampleValues[0];
+            RightVolume = e.MaxSampleValues[1];
+        }
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

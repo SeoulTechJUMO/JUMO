@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JUMO.Audio;
 using JUMO.Vst;
 
@@ -20,7 +16,12 @@ namespace JUMO
 
         #endregion
 
-        public MixerManager()
+        //믹서 채널
+        public ObservableCollection<MixerChannel> MixerChannels { get; } = new ObservableCollection<MixerChannel>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private MixerManager()
         {
             for (int i = 0; i < 100; i++)
             {
@@ -35,19 +36,8 @@ namespace JUMO
                     MixerChannels[0].MixerSendInput(MixerChannels[i].ChannelOut);
                 }
             }
-            AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
-        }
 
-        //믹서 채널
-        private ObservableCollection<MixerChannel> _MixerChannels = new ObservableCollection<MixerChannel>();
-        public ObservableCollection<MixerChannel> MixerChannels
-        {
-            get => _MixerChannels;
-            set
-            {
-                _MixerChannels = value;
-                OnPropertyChanged(nameof(MixerChannels));
-            }
+            AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
         }
 
         //채널 솔로 활성화 & 비활성화
@@ -96,9 +86,7 @@ namespace JUMO
             AudioManager.Instance.AddMixerInput(MixerChannels[0].ChannelOut);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

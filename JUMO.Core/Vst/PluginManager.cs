@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using Microsoft.Win32;
-using Jacobi.Vst.Core.Host;
-using Jacobi.Vst.Interop.Host;
-using JUMO.Audio;
 using NAudio.Wave;
-using JUMO.Mixer;
 
 namespace JUMO.Vst
 {
@@ -15,7 +10,10 @@ namespace JUMO.Vst
         #region Singleton
 
         private static readonly Lazy<PluginManager> _instance = new Lazy<PluginManager>(() => new PluginManager());
+
         public static PluginManager Instance => _instance.Value;
+
+        private PluginManager() { }
 
         #endregion
 
