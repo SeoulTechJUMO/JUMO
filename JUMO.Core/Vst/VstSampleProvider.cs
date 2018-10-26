@@ -69,8 +69,8 @@ namespace JUMO.Vst
                     {
                         if (Source != null)
                         {
-                            *(audioBuf + j++) = (*(vstLBuf + i)) * (EffectMix - 1) + tempBuf[j] * EffectMix;
-                            *(audioBuf + j++) = (*(vstRBuf + i)) * (EffectMix - 1) + tempBuf[j] * EffectMix;
+                            *(audioBuf + j) = (*(vstLBuf + i)) * EffectMix + tempBuf[j++] * (EffectMix - 1);
+                            *(audioBuf + j) = (*(vstRBuf + i)) * EffectMix + tempBuf[j++] * (EffectMix - 1);
                         }
                         else
                         {

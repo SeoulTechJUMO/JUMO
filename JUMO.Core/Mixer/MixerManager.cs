@@ -27,12 +27,12 @@ namespace JUMO
                 if (i == 0)
                 {
                     MixerChannels.Add(new MixerChannel("마스터", true));
-                    AudioManager.Instance.AddMixerInput(MixerChannels[i].VolumePanningSample);
+                    AudioManager.Instance.AddMixerInput(MixerChannels[i].ChannelOut);
                 }
                 else
                 {
                     MixerChannels.Add(new MixerChannel($"채널 {i}"));
-                    MixerChannels[0].MixerSendInput(MixerChannels[i].VolumePanningSample);
+                    MixerChannels[0].MixerSendInput(MixerChannels[i].ChannelOut);
                 }
             }
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
@@ -93,7 +93,7 @@ namespace JUMO
             }
 
             //새로운 디바이스 믹서에 임포트
-            AudioManager.Instance.AddMixerInput(MixerChannels[0].VolumePanningSample);
+            AudioManager.Instance.AddMixerInput(MixerChannels[0].ChannelOut);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -6,6 +6,7 @@ using Jacobi.Vst.Core.Host;
 using Jacobi.Vst.Interop.Host;
 using JUMO.Audio;
 using NAudio.Wave;
+using JUMO.Mixer;
 
 namespace JUMO.Vst
 {
@@ -100,7 +101,7 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub, source);
 
-                //channel.MixerSendInput(plugin.SampleProvider);
+                channel.ChannelOut = plugin.SampleProvider;
                 
                 Plugins.Add(plugin);
 

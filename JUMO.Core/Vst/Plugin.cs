@@ -129,11 +129,7 @@ namespace JUMO.Vst
 
             Name = PluginCommandStub.GetEffectName();
             VstSample = new VstSampleProvider(this, source);
-            _volume = new VolumePanningProvider(VstSample);
-            Volume = 0.8f;
-            Panning = 0.0f;
-            Mute = false;
-            SampleProvider = _volume;
+            SampleProvider = VstSample;
         }
 
         public void NoteOn(byte value, byte velocity)
