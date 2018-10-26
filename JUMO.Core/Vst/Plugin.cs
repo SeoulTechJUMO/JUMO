@@ -127,7 +127,7 @@ namespace JUMO.Vst
             PluginCommandStub = _ctx.PluginCommandStub;
             PluginCommandStub.Open();
             PluginCommandStub.SetSampleRate(44100.0f);
-            PluginCommandStub.SetBlockSize(2048);
+            PluginCommandStub.SetBlockSize(256);
             PluginCommandStub.MainsChanged(true);
             PluginCommandStub.StartProcess();
 
