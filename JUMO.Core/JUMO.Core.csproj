@@ -89,7 +89,7 @@
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
-    <Compile Include="Channel.cs" />
+    <Compile Include="MixerChannel.cs" />
     <Compile Include="IMusicalItem.cs" />
     <Compile Include="MakeNote.cs" />
     <Compile Include="Mixer\MixerManager.cs" />
