@@ -87,60 +87,55 @@ namespace JUMO.Mixer
             int samplesRead = source.Read(buffer, offset, count);
             float[] tempBuf = new float[samplesRead];
 
-            for (int n = 0; n < samplesRead; n++)
+            unsafe
             {
-                if (Panning > 0)
+                fixed (float* pTempBuf = &tempBuf[0], pBuf = &buffer[0])
                 {
-                    if ((offset + n) % 2 == 0)
+                    for (int n = 0; n < samplesRead; n++)
                     {
-                        //왼쪽
-                        tempBuf[offset + n] = buffer[offset + n] * (1 - Panning);
-                    }
-                    else
-                    {
-                        //오른쪽
-                        tempBuf[offset + n] = buffer[offset + n];
-                    }
-                }
-                else
-                {
-                    if ((offset + n) % 2 == 0)
-                    {
-                        //왼쪽
-                        tempBuf[offset + n] = buffer[offset + n];
-                    }
-                    else
-                    {
-                        //오른쪽
-                        tempBuf[offset + n] = buffer[offset + n] * (1 - (-Panning));
-                    }
-                }
-                tempBuf[offset + n] *= Volume;
-                if (Mute) { buffer[offset + n] = 0; }
-                else { buffer[offset + n] = tempBuf[offset + n]; }
-            }
+                        int index = offset + n;
 
+                        if (Panning > 0)
+                        {
+                            pTempBuf[index] = pBuf[index] * (index % 2 == 0 ? 1 - Panning : 1);
+                        }
+                        else
+                        {
+                            pTempBuf[index] = pBuf[index] * (index % 2 != 0 ? 1 - (-Panning) : 1);
+                        }
+
+                        pTempBuf[index] *= Volume;
+                        pBuf[index] = Mute ? 0 : pTempBuf[index];
+                    }
+                }
+            }
 
             if (StreamVolume != null)
             {
-                for (int index = 0; index < samplesRead; index += _channels)
+                unsafe
                 {
-                    for (int channel = 0; channel < _channels; channel++)
+                    fixed (float *pTempBuf = &tempBuf[0], pMaxSamples = &_maxSamples[0])
                     {
-                        float sampleValue = Math.Abs(tempBuf[offset + index + channel]);
-                        _maxSamples[channel] = Math.Max(_maxSamples[channel], sampleValue);
-                    }
+                        for (int index = 0; index < samplesRead; index += _channels)
+                        {
+                            for (int channel = 0; channel < _channels; channel++)
+                            {
+                                float sampleValue = Math.Abs(pTempBuf[offset + index + channel]);
+                                pMaxSamples[channel] = Math.Max(pMaxSamples[channel], sampleValue);
+                            }
 
-                    _sampleCount++;
+                            _sampleCount++;
 
-                    if (_sampleCount >= SamplesPerNotification)
-                    {
-                        StreamVolume(this, _eventArgs);
+                            if (_sampleCount >= SamplesPerNotification)
+                            {
+                                StreamVolume(this, _eventArgs);
 
-                        _sampleCount = 0;
+                                _sampleCount = 0;
 
-                        // n.b. we avoid creating new instances of anything here
-                        Array.Clear(_maxSamples, 0, _channels);
+                                // n.b. we avoid creating new instances of anything here
+                                Array.Clear(_maxSamples, 0, _channels);
+                            }
+                        }
                     }
                 }
             }
