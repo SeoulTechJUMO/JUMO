@@ -42,7 +42,7 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerSendInput(plugin.SampleProvider);
+                MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerAddInput(plugin.SampleProvider);
 
                 Plugins.Add(plugin);
 

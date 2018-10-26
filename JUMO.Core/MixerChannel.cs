@@ -151,12 +151,12 @@ namespace JUMO
             ((VolumePanningSampleProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
         }
 
-        public void MixerSendInput(ISampleProvider input)
+        public void MixerAddInput(ISampleProvider input)
         {
             _mixer.AddMixerInput(input);
         }
 
-        public void MixerInputDispose(ISampleProvider input)
+        public void MixerRemoveInput(ISampleProvider input)
         {
             _mixer.RemoveMixerInput(input);
         }

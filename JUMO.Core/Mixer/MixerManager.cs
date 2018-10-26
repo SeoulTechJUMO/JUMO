@@ -33,7 +33,7 @@ namespace JUMO
                 else
                 {
                     MixerChannels.Add(new MixerChannel($"채널 {i}"));
-                    MixerChannels[0].MixerSendInput(MixerChannels[i].ChannelOut);
+                    MixerChannels[0].MixerAddInput(MixerChannels[i].ChannelOut);
                 }
             }
 
@@ -68,8 +68,8 @@ namespace JUMO
         //플러그인 채널 채인지
         public void ChangeChannel(Plugin plugin, int TargetChannelNum)
         {
-            MixerChannels[plugin.ChannelNum].MixerInputDispose(plugin.SampleProvider);
-            MixerChannels[TargetChannelNum].MixerSendInput(plugin.SampleProvider);
+            MixerChannels[plugin.ChannelNum].MixerRemoveInput(plugin.SampleProvider);
+            MixerChannels[TargetChannelNum].MixerAddInput(plugin.SampleProvider);
         }
 
         //오디오 디바이스가 바뀔경우

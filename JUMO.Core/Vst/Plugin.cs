@@ -22,7 +22,7 @@ namespace JUMO.Vst
         private bool _isDisposed = false;
         private string _name;
         private int _firstTick = -1;
-        private int _ChannelNum = 0;
+        private int _channelNum = 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -45,13 +45,13 @@ namespace JUMO.Vst
 
         public int ChannelNum
         {
-            get => _ChannelNum;
+            get => _channelNum;
             set
             {
                 if (value < MixerManager.Instance.MixerChannels.Count)
                 {
                     MixerManager.Instance.ChangeChannel(this, value);
-                    _ChannelNum = value;
+                    _channelNum = value;
                     OnPropertyChanged(nameof(ChannelNum));
                 }
             }
