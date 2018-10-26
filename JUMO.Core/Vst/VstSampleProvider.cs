@@ -7,9 +7,17 @@ namespace JUMO.Vst
 {
     class VstSampleProvider : ISampleProvider
     {
+        private const int SAMPLE_RATE = 44100;
+        private const int NUM_CHANNEL = 2;
+
         private readonly Plugin _plugin;
 
-        public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+        private int _totalSamples = -1;
+        private VstAudioBufferManager _inBufMgr, _outBufMgr;
+        private VstAudioBuffer[] _inBuf, _outBuf;
+        private float[] _tempBuf;
+
+        public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, NUM_CHANNEL);
 
         public ISampleProvider Source { get; set; }
         public float EffectMix { get; set; }
@@ -25,72 +33,87 @@ namespace JUMO.Vst
 
         public int Read(float[] buffer, int offset, int count)
         {
-            int halfCount = count >> 1;
+            PrepareBuffers(count);
 
-            VstAudioBufferManager inBufMgr = new VstAudioBufferManager(2, halfCount);
-            VstAudioBufferManager outBufMgr = new VstAudioBufferManager(2, halfCount);
-
-#pragma warning disable CS0618 // Type or member is obsolete
-            VstAudioBuffer[] inBuf = inBufMgr.ToArray();
-            VstAudioBuffer[] outBuf = outBufMgr.ToArray();
-#pragma warning restore CS0618 // Type or member is obsolete
+            int samplesPerBuffer = count / NUM_CHANNEL;
 
             if (_plugin.FetchEvents(out VstEvent[] events))
             {
                 _plugin.PluginCommandStub.ProcessEvents(events);
             }
 
-            float[] tempBuf = new float[count];
-
             if (Source != null)
             {
-                Source.Read(tempBuf, offset, count);
+                Source.Read(_tempBuf, offset, count);
 
                 unsafe
                 {
-                    float* inLBuf = ((IDirectBufferAccess32)inBuf[0]).Buffer;
-                    float* inRBuf = ((IDirectBufferAccess32)inBuf[1]).Buffer;
+                    float* inLBuf = ((IDirectBufferAccess32)_inBuf[0]).Buffer;
+                    float* inRBuf = ((IDirectBufferAccess32)_inBuf[1]).Buffer;
 
-                    fixed (float* audioBuf = &tempBuf[0])
+                    fixed (float* pTempBuf = &_tempBuf[0])
                     {
-                        for (int i = 0, j = 0; i < halfCount; i++)
+                        for (int i = 0, j = 0; i < samplesPerBuffer; i++)
                         {
-                            *(inLBuf + j++) = *(audioBuf + i);
-                            *(inRBuf + j++) = *(audioBuf + i);
+                            inLBuf[i] = pTempBuf[j++];
+                            inRBuf[i] = pTempBuf[j++];
                         }
                     }
                 }
             }
 
-            _plugin.PluginCommandStub.ProcessReplacing(inBuf, outBuf);
+            _plugin.PluginCommandStub.ProcessReplacing(_inBuf, _outBuf);
 
             unsafe
             {
-                float* vstLBuf = ((IDirectBufferAccess32)outBuf[0]).Buffer;
-                float* vstRBuf = ((IDirectBufferAccess32)outBuf[1]).Buffer;
+                float* vstLBuf = ((IDirectBufferAccess32)_outBuf[0]).Buffer;
+                float* vstRBuf = ((IDirectBufferAccess32)_outBuf[1]).Buffer;
 
-                fixed (float* audioBuf = &buffer[0])
+                fixed (float* audioBuf = &buffer[0], pTempBuf = &_tempBuf[0])
                 {
-                    for (int i = 0, j = 0; i < halfCount; i++)
+                    for (int i = 0, j = 0; i < samplesPerBuffer; i++)
                     {
                         if (Source != null)
                         {
-                            *(audioBuf + j) = (*(vstLBuf + i)) * EffectMix + tempBuf[j++] * (EffectMix - 1);
-                            *(audioBuf + j) = (*(vstRBuf + i)) * EffectMix + tempBuf[j++] * (EffectMix - 1);
+                            audioBuf[j] = vstLBuf[i] * EffectMix + pTempBuf[j] * (1 - EffectMix); j++;
+                            audioBuf[j] = vstRBuf[i] * EffectMix + pTempBuf[j] * (1 - EffectMix); j++;
                         }
                         else
                         {
-                            *(audioBuf + j++) = *(vstLBuf + i);
-                            *(audioBuf + j++) = *(vstRBuf + i);
+                            audioBuf[j++] = vstLBuf[i];
+                            audioBuf[j++] = vstRBuf[i];
                         }
                     }
                 }
             }
 
-            inBufMgr.Dispose();
-            outBufMgr.Dispose();
-
             return count;
+        }
+
+        private void PrepareBuffers(int count)
+        {
+            if (count == _totalSamples)
+            {
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"VstSampleProvider::PrepareBuffers [{_plugin.PluginCommandStub.GetEffectName()}] count changed from {_totalSamples} to {count}. Replacing current buffers.");
+
+            _inBufMgr?.Dispose();
+            _outBufMgr?.Dispose();
+
+            int samplesPerBuffer = count / NUM_CHANNEL;
+
+            _tempBuf = new float[count];
+            _inBufMgr = new VstAudioBufferManager(2, samplesPerBuffer);
+            _outBufMgr = new VstAudioBufferManager(2, samplesPerBuffer);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            _inBuf = _inBufMgr.ToArray();
+            _outBuf = _outBufMgr.ToArray();
+#pragma warning restore CS0618 // Type or member is obsolete
+
+            _totalSamples = count;
         }
     }
 }
