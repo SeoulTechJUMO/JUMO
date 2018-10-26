@@ -10,7 +10,9 @@ namespace JUMO.Mixer
         private readonly float[] _maxSamples;
         private readonly int _channels;
         private readonly StreamVolumeEventArgs _eventArgs;
+        private int _lastTempBufSize = -1;
         private int _sampleCount = 0;
+        private float[] _tempBuf;
 
         #region Properties
 
@@ -85,11 +87,16 @@ namespace JUMO.Mixer
         public int Read(float[] buffer, int offset, int count)
         {
             int samplesRead = source.Read(buffer, offset, count);
-            float[] tempBuf = new float[samplesRead];
+
+            if (samplesRead != _lastTempBufSize)
+            {
+                _tempBuf = new float[samplesRead];
+                _lastTempBufSize = samplesRead;
+            }
 
             unsafe
             {
-                fixed (float* pTempBuf = &tempBuf[0], pBuf = &buffer[0])
+                fixed (float* pTempBuf = &_tempBuf[0], pBuf = &buffer[0])
                 {
                     for (int n = 0; n < samplesRead; n++)
                     {
@@ -114,7 +121,7 @@ namespace JUMO.Mixer
             {
                 unsafe
                 {
-                    fixed (float *pTempBuf = &tempBuf[0], pMaxSamples = &_maxSamples[0])
+                    fixed (float *pTempBuf = &_tempBuf[0], pMaxSamples = &_maxSamples[0])
                     {
                         for (int index = 0; index < samplesRead; index += _channels)
                         {
