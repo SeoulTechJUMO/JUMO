@@ -1,0 +1,30 @@
+﻿<Window x:Class="JUMO.UI.Layouts.NoteSofterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Layouts"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        mc:Ignorable="d"
+        Title="부드럽게" Height="200" Width="300">
+
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="확인" Click="CheckButtonClick"/>
+            <Button Content="취소" Command="{Binding AbortApplyCommand}" Click="ExitButtonClick"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Width="50" HorizontalAlignment="Center">
+                <TextBlock Text="간격" TextAlignment="Center"/>
+                <ctrl:Knob Minimum="0.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartInterval}"/>
+            </StackPanel>
+            <StackPanel Margin="20,0,0,0">
+                <TextBlock Text="강약조절" Width="50" TextAlignment="Center"/>
+                <ctrl:Knob Minimum="0.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityInterval}"/>
+            </StackPanel>
+        </StackPanel>
+    </DockPanel>
+</Window>

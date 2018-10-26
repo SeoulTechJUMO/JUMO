@@ -52,8 +52,8 @@
             <Button x:Name="Toolbox" Content="▼" Click="NoteToolboxButtonClick">
                 <Button.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="부드럽게"/>
-                        <MenuItem Header="자르기"/>
+                        <MenuItem Header="부드럽게" Click="SofterOpen"/>
+                        <MenuItem Header="자르기" Click="ChopperOpen"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>

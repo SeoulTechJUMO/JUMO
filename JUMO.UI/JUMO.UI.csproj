@@ -107,6 +107,12 @@
     <Compile Include="Layouts\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\NoteChopperWindow.xaml.cs">
+      <DependentUpon>NoteChopperWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\NoteSofterWindow.xaml.cs">
+      <DependentUpon>NoteSofterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Layouts\PluginEditorWindow.xaml.cs">
       <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -125,6 +131,7 @@
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
     <Compile Include="ViewModels\MusicalCanvasWorkspaceViewModel.cs" />
+    <Compile Include="ViewModels\NoteToolsViewModel.cs" />
     <Compile Include="ViewModels\NoteViewModel.cs" />
     <Compile Include="ViewModels\PatternPlacementViewModel.cs" />
     <Compile Include="ViewModels\PianoRollViewModel.cs" />
@@ -195,6 +202,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="ViewModels\ChannelRackViewModel.cs" />
+    <Page Include="Layouts\NoteChopperWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Layouts\NoteSofterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Layouts\PluginEditorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
