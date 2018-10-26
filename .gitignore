@@ -259,3 +259,7 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+#ignore in Smart Meloy Create
+improv_rnn_generate/
+ChordMagicianModel/Melody/
