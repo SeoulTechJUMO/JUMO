@@ -24,13 +24,12 @@ namespace JUMO
             if (IsMaster) { this.IsMaster = true; }
 
             //일반 채널에서 초기화
-            _VolumePanningSample = new VolumePanningProvider(Mixer,1000);
+            ChannelOut = new VolumePanningProvider(Mixer,1000);
             Plugins = EffectManager.Plugins;
             Volume = 0.8f;
             IsMuted = false;
             //샘플 변경 확인시 호출 메소드 등록
-            _VolumePanningSample.StreamVolume += OnPostVolumeMeter;
-            _ChannelOut = VolumePanningSample;
+            ((VolumePanningProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
         }
 
         //볼륨 이벤트 발생시 실행 메소드
@@ -74,10 +73,10 @@ namespace JUMO
         /// </summary>
         public float Panning
         {
-            get => _VolumePanningSample.Panning;
+            get => ((VolumePanningProvider)ChannelOut).Panning;
             set
             {
-                _VolumePanningSample.Panning = value;
+                ((VolumePanningProvider)ChannelOut).Panning = value;
                 OnPropertyChanged(nameof(Panning));
             }
         }
@@ -87,10 +86,10 @@ namespace JUMO
         /// </summary>
         public double Volume
         {
-            get => _VolumePanningSample.Volume;
+            get => ((VolumePanningProvider)ChannelOut).Volume;
             set
             {
-                _VolumePanningSample.Volume = (float)value;
+                ((VolumePanningProvider)ChannelOut).Volume = (float)value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -114,10 +113,10 @@ namespace JUMO
         /// </summary>
         public bool IsMuted
         {
-            get => _VolumePanningSample.Mute;
+            get => ((VolumePanningProvider)ChannelOut).Mute;
             set
             {
-                _VolumePanningSample.Mute = value;
+                ((VolumePanningProvider)ChannelOut).Mute = value;
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
@@ -149,17 +148,6 @@ namespace JUMO
                 //요 밑에꺼는 channelOut내에 Mixing Sample Provider가 바뀔때 내부적으로 적용되는지 확인해야함
                 _ChannelOut = new VolumePanningProvider(_ChannelOut, 1000);
                 ((VolumePanningProvider)_ChannelOut).StreamVolume += OnPostVolumeMeter;
-            }
-        }
-
-        //통합 샘플 프로바이더
-        private VolumePanningProvider _VolumePanningSample;
-        public VolumePanningProvider VolumePanningSample
-        {
-            get => _VolumePanningSample;
-            set
-            {
-                _VolumePanningSample = value;
             }
         }
 
