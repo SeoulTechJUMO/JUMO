@@ -15,7 +15,7 @@ namespace JUMO.Vst
     {
         private readonly IVstPluginContext _ctx;
         private readonly List<VstMidiEvent> _pendingEvents = new List<VstMidiEvent>();
-        private readonly VolumePanningProvider _volume;
+        private readonly VolumePanningSampleProvider _volume;
 
         private readonly object _lock = new object();
 
@@ -112,7 +112,7 @@ namespace JUMO.Vst
             PluginCommandStub.StartProcess();
 
             Name = PluginCommandStub.GetEffectName();
-            _volume = new VolumePanningProvider(new VstSampleProvider(this));
+            _volume = new VolumePanningSampleProvider(new VstSampleProvider(this));
             Volume = 0.8f;
             Panning = 0.0f;
             Mute = false;

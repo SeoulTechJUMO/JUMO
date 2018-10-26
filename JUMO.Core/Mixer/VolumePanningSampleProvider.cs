@@ -3,7 +3,7 @@ using System;
 
 namespace JUMO.Mixer
 {
-    public class VolumePanningProvider : ISampleProvider
+    public class VolumePanningSampleProvider : ISampleProvider
     {
         private readonly ISampleProvider source;
 
@@ -44,7 +44,7 @@ namespace JUMO.Mixer
         /// 믹서 채널용 생성자
         /// </summary>
         /// <param name="source">Source Sample Provider</param>
-        public VolumePanningProvider(ISampleProvider source, int samplesPerNotification)
+        public VolumePanningSampleProvider(ISampleProvider source, int samplesPerNotification)
         {
             this.source = source;
             Volume = 1.0f;
@@ -61,7 +61,7 @@ namespace JUMO.Mixer
         /// 플러그인용 생성자
         /// </summary>
         /// <param name="source"></param>
-        public VolumePanningProvider(ISampleProvider source)
+        public VolumePanningSampleProvider(ISampleProvider source)
         {
             this.source = source;
             Volume = 1.0f;

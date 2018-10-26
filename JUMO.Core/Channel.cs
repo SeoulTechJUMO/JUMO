@@ -58,10 +58,10 @@ namespace JUMO
         /// </summary>
         public float Panning
         {
-            get => ((VolumePanningProvider)ChannelOut).Panning;
+            get => ((VolumePanningSampleProvider)ChannelOut).Panning;
             set
             {
-                ((VolumePanningProvider)ChannelOut).Panning = value;
+                ((VolumePanningSampleProvider)ChannelOut).Panning = value;
                 OnPropertyChanged(nameof(Panning));
             }
         }
@@ -71,10 +71,10 @@ namespace JUMO
         /// </summary>
         public double Volume
         {
-            get => ((VolumePanningProvider)ChannelOut).Volume;
+            get => ((VolumePanningSampleProvider)ChannelOut).Volume;
             set
             {
-                ((VolumePanningProvider)ChannelOut).Volume = (float)value;
+                ((VolumePanningSampleProvider)ChannelOut).Volume = (float)value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -97,10 +97,10 @@ namespace JUMO
         /// </summary>
         public bool IsMuted
         {
-            get => ((VolumePanningProvider)ChannelOut).Mute;
+            get => ((VolumePanningSampleProvider)ChannelOut).Mute;
             set
             {
-                ((VolumePanningProvider)ChannelOut).Mute = value;
+                ((VolumePanningSampleProvider)ChannelOut).Mute = value;
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
@@ -120,8 +120,8 @@ namespace JUMO
             {
                 _channelOut = value;
                 //요 밑에꺼는 channelOut내에 Mixing Sample Provider가 바뀔때 내부적으로 적용되는지 확인해야함
-                _channelOut = new VolumePanningProvider(_channelOut, 1000);
-                ((VolumePanningProvider)_channelOut).StreamVolume += OnPostVolumeMeter;
+                _channelOut = new VolumePanningSampleProvider(_channelOut, 1000);
+                ((VolumePanningSampleProvider)_channelOut).StreamVolume += OnPostVolumeMeter;
             }
         }
 
@@ -143,12 +143,12 @@ namespace JUMO
             IsMaster = isMaster;
 
             //일반 채널에서 초기화
-            ChannelOut = new VolumePanningProvider(_mixer,1000);
+            ChannelOut = new VolumePanningSampleProvider(_mixer,1000);
             Volume = 0.8f;
             IsMuted = false;
 
             //샘플 변경 확인시 호출 메소드 등록
-            ((VolumePanningProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
+            ((VolumePanningSampleProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
         }
 
         public void MixerSendInput(ISampleProvider input)
@@ -174,7 +174,7 @@ namespace JUMO
         }
 
         //볼륨 이벤트 발생시 실행 메소드
-        private void OnPostVolumeMeter(object sender, VolumePanningProvider.StreamVolumeEventArgs e)
+        private void OnPostVolumeMeter(object sender, VolumePanningSampleProvider.StreamVolumeEventArgs e)
         {
             LeftVolume = e.MaxSampleValues[0];
             RightVolume = e.MaxSampleValues[1];

@@ -101,7 +101,7 @@
     <Compile Include="Score.cs" />
     <Compile Include="Song.cs" />
     <Compile Include="Track.cs" />
-    <Compile Include="Mixer\VolumePanningProvider.cs" />
+    <Compile Include="Mixer\VolumePanningSampleProvider.cs" />
     <Compile Include="Vst\EffectSampleManager.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
     <Compile Include="Vst\Plugin.cs" />
