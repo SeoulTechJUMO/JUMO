@@ -8,12 +8,20 @@
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         xmlns:view="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
+        Background="{DynamicResource LightBackgroundColor}"
         Title="{Binding DisplayName}" Height="600" Width="900">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Window.DataContext>
         <proj:MainViewModel />
     </Window.DataContext>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top" Background="{StaticResource LightBackgroundColor}">
             <MenuItem Header="파일(F)">
                 <MenuItem Header="저장" />
                 <MenuItem Header="열기" />
@@ -24,7 +32,7 @@
             <MenuItem Header=" 도구(T)" />
             <MenuItem Header=" 도움말(H)" />
         </Menu>
-        <Grid DockPanel.Dock="Top">
+        <Grid DockPanel.Dock="Top" Margin="3">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
@@ -43,9 +51,9 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton Grid.Column="0" Command="{Binding TogglePlaybackModeCommand}">
+                <ToggleButton Grid.Column="0" Command="{Binding TogglePlaybackModeCommand}" proj:SkinHelper.Segment="Left">
                     <ToggleButton.Style>
-                        <Style TargetType="ToggleButton">
+                        <Style TargetType="ToggleButton" BasedOn="{StaticResource FaceToggleButtonStyle2}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                     <Setter Property="Content" Value="패턴" />
@@ -59,13 +67,13 @@
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
-                <ToggleButton Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" />
-                <ctrl:NumericUpDown Grid.Column="2" MinValue="20" MaxValue="500" Value="{Binding Song.Tempo}" />
+                <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Grid.Column="1" Content="▶" IsChecked="{Binding Sequencer.IsPlaying, Mode=OneWay}" Command="{Binding TogglePlaybackCommand}" proj:SkinHelper.Segment="Right" />
+                <ctrl:NumericUpDown Grid.Column="2" Margin="3" Minimum="20" Maximum="500" Value="{Binding Song.Tempo}" />
             </Grid>
 
-            <Slider Grid.Row="1" Grid.Column="0" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}">
+            <Slider Grid.Row="1" Grid.Column="0" Width="160" Minimum="0" Value="{Binding Sequencer.Position, Mode=TwoWay}" VerticalAlignment="Center">
                 <Slider.Style>
-                    <Style TargetType="Slider">
+                    <Style TargetType="Slider" BasedOn="{StaticResource {x:Type Slider}}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                 <Setter Property="Maximum" Value="{Binding Song.CurrentPattern.Length}" />
@@ -78,45 +86,54 @@
                 </Slider.Style>
             </Slider>
 
-            <ContentControl Grid.Column="1" Grid.RowSpan="2">
-                <ContentControl.ContentTemplate>
-                    <DataTemplate DataType="{x:Type proj:PlaybackTimeViewModel}">
-                        <view:PlaybackTimeView />
-                    </DataTemplate>
-                </ContentControl.ContentTemplate>
-                <proj:PlaybackTimeViewModel />
-            </ContentControl>
+            <Grid Grid.Column="1" Grid.RowSpan="2" Margin="3">
+                <Rectangle x:Name="playbackTimeViewMask" RadiusX="10" RadiusY="2147483647" Fill="{StaticResource LightBackgroundColor}" />
+                <ContentControl>
+                    <ContentControl.OpacityMask>
+                        <VisualBrush Visual="{Binding ElementName=playbackTimeViewMask}" />
+                    </ContentControl.OpacityMask>
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate DataType="{x:Type proj:PlaybackTimeViewModel}">
+                            <view:PlaybackTimeView Background="{StaticResource DarkBackgroundColor}" Foreground="{StaticResource DarkPrimaryTextColor}" SecondaryForeground="{StaticResource DarkSecondaryTextColor}" />
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                    <proj:PlaybackTimeViewModel />
+                </ContentControl>
+            </Grid>
 
-            <ComboBox Grid.Row="0" Grid.Column="2" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
+            <ComboBox Grid.Row="0" Grid.Column="2" Margin="3" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name" />
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                <Button BorderBrush="Gray" Content="MX" Click="Mixer_Click" />
-                <Button BorderBrush="Gray" Content="PL" Command="{Binding OpenPlaylistCommand}" />
+                <Button Content="MX" Click="Mixer_Click"  proj:SkinHelper.Segment="Left" />
+                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" proj:SkinHelper.Segment="Center" />
+                <Button Content="스킨 테스트" Click="Button_Click" proj:SkinHelper.Segment="Right" />
             </StackPanel>
         </Grid>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" MinWidth="300" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
+        <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Column="0">
-                <TabItem Header="패턴">
-                    <proj:ChannelRackViewModel />
-                </TabItem>
-            </TabControl>
-            <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-            <TabControl Grid.Column="2" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
-                <TabControl.ItemTemplate>
-                    <DataTemplate>
-                        <DockPanel>
-                            <Button DockPanel.Dock="Right" Content="X" Margin="5,0,0,0" Command="{Binding CloseCommand}" />
-                            <TextBlock Text="{Binding DisplayName}" />
-                        </DockPanel>
-                    </DataTemplate>
-                </TabControl.ItemTemplate>
-            </TabControl>
-        </Grid>
+                <TabControl Grid.Column="0" Margin="{StaticResource ControlMargin}">
+                    <TabItem Header="{Binding Song.CurrentPattern.Name}">
+                        <ContentControl>
+                            <proj:ChannelRackViewModel />
+                        </ContentControl>
+                    </TabItem>
+                </TabControl>
+                <TabControl Grid.Column="1" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding Workspaces}" SelectedItem="{Binding CurrentWorkspace, Mode=TwoWay}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel>
+                                <Button DockPanel.Dock="Right" Style="{StaticResource CloseTabButtonStyle}" Command="{Binding CloseCommand}" />
+                                <TextBlock Text="{Binding DisplayName}" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                </TabControl>
+            </Grid>
+        </Border>
     </DockPanel>
 </Window>

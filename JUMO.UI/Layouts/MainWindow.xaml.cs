@@ -33,5 +33,10 @@ namespace JUMO.UI.Layouts
         {
             new MixerWindow().Show();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new SkinTestWindow().Show();
+        }
     }
 }

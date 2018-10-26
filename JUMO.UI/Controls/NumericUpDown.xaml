@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="JUMO.UI.Controls.NumericUpDown"
+             x:Name="root"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JUMO.UI.Controls"
+             xmlns:proj="clr-namespace:JUMO.UI"
+             d:DesignWidth="100"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </UserControl.Resources>
+    <Grid DataContext="{Binding ElementName=root}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                 Margin="0"
+                 TextAlignment="Right"
+                 proj:SkinHelper.Segment="Left"
+                 VerticalContentAlignment="Center"
+                 MouseWheel="OnTextBoxMouseWheel"
+                 Text="{Binding Value, UpdateSourceTrigger=LostFocus}" />
+        <RepeatButton Grid.Row="0" Grid.Column="1"
+                      Padding="5,3" Margin="0"
+                      BorderThickness="1,1,1,0"
+                      Click="OnIncreaseButtonClick"
+                      proj:SkinHelper.Segment="Right"
+                      proj:SkinHelper.BorderRadius="0,2,0,0">
+            <RepeatButton.Style>
+                <Style TargetType="RepeatButton" BasedOn="{StaticResource {x:Type ButtonBase}}" />
+            </RepeatButton.Style>
+            <Path SnapsToDevicePixels="True" Data="M 3 0 L 6 3 L 0 3" Fill="{StaticResource LightPrimaryTextColor}" />
+        </RepeatButton>
+        <RepeatButton Grid.Row="1" Grid.Column="1"
+                      Padding="5,3" Margin="0"
+                      Click="OnDecreaseButtonClick"
+                      proj:SkinHelper.Segment="Right"
+                      proj:SkinHelper.BorderRadius="0,0,2,0">
+            <RepeatButton.Style>
+                <Style TargetType="RepeatButton" BasedOn="{StaticResource NumberUpDownButtonStyle}">
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderThickness" Value="1,2,1,1" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </RepeatButton.Style>
+            <Path Width="6" Height="3" SnapsToDevicePixels="True" Data="M 0 0 L 6 0 L 3 3" Fill="{StaticResource LightPrimaryTextColor}" />
+        </RepeatButton>
+    </Grid>
+</UserControl>

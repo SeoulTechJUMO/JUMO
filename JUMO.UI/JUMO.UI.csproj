@@ -89,7 +89,11 @@
     <Compile Include="Controls\BlockSelectionAdorner.cs" />
     <Compile Include="Controls\IMusicalViewCallback.cs" />
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
+    <Compile Include="Controls\Knob.cs" />
     <Compile Include="Controls\MusicalScrollViewer.cs" />
+    <Compile Include="Controls\NumericUpDown.xaml.cs">
+      <DependentUpon>NumericUpDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlaybackBarAdorner.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
@@ -98,7 +102,6 @@
     <Compile Include="Controls\VolumeMeter.cs" />
     <Compile Include="Data\BinaryPartition.cs" />
     <Compile Include="Controls\MusicalCanvasBase.cs" />
-    <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
     <Compile Include="Data\EnumHelper.cs" />
     <Compile Include="Data\TempoBeatOptionCollection.cs" />
@@ -111,7 +114,11 @@
     <Compile Include="Layouts\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\SkinTestWindow.xaml.cs">
+      <DependentUpon>SkinTestWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ThumbnailManager.cs" />
+    <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
@@ -190,6 +197,10 @@
     </Compile>
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
+    <Page Include="Controls\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Layouts\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -203,11 +214,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Layouts\SkinTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\NoteIcons.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\SettingsViewStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Skin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

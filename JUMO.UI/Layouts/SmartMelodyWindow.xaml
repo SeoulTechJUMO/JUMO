@@ -64,9 +64,9 @@
                 </ListBox>
                 <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
                     <TextBlock>멜로디 패턴 생성 개수 :</TextBlock>
-                    <ctrl:NumericUpDown Width="50" Margin="10,0,50,0" Value="{Binding MelodyCount}"></ctrl:NumericUpDown>
+                    <ctrl:NumericUpDown Width="50" Margin="10,0,50,0" Value="{Binding MelodyCount}" />
                     <TextBlock>코드 진행 반복 횟수 :</TextBlock>
-                    <ctrl:NumericUpDown Width="50" Margin="10,0,0,0" Value="{Binding ChordCount}"></ctrl:NumericUpDown>
+                    <ctrl:NumericUpDown Width="50" Margin="10,0,0,0" Value="{Binding ChordCount}" />
                 </StackPanel>
             </StackPanel>
         </DockPanel>

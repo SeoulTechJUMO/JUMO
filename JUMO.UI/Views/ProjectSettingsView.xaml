@@ -92,7 +92,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <Label Content="=" />
-            <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" MinValue="10" MaxValue="500" />
+            <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" Minimum="10" Maximum="500" />
         </StackPanel>
         <StackPanel Grid.Row="6" Grid.Column="1"
                     Orientation="Horizontal"
@@ -106,11 +106,11 @@
                 <Border Grid.Row="0"
                         BorderBrush="Black" BorderThickness="0,0,0,2">
                     <ctrl:NumericUpDown Margin="3" Width="40"
-                                        MinValue="2" MaxValue="32"
+                                        Minimum="2" Maximum="32"
                                         Value="{Binding Numerator}" />
                 </Border>
                 <ctrl:NumericUpDown Grid.Row="1" Margin="3" Width="40"
-                                    MinValue="2" MaxValue="32"
+                                    Minimum="2" Maximum="32"
                                     Value="{Binding Denominator}" />
             </Grid>
         </StackPanel>

@@ -1,0 +1,147 @@
+﻿<Window x:Class="JUMO.UI.Layouts.SkinTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JUMO.UI.Layouts"
+        xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        mc:Ignorable="d"
+        Background="{DynamicResource LightBackgroundColor}"
+        Title="SkinTestWindow" Height="450" Width="600">
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </Window.Resources>
+    <TabControl Margin="3">
+        <TabItem Header="버튼">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="활성" />
+                    <Button Content="비활성" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" />
+                    <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" />
+                    <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle2}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle3}" Content="토글" IsChecked="True" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="True" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="하나" proj:SkinHelper.Segment="Left" />
+                    <Button Content="둘" proj:SkinHelper.Segment="Center" />
+                    <Button Content="셋" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="하나" IsChecked="True" proj:SkinHelper.Segment="Left" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="텍스트 상자">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="활성 텍스트 상자" />
+                    <TextBox Text="비활성 텍스트 상자" IsEnabled="False" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="Wow" IsChecked="True" proj:SkinHelper.Segment="Left" />
+                    <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Text="Lorem ipsum dolor" Width="200" proj:SkinHelper.Segment="Left" />
+                    <Button Content="Open" proj:SkinHelper.Segment="Right" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <ctrl:NumericUpDown Width="60" Minimum="0" Maximum="100" Value="42" />
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="노브/슬라이더">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource TracklessKnobStyle}" />
+                    <ctrl:Knob Minimum="0" Maximum="12" Style="{StaticResource DottedTrackKnobStyle}" />
+                    <ctrl:Knob x:Name="knob" Minimum="0" Maximum="12" />
+                    <ProgressBar Width="200" Height="16" Margin="3" Minimum="0" Maximum="12" Value="{Binding Value, ElementName=knob}" />
+                </StackPanel>
+
+                <StackPanel Width="200" HorizontalAlignment="Left">
+                    <Slider Minimum="0" Maximum="4" Value="0" />
+                    <Slider Minimum="0" Maximum="4" Value="1" />
+                    <Slider Minimum="0" Maximum="4" Value="2" IsSelectionRangeEnabled="True" SelectionStart="0.5" SelectionEnd="1.5" />
+                    <Slider Minimum="0" Maximum="4" Value="3" IsSelectionRangeEnabled="True" SelectionStart="1" SelectionEnd="2" IsEnabled="False" />
+                    <Slider Minimum="0" Maximum="4" Value="4" IsEnabled="False" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource {x:Type ScrollBar}}">
+                            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="3" ViewportSize="2" IsEnabled="False" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="4" ViewportSize="2" IsEnabled="False" />
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="3" ViewportSize="2" IsEnabled="False" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="4" ViewportSize="2" IsEnabled="False" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}">
+                            <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="3" ViewportSize="2" />
+                        <ScrollBar Orientation="Vertical" Minimum="0" Maximum="4" Value="4" ViewportSize="2" />
+                    </StackPanel>
+                    <StackPanel Width="200">
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="0" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="1" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="2" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="3" ViewportSize="2" />
+                        <ScrollBar Orientation="Horizontal" Minimum="0" Maximum="4" Value="4" ViewportSize="2" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>

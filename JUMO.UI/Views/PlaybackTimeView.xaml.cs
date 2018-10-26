@@ -1,22 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JUMO.UI.Views
 {
     public partial class PlaybackTimeView : UserControl
     {
+        public static readonly DependencyProperty SecondaryForegroundProperty =
+            DependencyProperty.Register(
+                "SecondaryForeground", typeof(Brush), typeof(PlaybackTimeView),
+                new FrameworkPropertyMetadata(Brushes.Gray, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
+
+        public Brush SecondaryForeground
+        {
+            get => (Brush)GetValue(SecondaryForegroundProperty);
+            set => SetValue(SecondaryForegroundProperty, value);
+        }
+
         public PlaybackTimeView()
         {
             InitializeComponent();
