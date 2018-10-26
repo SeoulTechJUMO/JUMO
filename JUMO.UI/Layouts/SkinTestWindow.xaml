@@ -122,7 +122,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
-                        <Style TargetType="ScrollBar" BasedOn="{StaticResource {x:Type ScrollBar}}">
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}">
                             <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
                         </Style>
                     </StackPanel.Resources>
