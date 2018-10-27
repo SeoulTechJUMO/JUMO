@@ -11,9 +11,6 @@ namespace JUMO.Vst
 
         private int _channelNum = 0;
 
-        //input오디오 소스
-        public ISampleProvider source;
-
         public int ChannelNum
         {
             get => _channelNum;
@@ -58,19 +55,7 @@ namespace JUMO.Vst
             }
         }
 
-        public float EffectMix
-        {
-            get => VstSample.EffectMix;
-            set
-            {
-                VstSample.EffectMix = value;
-                OnPropertyChanged(nameof(EffectMix));
-            }
-        }
-
         public ISampleProvider SampleProvider { get; }
-
-        private VstSampleProvider VstSample { get; set; }
 
         public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub) : base(pluginPath, hostCmdStub)
         {
@@ -79,12 +64,6 @@ namespace JUMO.Vst
             Panning = 0.0f;
             Mute = false;
             SampleProvider = _volume;
-        }
-
-        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub, ISampleProvider source) : base(pluginPath, hostCmdStub)
-        {
-            VstSample = new VstSampleProvider(this, source);
-            SampleProvider = VstSample;
         }
 
         public void NoteOn(byte value, byte velocity) => NoteOn(0, value, velocity);

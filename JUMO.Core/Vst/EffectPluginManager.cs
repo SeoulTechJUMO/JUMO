@@ -7,7 +7,7 @@ namespace JUMO.Vst
 {
     public class EffectPluginManager : IDisposable
     {
-        public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
+        public ObservableCollection<EffectPlugin> Plugins { get; } = new ObservableCollection<EffectPlugin>();
 
         public bool AddPlugin(MixerChannel channel, ISampleProvider source, Action<Exception> onError)
         {
@@ -31,7 +31,7 @@ namespace JUMO.Vst
             try
             {
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
-                Plugin plugin = new Plugin(pluginPath, hostCmdStub, source);
+                EffectPlugin plugin = new EffectPlugin(pluginPath, hostCmdStub, source);
 
                 channel.ChannelOut = plugin.SampleProvider;
 
@@ -45,11 +45,6 @@ namespace JUMO.Vst
 
                 return false;
             }
-        }
-
-        public void PluginDispose(Plugin plugin)
-        {
-            plugin.Dispose();
         }
 
         public void Dispose()

@@ -131,7 +131,7 @@ namespace JUMO
         /// <summary>
         /// 채널에 로드된 VST 리스트
         /// </summary>
-        public ObservableCollection<Plugin> Plugins => _effectManager.Plugins;
+        public ObservableCollection<EffectPlugin> Plugins => _effectManager.Plugins;
 
         #endregion
 
