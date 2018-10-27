@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         mc:Ignorable="d"
-        Title="부드럽게" Height="200" Width="300">
+        Title="부드럽게" Height="200" Width="300" WindowStartupLocation="CenterOwner"
+        >
 
     <Window.Resources>
         <ResourceDictionary Source="../Resources/Skin.xaml" />
@@ -14,7 +14,7 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Content="확인" Command="{Binding ApplyCommand}" Click="CheckButtonClick"/>
-            <Button Content="취소" Command="{Binding AbortCommand}" Click="ExitButtonClick"/>
+            <Button x:Name="Cancel" Content="취소" Command="{Binding AbortCommand}" Click="ExitButtonClick"/>
         </StackPanel>
         <StackPanel VerticalAlignment="Center">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
