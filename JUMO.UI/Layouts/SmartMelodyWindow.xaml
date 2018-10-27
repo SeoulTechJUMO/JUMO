@@ -44,7 +44,7 @@
                     </ComboBox>
                 </StackPanel>
                 <local:ScoreThumbnailView Score="{Binding ViewModel.ViewModel.Score}" Height="100" Background="Azure"/>
-                <Button Content="재생" Width="40" Margin="0,20,0,20"/>
+                <Button Content="재생" Width="40" Margin="0,20,0,20" Command="{Binding MelodyPlayCommand}"/>
                 <TextBlock x:Name="text3" Width="400" Height="20"  FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
                 <TextBlock x:Name="text4" Width="400" Height="20"  FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
                 <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Margin="0,20,0,0" Background="Azure">
