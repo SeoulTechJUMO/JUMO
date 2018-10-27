@@ -10,7 +10,7 @@ namespace JUMO.Vst
         private const int SAMPLE_RATE = 44100;
         private const int NUM_CHANNEL = 2;
 
-        private readonly Plugin _plugin;
+        private readonly PluginBase _plugin;
 
         private int _totalSamples = -1;
         private VstAudioBufferManager _inBufMgr, _outBufMgr;
@@ -22,9 +22,9 @@ namespace JUMO.Vst
         public ISampleProvider Source { get; set; }
         public float EffectMix { get; set; }
 
-        public VstSampleProvider(Plugin plugin) : this(plugin, null) { }
+        public VstSampleProvider(PluginBase plugin) : this(plugin, null) { }
 
-        public VstSampleProvider(Plugin plugin, ISampleProvider source)
+        public VstSampleProvider(PluginBase plugin, ISampleProvider source)
         {
             _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             Source = source;
