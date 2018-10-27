@@ -32,8 +32,6 @@ namespace JUMO
             for (int i = 1; i < 100; i++)
             {
                 MixerChannels[i] = new MixerChannel($"채널 {i}");
-
-                master.MixerAddInput(MixerChannels[i].ChannelOut);
             }
 
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;
@@ -64,7 +62,7 @@ namespace JUMO
             if(!CurrentChannel.IsMaster) { MixerChannels[0].IsMuted = false; }
         }
 
-        //플러그인 채널 채인지
+        //플러그인 채널 변경
         public void ChangeChannel(Plugin plugin, int TargetChannelNum)
         {
             MixerChannels[plugin.ChannelNum].MixerRemoveInput(plugin.SampleProvider);

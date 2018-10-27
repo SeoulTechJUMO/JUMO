@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using JUMO.Vst;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
@@ -9,6 +10,8 @@ namespace JUMO
 {
     public class MixerChannel : INotifyPropertyChanged
     {
+        private static MixerChannel _masterChannel;
+
         //내부 믹서 프로바이더
         private readonly MixingSampleProvider _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
 
@@ -140,7 +143,11 @@ namespace JUMO
             _mixer.ReadFully = true;
 
             //마스터 채널일때 초기화
-            IsMaster = isMaster;
+            if (isMaster)
+            {
+                IsMaster = true;
+                _masterChannel = this;
+            }
 
             //일반 채널에서 초기화
             ChannelOut = new VolumePanningSampleProvider(_mixer,1000);
@@ -153,12 +160,22 @@ namespace JUMO
 
         public void MixerAddInput(ISampleProvider input)
         {
+            if (!IsMaster && _mixer.MixerInputs.Count() == 0)
+            {
+                _masterChannel.MixerAddInput(ChannelOut);
+            }
+
             _mixer.AddMixerInput(input);
         }
 
         public void MixerRemoveInput(ISampleProvider input)
         {
             _mixer.RemoveMixerInput(input);
+
+            if (!IsMaster && _mixer.MixerInputs.Count() == 0)
+            {
+                _masterChannel.MixerRemoveInput(ChannelOut);
+            }
         }
 
         public void AddEffect()
