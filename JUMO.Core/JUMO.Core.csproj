@@ -104,7 +104,6 @@
     <Compile Include="Mixer\VolumePanningSampleProvider.cs" />
     <Compile Include="Vst\EffectPlugin.cs" />
     <Compile Include="Vst\EffectPluginManager.cs" />
-    <Compile Include="Vst\EffectSampleManager.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
     <Compile Include="Vst\Plugin.cs" />
     <Compile Include="Vst\PluginBase.cs" />
