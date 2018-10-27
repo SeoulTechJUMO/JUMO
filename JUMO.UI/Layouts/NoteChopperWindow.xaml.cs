@@ -16,11 +16,13 @@ namespace JUMO.UI.Layouts
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             NoteToolsViewModel nvm = (NoteToolsViewModel)DataContext;
-            if (!nvm.WillInsert) { nvm.Abort(); }
+            if (!nvm.WillInsert) { nvm.Reset(); }
         }
 
         private void CheckButtonClick(object sender, RoutedEventArgs e)
         {
+            NoteToolsViewModel nvm = (NoteToolsViewModel)DataContext;
+            nvm.WillInsert = true;
             Close();
         }
 
