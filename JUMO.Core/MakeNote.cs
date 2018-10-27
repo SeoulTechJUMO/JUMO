@@ -84,6 +84,7 @@ namespace JUMO
             {
                 list_note[Count].Start = (int)((double)i.Start * Song.Current.TimeResolution / sq.Division);
                 list_note[Count].Length = (int)((double)i.Length * Song.Current.TimeResolution / sq.Division);
+                if (list_note[Count].Velocity < 90) { list_note[Count].Velocity = 90; }
                 Count++;
             }
 
