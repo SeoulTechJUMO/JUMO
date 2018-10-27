@@ -14,21 +14,11 @@ namespace JUMO.UI.ViewModels
 
         public MixerViewModel()
         {
-            _MixerChannels = MixerManager.Instance.MixerChannels;
-            _CurrentChannel = _MixerChannels[0];
+            _CurrentChannel = MixerManager.Instance.MixerChannels[0];
         }
 
         //믹서 채널
-        private ObservableCollection<MixerChannel> _MixerChannels = new ObservableCollection<MixerChannel>();
-        public ObservableCollection<MixerChannel> MixerChannels
-        {
-            get => _MixerChannels;
-            set
-            {
-                _MixerChannels = value;
-                OnPropertyChanged(nameof(MixerChannels));
-            }
-        }
+        public IEnumerable<MixerChannel> MixerChannels => MixerManager.Instance.MixerChannels;
 
         //현재 선택중인 채널
         private MixerChannel _CurrentChannel;

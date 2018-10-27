@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using JUMO.Audio;
 using JUMO.Vst;
@@ -16,25 +15,25 @@ namespace JUMO
 
         #endregion
 
+        public const int NumOfMixerChannels = 100;
+
         //믹서 채널
-        public ObservableCollection<MixerChannel> MixerChannels { get; } = new ObservableCollection<MixerChannel>();
+        public MixerChannel[] MixerChannels { get; } = new MixerChannel[NumOfMixerChannels];
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private MixerManager()
         {
-            for (int i = 0; i < 100; i++)
+            MixerChannel master = new MixerChannel("마스터", true);
+            MixerChannels[0] = master;
+
+            AudioManager.Instance.AddMixerInput(master.ChannelOut);
+
+            for (int i = 1; i < 100; i++)
             {
-                if (i == 0)
-                {
-                    MixerChannels.Add(new MixerChannel("마스터", true));
-                    AudioManager.Instance.AddMixerInput(MixerChannels[i].ChannelOut);
-                }
-                else
-                {
-                    MixerChannels.Add(new MixerChannel($"채널 {i}"));
-                    MixerChannels[0].MixerAddInput(MixerChannels[i].ChannelOut);
-                }
+                MixerChannels[i] = new MixerChannel($"채널 {i}");
+
+                master.MixerAddInput(MixerChannels[i].ChannelOut);
             }
 
             AudioManager.Instance.OutputDeviceChanged += AudioOutputDeviceChanged;

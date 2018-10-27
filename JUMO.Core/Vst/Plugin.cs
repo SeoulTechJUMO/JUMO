@@ -48,7 +48,7 @@ namespace JUMO.Vst
             get => _channelNum;
             set
             {
-                if (value < MixerManager.Instance.MixerChannels.Count)
+                if (value < MixerManager.NumOfMixerChannels)
                 {
                     MixerManager.Instance.ChangeChannel(this, value);
                     _channelNum = value;
