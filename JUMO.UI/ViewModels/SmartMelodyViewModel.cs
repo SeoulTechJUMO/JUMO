@@ -156,7 +156,7 @@ namespace JUMO.UI
             CurrentMelody = GeneratedMelody[0].Key;
         }
 
-        private void ChangeScore(string current, bool shouldRemove = false)
+        public void ChangeScore(string current, bool shouldRemove = false)
         {
             List<Note> notes = new List<Note>();
 
