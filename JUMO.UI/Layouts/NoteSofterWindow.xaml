@@ -16,22 +16,34 @@
             <Button Content="확인" Command="{Binding ApplyCommand}" Click="CheckButtonClick"/>
             <Button Content="취소" Command="{Binding AbortCommand}" Click="ExitButtonClick"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Width="50" HorizontalAlignment="Center">
-                <TextBlock Text="시작" TextAlignment="Center"/>
-                <ctrl:Knob Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartInterval}"/>
+        <StackPanel VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel Width="50" HorizontalAlignment="Center">
+                    <TextBlock Text="시작" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartInterval}"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0">
+                    <TextBlock Text="조정간격" Width="50" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartAdjustRange}"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0">
+                    <TextBlock Text="길이" Width="50" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthInterval}"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0">
+                    <TextBlock Text="조정간격" Width="50" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthAdjustRange}"/>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Margin="20,0,0,0">
-                <TextBlock Text="시작간격" Width="50" TextAlignment="Center"/>
-                <ctrl:Knob Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartAdjustRange}"/>
-            </StackPanel>
-            <StackPanel Margin="20,0,0,0">
-                <TextBlock Text="강약" Width="50" TextAlignment="Center"/>
-                <ctrl:Knob Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityInterval}"/>
-            </StackPanel>
-            <StackPanel Margin="20,0,0,0">
-                <TextBlock Text="강약간격" Width="50" TextAlignment="Center"/>
-                <ctrl:Knob Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityAdjustRange}"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="강약" Width="50" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityInterval}"/>
+                </StackPanel>
+                <StackPanel Margin="20,0,0,0">
+                    <TextBlock Text="조정간격" Width="50" TextAlignment="Center"/>
+                    <ctrl:Knob Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityAdjustRange}"/>
+                </StackPanel>
             </StackPanel>
         </StackPanel>
     </DockPanel>

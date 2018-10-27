@@ -70,6 +70,8 @@ namespace JUMO.UI.ViewModels
         }
 
         private RelayCommand _ApplyCommand;
+        private RelayCommand _AbortCommand;
+
         public RelayCommand ApplyCommand => _ApplyCommand ?? (_ApplyCommand = new RelayCommand(_ => Apply()));
         public void Apply()
         {
@@ -79,7 +81,6 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        private RelayCommand _AbortCommand;
         public RelayCommand AbortCommand => _AbortCommand ?? (_AbortCommand = new RelayCommand(_ => Abort()));
         public void Abort()
         {
@@ -101,9 +102,23 @@ namespace JUMO.UI.ViewModels
             _VelocityInterval = 0.0;
             _StartAdjustRange = 30;
             _VelocityAdjustRange = 30;
+            _LengthAdjustRange = 30;
         }
 
+        #region Attributes
+
         private int _StartAdjustRange;
+        private int _VelocityAdjustRange;
+        private int _LengthAdjustRange;
+
+        private double _StartInterval;
+        private double _VelocityInterval;
+        private double _LengthInterval;
+
+        #endregion
+
+        #region Property
+
         public int StartAdjustRange
         {
             get => _StartAdjustRange;
@@ -117,8 +132,6 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
-
-        private int _VelocityAdjustRange;
         public int VelocityAdjustRange
         {
             get => _VelocityAdjustRange;
@@ -132,8 +145,20 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
+        public int LengthAdjustRange
+        {
+            get => _LengthAdjustRange;
+            set
+            {
+                if (0 <= value && value <= 100)
+                {
+                    _LengthAdjustRange = value;
+                    AdjustLength(LengthInterval);
+                    OnPropertyChanged(nameof(LengthAdjustRange));
+                }
+            }
+        }
 
-        private double _StartInterval;
         public double StartInterval
         {
             get => _StartInterval;
@@ -147,8 +172,6 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
-
-        private double _VelocityInterval;
         public double VelocityInterval
         {
             get => _VelocityInterval;
@@ -162,6 +185,21 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
+        public double LengthInterval
+        {
+            get => _LengthInterval;
+            set
+            {
+                if (-1.0 <= value && value <= 1.0)
+                {
+                    _LengthInterval = value;
+                    AdjustLength(value);
+                    OnPropertyChanged(nameof(LengthInterval));
+                }
+            }
+        }
+
+        #endregion
 
         private void AdjustStart(double interval)
         {
@@ -199,7 +237,6 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
-
         private void AdjustVelocity(double interval)
         {
             bool IsDesc = false;
@@ -226,6 +263,36 @@ namespace JUMO.UI.ViewModels
                         note.Velocity = (byte)(note.Source.Velocity - veloDelta);
                         if (note.Velocity > 127) { note.Velocity = 0; }
                         veloDelta += delta;
+                    }
+                }
+            }
+        }
+        private void AdjustLength(double interval)
+        {
+            bool IsDesc = false;
+            if (interval < 0) { IsDesc = true; interval = -(interval); }
+            int lenDelta = 0;
+            int delta = (int)(interval * LengthAdjustRange);
+
+            foreach (KeyValuePair<int, List<NoteViewModel>> item in OrderedNoteDict)
+            {
+                lenDelta = 0;
+                if (IsDesc)
+                {
+                    foreach (NoteViewModel note in item.Value.OrderByDescending(note => note.Value))
+                    {
+                        if (note.Source.Length - lenDelta < 10) { note.Length = 10; }
+                        else { note.Length = note.Source.Length - lenDelta; }
+                        lenDelta += delta;
+                    }
+                }
+                else
+                {
+                    foreach (NoteViewModel note in item.Value.OrderBy(note => note.Value))
+                    {
+                        if (note.Source.Length - lenDelta < 10) { note.Length = 10; }
+                        else { note.Length = note.Source.Length - lenDelta; }
+                        lenDelta += delta;
                     }
                 }
             }
