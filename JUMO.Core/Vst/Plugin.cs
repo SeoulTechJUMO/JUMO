@@ -1,44 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Jacobi.Vst.Core;
-using Jacobi.Vst.Core.Host;
-using Jacobi.Vst.Interop.Host;
+﻿using Jacobi.Vst.Core.Host;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using MidiToolkit = Sanford.Multimedia.Midi;
 using JUMO.Mixer;
 
 namespace JUMO.Vst
 {
-    public class Plugin : IDisposable, INotifyPropertyChanged
+    public class Plugin : PluginBase
     {
-        private readonly IVstPluginContext _ctx;
-        private readonly List<VstMidiEvent> _pendingEvents = new List<VstMidiEvent>();
         private readonly VolumePanningSampleProvider _volume;
 
-        private readonly object _lock = new object();
-
-        private bool _isDisposed = false;
-        private string _name;
-        private int _firstTick = -1;
         private int _channelNum = 0;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
-
-        public string PluginPath { get; }
-        public IVstPluginCommandStub PluginCommandStub { get; }
-        public ISampleProvider SampleProvider { get; }
 
         //input오디오 소스
         public ISampleProvider source;
@@ -97,21 +68,12 @@ namespace JUMO.Vst
             }
         }
 
+        public ISampleProvider SampleProvider { get; }
+
         private VstSampleProvider VstSample { get; set; }
 
-        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub)
+        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub) : base(pluginPath, hostCmdStub)
         {
-            PluginPath = pluginPath;
-
-            _ctx = VstPluginContext.Create(PluginPath, hostCmdStub);
-            PluginCommandStub = _ctx.PluginCommandStub;
-            PluginCommandStub.Open();
-            PluginCommandStub.SetSampleRate(44100.0f);
-            PluginCommandStub.SetBlockSize(256);
-            PluginCommandStub.MainsChanged(true);
-            PluginCommandStub.StartProcess();
-
-            Name = PluginCommandStub.GetEffectName();
             _volume = new VolumePanningSampleProvider(new VstSampleProvider(this));
             Volume = 0.8f;
             Panning = 0.0f;
@@ -119,19 +81,8 @@ namespace JUMO.Vst
             SampleProvider = _volume;
         }
 
-        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub, ISampleProvider source)
+        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub, ISampleProvider source) : base(pluginPath, hostCmdStub)
         {
-            PluginPath = pluginPath;
-
-            _ctx = VstPluginContext.Create(PluginPath, hostCmdStub);
-            PluginCommandStub = _ctx.PluginCommandStub;
-            PluginCommandStub.Open();
-            PluginCommandStub.SetSampleRate(44100.0f);
-            PluginCommandStub.SetBlockSize(256);
-            PluginCommandStub.MainsChanged(true);
-            PluginCommandStub.StartProcess();
-
-            Name = PluginCommandStub.GetEffectName();
             VstSample = new VstSampleProvider(this, source);
             SampleProvider = VstSample;
         }
@@ -149,70 +100,5 @@ namespace JUMO.Vst
         {
             SendEvent(tick, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, value, 64));
         }
-
-        public void SendEvent(int tick, MidiToolkit.IMidiMessage msg)
-        {
-            lock (_lock)
-            {
-                if (_firstTick == -1)
-                {
-                    _firstTick = tick;
-                }
-
-                int deltaFrames = (int)(44100 * (tick - _firstTick) * Song.Current.SecondsPerTick);
-
-                _pendingEvents.Add(new VstMidiEvent(Math.Max(0, deltaFrames), 0, 0, msg.GetBytes(), 0, 0));
-            }
-        }
-
-        public bool FetchEvents(out VstEvent[] events)
-        {
-            lock (_lock)
-            {
-                _firstTick = -1;
-
-                if (_pendingEvents.Count == 0)
-                {
-                    events = null;
-
-                    return false;
-                }
-
-                events = _pendingEvents.ToArray();
-
-                _pendingEvents.Clear();
-
-                return true;
-            }
-        }
-
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        #region IDisposable Support
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_isDisposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                PluginCommandStub.StopProcess();
-                PluginCommandStub.MainsChanged(false);
-                PluginCommandStub.Close();
-            }
-
-            _isDisposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        #endregion
     }
 }
