@@ -14,6 +14,7 @@ namespace JUMO.UI.ViewModels
         public NoteToolsViewModel(PianoRollViewModel vm)
         {
             _ViewModel = vm;
+            WillInsert = false;
             if (_ViewModel.SelectedItems.Count() != 0)
             {
                 foreach(IMusicalItem item in _ViewModel.SelectedItems)
@@ -30,6 +31,8 @@ namespace JUMO.UI.ViewModels
 
         public ObservableCollection<NoteViewModel> SelectedNotes = new ObservableCollection<NoteViewModel>();
         public Dictionary<int, List<NoteViewModel>> OrderedNoteDict = new Dictionary<int, List<NoteViewModel>>();
+
+        public bool WillInsert;
 
         private PianoRollViewModel _ViewModel;
         public PianoRollViewModel ViewModel
@@ -75,6 +78,7 @@ namespace JUMO.UI.ViewModels
         public RelayCommand ApplyCommand => _ApplyCommand ?? (_ApplyCommand = new RelayCommand(_ => Apply()));
         public void Apply()
         {
+            WillInsert = true;
             foreach (NoteViewModel item in SelectedNotes)
             {
                 item.UpdateSource();

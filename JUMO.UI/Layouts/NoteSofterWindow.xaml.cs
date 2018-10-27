@@ -15,7 +15,8 @@ namespace JUMO.UI.Layouts
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            ((NoteToolsViewModel)DataContext).Abort();
+            NoteToolsViewModel nvm = (NoteToolsViewModel)DataContext;
+            if (!nvm.WillInsert) { nvm.Abort(); }
         }
 
         private void CheckButtonClick(object sender, RoutedEventArgs e)
