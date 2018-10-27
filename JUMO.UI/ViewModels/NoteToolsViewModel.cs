@@ -99,17 +99,37 @@ namespace JUMO.UI.ViewModels
         {
             _StartInterval = 0.0;
             _VelocityInterval = 0.0;
-            _AdjustRange = 10.0;
+            _StartAdjustRange = 30;
+            _VelocityAdjustRange = 30;
         }
 
-        private double _AdjustRange;
-        public double AdjustRange
+        private int _StartAdjustRange;
+        public int StartAdjustRange
         {
-            get => _AdjustRange;
+            get => _StartAdjustRange;
             set
             {
-                _AdjustRange = value;
-                OnPropertyChanged(nameof(AdjustRange));
+                if (0 <= value && value <= 100)
+                {
+                    _StartAdjustRange = value;
+                    AdjustStart(StartInterval);
+                    OnPropertyChanged(nameof(StartAdjustRange));
+                }
+            }
+        }
+
+        private int _VelocityAdjustRange;
+        public int VelocityAdjustRange
+        {
+            get => _VelocityAdjustRange;
+            set
+            {
+                if (0 <= value && value <= 100)
+                {
+                    _VelocityAdjustRange = value;
+                    AdjustVelocity(VelocityInterval);
+                    OnPropertyChanged(nameof(VelocityAdjustRange));
+                }
             }
         }
 
@@ -148,7 +168,7 @@ namespace JUMO.UI.ViewModels
             bool IsDesc = false;
             if (interval < 0) { IsDesc = true; interval = - (interval); }
             int startDelta = 0;
-            int delta = (int)(interval * AdjustRange);
+            int delta = (int)(interval * StartAdjustRange);
 
             foreach (KeyValuePair<int, List<NoteViewModel>> item in OrderedNoteDict)
             {
@@ -185,7 +205,7 @@ namespace JUMO.UI.ViewModels
             bool IsDesc = false;
             if (interval < 0) { IsDesc = true; interval = -(interval); }
             int veloDelta = 0;
-            int delta = (int)(interval * AdjustRange);
+            int delta = (int)(interval * VelocityAdjustRange);
 
             foreach (KeyValuePair<int, List<NoteViewModel>> item in OrderedNoteDict)
             {
@@ -195,6 +215,7 @@ namespace JUMO.UI.ViewModels
                     foreach (NoteViewModel note in item.Value.OrderByDescending(note => note.Value))
                     {
                         note.Velocity = (byte)(note.Source.Velocity - veloDelta);
+                        if (note.Velocity > 127) { note.Velocity = 0; }
                         veloDelta += delta;
                     }
                 }
@@ -202,11 +223,8 @@ namespace JUMO.UI.ViewModels
                 {
                     foreach (NoteViewModel note in item.Value.OrderBy(note => note.Value))
                     {
-                        note.Start = item.Key + veloDelta;
-                        if (note.Start < item.Key)
-                        {
-                            note.Start = item.Key;
-                        }
+                        note.Velocity = (byte)(note.Source.Velocity - veloDelta);
+                        if (note.Velocity > 127) { note.Velocity = 0; }
                         veloDelta += delta;
                     }
                 }
