@@ -18,7 +18,7 @@ namespace JUMO.UI.Controls
         /// 새로운 PluginEditorHost 인스턴스를 생성합니다.
         /// </summary>
         /// <param name="plugin">편집기를 열 VST 플러그인</param>
-        public PluginEditorHost(Vst.Plugin plugin)
+        public PluginEditorHost(Vst.PluginBase plugin)
         {
             _pluginCmdStub = plugin.PluginCommandStub;
         }

@@ -26,9 +26,9 @@ namespace JUMO.UI.Layouts
     /// </summary>
     public partial class PluginEditorWindow : Window
     {
-        public Vst.Plugin Plugin { get; }
+        public Vst.PluginBase Plugin { get; }
 
-        public PluginEditorWindow(Vst.Plugin plugin)
+        public PluginEditorWindow(Vst.PluginBase plugin)
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
 

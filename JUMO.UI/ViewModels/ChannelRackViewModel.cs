@@ -36,7 +36,7 @@ namespace JUMO.UI
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
-                plugin => PluginEditorManager.Instance.OpenEditor(plugin as Plugin),
+                plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
 

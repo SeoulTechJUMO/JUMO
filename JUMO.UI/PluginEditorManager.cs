@@ -22,7 +22,7 @@ namespace JUMO.UI
 
         #endregion
 
-        private readonly IDictionary<Vst.Plugin, PluginEditorWindow> _table = new Dictionary<Vst.Plugin, PluginEditorWindow>();
+        private readonly IDictionary<Vst.PluginBase, PluginEditorWindow> _table = new Dictionary<Vst.PluginBase, PluginEditorWindow>();
 
         /// <summary>
         /// 주어진 VST 플러그인의 편집기 창을 엽니다.
@@ -30,7 +30,7 @@ namespace JUMO.UI
         /// 이미 열려있는 경우에는 기존의 창을 활성화합니다.
         /// </summary>
         /// <param name="plugin">VST 플러그인</param>
-        public void OpenEditor(Vst.Plugin plugin)
+        public void OpenEditor(Vst.PluginBase plugin)
         {
             if (_table.TryGetValue(plugin, out PluginEditorWindow window))
             {
