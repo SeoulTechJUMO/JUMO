@@ -43,11 +43,6 @@ namespace JUMO.UI
             }
         }
 
-        public void ReplaceScore(Score NewScore)
-        {
-            Score = NewScore;
-        }
-
         protected override double ZoomBase => 24.0;
 
         public override WorkspaceKey Key { get; }
