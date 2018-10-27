@@ -11,10 +11,10 @@ namespace JUMO.UI.ViewModels
     {
         public struct OldNotes
         {
-            byte Value;
-            byte Velocity;
-            int Start;
-            int Length;
+            public byte Value;
+            public byte Velocity;
+            public int Start;
+            public int Length;
 
             public OldNotes(byte value, byte velocity, int start, int length)
             {
@@ -30,7 +30,6 @@ namespace JUMO.UI.ViewModels
         private ObservableCollection<NoteViewModel> SelectedNotes = new ObservableCollection<NoteViewModel>();
         private PianoRollViewModel _ViewModel;
 
-        private RelayCommand _ApplyCommand;
         private RelayCommand _AbortCommand;
 
         public List<List<NoteViewModel>> OrderedNotes = new List<List<NoteViewModel>>();
@@ -47,7 +46,6 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        public RelayCommand ApplyCommand => _ApplyCommand ?? (_ApplyCommand = new RelayCommand(_ => Apply()));
         public RelayCommand AbortCommand => _AbortCommand ?? (_AbortCommand = new RelayCommand(_ => Reset()));
 
         public NoteToolsViewModel(PianoRollViewModel vm)
@@ -68,6 +66,7 @@ namespace JUMO.UI.ViewModels
             OrderByStart();
         }
 
+        //시작점으로 그룹화, 노트 피치 순으로 정렬
         private void OrderByStart()
         {
             var OrderedElement = SelectedNotes.OrderBy(note => note.Start);
@@ -85,8 +84,8 @@ namespace JUMO.UI.ViewModels
                 }
                 else
                 {
-                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes));
-                    OriginalNotes.Add(tempOld);
+                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes.OrderBy(note => note.Value).ToList()));
+                    OriginalNotes.Add(new List<OldNotes>(tempOld.OrderBy(note => note.Value).ToList()));
 
                     currentStart = item.Start;
 
@@ -98,28 +97,24 @@ namespace JUMO.UI.ViewModels
                 }
                 if (item == OrderedElement.ElementAt(OrderedElement.Count() - 1))
                 {
-                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes));
-                    OriginalNotes.Add(tempOld);
+                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes.OrderBy(note => note.Value).ToList()));
+                    OriginalNotes.Add(new List<OldNotes>(tempOld.OrderBy(note => note.Value).ToList()));
                 }
-            }
-        }
-
-        public void Apply()
-        {
-            foreach (NoteViewModel item in SelectedNotes)
-            {
-                item.UpdateSource();
             }
         }
 
         public void Reset()
         {
-            foreach (NoteViewModel item in SelectedNotes)
+            for(int i=0;i<OrderedNotes.Count();i++)
             {
-                item.Value = item.Source.Value;
-                item.Start = item.Source.Start;
-                item.Length = item.Source.Length;
-                item.Velocity = item.Source.Velocity;
+                for(int j=0;j<OrderedNotes[i].Count();j++)
+                {
+                    OrderedNotes[i][j].Value = OriginalNotes[i][j].Value;
+                    OrderedNotes[i][j].Velocity = OriginalNotes[i][j].Velocity;
+                    OrderedNotes[i][j].Start = OriginalNotes[i][j].Start;
+                    OrderedNotes[i][j].Length = OriginalNotes[i][j].Length;
+                    OrderedNotes[i][j].UpdateSource();
+                }
             }
         }
     }
@@ -239,31 +234,33 @@ namespace JUMO.UI.ViewModels
             int startDelta = 0;
             int delta = (int)(interval * StartAdjustRange);
 
-            foreach (List<NoteViewModel> item in OrderedNotes)
+            for(int i=0;i<OrderedNotes.Count();i++)
             {
                 startDelta = 0;
                 if (IsDesc)
                 {
-                    foreach (NoteViewModel note in item.OrderByDescending(note=>note.Value))
+                    for(int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
                     {
-                        note.Start = note.Source.Start + startDelta;
-                        if (note.Start < note.Source.Start)
+                        OrderedNotes[i][j].Start = OriginalNotes[i][j].Start + startDelta;
+                        if (OrderedNotes[i][j].Start < OriginalNotes[i][j].Start)
                         {
-                            note.Start = note.Source.Start;
+                            OrderedNotes[i][j].Start = OriginalNotes[i][j].Start;
                         }
                         startDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
                 else
                 {
-                    foreach (NoteViewModel note in item.OrderBy(note => note.Value))
+                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
                     {
-                        note.Start = note.Source.Start + startDelta;
-                        if (note.Start < note.Source.Start)
+                        OrderedNotes[i][j].Start = OriginalNotes[i][j].Start + startDelta;
+                        if (OrderedNotes[i][j].Start < OriginalNotes[i][j].Start)
                         {
-                            note.Start = note.Source.Start;
+                            OrderedNotes[i][j].Start = OriginalNotes[i][j].Start;
                         }
                         startDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
             }
@@ -275,25 +272,27 @@ namespace JUMO.UI.ViewModels
             int veloDelta = 0;
             int delta = (int)(interval * VelocityAdjustRange);
 
-            foreach (List<NoteViewModel> item in OrderedNotes)
+            for (int i = 0; i < OrderedNotes.Count(); i++)
             {
                 veloDelta = 0;
                 if (IsDesc)
                 {
-                    foreach (NoteViewModel note in item.OrderByDescending(note => note.Value))
+                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
                     {
-                        note.Velocity = (byte)(note.Source.Velocity - veloDelta);
-                        if (note.Velocity > 127) { note.Velocity = 0; }
+                        OrderedNotes[i][j].Velocity = (byte)(OriginalNotes[i][j].Velocity - veloDelta);
+                        if (OrderedNotes[i][j].Velocity > 127) { OrderedNotes[i][j].Velocity = 0; }
                         veloDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
                 else
                 {
-                    foreach (NoteViewModel note in item.OrderBy(note => note.Value))
+                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
                     {
-                        note.Velocity = (byte)(note.Source.Velocity - veloDelta);
-                        if (note.Velocity > 127) { note.Velocity = 0; }
+                        OrderedNotes[i][j].Velocity = (byte)(OriginalNotes[i][j].Velocity - veloDelta);
+                        if (OrderedNotes[i][j].Velocity > 127) { OrderedNotes[i][j].Velocity = 0; }
                         veloDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
             }
@@ -305,25 +304,27 @@ namespace JUMO.UI.ViewModels
             int lenDelta = 0;
             int delta = (int)(interval * LengthAdjustRange);
 
-            foreach (List<NoteViewModel> item in OrderedNotes)
+            for (int i = 0; i < OrderedNotes.Count(); i++)
             {
                 lenDelta = 0;
                 if (IsDesc)
                 {
-                    foreach (NoteViewModel note in item.OrderByDescending(note => note.Value))
+                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
                     {
-                        if (note.Source.Length - lenDelta < 10) { note.Length = 10; }
-                        else { note.Length = note.Source.Length - lenDelta; }
+                        if (OriginalNotes[i][j].Length - lenDelta < 10) { OrderedNotes[i][j].Length = 10; }
+                        else { OrderedNotes[i][j].Length = OriginalNotes[i][j].Length - lenDelta; }
                         lenDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
                 else
                 {
-                    foreach (NoteViewModel note in item.OrderBy(note => note.Value))
+                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
                     {
-                        if (note.Source.Length - lenDelta < 10) { note.Length = 10; }
-                        else { note.Length = note.Source.Length - lenDelta; }
+                        if (OriginalNotes[i][j].Length - lenDelta < 10) { OrderedNotes[i][j].Length = 10; }
+                        else { OrderedNotes[i][j].Length = OriginalNotes[i][j].Length - lenDelta; }
                         lenDelta += delta;
+                        OrderedNotes[i][j].UpdateSource();
                     }
                 }
             }
