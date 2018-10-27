@@ -106,6 +106,7 @@
     <Compile Include="Vst\EffectSampleManager.cs" />
     <Compile Include="Vst\HostCommandStub.cs" />
     <Compile Include="Vst\Plugin.cs" />
+    <Compile Include="Vst\PluginBase.cs" />
     <Compile Include="Vst\PluginManager.cs" />
     <Compile Include="Vst\VstSampleProvider.cs" />
   </ItemGroup>
