@@ -33,8 +33,6 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 EffectPlugin plugin = new EffectPlugin(pluginPath, hostCmdStub, source);
 
-                channel.ChannelOut = plugin.SampleProvider;
-
                 Plugins.Add(plugin);
 
                 return true;

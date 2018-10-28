@@ -13,7 +13,9 @@ namespace JUMO
         private static MixerChannel _masterChannel;
 
         //내부 믹서 프로바이더
-        private readonly MixingSampleProvider _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+        private readonly MixingSampleProvider _mixingSampleProvider = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+        private readonly EffectChainSampleProvider _effectChainSampleProvider;
+        private readonly VolumePanningSampleProvider _volumePanningSampleProvider;
 
         //이팩트 플러그인 관리자
         private EffectPluginManager _effectManager = new EffectPluginManager();
@@ -61,10 +63,10 @@ namespace JUMO
         /// </summary>
         public float Panning
         {
-            get => ((VolumePanningSampleProvider)ChannelOut).Panning;
+            get => _volumePanningSampleProvider.Panning;
             set
             {
-                ((VolumePanningSampleProvider)ChannelOut).Panning = value;
+                _volumePanningSampleProvider.Panning = value;
                 OnPropertyChanged(nameof(Panning));
             }
         }
@@ -74,10 +76,10 @@ namespace JUMO
         /// </summary>
         public double Volume
         {
-            get => ((VolumePanningSampleProvider)ChannelOut).Volume;
+            get => _volumePanningSampleProvider.Volume;
             set
             {
-                ((VolumePanningSampleProvider)ChannelOut).Volume = (float)value;
+                _volumePanningSampleProvider.Volume = (float)value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -100,10 +102,10 @@ namespace JUMO
         /// </summary>
         public bool IsMuted
         {
-            get => ((VolumePanningSampleProvider)ChannelOut).Mute;
+            get => _volumePanningSampleProvider.Mute;
             set
             {
-                ((VolumePanningSampleProvider)ChannelOut).Mute = value;
+                _volumePanningSampleProvider.Mute = value;
                 OnPropertyChanged(nameof(IsMuted));
             }
         }
@@ -116,17 +118,7 @@ namespace JUMO
         /// <summary>
         /// 채널의 현재 최종 출력
         /// </summary>
-        public ISampleProvider ChannelOut
-        {
-            get => _channelOut;
-            set
-            {
-                _channelOut = value;
-                //요 밑에꺼는 channelOut내에 Mixing Sample Provider가 바뀔때 내부적으로 적용되는지 확인해야함
-                _channelOut = new VolumePanningSampleProvider(_channelOut, 1000);
-                ((VolumePanningSampleProvider)_channelOut).StreamVolume += OnPostVolumeMeter;
-            }
-        }
+        public ISampleProvider ChannelOut { get; }
 
         /// <summary>
         /// 채널에 로드된 VST 리스트
@@ -140,7 +132,7 @@ namespace JUMO
         public MixerChannel(string name, bool isMaster=false)
         {
             Name = name;
-            _mixer.ReadFully = true;
+            _mixingSampleProvider.ReadFully = true;
 
             //마스터 채널일때 초기화
             if (isMaster)
@@ -150,29 +142,31 @@ namespace JUMO
             }
 
             //일반 채널에서 초기화
-            ChannelOut = new VolumePanningSampleProvider(_mixer,1000);
+            _effectChainSampleProvider = new EffectChainSampleProvider(_mixingSampleProvider, _effectManager.Plugins);
+            _volumePanningSampleProvider = new VolumePanningSampleProvider(_effectChainSampleProvider, 1000);
+            ChannelOut = _volumePanningSampleProvider;
             Volume = 0.8f;
             IsMuted = false;
 
             //샘플 변경 확인시 호출 메소드 등록
-            ((VolumePanningSampleProvider)ChannelOut).StreamVolume += OnPostVolumeMeter;
+            _volumePanningSampleProvider.StreamVolume += OnPostVolumeMeter;
         }
 
         public void MixerAddInput(ISampleProvider input)
         {
-            if (!IsMaster && _mixer.MixerInputs.Count() == 0)
+            if (!IsMaster && _mixingSampleProvider.MixerInputs.Count() == 0)
             {
                 _masterChannel.MixerAddInput(ChannelOut);
             }
 
-            _mixer.AddMixerInput(input);
+            _mixingSampleProvider.AddMixerInput(input);
         }
 
         public void MixerRemoveInput(ISampleProvider input)
         {
-            _mixer.RemoveMixerInput(input);
+            _mixingSampleProvider.RemoveMixerInput(input);
 
-            if (!IsMaster && _mixer.MixerInputs.Count() == 0)
+            if (!IsMaster && _mixingSampleProvider.MixerInputs.Count() == 0)
             {
                 _masterChannel.MixerRemoveInput(ChannelOut);
             }
@@ -186,7 +180,7 @@ namespace JUMO
             }
             else
             {
-                _effectManager.AddPlugin(this, _mixer, null);
+                _effectManager.AddPlugin(this, _mixingSampleProvider, null);
             }
         }
 
