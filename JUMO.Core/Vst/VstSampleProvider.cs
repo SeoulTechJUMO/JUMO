@@ -5,7 +5,7 @@ using NAudio.Wave;
 
 namespace JUMO.Vst
 {
-    class VstSampleProvider : ISampleProvider
+    class VstSampleProvider : ISampleProvider, IDisposable
     {
         private const int SAMPLE_RATE = 44100;
         private const int NUM_CHANNEL = 2;
@@ -17,7 +17,7 @@ namespace JUMO.Vst
         private VstAudioBuffer[] _inBuf, _outBuf;
         private float[] _tempBuf;
 
-        public WaveFormat WaveFormat => WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, NUM_CHANNEL);
+        public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, NUM_CHANNEL);
 
         public ISampleProvider Source { get; set; }
         public float EffectMix { get; set; }
@@ -114,6 +114,12 @@ namespace JUMO.Vst
 #pragma warning restore CS0618 // Type or member is obsolete
 
             _totalSamples = count;
+        }
+
+        public void Dispose()
+        {
+            _inBufMgr?.Dispose();
+            _outBufMgr?.Dispose();
         }
     }
 }
