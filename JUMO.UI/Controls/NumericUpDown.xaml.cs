@@ -84,7 +84,7 @@ namespace JUMO.UI.Controls
 
         private static void ValuePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NumericUpDown)d).GetBindingExpression(ValueProperty).UpdateSource();
+            ((NumericUpDown)d)?.GetBindingExpression(ValueProperty)?.UpdateSource();
         }
 
         private static void MinimumPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
