@@ -1,0 +1,96 @@
+﻿<Window x:Class="JUMO.UI.Layouts.NoteSofterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        Background="{DynamicResource LightBackgroundColor}"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="부드럽게" Height="240" Width="320" WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </Window.Resources>
+    <DockPanel>
+        <DockPanel.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Padding" Value="{StaticResource ControlMargin}" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
+            </Style>
+            <Style x:Key="SectionBorder" TargetType="Border">
+                <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+        </DockPanel.Resources>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlMargin}">
+            <Button Content="확인(_O)" Click="CheckButtonClick" IsDefault="True" Style="{StaticResource DialogButtonStyle}"/>
+            <Button x:Name="Cancel" Content="취소(_C)" Command="{Binding AbortCommand}" Click="ExitButtonClick" Style="{StaticResource DialogButtonStyle}"/>
+        </StackPanel>
+        <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource SectionBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartAdjustRange}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="시작" />
+                        <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource SectionBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthAdjustRange}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="길이" />
+                        <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource SectionBorder}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityAdjustRange}"/>
+                        <Label Grid.Row="1" Grid.Column="0" Content="강약" />
+                        <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </DockPanel>
+</Window>

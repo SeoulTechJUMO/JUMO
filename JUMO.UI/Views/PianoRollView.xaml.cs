@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using JUMO.UI.Controls;
 using JUMO.UI.Layouts;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Views
 {
@@ -94,6 +95,27 @@ namespace JUMO.UI.Views
         private void ExcuteChordMagician(object sender, RoutedEventArgs e)
         {
             new ChordMagicianWindow((PianoRollViewModel)DataContext).Show();
+        }
+
+        private void NoteToolboxButtonClick(object sender, RoutedEventArgs e)
+        {
+            Toolbox.ContextMenu.IsOpen = true;
+        }
+
+        private void SofterOpen(object sender, RoutedEventArgs e)
+        {
+            SofterViewModel ntvm = new SofterViewModel((PianoRollViewModel)DataContext);
+            NoteSofterWindow nsv = new NoteSofterWindow { DataContext = ntvm };
+
+            nsv.Show();
+        }
+
+        private void ChopperOpen(object sender, RoutedEventArgs e)
+        {
+            ChopperViewModel ntvm = new ChopperViewModel((PianoRollViewModel)DataContext);
+            NoteChopperWindow ncv = new NoteChopperWindow { DataContext = ntvm };
+
+            ncv.Show();
         }
     }
 }

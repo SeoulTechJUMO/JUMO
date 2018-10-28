@@ -42,7 +42,7 @@
                 <ColumnDefinition Width="5" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0"
-                       Text="{Binding Value, FallbackValue=C4}"
+                       Text="{Binding NoteName, FallbackValue=C4}"
                        FontFamily="Segoe UI"
                        FontSize="10"
                        Margin="3,1,0,0" />

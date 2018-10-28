@@ -49,6 +49,14 @@
             </ComboBox>
             <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
             <Button Content="코드 진행 추천" Click="ExcuteChordMagician" />
+            <Button x:Name="Toolbox" Content="▼" Click="NoteToolboxButtonClick">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="부드럽게" Click="SofterOpen"/>
+                        <MenuItem Header="자르기" Click="ChopperOpen"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
