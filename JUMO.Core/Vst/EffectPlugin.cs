@@ -1,33 +1,27 @@
 ﻿using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
-using NAudio.Wave;
 
 namespace JUMO.Vst
 {
     public class EffectPlugin : PluginBase
     {
-        private readonly VstSampleProvider _vstSampleProvider;
+        private float _effectMix = 1.0f;
 
         #region Properties
 
-        public ISampleProvider SampleProvider => _vstSampleProvider;
-
         public float EffectMix
         {
-            get => _vstSampleProvider.EffectMix;
+            get => _effectMix;
             set
             {
-                _vstSampleProvider.EffectMix = value;
+                _effectMix = value;
                 OnPropertyChanged(nameof(EffectMix));
             }
         }
 
         #endregion
 
-        public EffectPlugin(string pluginPath, IVstHostCommandStub hostCmdStub, ISampleProvider source) : base(pluginPath, hostCmdStub)
-        {
-            _vstSampleProvider = new VstSampleProvider(this, source);
-        }
+        public EffectPlugin(string pluginPath, IVstHostCommandStub hostCmdStub) : base(pluginPath, hostCmdStub) { }
 
         public void ProcessEffect(VstAudioBuffer[] inBuffer, VstAudioBuffer[] outBuffer, int samplesPerBuffer)
         {

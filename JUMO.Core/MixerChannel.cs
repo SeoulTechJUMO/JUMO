@@ -23,7 +23,6 @@ namespace JUMO
         private float _leftVolume;
         private float _rightVolume;
         private string _name;
-        private ISampleProvider _channelOut;
 
         #region Properties
 
@@ -174,14 +173,7 @@ namespace JUMO
 
         public void AddEffect()
         {
-            if (Plugins.Count != 0)
-            {
-                _effectManager.AddPlugin(this, Plugins[Plugins.Count - 1].SampleProvider, null);
-            }
-            else
-            {
-                _effectManager.AddPlugin(this, _mixingSampleProvider, null);
-            }
+            _effectManager.AddPlugin(this, null);
         }
 
         //볼륨 이벤트 발생시 실행 메소드
