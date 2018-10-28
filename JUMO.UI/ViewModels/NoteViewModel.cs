@@ -23,7 +23,10 @@ namespace JUMO.UI
                 if (_value != value)
                 {
                     _value = value;
+                    NoteName = ChordMagicianModel.Naming.KeyName[(byte)(Value % 12)];
+                    NoteName += (Value / 12) - 1;
                     OnPropertyChanged(nameof(Value));
+                    OnPropertyChanged(nameof(NoteName));
                 }
             }
         }
@@ -66,6 +69,8 @@ namespace JUMO.UI
                 }
             }
         }
+
+        public string NoteName { get; set; }
 
         public NoteViewModel(Note source)
         {
