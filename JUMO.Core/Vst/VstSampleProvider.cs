@@ -19,16 +19,9 @@ namespace JUMO.Vst
 
         public WaveFormat WaveFormat { get; } = WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, NUM_CHANNEL);
 
-        public ISampleProvider Source { get; set; }
-        public float EffectMix { get; set; }
-
-        public VstSampleProvider(PluginBase plugin) : this(plugin, null) { }
-
-        public VstSampleProvider(PluginBase plugin, ISampleProvider source)
+        public VstSampleProvider(PluginBase plugin)
         {
             _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
-            Source = source;
-            EffectMix = 1.0f;
         }
 
         public int Read(float[] buffer, int offset, int count)
@@ -42,26 +35,6 @@ namespace JUMO.Vst
                 _plugin.PluginCommandStub.ProcessEvents(events);
             }
 
-            if (Source != null)
-            {
-                Source.Read(_tempBuf, offset, count);
-
-                unsafe
-                {
-                    float* inLBuf = ((IDirectBufferAccess32)_inBuf[0]).Buffer;
-                    float* inRBuf = ((IDirectBufferAccess32)_inBuf[1]).Buffer;
-
-                    fixed (float* pTempBuf = &_tempBuf[0])
-                    {
-                        for (int i = 0, j = 0; i < samplesPerBuffer; i++)
-                        {
-                            inLBuf[i] = pTempBuf[j++];
-                            inRBuf[i] = pTempBuf[j++];
-                        }
-                    }
-                }
-            }
-
             _plugin.PluginCommandStub.ProcessReplacing(_inBuf, _outBuf);
 
             unsafe
@@ -73,16 +46,8 @@ namespace JUMO.Vst
                 {
                     for (int i = 0, j = 0; i < samplesPerBuffer; i++)
                     {
-                        if (Source != null)
-                        {
-                            audioBuf[j] = vstLBuf[i] * EffectMix + pTempBuf[j] * (1 - EffectMix); j++;
-                            audioBuf[j] = vstRBuf[i] * EffectMix + pTempBuf[j] * (1 - EffectMix); j++;
-                        }
-                        else
-                        {
-                            audioBuf[j++] = vstLBuf[i];
-                            audioBuf[j++] = vstRBuf[i];
-                        }
+                        audioBuf[j++] = vstLBuf[i];
+                        audioBuf[j++] = vstRBuf[i];
                     }
                 }
             }
