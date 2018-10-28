@@ -168,6 +168,8 @@ namespace JUMO
             if (!IsMaster && _mixingSampleProvider.MixerInputs.Count() == 0)
             {
                 _masterChannel.MixerRemoveInput(ChannelOut);
+                LeftVolume = 0;
+                RightVolume = 0;
             }
         }
 
