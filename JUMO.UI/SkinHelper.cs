@@ -11,6 +11,13 @@ namespace JUMO.UI
         Right
     }
 
+    enum SkinVariant
+    {
+        Undefined,
+        Light,
+        Dark
+    }
+
     static class SkinHelper
     {
         public static readonly DependencyProperty IndicatorBrushProperty =
@@ -31,6 +38,12 @@ namespace JUMO.UI
                 new FrameworkPropertyMetadata(SegmentOption.None, FrameworkPropertyMetadataOptions.AffectsRender)
             );
 
+        public static readonly DependencyProperty VariantProperty =
+            DependencyProperty.RegisterAttached(
+                "Variant", typeof(SkinVariant), typeof(SkinHelper),
+                new FrameworkPropertyMetadata(SkinVariant.Undefined, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
+
         public static Brush GetIndicatorBrush(UIElement target) => (Brush)target.GetValue(IndicatorBrushProperty);
         public static void SetIndicatorBrush(UIElement target, Brush value) => target.SetValue(IndicatorBrushProperty, value);
 
@@ -39,5 +52,8 @@ namespace JUMO.UI
 
         public static SegmentOption GetSegment(UIElement target) => (SegmentOption)target.GetValue(SegmentProperty);
         public static void SetSegment(UIElement target, SegmentOption value) => target.SetValue(SegmentProperty, value);
+
+        public static SkinVariant GetVariant(UIElement target) => (SkinVariant)target.GetValue(VariantProperty);
+        public static void SetVariant(UIElement target, SkinVariant value) => target.SetValue(VariantProperty, value);
     }
 }
