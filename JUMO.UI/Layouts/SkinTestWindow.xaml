@@ -58,6 +58,30 @@
                     <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" />
                     <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" />
                 </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Background="{StaticResource DarkBackgroundColor}" SnapsToDevicePixels="True">
+                    <Button Content="활성" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="비활성" IsEnabled="False" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" proj:SkinHelper.Variant="Dark" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Background="{StaticResource DarkBackgroundColor}" SnapsToDevicePixels="True">
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="토글" IsChecked="False" IsEnabled="False" proj:SkinHelper.Variant="Dark" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Background="{StaticResource DarkBackgroundColor}" SnapsToDevicePixels="True">
+                    <Button Content="하나" proj:SkinHelper.Segment="Left" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="둘" proj:SkinHelper.Segment="Center" proj:SkinHelper.Variant="Dark" />
+                    <Button Content="셋" proj:SkinHelper.Segment="Right" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle1}" Content="하나" IsChecked="True" proj:SkinHelper.Segment="Left" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle2}" Content="둘" IsChecked="True" proj:SkinHelper.Segment="Center" proj:SkinHelper.Variant="Dark" />
+                    <ToggleButton Style="{StaticResource BarToggleButtonStyle3}" Content="셋" IsChecked="True" proj:SkinHelper.Segment="Right" proj:SkinHelper.Variant="Dark" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
         <TabItem Header="텍스트 상자">
