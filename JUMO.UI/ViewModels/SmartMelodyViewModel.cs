@@ -19,6 +19,7 @@ namespace JUMO.UI
         private RelayCommand _getMelodyCommand;
         private RelayCommand _cancelCommand;
         private RelayCommand _insertCommand;
+        private RelayCommand _MelodyPlayCommand;
 
         #region Properties
 
@@ -26,6 +27,9 @@ namespace JUMO.UI
 
         //코드진행 뷰모델
         public ChordMagicianViewModel ViewModel { get; }
+
+        //멜로디 재생용 마스터 시퀀서
+        public Playback.MasterSequencer Sequencer { get; } = Playback.MasterSequencer.Instance;
 
         //프로그래스 이미지 표시유무
         public Visibility ProgressVisible
@@ -97,6 +101,9 @@ namespace JUMO.UI
         public RelayCommand InsertCommand
             => _insertCommand ?? (_insertCommand = new RelayCommand(_ => WillInsert = true));
 
+        public RelayCommand MelodyPlayCommand
+            => _MelodyPlayCommand ?? (_MelodyPlayCommand = new RelayCommand(_ => MelodyPlay(), _ => _currentMelody != null));
+
         #endregion
 
         public SmartMelodyViewModel(ChordMagicianViewModel vm)
@@ -105,6 +112,7 @@ namespace JUMO.UI
             _progressVisible = Visibility.Hidden;
             _melodyCount = 5;
             _chordCount = 1;
+            Sequencer.Mode = Playback.PlaybackMode.Pattern;
         }
 
         public void MakeMelody()
@@ -156,7 +164,7 @@ namespace JUMO.UI
             CurrentMelody = GeneratedMelody[0].Key;
         }
 
-        private void ChangeScore(string current, bool shouldRemove = false)
+        public void ChangeScore(string current, bool shouldRemove = false)
         {
             List<Note> notes = new List<Note>();
 
@@ -182,6 +190,18 @@ namespace JUMO.UI
                 {
                     ViewModel.ViewModel.AddNote(i);
                 }
+            }
+        }
+
+        private void MelodyPlay()
+        {
+            if (Sequencer.IsPlaying)
+            {
+                Sequencer.Stop();
+            }
+            else
+            {
+                Sequencer.Continue();
             }
         }
     }
