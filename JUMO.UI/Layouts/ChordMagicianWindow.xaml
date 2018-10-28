@@ -82,8 +82,24 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="60" Content="{Binding}" Foreground="{StaticResource DarkPrimaryTextColor}" VerticalAlignment="Center" />
-                    <Button Grid.Row="1" Grid.Column="0" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Left" />
-                    <Button Grid.Row="1" Grid.Column="1" Content="+" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.InsertProgressCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Right" />
+                    <Button Grid.Row="1" Grid.Column="0" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Left" proj:SkinHelper.Variant="Dark" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="+" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.InsertProgressCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Right" proj:SkinHelper.Variant="Dark" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="SelectedProgressItemTemplate" DataType="{x:Type chord:Progress}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Width="60" Content="{Binding}" Foreground="{StaticResource DarkPrimaryTextColor}" VerticalAlignment="Center" />
+                    <Button Grid.Row="1" Grid.Column="0" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Left" proj:SkinHelper.Variant="Dark" />
+                    <Button Grid.Row="1" Grid.Column="1" Content="-" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.RemoveCommand}" CommandParameter="{Binding}" proj:SkinHelper.Segment="Right" proj:SkinHelper.Variant="Dark" />
                 </Grid>
             </DataTemplate>
 
@@ -95,7 +111,6 @@
                 <Setter Property="VerticalContentAlignment" Value="Stretch" />
                 <Setter Property="ItemsPanel" Value="{StaticResource ProgressListPanel}" />
                 <Setter Property="ItemContainerStyle" Value="{StaticResource ProgressItemContainer}" />
-                <Setter Property="ItemTemplate" Value="{StaticResource ProgressItemTemplate}" />
                 <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible" />
             </Style>
         </ResourceDictionary>
@@ -147,15 +162,14 @@
                                 <Label Content="옥타브:" VerticalAlignment="Center"/>
                                 <ctrl:NumericUpDown Width="50" Minimum="0" Maximum="9" Value="{Binding Octave}" />
                             </StackPanel>
-                            <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" SelectedItem="{Binding CurrentChord, Mode=TwoWay}" Style="{StaticResource ListDisabledWhenBusy}" />
+                            <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" SelectedItem="{Binding CurrentChord, Mode=TwoWay}" ItemTemplate="{StaticResource SelectedProgressItemTemplate}" Style="{StaticResource ListDisabledWhenBusy}" />
                             <DockPanel>
                                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                     <Button Content="전체 재생" Command="{Binding PlaySelectedChordCommand}" proj:SkinHelper.Segment="Left"/>
                                     <Button Content="정지" Command="{Binding StopCommand}" proj:SkinHelper.Segment="Right"/>
                                 </StackPanel>
                                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Content="삭제" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}" Style="{StaticResource ButtonDisabledWhenBusy}" />
-                                    <Button Content="리셋" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                                    <Button Content="비우기" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
                                 </StackPanel>
                             </DockPanel>
                         </StackPanel>
@@ -171,7 +185,7 @@
                                     코드 버튼을 클릭하면 미리 들을 수 있습니다.
                                 </TextBlock>
                             </Label>
-                            <ListBox x:Name="chord_list" ItemsSource="{Binding Progress}" SelectedItem="{Binding CurrentChord, Mode=TwoWay}" Style="{StaticResource ListDisabledWhenBusy}" />
+                            <ListBox x:Name="chord_list" ItemsSource="{Binding Progress}" SelectedItem="{Binding CurrentChord, Mode=TwoWay}" ItemTemplate="{StaticResource ProgressItemTemplate}" Style="{StaticResource ListDisabledWhenBusy}" />
                         </StackPanel>
                     </TabItem>
                 </TabControl>
