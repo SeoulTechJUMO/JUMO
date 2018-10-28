@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:JUMO.UI.Views"
         xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
-        Background="{DynamicResource LightBackgroundColor}"
+        Background="{DynamicResource LightControlFaceColor}"
         Width="1200"
         Height="400"
         MinHeight="400"
@@ -23,6 +23,38 @@
         <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Stretch">
             <ListBox.Resources>
                 <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                    <Setter Property="OverridesDefaultStyle" Value="True" />
+                    <Setter Property="Margin" Value="3,3,3,0" />
+                    <Setter Property="Padding" Value="{StaticResource ControlMargin}" />
+                    <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource LightBackgroundColor}" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border x:Name="border"
+                                        Padding="{TemplateBinding Padding}"
+                                        CornerRadius="{StaticResource ControlBorderRadius}"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ContentPresenter />
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LightSecondaryTextColor}" />
+                            <Setter Property="Background" Value="{StaticResource LightControlFaceColor}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
             </ListBox.Resources>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -34,13 +66,6 @@
                     <local:MixerChannelView />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="BorderBrush" Value="Gray"/>
-                    <Setter Property="BorderThickness" Value="1"/>
-                    <Setter Property="Background" Value="LightGray"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
         </ListBox>
         <Border Grid.Column="2" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
             <!--<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
