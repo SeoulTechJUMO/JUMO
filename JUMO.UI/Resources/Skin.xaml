@@ -15,6 +15,10 @@
     <SolidColorBrush x:Key="LightControlBorderColor" Color="#ff97a8bc" />
     <SolidColorBrush x:Key="LightDisabledControlFaceColor" Color="#ffced7e0" />
     <SolidColorBrush x:Key="LightDisabledControlBorderColor" Color="#ffbbc7d3" />
+    <SolidColorBrush x:Key="DarkControlFaceColor" Color="#ff28174e" />
+    <SolidColorBrush x:Key="DarkControlBorderColor" Color="#ff4a4472" />
+    <SolidColorBrush x:Key="DarkDisabledControlFaceColor" Color="#ff18003c" />
+    <SolidColorBrush x:Key="DarkDisabledControlBorderColor" Color="#ff28174e" />
 
     <SolidColorBrush x:Key="IndicatorLightColor1" Color="#ffbae854" />
     <SolidColorBrush x:Key="IndicatorLightColor2" Color="#ffffd66d" />
