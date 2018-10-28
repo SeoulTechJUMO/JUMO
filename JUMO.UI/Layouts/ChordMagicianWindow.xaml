@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
         xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
         Background="{DynamicResource LightBackgroundColor}"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=proj:ChordMagicianViewModel}"
         x:Name="window"
         Loaded="OnLoaded"
-        Title="코드 마법사" Height="600" Width="550" ResizeMode="NoResize">
+        Title="코드 마법사" Height="580" Width="550" ResizeMode="NoResize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -55,22 +56,22 @@
             <StackPanel>
                 <Border Margin="{StaticResource ControlMargin}" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1">
                     <DockPanel>
-                        <Label DockPanel.Dock="Left">
+                        <Label DockPanel.Dock="Left" VerticalAlignment="Center">
                             <TextBlock>
                             <Run>선택한 패턴: </Run>
                             <Run Text="{Binding ViewModel.Plugin.Name}" />
                             </TextBlock>
                         </Label>
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Label Content="현재 조성:" />
-                            <ComboBox Width="50" Height="20" ItemsSource="{x:Static local:Naming.NoteName}" SelectedValuePath="Key" SelectedValue="{Binding Key}">
+                            <Label Content="현재 조성:" VerticalAlignment="Center" />
+                            <ComboBox Margin="{StaticResource ControlMargin}" Width="50" Height="20" ItemsSource="{x:Static local:Naming.NoteName}" SelectedValuePath="Key" SelectedValue="{Binding Key}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Key}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <ComboBox Width="70" Height="20" ItemsSource="{x:Static local:Naming.ShowMode}" SelectedValuePath="Key" SelectedValue="{Binding Mode}">
+                            <ComboBox Margin="{StaticResource ControlMargin}" Width="70" Height="20" ItemsSource="{x:Static local:Naming.ShowMode}" SelectedValuePath="Key" SelectedValue="{Binding Mode}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Key}"/>
@@ -80,68 +81,82 @@
                         </StackPanel>
                     </DockPanel>
                 </Border>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="옥타브   " VerticalAlignment="Center"/>
-                    <Button Content="-" Command="{Binding OctaveDownCommand}"/>
-                    <Border BorderBrush="{x:Static SystemColors.ActiveBorderBrush}" BorderThickness="1" Width="30">
-                        <TextBlock Text="{Binding Octave}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Border>
-                    <Button Content="+"  Command="{Binding OctaveUpCommand}"/>
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Center">
-                    <ListBox x:Name="SelectedChords"
-                         ItemsSource="{Binding CurrentProgress}"
-                         Height="100" Background="Azure"
-                         SelectedItem="{Binding CurrentChord, Mode=TwoWay}"
-                         Style="{StaticResource ListDisabledWhenBusy}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Width="500"
-                                        Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                    </ListBox>
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                            <Button Content="재생" Command="{Binding PlaySelectedChordCommand}"/>
-                            <Button Content="정지" Command="{Binding StopCommand}" />
+
+                <TabControl Margin="{StaticResource ControlMargin}">
+                    <TabItem Header="현재 코드 진행">
+                        <StackPanel Margin="{StaticResource ControlMargin}">
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="옥타브:" VerticalAlignment="Center"/>
+                                <ctrl:NumericUpDown Width="50" Minimum="0" Maximum="9" Value="{Binding Octave}" />
+                            </StackPanel>
+                            <ListBox x:Name="SelectedChords"
+                                     ItemsSource="{Binding CurrentProgress}"
+                                     Margin="{StaticResource ControlMargin}"
+                                     Height="100" Background="Azure"
+                                     SelectedItem="{Binding CurrentChord, Mode=TwoWay}"
+                                     Style="{StaticResource ListDisabledWhenBusy}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Width="500" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                    <Button Content="재생" Command="{Binding PlaySelectedChordCommand}" proj:SkinHelper.Segment="Left"/>
+                                    <Button Content="정지" Command="{Binding StopCommand}" proj:SkinHelper.Segment="Right"/>
+                                </StackPanel>
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="삭제" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                                    <Button Content="리셋" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                                </StackPanel>
+                            </DockPanel>
                         </StackPanel>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
-                            <Button Content="삭제" Command="{Binding RemoveCommand}" CommandParameter="{Binding SelectedItem, ElementName=SelectedChords}" Style="{StaticResource ButtonDisabledWhenBusy}" />
-                            <Button Content="리셋" HorizontalAlignment="Right" Command="{Binding ResetCommand}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                    </TabItem>
+                </TabControl>
+
+                <TabControl Margin="{StaticResource ControlMargin}">
+                    <TabItem Header="코드 추천 리스트">
+                        <StackPanel Margin="{StaticResource ControlMargin}">
+                            <Label HorizontalContentAlignment="Center">
+                                <TextBlock TextAlignment="Center">
+                                    위의 코드 진행을 바탕으로 다음 코드를 찾았습니다.<LineBreak />
+                                    코드 버튼을 클릭하면 미리 들을 수 있습니다.
+                                </TextBlock>
+                            </Label>
+                            <ListBox x:Name="chord_list"
+                                     Margin="{StaticResource ControlMargin}"
+                                     ItemsSource="{Binding Progress}"
+                                     SelectedItem="{Binding CurrentChord, Mode=TwoWay}"
+                                     Style="{StaticResource ListDisabledWhenBusy}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Width="500" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                            <Button Content="진행삽입" HorizontalAlignment="Right" Command="{Binding InsertProgressCommand}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}" Style="{StaticResource ButtonDisabledWhenBusy}" />
                         </StackPanel>
-                    </DockPanel>
-                    <TextBlock Width="400">
-                    코드 진행을 바탕으로 다음 코드를 찾았습니다.<LineBreak />
-                    코드 버튼을 클릭하면 미리 들을 수 있습니다.
+                    </TabItem>
+                </TabControl>
+
+                <Label HorizontalContentAlignment="Center" Foreground="{StaticResource LightSecondaryTextColor}">
+                    <TextBlock TextAlignment="Center">
+                        <LineBreak />
+                        Hooktheory에서 제공하는 서비스입니다.<LineBreak />
+                        © Hooktheory, LLC 2018
                     </TextBlock>
-                </StackPanel>
-                <ListBox x:Name="chord_list"
-                     ItemsSource="{Binding Progress}"
-                     SelectedItem="{Binding CurrentChord, Mode=TwoWay}"
-                     Style="{StaticResource ListDisabledWhenBusy}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding}" Width="60" Height="75" Command="{Binding DataContext.PlayChordCommand, ElementName=window}" CommandParameter="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel Width="500"
-                                                Orientation="Horizontal"
-                                                VerticalAlignment="Center"
-                                                HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <Button Content="진행삽입" HorizontalAlignment="Right" Command="{Binding InsertProgressCommand}" CommandParameter="{Binding SelectedItem, ElementName=chord_list}" Style="{StaticResource ButtonDisabledWhenBusy}" />
+                </Label>
             </StackPanel>
         </Border>
     </DockPanel>
