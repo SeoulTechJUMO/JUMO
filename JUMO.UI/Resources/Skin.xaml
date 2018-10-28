@@ -142,15 +142,33 @@
                         <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Padding" TargetName="pushEffectBorder" Value="0,1,0,0" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource LightDisabledControlFaceColor}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource LightDisabledControlBorderColor}"/>
-                            <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="proj:SkinHelper.Variant" Value="Dark">
+                <Setter Property="Background" Value="{StaticResource DarkControlFaceColor}" />
+                <Setter Property="Foreground" Value="{StaticResource DarkPrimaryTextColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource DarkControlBorderColor}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightDisabledControlFaceColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource LightDisabledControlBorderColor}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Variant" Value="Dark" />
+                    <Condition Property="IsEnabled" Value="False" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource DarkDisabledControlFaceColor}" />
+                    <Setter Property="Foreground" Value="{StaticResource DarkSecondaryTextColor}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DarkDisabledControlBorderColor}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Button" BasedOn="{StaticResource {x:Type ButtonBase}}">
@@ -171,6 +189,29 @@
         <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         <Setter Property="BorderThickness" Value="{StaticResource ControlBorderThickness}" />
         <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource ControlBorderRadius}" />
+        <Style.Triggers>
+            <Trigger Property="proj:SkinHelper.Variant" Value="Dark">
+                <Setter Property="Background" Value="{StaticResource DarkControlFaceColor}" />
+                <Setter Property="Foreground" Value="{StaticResource DarkPrimaryTextColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource DarkControlBorderColor}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource LightDisabledControlFaceColor}"/>
+                <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource LightDisabledControlBorderColor}"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Variant" Value="Dark" />
+                    <Condition Property="IsEnabled" Value="False" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Background" Value="{StaticResource DarkDisabledControlFaceColor}" />
+                    <Setter Property="Foreground" Value="{StaticResource DarkSecondaryTextColor}" />
+                    <Setter Property="BorderBrush" Value="{StaticResource DarkDisabledControlBorderColor}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="BulletToggleButtonStyleBase" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
@@ -198,11 +239,6 @@
                         </Trigger>
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Fill" TargetName="indicatorLight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:SkinHelper.IndicatorBrush)}" />
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource LightDisabledControlFaceColor}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource LightDisabledControlBorderColor}"/>
-                            <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -236,11 +272,6 @@
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Background" TargetName="indicatorLight" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:SkinHelper.IndicatorBrush)}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource LightDisabledControlFaceColor}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource LightDisabledControlBorderColor}"/>
-                            <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -268,15 +299,21 @@
                         <Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Background" TargetName="border" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:SkinHelper.IndicatorBrush)}" />
                         </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource LightDisabledControlFaceColor}"/>
-                            <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource LightDisabledControlBorderColor}"/>
-                            <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}"/>
-                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Variant" Value="Dark" />
+                    <Condition Property="ToggleButton.IsChecked" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="BulletToggleButtonStyle1" TargetType="ToggleButton" BasedOn="{StaticResource BulletToggleButtonStyleBase}">
