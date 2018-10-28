@@ -680,6 +680,119 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Slider}">
+                            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto" MinWidth="{TemplateBinding MinWidth}"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TickBar x:Name="LeftTick" Fill="{TemplateBinding Foreground}" Width="4" Margin="0,0,2,0" Placement="Left" Grid.Column="0" Visibility="Collapsed"/>
+                                    <TickBar x:Name="RightTick" Fill="{TemplateBinding Foreground}" Width="4" Margin="2,0,0,0" Placement="Right" Grid.Column="2" Visibility="Collapsed"/>
+                                    <Border x:Name="TrackBackground" Background="{StaticResource LightSecondaryTextColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1" CornerRadius="1" Width="3" Margin="0,5" Grid.Column="1" HorizontalAlignment="Center">
+                                        <Canvas>
+                                            <Rectangle x:Name="PART_SelectionRange" Fill="{StaticResource IndicatorLightColor2}" Height="1" Visibility="Hidden" />
+                                        </Canvas>
+                                    </Border>
+                                    <Track x:Name="PART_Track" Grid.Column="1">
+                                        <Track.DecreaseRepeatButton>
+                                            <RepeatButton Command="Slider.DecreaseLarge">
+                                                <RepeatButton.Style>
+                                                    <Style TargetType="{x:Type RepeatButton}">
+                                                        <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Focusable" Value="False"/>
+                                                        <Setter Property="IsTabStop" Value="False"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </RepeatButton.Style>
+                                            </RepeatButton>
+                                        </Track.DecreaseRepeatButton>
+                                        <Track.IncreaseRepeatButton>
+                                            <RepeatButton Command="Slider.IncreaseLarge">
+                                                <RepeatButton.Style>
+                                                    <Style TargetType="{x:Type RepeatButton}">
+                                                        <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="Focusable" Value="False"/>
+                                                        <Setter Property="IsTabStop" Value="False"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                    <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </RepeatButton.Style>
+                                            </RepeatButton>
+                                        </Track.IncreaseRepeatButton>
+                                        <Track.Thumb>
+                                            <Thumb x:Name="Thumb" Focusable="False" Width="18" Height="12" OverridesDefaultStyle="True" VerticalAlignment="Center">
+                                                <Thumb.Template>
+                                                    <ControlTemplate TargetType="{x:Type Thumb}">
+                                                        <ControlTemplate.Resources>
+                                                            <StreamGeometry x:Key="gripGeometry">
+                                                                M 2 0 L 16 0 A 2 2 0 0 1 18 2 L 18 8 A 2 2 0 0 1 16 10 L 2 10 A 2 2 0 0 1 0 8 L 0 2 A 2 2 0 0 1 2 0 Z
+                                                            </StreamGeometry>
+                                                        </ControlTemplate.Resources>
+                                                        <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                                                            <Path x:Name="gripShadow" Margin="0,1,0,0" Width="18" Height="11" Fill="{StaticResource LightControlBorderColor}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource LightControlBorderColor}" StrokeThickness="1" Data="{StaticResource gripGeometry}" UseLayoutRounding="True" VerticalAlignment="Center" />
+                                                            <Path x:Name="grip" Width="18" Height="11" Fill="{StaticResource LightControlFaceColor}" Stretch="Fill" SnapsToDevicePixels="True" Stroke="{StaticResource LightControlBorderColor}" StrokeThickness="1" Data="{StaticResource gripGeometry}" UseLayoutRounding="True" VerticalAlignment="Center" />
+                                                        </Grid>
+                                                        <ControlTemplate.Triggers>
+                                                            <Trigger Property="IsDragging" Value="True">
+                                                                <Setter Property="Margin" TargetName="grip" Value="0,1,0,0" />
+                                                            </Trigger>
+                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                <Setter Property="Fill" TargetName="grip" Value="{StaticResource LightDisabledControlFaceColor}"/>
+                                                                <Setter Property="Stroke" TargetName="grip" Value="{StaticResource LightDisabledControlBorderColor}"/>
+                                                                <Setter Property="Fill" TargetName="gripShadow" Value="{StaticResource LightDisabledControlBorderColor}"/>
+                                                            </Trigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Thumb.Template>
+                                            </Thumb>
+                                        </Track.Thumb>
+                                    </Track>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="TickPlacement" Value="TopLeft">
+                                    <Setter Property="Visibility" TargetName="LeftTick" Value="Visible"/>
+                                    <Setter Property="Margin" TargetName="TrackBackground" Value="5,2,5,0"/>
+                                </Trigger>
+                                <Trigger Property="TickPlacement" Value="BottomRight">
+                                    <Setter Property="Visibility" TargetName="RightTick" Value="Visible"/>
+                                    <Setter Property="Margin" TargetName="TrackBackground" Value="5,0,5,2"/>
+                                </Trigger>
+                                <Trigger Property="TickPlacement" Value="Both">
+                                    <Setter Property="Visibility" TargetName="LeftTick" Value="Visible"/>
+                                    <Setter Property="Visibility" TargetName="RightTick" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsSelectionRangeEnabled" Value="True">
+                                    <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <!-- ScrollBar Styles -->
