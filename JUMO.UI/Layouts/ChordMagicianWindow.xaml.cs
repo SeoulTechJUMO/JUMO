@@ -43,14 +43,21 @@ namespace JUMO.UI.Layouts
 
         private void SmartMelodyClick(object sender, RoutedEventArgs e)
         {
-            SmartMelodyViewModel svm = new SmartMelodyViewModel((ChordMagicianViewModel)DataContext);
-            SmartMelodyWindow sv = new SmartMelodyWindow { DataContext = svm };
-
-            sv.ShowDialog();
-
-            if (svm.WillInsert)
+            if (((ChordMagicianViewModel)DataContext).CurrentProgress.Count != 0)
             {
-                Close();
+                SmartMelodyViewModel svm = new SmartMelodyViewModel((ChordMagicianViewModel)DataContext);
+                SmartMelodyWindow sv = new SmartMelodyWindow { DataContext = svm };
+
+                sv.ShowDialog();
+
+                if (svm.WillInsert)
+                {
+                    Close();
+                }
+            }
+            else
+            {
+                MessageBox.Show("코드 진행을 하나 이상 추가해주세요.");
             }
         }
 
