@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
+        xmlns:proj="clr-namespace:JUMO.UI"
         mc:Ignorable="d"
         Background="{DynamicResource LightBackgroundColor}"
         Width="1200"
@@ -16,9 +17,8 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="900"/>
-            <ColumnDefinition Width="3"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="250"/>
         </Grid.ColumnDefinitions>
         <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Stretch">
             <ListBox.Resources>
@@ -42,24 +42,31 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{x:Static SystemColors.ControlBrush}" ShowsPreview="True" />
-        <DockPanel Grid.Column="2" HorizontalAlignment="Center">
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+        <Border Grid.Column="2" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
+            <!--<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
                 <Label Content="현재 채널 OUT : "/>
-            </StackPanel>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="현재 채널 IN : "/>
-                </StackPanel>
-                <ListBox ItemsSource="{Binding CurrentChannel.Plugins}" Height="350" Margin="10">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <local:MixerVstView></local:MixerVstView>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ListBox>
-                <Button Content="플러그인 추가" Padding="3" Margin="80,0,80,0" Command="{Binding AddPluginCommand}"/>
-            </StackPanel>
-        </DockPanel>
+            </StackPanel>-->
+            <TabControl Margin="{StaticResource ControlMargin}">
+                <TabItem Header="현재 채널 IN">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <ListBox Grid.Row="0" ItemsSource="{Binding CurrentChannel.Plugins}" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Stretch">
+                            <ListBox.Resources>
+                                <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
+                            </ListBox.Resources>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:MixerVstView />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ListBox>
+                        <Button Grid.Row="1" Content="플러그인 추가" Command="{Binding AddPluginCommand}" HorizontalAlignment="Center"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Border>
     </Grid>
 </Window>
