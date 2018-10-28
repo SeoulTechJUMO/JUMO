@@ -6,28 +6,30 @@
              xmlns:local="clr-namespace:JUMO.UI.Views"
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              mc:Ignorable="d"
-             x:Name="root"
-             d:DesignWidth="100"
-             >
+             d:DesignHeight="350"
+             x:Name="root">
+    <Grid Margin="3" HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
 
-    <StackPanel HorizontalAlignment="Center" >
-        <TextBlock Margin="0,20,0,0" FontSize="12" Text="{Binding Name}"/>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,20">
-            <ctrl:VolumeMeter Width="20" Height="200" Amplitude="{Binding LeftVolume}" />
+        <TextBlock Grid.Row="0" Margin="3" FontSize="12" Text="{Binding Name, FallbackValue=채널}" TextAlignment="Center"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="3">
+            <ctrl:VolumeMeter Width="20" Amplitude="{Binding LeftVolume}" />
             <Rectangle Stroke="DarkGray" StrokeThickness="1"/>
-            <ctrl:VolumeMeter Width="20" Height="200" Amplitude="{Binding RightVolume}" />
+            <ctrl:VolumeMeter Width="20" Amplitude="{Binding RightVolume}" />
         </StackPanel>
-
-        <StackPanel>
-            <CheckBox Content="Mute" Width="70" IsChecked="{Binding IsMuted}">
+        <StackPanel Grid.Row="2">
+            <CheckBox Margin="3" Content="Mute" IsChecked="{Binding IsMuted}">
                 <CheckBox.InputBindings>
                     <MouseBinding Gesture="RightClick" Command="{Binding DataContext.Solo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
                 </CheckBox.InputBindings>
             </CheckBox>
-            <Slider x:Name="Volume" Orientation="Vertical" Height="100" HorizontalAlignment="Center" Margin="0,20,0,20" Value="{Binding Volume}" Minimum="0.0" Maximum="1.0"/>
-            <Slider x:Name="Panning" Margin="0,0,0,20" Value="{Binding Panning}" Minimum="-1.0" Maximum="1.0"/>
+            <Slider x:Name="Volume" Orientation="Vertical" Height="100" HorizontalAlignment="Center" Margin="3" Value="{Binding Volume}" Minimum="0.0" Maximum="1.0"/>
+            <Slider x:Name="Panning" Margin="3" Value="{Binding Panning}" Minimum="-1.0" Maximum="1.0"/>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </UserControl>
 

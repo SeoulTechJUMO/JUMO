@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
         Width="1200"
+        Height="400"
+        MinHeight="400"
+        MaxHeight="400"
         Title="믹서">
 
     <Grid>
@@ -14,18 +17,15 @@
             <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}">
+        <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}" VerticalContentAlignment="Stretch">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Width="auto"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"/>
+                    <StackPanel Width="auto" Orientation="Horizontal" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <local:MixerChannelView ></local:MixerChannelView>
+                    <local:MixerChannelView />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ListBox.ItemContainerStyle>
