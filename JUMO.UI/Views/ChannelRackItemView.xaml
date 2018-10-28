@@ -41,7 +41,7 @@
                    Minimum="0.0" Maximum="1.0"
                    Value="{Binding Plugin.Volume, Mode=TwoWay}"
                    VerticalAlignment="Center" />
-        <ctrl:NumericUpDown Grid.Row="0" Grid.Column="3" Width="50" Value="{Binding Plugin.ChannelNum}"/>
+        <ctrl:NumericUpDown Grid.Row="0" Grid.Column="3" Width="50" Minimum="0" Maximum="99" Value="{Binding Plugin.ChannelNum}"/>
         <Button Grid.Row="0" Grid.Column="4"
                 Content="{Binding Plugin.Name}"
                 Command="{Binding OpenPluginEditor}"

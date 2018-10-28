@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace JUMO.UI.Controls
@@ -16,7 +17,9 @@ namespace JUMO.UI.Controls
                     0.0,
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     ValuePropertyChangedCallback,
-                    CoerceValueCallback
+                    CoerceValueCallback,
+                    true,
+                    UpdateSourceTrigger.Explicit
                 )
             );
 
@@ -81,7 +84,7 @@ namespace JUMO.UI.Controls
 
         private static void ValuePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            CommandManager.InvalidateRequerySuggested();
+            ((NumericUpDown)d).GetBindingExpression(ValueProperty).UpdateSource();
         }
 
         private static void MinimumPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
