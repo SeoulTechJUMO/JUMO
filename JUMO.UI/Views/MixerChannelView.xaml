@@ -8,6 +8,9 @@
              mc:Ignorable="d"
              d:DesignHeight="350"
              x:Name="root">
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </UserControl.Resources>
     <Grid Margin="3" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -28,7 +31,7 @@
                 </CheckBox.InputBindings>
             </CheckBox>
             <Slider x:Name="Volume" Orientation="Vertical" Height="100" HorizontalAlignment="Center" Margin="3" Value="{Binding Volume}" Minimum="0.0" Maximum="1.0"/>
-            <Slider x:Name="Panning" Margin="3" Value="{Binding Panning}" Minimum="-1.0" Maximum="1.0"/>
+            <ctrl:Knob x:Name="Panning" Style="{StaticResource TracklessKnobStyle}" Value="{Binding Panning}" Minimum="-1.0" Maximum="1.0"/>
         </StackPanel>
     </Grid>
 </UserControl>

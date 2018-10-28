@@ -5,19 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
+        Background="{DynamicResource LightBackgroundColor}"
         Width="1200"
         Height="400"
         MinHeight="400"
         MaxHeight="400"
         Title="믹서">
-
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/Skin.xaml" />
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="900"/>
             <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
-        <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}" VerticalContentAlignment="Stretch">
+        <ListBox Grid.Column="0" ItemsSource="{Binding MixerChannels}" SelectedItem="{Binding CurrentChannel}" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Stretch">
+            <ListBox.Resources>
+                <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
+            </ListBox.Resources>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Width="auto" Orientation="Horizontal" />
