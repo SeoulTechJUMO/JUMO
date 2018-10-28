@@ -5,21 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        Background="{DynamicResource LightBackgroundColor}"
+        ResizeMode="NoResize"
         mc:Ignorable="d"
-        Title="자르기" Height="200" Width="300">
+        Title="자르기" Height="240" Width="320" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/Skin.xaml" />
     </Window.Resources>
     <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="확인" Click="CheckButtonClick"/>
-            <Button Content="취소" Command="{Binding AbortCommand}" Click="ExitButtonClick"/>
+        <DockPanel.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Padding" Value="{StaticResource ControlMargin}" />
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
+            </Style>
+            <Style x:Key="SectionBorder" TargetType="Border">
+                <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+                <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
+                <Setter Property="BorderThickness" Value="1" />
+            </Style>
+        </DockPanel.Resources>
+        <StackPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="확인(_O)" IsDefault="True" Click="CheckButtonClick" Style="{StaticResource DialogButtonStyle}"/>
+            <Button Content="취소(_A)" Command="{Binding AbortCommand}" Click="ExitButtonClick" Style="{StaticResource DialogButtonStyle}"/>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <StackPanel Width="50" HorizontalAlignment="Center">
-                <TextBlock Text="간격" TextAlignment="Center"/>
-                <ctrl:Knob Minimum="0" Maximum="16" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding ChopInterval}"/>
-            </StackPanel>
-        </StackPanel>
+        <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
+            <Border Style="{StaticResource SectionBorder}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="{StaticResource ControlMargin}">
+                <Grid Margin="20,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <ctrl:Knob Grid.Row="0" Minimum="0" Maximum="16" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding ChopInterval}"/>
+                    <Label Grid.Row="1" Content="간격"/>
+                </Grid>
+            </Border>
+        </Border>
     </DockPanel>
 </Window>
