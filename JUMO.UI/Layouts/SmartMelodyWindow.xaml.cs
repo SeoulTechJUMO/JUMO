@@ -15,7 +15,7 @@ namespace JUMO.UI.Layouts
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             SmartMelodyViewModel svm = (SmartMelodyViewModel)DataContext;
-            if (svm.WillInsert) { svm.ChangeScore(svm.CurrentMelody, true); }
+            if (!svm.WillInsert) { svm.ChangeScore(svm.CurrentMelody, true); }
         }
 
         private void InsertButtonClick(object sender, RoutedEventArgs e)
