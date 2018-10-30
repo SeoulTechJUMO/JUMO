@@ -11,6 +11,7 @@ namespace JUMO.File
 
         private readonly JUMO.Song _song = JUMO.Song.Current;
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
+        private readonly MixerManager _mixerManager = MixerManager.Instance;
 
         public bool SaveFile(string path)
         {
@@ -45,6 +46,7 @@ namespace JUMO.File
             IDictionary<JUMO.Pattern, int> patternTable = FillPatterns(file, pluginTable);
             FillTrackNames(file);
             FillPatternPlacements(file, patternTable);
+            FillMixerChannels(file);
 
             return file;
         }
@@ -113,6 +115,17 @@ namespace JUMO.File
             foreach (JUMO.PatternPlacement pp in _song.PlacedPatterns)
             {
                 file.PlacedPatterns[ppIndex++] = new PatternPlacement(patternTable[pp.Pattern], pp);
+            }
+        }
+
+        private void FillMixerChannels(ProjectFile file)
+        {
+            int chCount = MixerManager.NumOfMixerChannels;
+            file.MixerChannels = new MixerChannel[chCount];
+
+            for (int i = 0; i < chCount; i++)
+            {
+                file.MixerChannels[i] = new MixerChannel(_mixerManager.MixerChannels[i]);
             }
         }
     }

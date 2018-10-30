@@ -11,5 +11,6 @@ namespace JUMO.File
         public Pattern[] Patterns { get; set; }
         public PatternPlacement[] PlacedPatterns { get; set; }
         public Score[] Scores { get; set; }
+        public MixerChannel[] MixerChannels { get; set; }
     }
 }
