@@ -90,6 +90,29 @@ namespace JUMO.Vst
             }
         }
 
+        internal float[] DumpParameters()
+        {
+            int paramCount = PluginCommandStub.PluginContext.PluginInfo.ParameterCount;
+            float[] values = new float[paramCount];
+
+            for (int i = 0; i < paramCount; i++)
+            {
+                values[i] = PluginCommandStub.GetParameter(i);
+            }
+
+            return values;
+        }
+
+        internal void LoadParameters(float[] values)
+        {
+            int paramCount = Math.Min(PluginCommandStub.PluginContext.PluginInfo.ParameterCount, values.Length);
+
+            for (int i = 0; i < paramCount; i++)
+            {
+                PluginCommandStub.SetParameter(i, values[i]);
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
