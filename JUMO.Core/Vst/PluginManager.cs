@@ -18,7 +18,7 @@ namespace JUMO.Vst
 
         public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
 
-        public bool AddPlugin(Action<Exception> onError)
+        public Plugin AddPlugin(Action<Exception> onError)
         {
             OpenFileDialog dlg = new OpenFileDialog()
             {
@@ -31,11 +31,11 @@ namespace JUMO.Vst
             }
             else
             {
-                return false;
+                return null;
             }
         }
 
-        public bool AddPlugin(string pluginPath, Action<Exception> onError)
+        public Plugin AddPlugin(string pluginPath, Action<Exception> onError)
         {
             try
             {
@@ -46,13 +46,13 @@ namespace JUMO.Vst
 
                 Plugins.Add(plugin);
 
-                return true;
+                return plugin;
             }
             catch (Exception e)
             {
                 onError?.Invoke(e);
 
-                return false;
+                return null;
             }
         }
 

@@ -9,7 +9,7 @@ namespace JUMO.Vst
     {
         public ObservableCollection<EffectPlugin> Plugins { get; } = new ObservableCollection<EffectPlugin>();
 
-        public bool AddPlugin(MixerChannel channel, Action<Exception> onError)
+        public EffectPlugin AddPlugin(MixerChannel channel, Action<Exception> onError)
         {
             OpenFileDialog dlg = new OpenFileDialog()
             {
@@ -22,11 +22,11 @@ namespace JUMO.Vst
             }
             else
             {
-                return false;
+                return null;
             }
         }
 
-        public bool AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError)
+        public EffectPlugin AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError)
         {
             try
             {
@@ -35,13 +35,13 @@ namespace JUMO.Vst
 
                 Plugins.Add(plugin);
 
-                return true;
+                return plugin;
             }
             catch (Exception e)
             {
                 onError?.Invoke(e);
 
-                return false;
+                return null;
             }
         }
 
