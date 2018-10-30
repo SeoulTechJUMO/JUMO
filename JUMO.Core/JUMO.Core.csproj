@@ -89,8 +89,11 @@
     <Compile Include="Audio\AudioManager.cs" />
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
+    <Compile Include="File\Note.cs" />
+    <Compile Include="File\Pattern.cs" />
     <Compile Include="File\Plugin.cs" />
     <Compile Include="File\ProjectFile.cs" />
+    <Compile Include="File\Score.cs" />
     <Compile Include="File\Song.cs" />
     <Compile Include="MixerChannel.cs" />
     <Compile Include="IMusicalItem.cs" />
