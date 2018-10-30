@@ -95,6 +95,7 @@
     <Compile Include="File\Pattern.cs" />
     <Compile Include="File\Plugin.cs" />
     <Compile Include="File\ProjectFile.cs" />
+    <Compile Include="File\ProjectReader.cs" />
     <Compile Include="File\ProjectWriter.cs" />
     <Compile Include="File\Score.cs" />
     <Compile Include="File\Song.cs" />
