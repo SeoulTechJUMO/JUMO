@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:JUMO.UI.Views"
         xmlns:proj="clr-namespace:JUMO.UI"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        xmlns:chord="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
         mc:Ignorable="d"
         x:Name="window"
         d:DataContext="{x:Type proj:SmartMelodyViewModel}"
@@ -16,6 +17,70 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="Label">
+                <Setter Property="Padding" Value="{StaticResource ControlMargin}" />
+                <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
+            </Style>
+
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
+
+            <ItemsPanelTemplate x:Key="ProgressListPanel">
+                <VirtualizingStackPanel Orientation="Horizontal" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+            </ItemsPanelTemplate>
+
+            <Style x:Key="ProgressItemContainer" TargetType="ListBoxItem">
+                <Setter Property="Background" Value="{StaticResource LightSecondaryTextColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource LightSecondaryTextColor}" />
+                <Setter Property="Margin" Value="3,3,3,0" />
+                <Setter Property="BorderThickness" Value="2" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ListBoxItem">
+                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{StaticResource ControlBorderRadius}">
+                                <ContentPresenter />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="BorderBrush" Value="{StaticResource DarkBackgroundColor}" />
+                    </Trigger>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="BorderBrush" Value="{StaticResource DarkBackgroundColor}" />
+                        <Setter Property="Background" Value="{StaticResource DarkBackgroundColor}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style TargetType="ListBox">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Height" Value="100" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="ItemsPanel" Value="{StaticResource ProgressListPanel}" />
+                <Setter Property="ItemContainerStyle" Value="{StaticResource ProgressItemContainer}" />
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Visible" />
+            </Style>
+
+            <DataTemplate x:Key="ProgressItemTemplate" DataType="{x:Type chord:Progress}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Width="60" Content="{Binding}" Foreground="{StaticResource DarkPrimaryTextColor}" VerticalAlignment="Center" />
+                    <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.ViewModel.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Variant="Dark" />
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -33,56 +98,83 @@
                     </Style.Triggers>
                 </Style>
             </DockPanel.Style>
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                <Button Content="스마트 멜로디 생성" Command="{Binding GetMelodyCommand}"/>
-                <Button Content="확인" Command="{Binding InsertCommand}"  Click="InsertButtonClick"/>
-                <Button Content="취소" Command="{Binding CancelCommand}" Click="ExitButtonClick"/>
-            </StackPanel>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock FontSize="14"><Run Text="선택한 패턴 : "/></TextBlock>
-                    <Label Content="{Binding ViewModel.ViewModel.Plugin.Name}" FontSize="12"/>
-                    <TextBlock FontSize="14"><Run Text="생성된 패턴 : "/></TextBlock>
-                    <ComboBox Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Key}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+            <DockPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}">
+                <Button DockPanel.Dock="Left" Content="스마트 멜로디 생성" Command="{Binding GetMelodyCommand}"/>
+                <StackPanel DockPanel.Dock="Right" HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button Content="확인(_O)" Command="{Binding InsertCommand}" Click="InsertButtonClick" Style="{StaticResource DialogButtonStyle}"/>
+                    <Button Content="취소(_C)" Command="{Binding CancelCommand}" Click="ExitButtonClick" Style="{StaticResource DialogButtonStyle}"/>
                 </StackPanel>
-                <local:ScoreThumbnailView Score="{Binding ViewModel.ViewModel.Score}" Height="100" Background="Azure"/>
-                <Button Content="재생" Command="{Binding MelodyPlayCommand}"/>
-                <TextBlock x:Name="text3" FontSize="14"><Run Text="다음의 코드 진행을 바탕으로 멜로디를 생성합니다."/></TextBlock>
-                <TextBlock x:Name="text4" FontSize="14"><Run Text="스마트 멜로디 생성버튼을 눌러 주세요."/></TextBlock>
-                <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" Background="Azure">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Content="{Binding}" Height="75" Command="{Binding DataContext.ViewModel.PlayChord, ElementName=window}" CommandParameter="{Binding}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>멜로디 패턴 생성 개수 :</TextBlock>
-                    <ctrl:NumericUpDown Width="50" Value="{Binding MelodyCount}" />
-                    <TextBlock>코드 진행 반복 횟수 :</TextBlock>
-                    <ctrl:NumericUpDown Width="50" Value="{Binding ChordCount}" />
+            </DockPanel>
+            <Border Background="{StaticResource LightControlFaceColor}" Padding="{StaticResource ControlMargin}">
+                <StackPanel>
+                    <Border Margin="{StaticResource ControlMargin}" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1">
+                        <DockPanel>
+                            <Label DockPanel.Dock="Left" VerticalAlignment="Center">
+                                <TextBlock>
+                                    <Run>선택한 패턴: </Run>
+                                    <Run Text="{Binding ViewModel.ViewModel.Plugin.Name}" />
+                                </TextBlock>
+                            </Label>
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Label Content="생성된 패턴: " VerticalAlignment="Center" />
+                                <ComboBox Margin="{StaticResource ControlMargin}" Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Key}"/>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </DockPanel>
+                    </Border>
+
+                    <Border Margin="{StaticResource ControlMargin}" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1">
+                        <StackPanel>
+                            <Border Margin="{StaticResource ControlMargin}" Padding="1" Height="100"
+                                    BorderBrush="{StaticResource LightControlBorderColor}"
+                                    Background="{StaticResource LightControlFaceColor}"
+                                    BorderThickness="1"
+                                    CornerRadius="{StaticResource ControlBorderRadius}"
+                                    SnapsToDevicePixels="True">
+                                <local:ScoreThumbnailView Margin="{StaticResource ControlMargin}" Score="{Binding ViewModel.ViewModel.Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}"/>
+                            </Border>
+                            <Button Content="재생" Command="{Binding MelodyPlayCommand}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Margin="{StaticResource ControlMargin}" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1">
+                        <StackPanel>
+                            <Label HorizontalContentAlignment="Center">
+                                <TextBlock TextAlignment="Center">
+                                    다음의 코드 진행을 바탕으로 멜로디를 생성합니다.<LineBreak />
+                                    스마트 멜로디 생성 버튼을 눌러 주세요.
+                                </TextBlock>
+                            </Label>
+                            <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" ItemTemplate="{StaticResource ProgressItemTemplate}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Label Content="멜로디 패턴 생성 개수 :" VerticalAlignment="Center" />
+                                    <ctrl:NumericUpDown Width="50" Value="{Binding MelodyCount}" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Label Content="코드 진행 반복 횟수 :" VerticalAlignment="Center" />
+                                    <ctrl:NumericUpDown Width="50" Value="{Binding ChordCount}" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
-            </StackPanel>
+            </Border>
         </DockPanel>
 
         <Grid Background="Transparent" Visibility="{Binding ProgressVisible}">
             <Border BorderBrush="LightGray" VerticalAlignment="Center" BorderThickness="1" Padding="10">
                 <StackPanel>
-                    <TextBlock HorizontalAlignment="Center" FontSize="16">코드진행을 기반으로 멜로디를 생성하고 있습니다.</TextBlock>
-                    <ProgressBar Width="400" Height="20" IsIndeterminate="True"/>
+                    <Label HorizontalAlignment="Center" Content="코드진행을 기반으로 멜로디를 생성하고 있습니다." />
+                    <ProgressBar Margin="{StaticResource ControlMargin}" Width="400" Height="20" IsIndeterminate="True"/>
                 </StackPanel>
             </Border>
         </Grid>
