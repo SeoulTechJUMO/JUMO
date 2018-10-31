@@ -113,17 +113,46 @@ namespace JUMO.Vst
 
         public VstTimeInfo GetTimeInfo(VstTimeInfoFlags filterFlags)
         {
-            // TODO: 실제 데이터를 제공할 것
-            return new VstTimeInfo()
+            Song song = Song.Current;
+            int tickPosition = Playback.MasterSequencer.Instance.Position;
+            double sampleRate = 44100.0;
+            VstTimeInfoFlags flags = 0;
+
+            VstTimeInfo timeInfo = new VstTimeInfo()
             {
-                TimeSignatureNumerator = 4,
-                TimeSignatureDenominator = 4,
-                SampleRate = 44100.0,
-                Tempo = 120,
-                BarStartPosition = 0,
-                NanoSeconds = 0,
-                PpqPosition = 0.0
+                SamplePosition = tickPosition * song.SecondsPerTick * sampleRate,
             };
+
+            if (filterFlags.HasFlag(VstTimeInfoFlags.PpqPositionValid))
+            {
+                timeInfo.PpqPosition = (double)tickPosition / song.TimeResolution;
+                flags |= VstTimeInfoFlags.PpqPositionValid;
+            }
+
+            if (filterFlags.HasFlag(VstTimeInfoFlags.TempoValid))
+            {
+                timeInfo.Tempo = song.Tempo;
+                flags |= VstTimeInfoFlags.TempoValid;
+            }
+
+            //if (filterFlags.HasFlag(VstTimeInfoFlags.BarStartPositionValid)) { }
+
+            //if (filterFlags.HasFlag(VstTimeInfoFlags.CyclePositionValid)) { }
+
+            if (filterFlags.HasFlag(VstTimeInfoFlags.TimeSignatureValid))
+            {
+                timeInfo.TimeSignatureNumerator = song.Numerator;
+                timeInfo.TimeSignatureDenominator = song.Denominator;
+                flags |= VstTimeInfoFlags.TimeSignatureValid;
+            }
+
+            // if (filterFlags.HasFlag(VstTimeInfoFlags.SmpteValid)) { }
+
+            // if (filterFlags.HasFlag(VstTimeInfoFlags.ClockValid)) { }
+
+            timeInfo.Flags = flags;
+
+            return timeInfo;
         }
 
         public string GetVendorString() => "Team JUMAK";
