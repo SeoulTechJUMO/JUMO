@@ -38,6 +38,7 @@ namespace JUMO.Vst
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler Disposed;
 
         public PluginBase(string pluginPath, IVstHostCommandStub hostCmdStub)
         {
@@ -133,6 +134,8 @@ namespace JUMO.Vst
             }
 
             _isDisposed = true;
+
+            Disposed?.Invoke(this, EventArgs.Empty);
         }
 
         public void Dispose()
