@@ -30,5 +30,16 @@ namespace JUMO.File
             Mute = source.Mute;
             Parameters = source.DumpParameters();
         }
+
+        public void Restore(Vst.Plugin target)
+        {
+            target.Name = Name;
+            target.ChannelNum = ChannelNum;
+            target.Volume = Volume;
+            target.Panning = Panning;
+            target.Mute = Mute;
+
+            target.LoadParameters(Parameters);
+        }
     }
 }

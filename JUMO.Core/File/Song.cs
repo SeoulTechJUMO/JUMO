@@ -28,5 +28,18 @@ namespace JUMO.File
             Denominator = source.Denominator;
             TimeResolution = source.TimeResolution;
         }
+
+        public void Restore(JUMO.Song target)
+        {
+            target.Title = Title;
+            target.Artist = Artist;
+            target.Genre = Genre;
+            target.Description = Description;
+            target.Numerator = Numerator;
+            target.Denominator = Denominator;
+            target.TimeResolution = TimeResolution;
+
+            target.SetTempo(TempoBeat, Tempo);
+        }
     }
 }

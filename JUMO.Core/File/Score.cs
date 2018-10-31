@@ -23,5 +23,13 @@ namespace JUMO.File
                 Notes[noteIndex++] = new Note(note);
             }
         }
+
+        public void Restore(JUMO.Score target)
+        {
+            foreach (Note note in Notes)
+            {
+                target.Add(new JUMO.Note(note.Value, note.Velocity, note.Start, note.Length));
+            }
+        }
     }
 }
