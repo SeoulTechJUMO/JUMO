@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Interop.Host;
@@ -57,13 +58,16 @@ namespace JUMO.Vst
 
             VstAudioBuffer[] swapTemp;
 
-            for (int i = 0; i < _plugins.Count; i++)
+            lock (((ICollection)_plugins).SyncRoot)
             {
-                _plugins[i].ProcessEffect(_inBuf, _outBuf, samplesPerBuffer);
+                for (int i = 0; i < _plugins.Count; i++)
+                {
+                    _plugins[i].ProcessEffect(_inBuf, _outBuf, samplesPerBuffer);
 
-                swapTemp = _inBuf;
-                _inBuf = _outBuf;
-                _outBuf = swapTemp;
+                    swapTemp = _inBuf;
+                    _inBuf = _outBuf;
+                    _outBuf = swapTemp;
+                }
             }
 
             unsafe

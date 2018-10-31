@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using Microsoft.Win32;
 using NAudio.Wave;
@@ -33,7 +34,10 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 EffectPlugin plugin = new EffectPlugin(pluginPath, hostCmdStub);
 
-                Plugins.Add(plugin);
+                lock (((ICollection)Plugins).SyncRoot)
+                {
+                    Plugins.Add(plugin);
+                }
 
                 return plugin;
             }
@@ -45,12 +49,22 @@ namespace JUMO.Vst
             }
         }
 
+        public void UnloadAll()
+        {
+            lock (((ICollection)Plugins).SyncRoot)
+            {
+                foreach (EffectPlugin plugin in Plugins)
+                {
+                    plugin.Dispose();
+                }
+
+                Plugins.Clear();
+            }
+        }
+
         public void Dispose()
         {
-            foreach (var plugin in Plugins)
-            {
-                plugin.Dispose();
-            }
+            UnloadAll();
         }
     }
 }
