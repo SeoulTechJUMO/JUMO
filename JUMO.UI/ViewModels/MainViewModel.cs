@@ -74,6 +74,7 @@ namespace JUMO.UI
             TogglePlaybackModeCommand = new RelayCommand(ExecuteTogglePlaybackMode);
 
             WorkspaceManager.Instance.PropertyChanged += WorkspaceManager_PropertyChanged;
+            Song.PropertyChanged += OnSongPropertyChanged;
         }
 
         private void ExecuteOpenProject(object _)
@@ -132,5 +133,13 @@ namespace JUMO.UI
 
         private void WorkspaceManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
             => OnPropertyChanged(e.PropertyName);
+
+        private void OnSongPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Song.Title))
+            {
+                OnPropertyChanged(nameof(DisplayName));
+            }
+        }
     }
 }
