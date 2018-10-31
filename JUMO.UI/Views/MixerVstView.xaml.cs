@@ -1,28 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JUMO.UI.Views
 {
-    /// <summary>
-    /// MixerVstView.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class MixerVstView : UserControl
     {
+        #region Dependency Properties
+
+        public static readonly DependencyProperty PluginProperty =
+            DependencyProperty.Register(nameof(Plugin), typeof(Vst.EffectPlugin), typeof(MixerVstView));
+
+        public static readonly DependencyProperty OpenPluginEditorProperty =
+            DependencyProperty.Register(nameof(OpenPluginEditor), typeof(ICommand), typeof(MixerVstView));
+
+        public static readonly DependencyProperty RemovePluginProperty =
+            DependencyProperty.Register(nameof(RemovePlugin), typeof(ICommand), typeof(MixerVstView));
+
+        #endregion
+
+        #region Properties
+
+        public Vst.EffectPlugin Plugin
+        {
+            get => (Vst.EffectPlugin)GetValue(PluginProperty);
+            set => SetValue(PluginProperty, value);
+        }
+
+        public ICommand OpenPluginEditor
+        {
+            get => (ICommand)GetValue(OpenPluginEditorProperty);
+            set => SetValue(OpenPluginEditorProperty, value);
+        }
+
+        public ICommand RemovePlugin
+        {
+            get => (ICommand)GetValue(RemovePluginProperty);
+            set => SetValue(RemovePluginProperty, value);
+        }
+
+        #endregion
+
         public MixerVstView()
         {
             InitializeComponent();
+
+            root.DataContext = this;
         }
     }
 }
