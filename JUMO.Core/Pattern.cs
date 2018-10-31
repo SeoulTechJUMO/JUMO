@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using JUMO.Vst;
@@ -16,7 +17,7 @@ namespace JUMO
         private string _name;
         private int _length;
 
-        public event EventHandler ScoreCreated;
+        public event EventHandler<ScoreChangedEventArgs> ScoreChanged;
 
         /// <summary>
         /// 패턴의 이름을 가져오거나 설정합니다.
@@ -79,7 +80,7 @@ namespace JUMO
                     ((INotifyPropertyChanged)newScore).PropertyChanged += OnScorePropertyChanged;
 
                     _scores.Add(p, newScore);
-                    ScoreCreated?.Invoke(this, EventArgs.Empty);
+                    ScoreChanged?.Invoke(this, new ScoreChangedEventArgs(new[] { newScore }, null));
 
                     return newScore;
                 }
@@ -96,6 +97,8 @@ namespace JUMO
             _song = owner;
             _song.PropertyChanged += OnSongPropertyChanged;
             Name = name;
+
+            PluginManager.Instance.Plugins.CollectionChanged += OnPluginsCollectionChanged;
 
             UpdateLength();
         }
@@ -131,7 +134,36 @@ namespace JUMO
             Length = (q + (r == 0 ? 0 : 1)) * ticksPerBar;
         }
 
+        private void OnPluginsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (Plugin plugin in e.OldItems)
+                {
+                    if (_scores.TryGetValue(plugin, out Score score))
+                    {
+                        _scores.Remove(plugin);
+                        ScoreChanged?.Invoke(this, new ScoreChangedEventArgs(null, new[] { score }));
+                    }
+                }
+            }
+
+            UpdateLength();
+        }
+
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public class ScoreChangedEventArgs : EventArgs
+    {
+        public IList<Score> CreatedScores { get; }
+        public IList<Score> RemovedScores { get; }
+
+        public ScoreChangedEventArgs(IList<Score> createdScores, IList<Score> removedScores)
+        {
+            CreatedScores = createdScores;
+            RemovedScores = removedScores;
+        }
     }
 }

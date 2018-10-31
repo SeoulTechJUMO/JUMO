@@ -92,7 +92,7 @@ namespace JUMO.UI
                 throw new ArgumentNullException(nameof(pattern));
             }
 
-            pattern.ScoreCreated += OnPatternScoreCreated;
+            pattern.ScoreChanged += OnPatternScoreChanged;
 
             _patternTable.Add(pattern, new GeometryGroup() { FillRule = FillRule.Nonzero });
             RefreshPatternThumbnailGeometry(pattern);
@@ -102,13 +102,26 @@ namespace JUMO.UI
         {
             GeometryGroup geometry = _patternTable[pattern];
 
+            geometry.Children.Clear();
+
             foreach (Score score in pattern.Scores)
             {
                 geometry.Children.Add(GetThumbnailForScore(score));
             }
         }
 
-        private void OnPatternScoreCreated(object sender, EventArgs e) => RefreshPatternThumbnailGeometry((Pattern)sender);
+        private void OnPatternScoreChanged(object sender, ScoreChangedEventArgs e)
+        {
+            if (e.RemovedScores != null)
+            {
+                foreach (Score score in e.RemovedScores)
+                {
+                    _scoreTable.Remove(score);
+                }
+            }
+
+            RefreshPatternThumbnailGeometry((Pattern)sender);
+        }
 
         #endregion
     }
