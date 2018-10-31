@@ -21,20 +21,7 @@ namespace JUMO.UI
 
         public abstract WorkspaceKey Key { get; }
 
-        public RelayCommand CloseCommand
-        {
-            get
-            {
-                if (_closeCommand == null)
-                {
-                    _closeCommand = new RelayCommand(
-                        _ => CloseRequested?.Invoke(this, EventArgs.Empty)
-                    );
-                }
-
-                return _closeCommand;
-            }
-        }
+        public RelayCommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(_ => CloseRequested?.Invoke(this, EventArgs.Empty)));
     }
 
     public abstract class SettingsGroupViewModel : ViewModelBase

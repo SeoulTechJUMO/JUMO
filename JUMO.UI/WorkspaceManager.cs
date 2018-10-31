@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace JUMO.UI
@@ -19,18 +16,18 @@ namespace JUMO.UI
 
         private WorkspaceManager()
         {
-            _workspaces = new ObservableCollection<WorkspaceViewModel>();
             Workspaces = CollectionViewSource.GetDefaultView(_workspaces);
         }
 
         #endregion
 
-        private readonly ObservableCollection<WorkspaceViewModel> _workspaces;
+        private readonly ObservableCollection<WorkspaceViewModel> _workspaces = new ObservableCollection<WorkspaceViewModel>();
         private WorkspaceViewModel _currentFocus;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ICollectionView Workspaces { get; }
+
         public WorkspaceViewModel CurrentWorkspace
         {
             get => _currentFocus;
