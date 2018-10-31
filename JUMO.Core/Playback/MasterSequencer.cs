@@ -336,7 +336,12 @@ namespace JUMO.Playback
 
             if (e.PropertyName == nameof(Song.CurrentPattern))
             {
-                _patternTrack = new Track(_song, 0, "") { new PatternPlacement(_song.CurrentPattern, 0, 0) };
+                _patternTrack = new Track(_song, 0, "");
+
+                if (_song.CurrentPattern != null)
+                {
+                    _patternTrack.Add(new PatternPlacement(_song.CurrentPattern, 0, 0));
+                }
             }
         }
 
