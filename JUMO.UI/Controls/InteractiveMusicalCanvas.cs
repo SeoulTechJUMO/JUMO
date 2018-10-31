@@ -199,6 +199,8 @@ namespace JUMO.UI.Controls
             }
             else if (Keyboard.Modifiers == ModifierKeys.Control)
             {
+                StopVirtualizing = true;
+
                 ClearSelection();
                 _selectionHelper.StartBlockSelection(pt);
 
@@ -233,6 +235,8 @@ namespace JUMO.UI.Controls
                     });
 
                 SelectItems(new List<IMusicalItem>(selectedItems));
+
+                StopVirtualizing = false;
 
                 e.Handled = true;
             }

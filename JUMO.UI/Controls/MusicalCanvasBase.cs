@@ -197,6 +197,7 @@ namespace JUMO.UI.Controls
         private readonly PlaybackBarAdorner _playbackBarAdorner;
 
         protected double WidthPerTick { get; private set; } = 0;
+        protected bool StopVirtualizing { get; set; } = false;
 
         protected abstract IVirtualElement CreateVirtualElementForItem(IMusicalItem item);
         protected abstract double CalculateLogicalLength();
@@ -324,7 +325,11 @@ namespace JUMO.UI.Controls
 
             _isAllCreated = true;
             _createWorker.RunWorker();
-            _disposeWorker.RunWorker();
+
+            if (!StopVirtualizing)
+            {
+                _disposeWorker.RunWorker();
+            }
 
             if (!_isAllCreated)
             {
