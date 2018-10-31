@@ -8,6 +8,7 @@ namespace JUMO.UI.ViewModels
         private MixerChannel _currentChannel;
         private RelayCommand _soloCommand;
         private RelayCommand _addPluginCommand;
+        private RelayCommand _removePluginCommand;
 
         public override string DisplayName => "믹서";
 
@@ -38,6 +39,9 @@ namespace JUMO.UI.ViewModels
                 plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
+
+        public RelayCommand RemovePluginCommand
+            => _removePluginCommand ?? (_removePluginCommand = new RelayCommand(plugin => CurrentChannel.RemoveEffect(plugin as EffectPlugin)));
 
         #endregion
 
