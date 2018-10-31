@@ -31,15 +31,10 @@ namespace JUMO.Vst
 
         public int GetVersion() => 1;
 
-        public void ProcessIdle()
-        {
-            throw new NotImplementedException();
-        }
+        public void ProcessIdle() { }
 
-        public void SetParameterAutomated(int index, float value)
-        {
-            //throw new NotImplementedException();
-        }
+        // Parameter automation is not yet supported.
+        public void SetParameterAutomated(int index, float value) { }
 
         #endregion
 
@@ -47,11 +42,11 @@ namespace JUMO.Vst
 
         public IVstPluginContext PluginContext { get; set; }
 
-        public bool BeginEdit(int index)
-        {
-            //throw new NotImplementedException();
-            return true;
-        }
+        // Parameter automation is not yet supported.
+        public bool BeginEdit(int index) => true;
+
+        // Parameter automation is not yet supported.
+        public bool EndEdit(int index) => true;
 
         public VstCanDoResult CanDo(string cando)
         {
@@ -66,12 +61,6 @@ namespace JUMO.Vst
         public bool CloseFileSelector(VstFileSelect fileSelect)
         {
             throw new NotImplementedException();
-        }
-
-        public bool EndEdit(int index)
-        {
-            //throw new NotImplementedException();
-            return true;
         }
 
         public VstAutomationStates GetAutomationState()
@@ -105,11 +94,7 @@ namespace JUMO.Vst
 
         public string GetProductString() => "JUMO";
 
-        public float GetSampleRate()
-        {
-            // TODO: 실제 데이터를 제공할 것
-            return 44100.0f;
-        }
+        public float GetSampleRate() => 44100.0f;
 
         public VstTimeInfo GetTimeInfo(VstTimeInfoFlags filterFlags)
         {
