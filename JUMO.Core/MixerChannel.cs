@@ -173,10 +173,9 @@ namespace JUMO
             }
         }
 
-        public void AddEffect()
-        {
-            _effectManager.AddPlugin(this, null);
-        }
+        public EffectPlugin AddEffect() => _effectManager.AddPlugin(this, null);
+
+        public EffectPlugin AddEffect(string pluginPath) => _effectManager.AddPlugin(pluginPath, this, null);
 
         public void UnloadAllEffects()
         {
