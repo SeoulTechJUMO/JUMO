@@ -4,37 +4,24 @@ using System.Windows.Input;
 
 namespace JUMO.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for ChannelRackItemView.xaml
-    /// </summary>
     public partial class ChannelRackItemView : UserControl
     {
         #region Dependency Properties
 
         public static readonly DependencyProperty PluginProperty =
-            DependencyProperty.Register(
-                "Plugin", typeof(Vst.Plugin), typeof(ChannelRackItemView)
-            );
+            DependencyProperty.Register("Plugin", typeof(Vst.Plugin), typeof(ChannelRackItemView));
 
         public static readonly DependencyProperty ScoreProperty =
-            DependencyProperty.Register(
-                "Score", typeof(Score), typeof(ChannelRackItemView)
-            );
+            DependencyProperty.Register("Score", typeof(Score), typeof(ChannelRackItemView));
 
         public static readonly DependencyProperty OpenPluginEditorProperty =
-            DependencyProperty.Register(
-                "OpenPluginEditor", typeof(ICommand), typeof(ChannelRackItemView)
-            );
+            DependencyProperty.Register("OpenPluginEditor", typeof(ICommand), typeof(ChannelRackItemView));
 
         public static readonly DependencyProperty OpenPianoRollProperty =
-            DependencyProperty.Register(
-                "OpenPianoRoll", typeof(ICommand), typeof(ChannelRackItemView)
-            );
+            DependencyProperty.Register("OpenPianoRoll", typeof(ICommand), typeof(ChannelRackItemView));
 
         public static readonly DependencyProperty RemovePluginProperty =
-            DependencyProperty.Register(
-                "RemovePlugin", typeof(ICommand), typeof(ChannelRackItemView)
-            );
+            DependencyProperty.Register("RemovePlugin", typeof(ICommand), typeof(ChannelRackItemView));
 
         #endregion
 
