@@ -504,6 +504,11 @@ namespace JUMO.UI.Controls
                 }
             }
 
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                ResetItemsInternal();
+            }
+
             CalculateLogicalLengthInternal();
             OnScrollChanged();
         }

@@ -65,6 +65,12 @@ namespace JUMO.UI
                     PlacePatternInternal(pp);
                 }
             }
+
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                _vmTable.Clear();
+                PlacedPatterns.Clear();
+            }
         }
     }
 }
