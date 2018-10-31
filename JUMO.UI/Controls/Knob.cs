@@ -138,6 +138,18 @@ namespace JUMO.UI.Controls
                 "<ControlTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" TargetType=\"Thumb\"><Border><Rectangle Fill=\"Transparent\" /></Border></ControlTemplate>";
 
             _thumbTemplate = (ControlTemplate)XamlReader.Parse(thumbTemplateXaml);
+
+            ValueProperty.OverrideMetadata(
+                typeof(Knob),
+                new FrameworkPropertyMetadata(
+                    0.0,
+                    FrameworkPropertyMetadataOptions.AffectsRender
+                    | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    ValuePropertyChangedCallback,
+                    CoerceValueCallback,
+                    false,
+                    UpdateSourceTrigger.Explicit)
+                );
         }
 
         public Knob()
@@ -280,6 +292,18 @@ namespace JUMO.UI.Controls
             {
                 throw new InvalidOperationException($"\"{e.Property.Name}\" cannot be less than zero.");
             }
+        }
+
+        private static void ValuePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((Knob)d)?.GetBindingExpression(ValueProperty)?.UpdateSource();
+        }
+
+        private static object CoerceValueCallback(DependencyObject d, object baseValue)
+        {
+            Knob ctrl = (Knob)d;
+
+            return Math.Max(ctrl.Minimum, Math.Min((double)baseValue, ctrl.Maximum));
         }
     }
 }
