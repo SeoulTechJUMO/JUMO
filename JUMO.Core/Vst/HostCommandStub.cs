@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 
@@ -6,6 +7,24 @@ namespace JUMO.Vst
 {
     class HostCommandStub : IVstHostCommandStub
     {
+        private readonly Dictionary<string, VstCanDoResult> _canDoAnswers = new Dictionary<string, VstCanDoResult>()
+        {
+            { "sendVstEvents", VstCanDoResult.Unknown }, //< Host supports send of Vst events to plug-in
+            { "sendVstMidiEvent", VstCanDoResult.Yes }, //< Host supports send of MIDI events to plug-in
+            { "sendVstTimeInfo", VstCanDoResult.Yes }, //< Host supports send of VstTimeInfo to plug-in
+            { "receiveVstEvents", VstCanDoResult.No }, //< Host can receive Vst events from plug-in
+            { "receiveVstMidiEvent", VstCanDoResult.No }, //< Host can receive MIDI events from plug-in
+            { "reportConnectionChanges", VstCanDoResult.No }, //< Host will indicates the plug-in when something change in plug-in�s routing/connections with #suspend/#resume/#setSpeakerArrangement
+            { "acceptIOChanges", VstCanDoResult.Unknown }, //< Host supports #ioChanged ()
+            { "sizeWindow", VstCanDoResult.Unknown }, //< used by VSTGUI
+            { "offline", VstCanDoResult.Unknown }, //< Host supports offline feature
+            { "openFileSelector", VstCanDoResult.Unknown }, //< Host supports function #openFileSelector ()
+            { "closeFileSelector", VstCanDoResult.Unknown }, //< Host supports function #closeFileSelector ()
+            { "startStopProcess", VstCanDoResult.Yes }, //< Host supports functions #startProcess () and #stopProcess ()
+            { "shellCategory", VstCanDoResult.Unknown }, //< 'shell' handling via uniqueID. If supported by the Host and the Plug-in has the category #kPlugCategShell
+            { "sendVstMidiEventFlagIsRealtime", VstCanDoResult.Yes }, //< Host supports flags for #VstMidiEvent
+        };
+
         #region IVstHostCommands10 Members
 
         public int GetCurrentPluginID() => PluginContext.PluginInfo.PluginID;
@@ -36,7 +55,12 @@ namespace JUMO.Vst
 
         public VstCanDoResult CanDo(string cando)
         {
-            throw new NotImplementedException();
+            if (_canDoAnswers.TryGetValue(cando, out VstCanDoResult answer))
+            {
+                return answer;
+            }
+
+            return VstCanDoResult.Unknown;
         }
 
         public bool CloseFileSelector(VstFileSelect fileSelect)
