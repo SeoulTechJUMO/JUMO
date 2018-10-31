@@ -5,41 +5,50 @@ namespace JUMO.UI.ViewModels
 {
     public class MixerViewModel : ViewModelBase
     {
+        private MixerChannel _currentChannel;
+        private RelayCommand _soloCommand;
+        private RelayCommand _addPluginCommand;
+        private RelayCommand _removePluginCommand;
+
         public override string DisplayName => "믹서";
 
-        public MixerViewModel()
-        {
-            _CurrentChannel = MixerManager.Instance.MixerChannels[0];
-        }
+        #region Properties
 
         //믹서 채널
         public IEnumerable<MixerChannel> MixerChannels => MixerManager.Instance.MixerChannels;
 
         //현재 선택중인 채널
-        private MixerChannel _CurrentChannel;
         public MixerChannel CurrentChannel
         {
-            get => _CurrentChannel;
+            get => _currentChannel;
             set
             {
-                _CurrentChannel = value;
+                _currentChannel = value;
                 OnPropertyChanged(nameof(CurrentChannel));
             }
         }
 
         //사용 커맨드
-        private RelayCommand _Solo;
-        public RelayCommand Solo
-            => _Solo ?? (_Solo = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
+        public RelayCommand SoloCommand
+            => _soloCommand ?? (_soloCommand = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
 
-        private RelayCommand _AddPluginCommand;
-        public RelayCommand AddPluginCommand => _AddPluginCommand ?? (_AddPluginCommand = new RelayCommand(ExecuteAddPlugin));
+        public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(ExecuteAddPlugin));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
                 plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
+
+        public RelayCommand RemovePluginCommand
+            => _removePluginCommand ?? (_removePluginCommand = new RelayCommand(plugin => CurrentChannel.RemoveEffect(plugin as EffectPlugin)));
+
+        #endregion
+
+        public MixerViewModel()
+        {
+            _currentChannel = MixerManager.Instance.MixerChannels[0];
+        }
 
         private void ExecuteAddPlugin(object _)
         {

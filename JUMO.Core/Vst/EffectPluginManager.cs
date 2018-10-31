@@ -30,6 +30,16 @@ namespace JUMO.Vst
             }
         }
 
+        public void RemovePlugin(EffectPlugin plugin)
+        {
+            lock (((ICollection)Plugins).SyncRoot)
+            {
+                Plugins.Remove(plugin);
+            }
+
+            plugin.Dispose();
+        }
+
         public void UnloadAll()
         {
             lock (((ICollection)Plugins).SyncRoot)

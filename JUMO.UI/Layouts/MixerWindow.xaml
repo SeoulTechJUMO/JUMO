@@ -78,17 +78,26 @@
                             <RowDefinition />
                             <RowDefinition Height="auto" />
                         </Grid.RowDefinitions>
-                        <ListBox Grid.Row="0" ItemsSource="{Binding CurrentChannel.Plugins}" Background="Transparent" BorderThickness="0" HorizontalContentAlignment="Stretch">
-                            <ListBox.Resources>
+
+                        <ScrollViewer>
+                            <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
-                            </ListBox.Resources>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:MixerVstView />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ListBox>
-                        <Button Grid.Row="1" Content="플러그인 추가" Command="{Binding AddPluginCommand}" HorizontalAlignment="Center"/>
+                                <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                            </ScrollViewer.Resources>
+                            <ItemsControl Grid.Row="0" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding CurrentChannel.Plugins}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:MixerVstView Plugin="{Binding}"
+                                                            OpenPluginEditor="{Binding Source={StaticResource Proxy}, Path=Data.OpenPluginEditorCommand}"
+                                                            RemovePlugin="{Binding Source={StaticResource Proxy}, Path=Data.RemovePluginCommand}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <StackPanel Grid.Row="1" Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
+                            <Button Content="플러그인 추가" Command="{Binding AddPluginCommand}" />
+                        </StackPanel>
                     </Grid>
                 </TabItem>
             </TabControl>

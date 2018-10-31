@@ -37,7 +37,7 @@
         <StackPanel Grid.Row="2">
             <CheckBox Margin="{StaticResource ControlMargin}" Content="Mute" IsChecked="{Binding IsMuted}">
                 <CheckBox.InputBindings>
-                    <MouseBinding Gesture="RightClick" Command="{Binding DataContext.Solo, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
+                    <MouseBinding Gesture="RightClick" Command="{Binding DataContext.SoloCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
                 </CheckBox.InputBindings>
             </CheckBox>
             <Slider x:Name="Volume"
