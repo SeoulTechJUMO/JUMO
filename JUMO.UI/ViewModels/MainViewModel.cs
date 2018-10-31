@@ -5,6 +5,9 @@ namespace JUMO.UI
 {
     class MainViewModel : ViewModelBase
     {
+        private const string FileDialogDefaultExt = ".jumo";
+        private const string FileDialogFilter = "JUMO 프로젝트 (.jumo)|*.jumo|모든 파일|*.*";
+
         public override string DisplayName => $"{Song.Title} - JUMO";
 
         /// <summary>
@@ -44,6 +47,16 @@ namespace JUMO.UI
             );
 
         /// <summary>
+        /// 기존의 프로젝트 파일을 열도록 하는 명령을 가져옵니다.
+        /// </summary>
+        public RelayCommand OpenProjectCommand { get; }
+
+        /// <summary>
+        /// 현재 열려 있는 프로젝트를 다른 이름으로 저장하도록 하는 명령을 가져옵니다.
+        /// </summary>
+        public RelayCommand SaveProjectAsCommand { get; }
+
+        /// <summary>
         /// 재생을 시작하거나 멈추도록 하는 명령을 가져옵니다.
         /// </summary>
         public RelayCommand TogglePlaybackCommand { get; }
@@ -55,10 +68,46 @@ namespace JUMO.UI
 
         public MainViewModel()
         {
+            OpenProjectCommand = new RelayCommand(ExecuteOpenProject);
+            SaveProjectAsCommand = new RelayCommand(ExecuteSaveProjectAs);
             TogglePlaybackCommand = new RelayCommand(ExecuteTogglePlayback);
             TogglePlaybackModeCommand = new RelayCommand(ExecuteTogglePlaybackMode);
 
             WorkspaceManager.Instance.PropertyChanged += WorkspaceManager_PropertyChanged;
+        }
+
+        private void ExecuteOpenProject(object _)
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "프로젝트 열기",
+                Extension = FileDialogDefaultExt,
+                Filter = FileDialogFilter
+            };
+
+            fdvm.ShowOpenCommand.Execute(null);
+
+            if (fdvm.FileName != null)
+            {
+                new File.ProjectReader().LoadFile(fdvm.FileName);
+            }
+        }
+
+        private void ExecuteSaveProjectAs(object _)
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "프로젝트를 다른 이름으로 저장",
+                Extension = FileDialogDefaultExt,
+                Filter = FileDialogFilter
+            };
+
+            fdvm.ShowSaveCommand.Execute(null);
+
+            if (fdvm.FileName != null)
+            {
+                new File.ProjectWriter().SaveFile(fdvm.FileName);
+            }
         }
 
         private void ExecuteTogglePlayback(object _)
