@@ -1,10 +1,5 @@
 ﻿using JUMO.Vst;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.UI.ViewModels
 {
@@ -38,12 +33,29 @@ namespace JUMO.UI.ViewModels
             => _Solo ?? (_Solo = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
 
         private RelayCommand _AddPluginCommand;
-        public RelayCommand AddPluginCommand => _AddPluginCommand ?? (_AddPluginCommand = new RelayCommand(_ => CurrentChannel.AddEffect()));
+        public RelayCommand AddPluginCommand => _AddPluginCommand ?? (_AddPluginCommand = new RelayCommand(ExecuteAddPlugin));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
                 plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
+
+        private void ExecuteAddPlugin(object _)
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "플러그인 열기",
+                Extension = ".dll",
+                Filter = "VST 플러그인|*.dll|모든 파일|*.*"
+            };
+
+            fdvm.ShowOpenCommand.Execute(null);
+
+            if (fdvm.FileName != null)
+            {
+                CurrentChannel.AddEffect(fdvm.FileName);
+            }
+        }
     }
 }

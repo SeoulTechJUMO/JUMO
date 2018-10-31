@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using Microsoft.Win32;
 
 namespace JUMO.Vst
 {
@@ -17,23 +16,6 @@ namespace JUMO.Vst
         #endregion
 
         public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
-
-        public Plugin AddPlugin(Action<Exception> onError)
-        {
-            OpenFileDialog dlg = new OpenFileDialog()
-            {
-                Filter = "VST 플러그인 (*.dll)|*.dll"
-            };
-
-            if (dlg.ShowDialog() == true)
-            {
-                return AddPlugin(dlg.FileName, onError);
-            }
-            else
-            {
-                return null;
-            }
-        }
 
         public Plugin AddPlugin(string pluginPath, Action<Exception> onError)
         {

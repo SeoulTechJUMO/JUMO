@@ -31,7 +31,22 @@ namespace JUMO.UI
 
         public RelayCommand AddPluginCommand { get; } =
             new RelayCommand(
-                _ => PluginManager.Instance.AddPlugin(null)
+                _ =>
+                {
+                    FileDialogViewModel fdvm = new FileDialogViewModel()
+                    {
+                        Title = "플러그인 열기",
+                        Extension = ".dll",
+                        Filter = "VST 플러그인|*.dll|모든 파일|*.*"
+                    };
+
+                    fdvm.ShowOpenCommand.Execute(null);
+
+                    if (fdvm.FileName != null)
+                    {
+                        PluginManager.Instance.AddPlugin(fdvm.FileName, null);
+                    }
+                }
             );
 
         public RelayCommand OpenPluginEditorCommand { get; } =
