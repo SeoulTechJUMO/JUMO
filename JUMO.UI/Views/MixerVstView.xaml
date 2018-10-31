@@ -11,20 +11,22 @@
         <ResourceDictionary Source="../Resources/Skin.xaml" />
     </UserControl.Resources>
     <Grid>
-        <Grid.InputBindings>
-            <MouseBinding Gesture="LeftClick" Command="{Binding DataContext.OpenPluginEditorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding}"/>
-        </Grid.InputBindings>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="0" Content="{Binding Name, FallbackValue=Plugin}" VerticalAlignment="Center"/>
+        <Button Grid.Column="0" Width="120"
+                HorizontalAlignment="Left"
+                Command="{Binding DataContext.OpenPluginEditorCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                CommandParameter="{Binding}">
+            <Button.Content>
+                <TextBlock Text="{Binding Name, FallbackValue=Plugin}" TextTrimming="CharacterEllipsis" />
+            </Button.Content>
+        </Button>
         <ctrl:Knob Grid.Column="1" Minimum="0.0" Maximum="1.0" Value="{Binding EffectMix}" Style="{StaticResource TracklessKnobStyle}"/>
-        <Button Grid.Column="2" Padding="1" Content="↑↓" FontSize="10"/>
-        <StackPanel Grid.Column="3" Margin="{StaticResource ControlMargin}">
+        <StackPanel Grid.Column="2" Margin="{StaticResource ControlMargin}">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="Margin" Value="0" />

@@ -43,7 +43,6 @@
                    VerticalAlignment="Center" />
         <ctrl:NumericUpDown Grid.Row="0" Grid.Column="3" Width="50" Minimum="0" Maximum="99" Value="{Binding Plugin.ChannelNum}"/>
         <Button Grid.Row="0" Grid.Column="4"
-                Content="{Binding Plugin.Name}"
                 Command="{Binding OpenPluginEditor}"
                 CommandParameter="{Binding Plugin}">
             <Button.ContextMenu>
@@ -62,6 +61,9 @@
                               CommandParameter="{Binding Plugin}" />
                 </ContextMenu>
             </Button.ContextMenu>
+            <Button.Content>
+                <TextBlock Text="{Binding Plugin.Name}" TextTrimming="CharacterEllipsis" />
+            </Button.Content>
         </Button>
 
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6"
