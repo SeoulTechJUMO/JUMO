@@ -105,6 +105,7 @@
     <Compile Include="Controls\PianoRollKeyboard.cs" />
     <Compile Include="Data\EnumHelper.cs" />
     <Compile Include="Data\TempoBeatOptionCollection.cs" />
+    <Compile Include="FileDialogService.cs" />
     <Compile Include="Layouts\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -127,6 +128,7 @@
     <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
+    <Compile Include="ViewModels\FileDialogViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
