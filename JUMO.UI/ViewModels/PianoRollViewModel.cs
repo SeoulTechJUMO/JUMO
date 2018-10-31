@@ -58,6 +58,7 @@ namespace JUMO.UI
         {
             Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             Key = new PianoRollWorkspaceKey(plugin);
+            Plugin.Disposed += OnPluginDisposed;
 
             Score = Song.Current.CurrentPattern[Plugin];
             Song.Current.PropertyChanged += CurrentSong_PropertyChanged;
@@ -113,5 +114,7 @@ namespace JUMO.UI
                 }
             }
         }
+
+        private void OnPluginDisposed(object sender, EventArgs e) => CloseCommand?.Execute(null);
     }
 }
