@@ -21,5 +21,13 @@ namespace JUMO.File
             EffectMix = source.EffectMix;
             Parameters = source.DumpParameters();
         }
+
+        public void Restore(Vst.EffectPlugin target)
+        {
+            target.Name = Name;
+            target.EffectMix = EffectMix;
+
+            target.LoadParameters(Parameters);
+        }
     }
 }
