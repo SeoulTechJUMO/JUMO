@@ -31,7 +31,8 @@
                         <view:ChannelRackItemView Plugin="{Binding Key}"
                                                   Score="{Binding Value}"
                                                   OpenPluginEditor="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
-                                                  OpenPianoRoll="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"/>
+                                                  OpenPianoRoll="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"
+                                                  RemovePlugin="{Binding Data.RemovePluginCommand, Source={StaticResource Proxy}}"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

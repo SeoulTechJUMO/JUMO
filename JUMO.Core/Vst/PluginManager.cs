@@ -38,6 +38,12 @@ namespace JUMO.Vst
             }
         }
 
+        public void RemovePlugin(Plugin plugin)
+        {
+            Plugins.Remove(plugin);
+            plugin?.Dispose();
+        }
+
         public void UnloadAll()
         {
             foreach (var plugin in Plugins)

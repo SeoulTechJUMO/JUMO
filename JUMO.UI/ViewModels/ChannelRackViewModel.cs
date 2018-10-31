@@ -64,6 +64,11 @@ namespace JUMO.UI
                 }
             );
 
+        public RelayCommand RemovePluginCommand { get; } =
+            new RelayCommand(
+                plugin => PluginManager.Instance.RemovePlugin(plugin as Plugin)
+            );
+
         public ChannelRackViewModel()
         {
             _plugins.CollectionChanged += OnPluginsCollectionChanged;

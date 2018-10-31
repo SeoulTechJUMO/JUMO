@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JUMO.UI.Views
 {
@@ -42,6 +31,11 @@ namespace JUMO.UI.Views
                 "OpenPianoRoll", typeof(ICommand), typeof(ChannelRackItemView)
             );
 
+        public static readonly DependencyProperty RemovePluginProperty =
+            DependencyProperty.Register(
+                "RemovePlugin", typeof(ICommand), typeof(ChannelRackItemView)
+            );
+
         #endregion
 
         #region Properties
@@ -68,6 +62,12 @@ namespace JUMO.UI.Views
         {
             get => (ICommand)GetValue(OpenPianoRollProperty);
             set => SetValue(OpenPianoRollProperty, value);
+        }
+
+        public ICommand RemovePlugin
+        {
+            get => (ICommand)GetValue(RemovePluginProperty);
+            set => SetValue(RemovePluginProperty, value);
         }
 
         #endregion
