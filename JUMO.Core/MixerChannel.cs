@@ -175,10 +175,9 @@ namespace JUMO
 
         public EffectPlugin AddEffect(string pluginPath) => _effectManager.AddPlugin(pluginPath, this, null);
 
-        public void UnloadAllEffects()
-        {
-            _effectManager.UnloadAll();
-        }
+        public void RemoveEffect(EffectPlugin plugin) => _effectManager.RemovePlugin(plugin);
+
+        public void UnloadAllEffects() => _effectManager.UnloadAll();
 
         //볼륨 이벤트 발생시 실행 메소드
         private void OnPostVolumeMeter(object sender, VolumePanningSampleProvider.StreamVolumeEventArgs e)
