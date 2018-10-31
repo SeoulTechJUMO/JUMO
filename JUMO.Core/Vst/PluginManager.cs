@@ -56,17 +56,19 @@ namespace JUMO.Vst
             }
         }
 
-        public void PluginDispose(Plugin plugin)
-        {
-            plugin.Dispose();
-        }
-
-        public void Dispose()
+        public void UnloadAll()
         {
             foreach (var plugin in Plugins)
             {
                 plugin.Dispose();
             }
+
+            Plugins.Clear();
+        }
+
+        public void Dispose()
+        {
+            UnloadAll();
         }
     }
 }

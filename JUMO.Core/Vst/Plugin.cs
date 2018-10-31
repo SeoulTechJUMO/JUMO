@@ -79,5 +79,11 @@ namespace JUMO.Vst
         {
             SendEvent(tick, new MidiToolkit.ChannelMessage(MidiToolkit.ChannelCommand.NoteOff, 0, value, 64));
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            MixerManager.Instance.MixerChannels[ChannelNum].MixerRemoveInput(SampleProvider);
+            base.Dispose(disposing);
+        }
     }
 }
