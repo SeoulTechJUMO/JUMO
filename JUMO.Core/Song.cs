@@ -296,6 +296,19 @@ namespace JUMO
                 }
             }
 
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                foreach (Track track in Tracks)
+                {
+                    foreach (PatternPlacement pp in track)
+                    {
+                        pp.PropertyChanged -= OnPatternPlacementPropertyChanged;
+                    }
+
+                    track.Clear();
+                }
+            }
+
             UpdateLength();
         }
 
