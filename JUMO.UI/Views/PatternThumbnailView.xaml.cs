@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -51,20 +52,37 @@ namespace JUMO.UI.Views
 
         #region Callbacks
 
+        private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Pattern.Length))
+            {
+                UpdateViewbox();
+            }
+        }
+
         private void OnGeometryChanged(object sender, EventArgs e) => UpdateViewbox();
 
-        private void OnPatternPropertyChanged(Pattern oldPattern, Pattern newPattern)
+        private void OnPatternDependencyPropertyChanged(Pattern oldPattern, Pattern newPattern)
         {
-            _geometry = ThumbnailManager.Instance.GetThumbnailForPattern(newPattern);
-            _geometry.Changed += OnGeometryChanged;
-            thumbnailPath.Data = _geometry;
+            if (oldPattern != null)
+            {
+                oldPattern.PropertyChanged -= OnPatternPropertyChanged;
+            }
 
-            UpdateViewbox();
+            if (newPattern != null)
+            {
+                _geometry = ThumbnailManager.Instance.GetThumbnailForPattern(newPattern);
+                _geometry.Changed += OnGeometryChanged;
+                newPattern.PropertyChanged += OnPatternPropertyChanged;
+                thumbnailPath.Data = _geometry;
+
+                UpdateViewbox();
+            }
         }
 
         private static void PatternPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PatternThumbnailView)d).OnPatternPropertyChanged(e.OldValue as Pattern, e.NewValue as Pattern);
+            ((PatternThumbnailView)d).OnPatternDependencyPropertyChanged(e.OldValue as Pattern, e.NewValue as Pattern);
         }
 
         #endregion
