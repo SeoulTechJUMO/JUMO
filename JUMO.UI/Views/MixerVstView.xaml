@@ -29,6 +29,9 @@
                               FontWeight="Bold"
                               Command="{Binding OpenPluginEditor}"
                               CommandParameter="{Binding Plugin}" />
+                    <MenuItem Header="다른 플러그인으로 대체(_R)"
+                              Command="{Binding ReplacePlugin}"
+                              CommandParameter="{Binding Plugin}" />
                     <MenuItem Header="제거(_D)"
                               Command="{Binding RemovePlugin}"
                               CommandParameter="{Binding Plugin}" />
@@ -46,8 +49,8 @@
                     <Setter Property="Padding" Value="5,1" />
                 </Style>
             </StackPanel.Resources>
-            <Button Content="▲" FontSize="6"/>
-            <Button Content="▼" FontSize="6"/>
+            <Button Content="▲" FontSize="6" Command="{Binding MoveUp}" CommandParameter="{Binding Index}"/>
+            <Button Content="▼" FontSize="6" Command="{Binding MoveDown}" CommandParameter="{Binding Index}"/>
         </StackPanel>
     </Grid>
 </UserControl>

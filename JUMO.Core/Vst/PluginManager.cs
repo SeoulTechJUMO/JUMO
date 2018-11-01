@@ -24,9 +24,35 @@ namespace JUMO.Vst
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerAddInput(plugin.SampleProvider);
-
                 Plugins.Add(plugin);
+
+                return plugin;
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e);
+
+                return null;
+            }
+        }
+
+        public Plugin ReplacePlugin(string pluginPath, Action<Exception> onError, Plugin oldPlugin)
+        {
+            int idx = Plugins.IndexOf(oldPlugin ?? throw new ArgumentNullException(nameof(oldPlugin)));
+
+            try
+            {
+                Plugin plugin = new Plugin(pluginPath, new HostCommandStub())
+                {
+                    ChannelNum = oldPlugin.ChannelNum,
+                    Volume = oldPlugin.Volume,
+                    Panning = oldPlugin.Panning,
+                    Mute = oldPlugin.Mute
+                };
+
+                Plugins[idx] = plugin;
+
+                oldPlugin?.Dispose();
 
                 return plugin;
             }

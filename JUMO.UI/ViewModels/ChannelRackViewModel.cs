@@ -11,6 +11,8 @@ namespace JUMO.UI
     {
         private readonly Song _song = Song.Current;
         private readonly ObservableCollection<Plugin> _plugins = PluginManager.Instance.Plugins;
+        private RelayCommand _addPluginCommand;
+        private RelayCommand _replacePluginCommand;
 
         public override string DisplayName => $"패턴: {Pattern.Name}";
 
@@ -30,25 +32,9 @@ namespace JUMO.UI
             }
         }
 
-        public RelayCommand AddPluginCommand { get; } =
-            new RelayCommand(
-                async _ =>
-                {
-                    FileDialogViewModel fdvm = new FileDialogViewModel()
-                    {
-                        Title = "플러그인 열기",
-                        Extension = ".dll",
-                        Filter = "VST 플러그인|*.dll|모든 파일|*.*"
-                    };
+        public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(async _ => await AddPlugin()));
 
-                    fdvm.ShowOpenCommand.Execute(null);
-
-                    if (fdvm.FileName != null)
-                    {
-                        await Task.Run(() => PluginManager.Instance.AddPlugin(fdvm.FileName, null));
-                    }
-                }
-            );
+        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(async oldPlugin => await ReplacePlugin(oldPlugin as Plugin)));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
@@ -74,6 +60,40 @@ namespace JUMO.UI
         {
             _plugins.CollectionChanged += OnPluginsCollectionChanged;
             _song.PropertyChanged += OnSongPropertyChanged;
+        }
+
+        private string ShowOpenFileDialog()
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "플러그인 열기",
+                Extension = ".dll",
+                Filter = "VST 플러그인|*.dll|모든 파일|*.*"
+            };
+
+            fdvm.ShowOpenCommand.Execute(null);
+
+            return fdvm.FileName;
+        }
+
+        private async Task AddPlugin()
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (fileName != null)
+            {
+                await Task.Run(() => PluginManager.Instance.AddPlugin(fileName, null));
+            }
+        }
+
+        private async Task ReplacePlugin(Plugin oldPlugin)
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (fileName != null)
+            {
+                await Task.Run(() => PluginManager.Instance.ReplacePlugin(fileName, null, oldPlugin));
+            }
         }
 
         private void OnPluginsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

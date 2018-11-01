@@ -64,6 +64,7 @@ namespace JUMO.Vst
             Panning = 0.0f;
             Mute = false;
             SampleProvider = _volume;
+            ChannelNum = 0;
         }
 
         public void NoteOn(byte value, byte velocity) => NoteOn(0, value, velocity);

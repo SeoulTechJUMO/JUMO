@@ -84,12 +84,17 @@
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
                                 <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
                             </ScrollViewer.Resources>
-                            <ItemsControl Grid.Row="0" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding CurrentChannel.Plugins}">
+                            <ItemsControl Grid.Row="0" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding CurrentChannel.Plugins}" AlternationCount="100">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <local:MixerVstView Plugin="{Binding}"
+                                                            Index="{Binding Path=(ItemsControl.AlternationIndex), RelativeSource={RelativeSource TemplatedParent}}"
                                                             OpenPluginEditor="{Binding Source={StaticResource Proxy}, Path=Data.OpenPluginEditorCommand}"
-                                                            RemovePlugin="{Binding Source={StaticResource Proxy}, Path=Data.RemovePluginCommand}"/>
+                                                            ReplacePlugin="{Binding Source={StaticResource Proxy}, Path=Data.ReplacePluginCommand}"
+                                                            RemovePlugin="{Binding Source={StaticResource Proxy}, Path=Data.RemovePluginCommand}"
+                                                            MoveUp="{Binding Source={StaticResource Proxy}, Path=Data.MoveUpPluginCommand}"
+                                                            MoveDown="{Binding Source={StaticResource Proxy}, Path=Data.MoveDownPluginCommand}"
+                                                            />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

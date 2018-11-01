@@ -136,7 +136,7 @@ namespace JUMO
 
         private void OnPluginsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
+            if (e.Action == NotifyCollectionChangedAction.Remove && e.OldItems != null)
             {
                 foreach (Plugin plugin in e.OldItems)
                 {
@@ -144,6 +144,18 @@ namespace JUMO
                     {
                         _scores.Remove(plugin);
                         ScoreChanged?.Invoke(this, new ScoreChangedEventArgs(null, new[] { score }));
+                    }
+                }
+            }
+
+            if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                if (e.OldItems?[0] is Plugin oldPlugin && e.NewItems?[0] is Plugin newPlugin)
+                {
+                    if (_scores.TryGetValue(oldPlugin, out Score score))
+                    {
+                        _scores.Remove(oldPlugin);
+                        _scores.Add(newPlugin, score);
                     }
                 }
             }

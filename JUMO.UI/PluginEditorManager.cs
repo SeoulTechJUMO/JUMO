@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using JUMO.UI.Layouts;
 
 namespace JUMO.UI
@@ -42,8 +39,9 @@ namespace JUMO.UI
                 // 새로운 창 인스턴스 생성 후 열기
                 PluginEditorWindow newWindow = new PluginEditorWindow(plugin);
                 newWindow.Closed += PluginWindow_Closed;
-                _table.Add(plugin, newWindow);
+                plugin.Disposed += OnPluginDisposed;
 
+                _table.Add(plugin, newWindow);
                 newWindow.Show();
             }
         }
@@ -53,10 +51,12 @@ namespace JUMO.UI
         /// 해당하는 창이 열려있지 않은 경우 아무런 동작도 수행하지 않습니다.
         /// </summary>
         /// <param name="plugin">VST 플러그인</param>
-        public void CloseEditor(Vst.Plugin plugin)
+        public void CloseEditor(Vst.PluginBase plugin)
         {
             _table.TryGetValue(plugin, out PluginEditorWindow window);
             window?.Close();
+
+            plugin.Disposed -= OnPluginDisposed;
         }
 
         private void PluginWindow_Closed(object sender, EventArgs e)
@@ -68,5 +68,7 @@ namespace JUMO.UI
                 _table.Remove(window.Plugin);
             }
         }
+
+        private void OnPluginDisposed(object sender, EventArgs e) => CloseEditor(sender as Vst.PluginBase);
     }
 }
