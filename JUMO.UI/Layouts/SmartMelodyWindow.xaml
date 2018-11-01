@@ -134,7 +134,7 @@
                                 <local:ScoreThumbnailView Margin="{StaticResource ControlMargin}" Score="{Binding ViewModel.ViewModel.Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}"/>
                             </Border>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" DockPanel.Dock="Left" Content="멜로디만" IsChecked="{Binding IsMelodyOnly}" Command="{Binding ToggleMelodyOnlyCommand}"/>
+                                <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="멜로디만" IsChecked="{Binding IsMelodyOnly}" Command="{Binding ToggleMelodyOnlyCommand}"/>
                                 <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="▶"  Command="{Binding MelodyPlayCommand}"/>
                             </StackPanel>
                         </StackPanel>
@@ -169,12 +169,10 @@
         </DockPanel>
 
         <Grid Background="Transparent" Visibility="{Binding ProgressVisible}">
-            <Border BorderBrush="LightGray" VerticalAlignment="Center" BorderThickness="1" Padding="10">
-                <StackPanel>
-                    <Label HorizontalAlignment="Center" Content="코드진행을 기반으로 멜로디를 생성하고 있습니다." />
-                    <ProgressBar Margin="{StaticResource ControlMargin}" Width="400" Height="20" IsIndeterminate="True"/>
-                </StackPanel>
-            </Border>
+            <StackPanel VerticalAlignment="Center">
+                <Label HorizontalAlignment="Center" Content="코드진행을 기반으로 멜로디를 생성하고 있습니다." />
+                <ProgressBar Margin="{StaticResource ControlMargin}" Width="400" Height="20" IsIndeterminate="True"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Window>
