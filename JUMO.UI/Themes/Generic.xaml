@@ -51,8 +51,6 @@
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    ViewportSize="{TemplateBinding ViewportWidth}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
-                        <Rectangle Grid.Row="0" Grid.Column="1"
-                                   Fill="{x:Static SystemColors.ControlBrush}" />
                         <ctrl:BarIndicator Grid.Row="1" Grid.Column="0"
                                            ClipToBounds="True"
                                            BarGridBrush="{TemplateBinding BarGridBrush}"

@@ -12,7 +12,8 @@
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/Skin.xaml" />
     </UserControl.Resources>
-    <Grid proj:MusicalProps.Numerator="{Binding Song.Numerator}"
+    <Grid Background="{StaticResource LightControlFaceColor}"
+          proj:MusicalProps.Numerator="{Binding Song.Numerator}"
           proj:MusicalProps.Denominator="{Binding Song.Denominator}"
           proj:MusicalProps.TimeResolution="{Binding Song.TimeResolution}"
           proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
@@ -20,39 +21,41 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <StackPanel Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
-            <Button Content="-" Command="{Binding ZoomOutCommand}" proj:SkinHelper.Segment="Left" />
-            <TextBox Width="50"
-                     Text="{Binding ZoomPercent, Mode=OneWay, StringFormat={}{0}%}"
-                     IsReadOnly="True"
-                     HorizontalContentAlignment="Center"
-                     proj:SkinHelper.Segment="Center">
-                <TextBox.InputBindings>
-                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
-                </TextBox.InputBindings>
-            </TextBox>
-            <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
-            <Label Content="눈금" />
-            <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding}" Value="1">
-                                            <Setter Property="Text" Value="1박" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
-        </StackPanel>
+        <Border Grid.Row="0" Background="{StaticResource LightBackgroundColor}">
+            <StackPanel Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
+                <Button Content="-" Command="{Binding ZoomOutCommand}" proj:SkinHelper.Segment="Left" />
+                <TextBox Width="50"
+                         Text="{Binding ZoomPercent, Mode=OneWay, StringFormat={}{0}%}"
+                         IsReadOnly="True"
+                         HorizontalContentAlignment="Center"
+                         proj:SkinHelper.Segment="Center">
+                    <TextBox.InputBindings>
+                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
+                <Label Content="눈금" VerticalAlignment="Center" />
+                <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding}" Value="1">
+                                                <Setter Property="Text" Value="1박" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -68,11 +71,20 @@
             <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
             <ScrollViewer x:Name="KeyScrollViewer"
                           Grid.Row="2" Grid.Column="0"
+                          Width="100"
                           proj:ScrollViewerHelper.SyncGroup="{Binding}"
                           proj:ScrollViewerHelper.SyncDirection="Vertical"
                           HorizontalScrollBarVisibility="Hidden"
                           VerticalScrollBarVisibility="Hidden">
-                <Rectangle Fill="Gray" Width="100" />
+                <ItemsControl ItemsSource="{Binding Tracks}" HorizontalContentAlignment="Stretch">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type core:Track}">
+                            <Border Height="60" Background="{StaticResource LightControlBorderColor}" BorderBrush="{StaticResource LightControlFaceColor}" BorderThickness="0,1,0,0" SnapsToDevicePixels="True">
+                                <Label Content="{Binding Name}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </ScrollViewer>
             <ctrl:MusicalScrollViewer x:Name="MainScrollViewer"
                                       Grid.Row="0" Grid.RowSpan="3" Grid.Column="1"
@@ -81,7 +93,9 @@
                                       proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
+                                      SmallGridBrush="{StaticResource LightControlBorderColor}"
                                       BeatGridBrush="{x:Null}"
+                                      BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                       BarGridThickness="1"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
@@ -91,6 +105,7 @@
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
                                      CurrentPosition="{Binding Sequencer.Position}"
+                                     ExtentHeightOverride="3840"
                                      PlacePatternRequested="PlaylistCanvas_PlacePatternRequested"
                                      RemovePatternRequested="PlaylistCanvas_RemovePatternRequested"
                                      SelectionChanged="PlaylistCanvas_SelectionChanged"
