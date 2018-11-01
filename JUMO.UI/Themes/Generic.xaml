@@ -56,7 +56,8 @@
                                            BarGridBrush="{TemplateBinding BarGridBrush}"
                                            BarGridThickness="{TemplateBinding BarGridThickness}"
                                            ScrollOffset="{TemplateBinding HorizontalOffset}"
-                                           Background="{x:Static SystemColors.ControlBrush}"
+                                           Background="{TemplateBinding BarIndicatorBackground}"
+                                           Foreground="{TemplateBinding BarIndicatorForeground}"
                                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                                            Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
                         <ScrollBar x:Name="PART_VerticalScrollBar"

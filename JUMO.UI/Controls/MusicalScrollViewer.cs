@@ -1,17 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace JUMO.UI.Controls
 {
@@ -41,6 +30,18 @@ namespace JUMO.UI.Controls
             DependencyProperty.Register(
                 "BarGridThickness", typeof(double), typeof(MusicalScrollViewer),
                 new FrameworkPropertyMetadata(2.0)
+            );
+
+        public static readonly DependencyProperty BarIndicatorBackgroundProperty =
+            DependencyProperty.Register(
+                "BarIndicatorBackground", typeof(Brush), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(SystemColors.ControlBrush)
+            );
+
+        public static readonly DependencyProperty BarIndicatorForegroundProperty =
+            DependencyProperty.Register(
+                "BarIndicatorForeground", typeof(Brush), typeof(MusicalScrollViewer),
+                new FrameworkPropertyMetadata(Brushes.Black)
             );
 
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
@@ -93,6 +94,18 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(BarGridThicknessProperty);
             set => SetValue(BarGridThicknessProperty, value);
+        }
+
+        public Brush BarIndicatorBackground
+        {
+            get => (Brush)GetValue(BarIndicatorBackgroundProperty);
+            set => SetValue(BarIndicatorBackgroundProperty, value);
+        }
+
+        public Brush BarIndicatorForeground
+        {
+            get => (Brush)GetValue(BarIndicatorForegroundProperty);
+            set => SetValue(BarIndicatorForegroundProperty, value);
         }
 
         public bool ShouldDrawHorizontalGrid
