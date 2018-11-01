@@ -20,6 +20,8 @@ namespace JUMO.UI.Layouts
 
         private void InsertButtonClick(object sender, RoutedEventArgs e)
         {
+            SmartMelodyViewModel svm = (SmartMelodyViewModel)DataContext;
+            svm.WillInsert = true;
             Close();
         }
 

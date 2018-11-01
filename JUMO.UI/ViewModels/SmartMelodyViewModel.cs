@@ -15,11 +15,13 @@ namespace JUMO.UI
         private string _currentMelody;
         private byte _melodyCount;
         private byte _chordCount;
+        private bool _IsMelodyOnly = false;
 
         private RelayCommand _getMelodyCommand;
         private RelayCommand _cancelCommand;
         private RelayCommand _insertCommand;
         private RelayCommand _MelodyPlayCommand;
+        private RelayCommand _toggleMelodyOnlyCommand;
 
         #region Properties
 
@@ -86,7 +88,18 @@ namespace JUMO.UI
         }
 
         //삽입여부
-        public bool WillInsert { get; private set; } = false;
+        public bool WillInsert { get; set; } = false;
+
+        //멜로디 only 여부
+        public bool IsMelodyOnly
+        {
+            get => _IsMelodyOnly;
+            set
+            {
+                _IsMelodyOnly = value;
+                OnPropertyChanged(nameof(IsMelodyOnly));
+            }
+        }
 
         #endregion
 
@@ -103,6 +116,9 @@ namespace JUMO.UI
 
         public RelayCommand MelodyPlayCommand
             => _MelodyPlayCommand ?? (_MelodyPlayCommand = new RelayCommand(_ => MelodyPlay(), _ => _currentMelody != null));
+
+        public RelayCommand ToggleMelodyOnlyCommand
+            => _toggleMelodyOnlyCommand ?? (_toggleMelodyOnlyCommand = new RelayCommand(_ => ToggleMelodyOnly(), _ => _currentMelody != null));
 
         #endregion
 
@@ -143,6 +159,9 @@ namespace JUMO.UI
 
         private void MakeScore(string[] files)
         {
+            //이전에 Score에 입력된 노트 모두 제거
+            if (_currentMelody != null) { ChangeScore(_currentMelody, true); }
+
             GeneratedMelody.Clear();
 
             //삽입할 노트 리스트
@@ -188,8 +207,28 @@ namespace JUMO.UI
             {
                 foreach (Note i in notes)
                 {
-                    ViewModel.ViewModel.AddNote(i);
+                    if (IsMelodyOnly && i.Velocity == 90) { continue; }
+                    else
+                    {
+                        ViewModel.ViewModel.AddNote(i);
+                    }
                 }
+            }
+        }
+
+        private void ToggleMelodyOnly()
+        {
+            if (IsMelodyOnly)
+            {
+                //코드 포함 => MelodyOnly
+                ChangeScore(_currentMelody, true);
+                ChangeScore(_currentMelody);
+            }
+            else
+            {
+                // MelodyOnly => 코드 포함
+                ChangeScore(_currentMelody, true);
+                ChangeScore(_currentMelody);
             }
         }
 
