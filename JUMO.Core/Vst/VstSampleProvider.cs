@@ -11,6 +11,8 @@ namespace JUMO.Vst
         private const int NUM_CHANNEL = 2;
 
         private readonly PluginBase _plugin;
+        private readonly int _inputCount;
+        private readonly int _outputCount;
 
         private int _totalSamples = -1;
         private VstAudioBufferManager _inBufMgr, _outBufMgr;
@@ -22,6 +24,11 @@ namespace JUMO.Vst
         public VstSampleProvider(PluginBase plugin)
         {
             _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+
+            var pluginInfo = _plugin.PluginCommandStub.PluginContext.PluginInfo;
+
+            _inputCount = pluginInfo.AudioInputCount;
+            _outputCount = pluginInfo.AudioOutputCount;
         }
 
         public int Read(float[] buffer, int offset, int count)
@@ -70,8 +77,8 @@ namespace JUMO.Vst
             int samplesPerBuffer = count / NUM_CHANNEL;
 
             _tempBuf = new float[count];
-            _inBufMgr = new VstAudioBufferManager(2, samplesPerBuffer);
-            _outBufMgr = new VstAudioBufferManager(2, samplesPerBuffer);
+            _inBufMgr = new VstAudioBufferManager(_inputCount, samplesPerBuffer);
+            _outBufMgr = new VstAudioBufferManager(_outputCount, samplesPerBuffer);
 
 #pragma warning disable CS0618 // Type or member is obsolete
             _inBuf = _inBufMgr.ToArray();
