@@ -86,7 +86,7 @@ namespace JUMO.UI
         }
 
         //삽입여부
-        public bool WillInsert { get; private set; } = false;
+        public bool WillInsert { get; set; } = false;
 
         #endregion
 
