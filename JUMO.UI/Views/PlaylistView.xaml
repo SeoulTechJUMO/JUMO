@@ -12,8 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary Source="../Resources/Skin.xaml" />
     </UserControl.Resources>
-    <Grid Background="{StaticResource LightControlFaceColor}"
-          proj:MusicalProps.Numerator="{Binding Song.Numerator}"
+    <Grid proj:MusicalProps.Numerator="{Binding Song.Numerator}"
           proj:MusicalProps.Denominator="{Binding Song.Denominator}"
           proj:MusicalProps.TimeResolution="{Binding Song.TimeResolution}"
           proj:MusicalProps.ZoomFactor="{Binding ZoomFactor}">
@@ -21,41 +20,39 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{StaticResource LightBackgroundColor}">
-            <StackPanel Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
-                <Button Content="-" Command="{Binding ZoomOutCommand}" proj:SkinHelper.Segment="Left" />
-                <TextBox Width="50"
-                         Text="{Binding ZoomPercent, Mode=OneWay, StringFormat={}{0}%}"
-                         IsReadOnly="True"
-                         HorizontalContentAlignment="Center"
-                         proj:SkinHelper.Segment="Center">
-                    <TextBox.InputBindings>
-                        <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
-                    </TextBox.InputBindings>
-                </TextBox>
-                <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
-                <Label Content="눈금" VerticalAlignment="Center" />
-                <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding}" Value="1">
-                                                <Setter Property="Text" Value="1박" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
-            </StackPanel>
-        </Border>
+        <StackPanel Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
+            <Button Content="-" Command="{Binding ZoomOutCommand}" proj:SkinHelper.Segment="Left" />
+            <TextBox Width="50"
+                     Text="{Binding ZoomPercent, Mode=OneWay, StringFormat={}{0}%}"
+                     IsReadOnly="True"
+                     HorizontalContentAlignment="Center"
+                     proj:SkinHelper.Segment="Center">
+                <TextBox.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ResetZoomCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
+            <Label Content="눈금" VerticalAlignment="Center" />
+            <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{Binding StringFormat={}1/{0}박}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="1">
+                                            <Setter Property="Text" Value="1박" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+        </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -97,6 +94,8 @@
                                       BeatGridBrush="{x:Null}"
                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                       BarGridThickness="1"
+                                      BarIndicatorBackground="{StaticResource LightControlFaceColor}"
+                                      BarIndicatorForeground="{StaticResource LightPrimaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
                                       CanContentScroll="True">

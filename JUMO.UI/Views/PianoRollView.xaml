@@ -31,7 +31,7 @@
                 </TextBox.InputBindings>
             </TextBox>
             <Button Content="+" Command="{Binding ZoomInCommand}" proj:SkinHelper.Segment="Right" />
-            <Label Content="눈금" />
+            <Label Content="눈금" VerticalAlignment="Center" />
             <ComboBox Margin="3" Width="70" ItemsSource="{Binding GridStepOptions}" SelectedItem="{Binding GridStep, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
@@ -91,6 +91,11 @@
                                       proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
+                                      SmallGridBrush="{StaticResource LightControlBorderColor}"
+                                      BeatGridBrush="{StaticResource LightSecondaryTextColor}"
+                                      BarGridBrush="{StaticResource LightSecondaryTextColor}"
+                                      BarIndicatorBackground="{StaticResource LightControlFaceColor}"
+                                      BarIndicatorForeground="{StaticResource LightPrimaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="20"
                                       CanContentScroll="True">
@@ -118,7 +123,7 @@
                     </ctrl:PianoRollCanvas.Style>
                 </ctrl:PianoRollCanvas>
             </ctrl:MusicalScrollViewer>
-            <Border Grid.Row="3" Grid.Column="1" BorderBrush="{x:Static SystemColors.ControlDarkBrush}" BorderThickness="0,2,0,0">
+            <Border Grid.Row="3" Grid.Column="1" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="0,1,0,0">
                 <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
                                           Grid.Row="3" Grid.Column="1"
                                           proj:ScrollViewerHelper.SyncGroup="{Binding}"
@@ -126,6 +131,9 @@
                                           proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
+                                          SmallGridBrush="{StaticResource LightControlBorderColor}"
+                                          BeatGridBrush="{StaticResource LightSecondaryTextColor}"
+                                          BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                           GridStep="{Binding GridStep}"
                                           CanContentScroll="True"
                                           ShouldDrawHorizontalGrid="False">
