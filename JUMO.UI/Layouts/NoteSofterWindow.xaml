@@ -13,10 +13,8 @@
     </Window.Resources>
     <DockPanel>
         <DockPanel.Resources>
-            <Style TargetType="Label">
-                <Setter Property="Padding" Value="{StaticResource ControlMargin}" />
+            <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
                 <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="Foreground" Value="{StaticResource LightPrimaryTextColor}" />
             </Style>
             <Style x:Key="SectionBorder" TargetType="Border">
                 <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
