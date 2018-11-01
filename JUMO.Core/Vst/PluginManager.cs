@@ -50,8 +50,9 @@ namespace JUMO.Vst
                     Mute = oldPlugin.Mute
                 };
 
-                RemovePlugin(oldPlugin);
-                Plugins.Insert(idx, plugin);
+                Plugins[idx] = plugin;
+
+                oldPlugin?.Dispose();
 
                 return plugin;
             }
