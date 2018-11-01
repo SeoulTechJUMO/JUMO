@@ -46,15 +46,31 @@ namespace JUMO.Vst
 
             unsafe
             {
-                float* vstLBuf = ((IDirectBufferAccess32)_outBuf[0]).Buffer;
-                float* vstRBuf = ((IDirectBufferAccess32)_outBuf[1]).Buffer;
+                int stereoOutputCount = _outputCount >> 1;
 
-                fixed (float* audioBuf = &buffer[0], pTempBuf = &_tempBuf[0])
+                for (int x = 0, y = 0; x < stereoOutputCount; x++)
                 {
-                    for (int i = 0, j = 0; i < samplesPerBuffer; i++)
+                    float* outLBuf = ((IDirectBufferAccess32)_outBuf[y++]).Buffer;
+                    float* outRBuf = ((IDirectBufferAccess32)_outBuf[y++]).Buffer;
+
+                    fixed (float* pBuf = &buffer[0])
                     {
-                        audioBuf[j++] = vstLBuf[i];
-                        audioBuf[j++] = vstRBuf[i];
+                        if (x == 0)
+                        {
+                            for (int i = 0, j = 0; i < samplesPerBuffer; i++)
+                            {
+                                pBuf[j++] = outLBuf[i];
+                                pBuf[j++] = outRBuf[i];
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0, j = 0; i < samplesPerBuffer; i++)
+                            {
+                                pBuf[j++] += outLBuf[i];
+                                pBuf[j++] += outRBuf[i];
+                            }
+                        }
                     }
                 }
             }
