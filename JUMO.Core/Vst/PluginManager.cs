@@ -17,25 +17,41 @@ namespace JUMO.Vst
 
         public ObservableCollection<Plugin> Plugins { get; } = new ObservableCollection<Plugin>();
 
-        public Plugin AddPlugin(string pluginPath, Action<Exception> onError, bool replace = false, Plugin oldPlugin = null)
+        public Plugin AddPlugin(string pluginPath, Action<Exception> onError)
         {
             try
             {
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 Plugin plugin = new Plugin(pluginPath, hostCmdStub);
 
-                if (replace)
+                Plugins.Add(plugin);
+
+                return plugin;
+            }
+            catch (Exception e)
+            {
+                onError?.Invoke(e);
+
+                return null;
+            }
+        }
+
+        public Plugin ReplacePlugin(string pluginPath, Action<Exception> onError, Plugin oldPlugin)
+        {
+            int idx = Plugins.IndexOf(oldPlugin ?? throw new ArgumentNullException(nameof(oldPlugin)));
+
+            try
+            {
+                Plugin plugin = new Plugin(pluginPath, new HostCommandStub())
                 {
-                    int idx = Plugins.IndexOf(oldPlugin);
-                    RemovePlugin(oldPlugin);
-                    MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerAddInput(plugin.SampleProvider);
-                    Plugins.Insert(idx, plugin);
-                }
-                else
-                {
-                    MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerAddInput(plugin.SampleProvider);
-                    Plugins.Add(plugin);
-                }
+                    ChannelNum = oldPlugin.ChannelNum,
+                    Volume = oldPlugin.Volume,
+                    Panning = oldPlugin.Panning,
+                    Mute = oldPlugin.Mute
+                };
+
+                RemovePlugin(oldPlugin);
+                Plugins.Insert(idx, plugin);
 
                 return plugin;
             }

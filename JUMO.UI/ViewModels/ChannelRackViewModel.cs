@@ -49,7 +49,7 @@ namespace JUMO.UI
             {
                 if(replace)
                 {
-                    PluginManager.Instance.AddPlugin(fdvm.FileName, null, true, oldPlugin);
+                    PluginManager.Instance.ReplacePlugin(fdvm.FileName, null, oldPlugin);
                 }
                 else
                 {
