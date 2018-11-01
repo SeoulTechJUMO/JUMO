@@ -19,7 +19,10 @@ namespace JUMO.Vst
                 {
                     int idx = Plugins.IndexOf(oldPlugin);
                     RemovePlugin(oldPlugin);
-                    Plugins.Insert(idx, plugin);
+                    lock (((ICollection)Plugins).SyncRoot)
+                    {
+                        Plugins.Insert(idx, plugin);
+                    }
                 }
                 else
                 {
@@ -37,6 +40,18 @@ namespace JUMO.Vst
 
                 return null;
             }
+        }
+
+        public void MoveUp(int idx)
+        {
+            if (idx == 0) { Plugins.Move(idx, Plugins.Count-1); }
+            else { Plugins.Move(idx, idx - 1); }
+        }
+
+        public void MoveDown(int idx)
+        {
+            if (idx == Plugins.Count - 1) { Plugins.Move(idx, 0); }
+            else { Plugins.Move(idx, idx + 1); }
         }
 
         public void RemovePlugin(EffectPlugin plugin)

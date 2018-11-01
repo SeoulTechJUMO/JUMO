@@ -177,6 +177,9 @@ namespace JUMO
 
         public EffectPlugin ReplaceEffect(string pluginPath, EffectPlugin oldPlugin) => _effectManager.AddPlugin(pluginPath, this, null ,true, oldPlugin);
 
+        public void MoveUp(int idx) => _effectManager.MoveUp(idx);
+        public void MoveDown(int idx) => _effectManager.MoveDown(idx);
+
         public void RemoveEffect(EffectPlugin plugin) => _effectManager.RemovePlugin(plugin);
 
         public void UnloadAllEffects() => _effectManager.UnloadAll();
