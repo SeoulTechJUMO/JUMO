@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using JUMO.Vst;
 
 namespace JUMO.UI
@@ -31,7 +32,7 @@ namespace JUMO.UI
 
         public RelayCommand AddPluginCommand { get; } =
             new RelayCommand(
-                _ =>
+                async _ =>
                 {
                     FileDialogViewModel fdvm = new FileDialogViewModel()
                     {
@@ -44,7 +45,7 @@ namespace JUMO.UI
 
                     if (fdvm.FileName != null)
                     {
-                        PluginManager.Instance.AddPlugin(fdvm.FileName, null);
+                        await Task.Run(() => PluginManager.Instance.AddPlugin(fdvm.FileName, null));
                     }
                 }
             );
