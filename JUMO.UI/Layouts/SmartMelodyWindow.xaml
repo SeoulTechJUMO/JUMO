@@ -133,7 +133,10 @@
                                     SnapsToDevicePixels="True">
                                 <local:ScoreThumbnailView Margin="{StaticResource ControlMargin}" Score="{Binding ViewModel.ViewModel.Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}"/>
                             </Border>
-                            <Button Content="재생" Command="{Binding MelodyPlayCommand}" HorizontalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" DockPanel.Dock="Left" Content="멜로디만" Command="{Binding ToggleMelodyCommand}"/>
+                                <ToggleButton Style="{StaticResource FaceToggleButtonStyle1}" Content="▶"  Command="{Binding MelodyPlayCommand}"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <Border Margin="{StaticResource ControlMargin}" Padding="{StaticResource ControlMargin}" Background="{StaticResource LightBackgroundColor}" BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1">

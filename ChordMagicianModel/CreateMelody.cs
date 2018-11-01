@@ -23,7 +23,6 @@ namespace ChordMagicianModel
                 $"--output_dir={_melodyPath} " +
                 $"--num_outputs={numOfFiles} " +
                 $"--backing_chords=\"{progress}\" " +
-                //이부분은 추후 삭제
                 "--render_chords";
 
             //이미 생성된 멜로디 파일이 있다면 지워준다
