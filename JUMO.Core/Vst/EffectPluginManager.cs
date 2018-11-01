@@ -8,16 +8,25 @@ namespace JUMO.Vst
     {
         public ObservableCollection<EffectPlugin> Plugins { get; } = new ObservableCollection<EffectPlugin>();
 
-        public EffectPlugin AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError)
+        public EffectPlugin AddPlugin(string pluginPath, MixerChannel channel, Action<Exception> onError, bool replace = false, EffectPlugin oldPlugin = null)
         {
             try
             {
                 HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
                 EffectPlugin plugin = new EffectPlugin(pluginPath, hostCmdStub);
 
-                lock (((ICollection)Plugins).SyncRoot)
+                if(replace)
                 {
-                    Plugins.Add(plugin);
+                    int idx = Plugins.IndexOf(oldPlugin);
+                    RemovePlugin(oldPlugin);
+                    Plugins.Insert(idx, plugin);
+                }
+                else
+                {
+                    lock (((ICollection)Plugins).SyncRoot)
+                    {
+                        Plugins.Add(plugin);
+                    }
                 }
 
                 return plugin;
