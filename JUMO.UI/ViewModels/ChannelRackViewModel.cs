@@ -32,31 +32,7 @@ namespace JUMO.UI
         }
 
         public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(_ => AddPlugin()));
-        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(plugin => AddPlugin(true, plugin as Plugin)));
-
-        private void AddPlugin(bool replace=false, Plugin oldPlugin = null)
-        {
-            FileDialogViewModel fdvm = new FileDialogViewModel()
-            {
-                Title = "플러그인 열기",
-                Extension = ".dll",
-                Filter = "VST 플러그인|*.dll|모든 파일|*.*"
-            };
-
-            fdvm.ShowOpenCommand.Execute(null);
-
-            if (fdvm.FileName != null)
-            {
-                if(replace)
-                {
-                    PluginManager.Instance.ReplacePlugin(fdvm.FileName, null, oldPlugin);
-                }
-                else
-                {
-                    PluginManager.Instance.AddPlugin(fdvm.FileName, null);
-                }
-            }
-        }
+        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(ExecuteReplacePlugin));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
@@ -82,6 +58,40 @@ namespace JUMO.UI
         {
             _plugins.CollectionChanged += OnPluginsCollectionChanged;
             _song.PropertyChanged += OnSongPropertyChanged;
+        }
+
+        private string ShowOpenFileDialog()
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "플러그인 열기",
+                Extension = ".dll",
+                Filter = "VST 플러그인|*.dll|모든 파일|*.*"
+            };
+
+            fdvm.ShowOpenCommand.Execute(null);
+
+            return fdvm.FileName;
+        }
+
+        private void AddPlugin()
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (fileName != null)
+            {
+                PluginManager.Instance.AddPlugin(fileName, null);
+            }
+        }
+
+        private void ExecuteReplacePlugin(object oldPlugin)
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (fileName != null)
+            {
+                PluginManager.Instance.ReplacePlugin(fileName, null, oldPlugin as Plugin);
+            }
         }
 
         private void OnPluginsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
