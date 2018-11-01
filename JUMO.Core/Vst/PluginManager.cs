@@ -28,6 +28,7 @@ namespace JUMO.Vst
                 {
                     int idx = Plugins.IndexOf(oldPlugin);
                     RemovePlugin(oldPlugin);
+                    MixerManager.Instance.MixerChannels[plugin.ChannelNum].MixerAddInput(plugin.SampleProvider);
                     Plugins.Insert(idx, plugin);
                 }
                 else
