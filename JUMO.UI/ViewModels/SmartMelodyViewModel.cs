@@ -143,6 +143,9 @@ namespace JUMO.UI
 
         private void MakeScore(string[] files)
         {
+            //이전에 Score에 입력된 노트 모두 제거
+            if (_currentMelody != null) { ChangeScore(_currentMelody, true); }
+
             GeneratedMelody.Clear();
 
             //삽입할 노트 리스트
