@@ -127,4 +127,7 @@
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(SolutionDir)improv_rnn_generate" "tools\improv_rnn_generate" /E /I /F /Y</PostBuildEvent>
+  </PropertyGroup>
 </Project>
