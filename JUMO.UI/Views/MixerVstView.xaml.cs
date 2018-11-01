@@ -11,6 +11,9 @@ namespace JUMO.UI.Views
         public static readonly DependencyProperty PluginProperty =
             DependencyProperty.Register(nameof(Plugin), typeof(Vst.EffectPlugin), typeof(MixerVstView));
 
+        public static readonly DependencyProperty IndexProperty =
+            DependencyProperty.Register(nameof(Index), typeof(int), typeof(MixerVstView));
+
         public static readonly DependencyProperty OpenPluginEditorProperty =
             DependencyProperty.Register(nameof(OpenPluginEditor), typeof(ICommand), typeof(MixerVstView));
 
@@ -20,6 +23,12 @@ namespace JUMO.UI.Views
         public static readonly DependencyProperty RemovePluginProperty =
             DependencyProperty.Register(nameof(RemovePlugin), typeof(ICommand), typeof(MixerVstView));
 
+        public static readonly DependencyProperty MoveUpProperty =
+            DependencyProperty.Register(nameof(MoveUp), typeof(ICommand), typeof(MixerVstView));
+
+        public static readonly DependencyProperty MoveDownProperty =
+            DependencyProperty.Register(nameof(MoveDown), typeof(ICommand), typeof(MixerVstView));
+
         #endregion
 
         #region Properties
@@ -28,6 +37,12 @@ namespace JUMO.UI.Views
         {
             get => (Vst.EffectPlugin)GetValue(PluginProperty);
             set => SetValue(PluginProperty, value);
+        }
+
+        public int Index
+        {
+            get => (int)GetValue(IndexProperty);
+            set => SetValue(IndexProperty, value);
         }
 
         public ICommand OpenPluginEditor
@@ -46,6 +61,18 @@ namespace JUMO.UI.Views
         {
             get => (ICommand)GetValue(RemovePluginProperty);
             set => SetValue(RemovePluginProperty, value);
+        }
+
+        public ICommand MoveUp
+        {
+            get => (ICommand)GetValue(MoveUpProperty);
+            set => SetValue(MoveUpProperty, value);
+        }
+
+        public ICommand MoveDown
+        {
+            get => (ICommand)GetValue(MoveDownProperty);
+            set => SetValue(MoveDownProperty, value);
         }
 
         #endregion

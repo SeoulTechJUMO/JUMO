@@ -49,8 +49,8 @@
                     <Setter Property="Padding" Value="5,1" />
                 </Style>
             </StackPanel.Resources>
-            <Button Content="▲" FontSize="6"/>
-            <Button Content="▼" FontSize="6"/>
+            <Button Content="▲" FontSize="6" Command="{Binding MoveUp}" CommandParameter="{Binding Index}"/>
+            <Button Content="▼" FontSize="6" Command="{Binding MoveDown}" CommandParameter="{Binding Index}"/>
         </StackPanel>
     </Grid>
 </UserControl>

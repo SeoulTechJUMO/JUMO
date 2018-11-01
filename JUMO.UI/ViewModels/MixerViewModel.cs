@@ -10,6 +10,8 @@ namespace JUMO.UI.ViewModels
         private RelayCommand _addPluginCommand;
         private RelayCommand _removePluginCommand;
         private RelayCommand _replacePluginCommand;
+        private RelayCommand _moveUpPluginCommand;
+        private RelayCommand _moveDownPluginCommand;
 
         public override string DisplayName => "믹서";
 
@@ -37,6 +39,9 @@ namespace JUMO.UI.ViewModels
 
         public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(oldPlugin => ExecuteAddPlugin(true, oldPlugin as EffectPlugin)));
 
+        public RelayCommand MoveUpPluginCommand => _moveUpPluginCommand ?? (_moveUpPluginCommand = new RelayCommand(idx => MoveUp((int)idx)));
+        public RelayCommand MoveDownPluginCommand => _moveDownPluginCommand ?? (_moveDownPluginCommand = new RelayCommand(idx => MoveDown((int)idx)));
+
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
                 plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
@@ -51,6 +56,16 @@ namespace JUMO.UI.ViewModels
         public MixerViewModel()
         {
             _currentChannel = MixerManager.Instance.MixerChannels[0];
+        }
+
+        private void MoveUp(int current)
+        {
+            CurrentChannel.MoveUp(current);
+        }
+
+        private void MoveDown(int current)
+        {
+            CurrentChannel.MoveDown(current);
         }
 
         private void ExecuteAddPlugin(bool replace=false, EffectPlugin oldPlugin=null)
