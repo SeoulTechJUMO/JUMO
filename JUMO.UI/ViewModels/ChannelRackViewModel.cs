@@ -10,6 +10,8 @@ namespace JUMO.UI
     {
         private readonly Song _song = Song.Current;
         private readonly ObservableCollection<Plugin> _plugins = PluginManager.Instance.Plugins;
+        private RelayCommand _addPluginCommand;
+        private RelayCommand _replacePluginCommand;
 
         public override string DisplayName => $"패턴: {Pattern.Name}";
 
@@ -29,25 +31,32 @@ namespace JUMO.UI
             }
         }
 
-        public RelayCommand AddPluginCommand { get; } =
-            new RelayCommand(
-                _ =>
+        public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(_ => AddPlugin()));
+        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(plugin => AddPlugin(true, plugin as Plugin)));
+
+        private void AddPlugin(bool replace=false, Plugin oldPlugin = null)
+        {
+            FileDialogViewModel fdvm = new FileDialogViewModel()
+            {
+                Title = "플러그인 열기",
+                Extension = ".dll",
+                Filter = "VST 플러그인|*.dll|모든 파일|*.*"
+            };
+
+            fdvm.ShowOpenCommand.Execute(null);
+
+            if (fdvm.FileName != null)
+            {
+                if(replace)
                 {
-                    FileDialogViewModel fdvm = new FileDialogViewModel()
-                    {
-                        Title = "플러그인 열기",
-                        Extension = ".dll",
-                        Filter = "VST 플러그인|*.dll|모든 파일|*.*"
-                    };
-
-                    fdvm.ShowOpenCommand.Execute(null);
-
-                    if (fdvm.FileName != null)
-                    {
-                        PluginManager.Instance.AddPlugin(fdvm.FileName, null);
-                    }
+                    PluginManager.Instance.AddPlugin(fdvm.FileName, null, true, oldPlugin);
                 }
-            );
+                else
+                {
+                    PluginManager.Instance.AddPlugin(fdvm.FileName, null);
+                }
+            }
+        }
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(

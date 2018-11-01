@@ -20,6 +20,9 @@ namespace JUMO.UI.Views
         public static readonly DependencyProperty OpenPianoRollProperty =
             DependencyProperty.Register("OpenPianoRoll", typeof(ICommand), typeof(ChannelRackItemView));
 
+        public static readonly DependencyProperty ReplacePluginProperty =
+            DependencyProperty.Register("ReplacePlugin", typeof(ICommand), typeof(ChannelRackItemView));
+
         public static readonly DependencyProperty RemovePluginProperty =
             DependencyProperty.Register("RemovePlugin", typeof(ICommand), typeof(ChannelRackItemView));
 
@@ -49,6 +52,12 @@ namespace JUMO.UI.Views
         {
             get => (ICommand)GetValue(OpenPianoRollProperty);
             set => SetValue(OpenPianoRollProperty, value);
+        }
+
+        public ICommand ReplacePlugin
+        {
+            get => (ICommand)GetValue(ReplacePluginProperty);
+            set => SetValue(ReplacePluginProperty, value);
         }
 
         public ICommand RemovePlugin
