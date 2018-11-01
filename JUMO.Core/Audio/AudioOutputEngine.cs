@@ -11,6 +11,9 @@ namespace JUMO.Audio
 
         private readonly IWavePlayer outputDevice;
         private readonly MixingSampleProvider mixer;
+        private readonly object _lock = new object();
+
+        public bool IsPlaying { get; private set; }
 
         public AudioOutputEngine(AudioOutputDevice device)
         {
@@ -34,17 +37,32 @@ namespace JUMO.Audio
             };
 
             outputDevice.Init(mixer);
-            outputDevice.Play();
+            Play();
+        }
+
+        public void Play()
+        {
+            lock (_lock)
+            {
+                System.Diagnostics.Debug.WriteLine("Playing audio");
+                outputDevice.Play();
+                IsPlaying = true;
+            }
+        }
+
+        public void Stop()
+        {
+            lock (_lock)
+            {
+                System.Diagnostics.Debug.WriteLine("Stopping audio");
+                outputDevice.Stop();
+                IsPlaying = false;
+            }
         }
 
         public void AddMixerInput(ISampleProvider input)
         {
             mixer.AddMixerInput(input);
-        }
-
-        public void DisposeMixerInput(ISampleProvider input)
-        {
-            mixer.RemoveMixerInput(input);
         }
 
         public void Dispose()

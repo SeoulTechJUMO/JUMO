@@ -52,8 +52,14 @@ namespace JUMO.Audio
             }
         }
 
+        public bool IsPlaying => _outputEngine?.IsPlaying ?? false;
+
         public void AddMixerInput(ISampleProvider input)
             => _outputEngine?.AddMixerInput(input);
+
+        public void Play() => _outputEngine?.Play();
+
+        public void Stop() => _outputEngine?.Stop();
 
         private void PopulateAudioOutputDevices()
         {
