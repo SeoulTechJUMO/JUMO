@@ -110,8 +110,7 @@
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
                 <Button Content="MX" Click="Mixer_Click"  proj:SkinHelper.Segment="Left" />
-                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" proj:SkinHelper.Segment="Center" />
-                <Button Content="스킨 테스트" Click="Button_Click" proj:SkinHelper.Segment="Right" />
+                <Button Content="PL" Command="{Binding OpenPlaylistCommand}" proj:SkinHelper.Segment="Right" />
             </StackPanel>
         </Grid>
         <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
