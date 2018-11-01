@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Jacobi.Vst.Core;
 using Jacobi.Vst.Core.Host;
 
@@ -106,6 +107,7 @@ namespace JUMO.Vst
             VstTimeInfo timeInfo = new VstTimeInfo()
             {
                 SamplePosition = tickPosition * song.SecondsPerTick * sampleRate,
+                SampleRate = sampleRate
             };
 
             if (filterFlags.HasFlag(VstTimeInfoFlags.PpqPositionValid))
@@ -132,6 +134,12 @@ namespace JUMO.Vst
             }
 
             // if (filterFlags.HasFlag(VstTimeInfoFlags.SmpteValid)) { }
+
+            if (filterFlags.HasFlag(VstTimeInfoFlags.NanoSecondsValid))
+            {
+                timeInfo.NanoSeconds = 100.0 * Stopwatch.GetTimestamp() / TimeSpan.TicksPerMillisecond;
+                flags |= VstTimeInfoFlags.NanoSecondsValid;
+            }
 
             // if (filterFlags.HasFlag(VstTimeInfoFlags.ClockValid)) { }
 
