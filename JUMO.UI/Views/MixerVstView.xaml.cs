@@ -14,6 +14,9 @@ namespace JUMO.UI.Views
         public static readonly DependencyProperty OpenPluginEditorProperty =
             DependencyProperty.Register(nameof(OpenPluginEditor), typeof(ICommand), typeof(MixerVstView));
 
+        public static readonly DependencyProperty ReplacePluginProperty =
+             DependencyProperty.Register(nameof(ReplacePlugin), typeof(ICommand), typeof(MixerVstView));
+
         public static readonly DependencyProperty RemovePluginProperty =
             DependencyProperty.Register(nameof(RemovePlugin), typeof(ICommand), typeof(MixerVstView));
 
@@ -31,6 +34,12 @@ namespace JUMO.UI.Views
         {
             get => (ICommand)GetValue(OpenPluginEditorProperty);
             set => SetValue(OpenPluginEditorProperty, value);
+        }
+
+        public ICommand ReplacePlugin
+        {
+            get => (ICommand)GetValue(ReplacePluginProperty);
+            set => SetValue(ReplacePluginProperty, value);
         }
 
         public ICommand RemovePlugin

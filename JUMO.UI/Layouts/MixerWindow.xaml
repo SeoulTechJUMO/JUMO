@@ -89,6 +89,7 @@
                                     <DataTemplate>
                                         <local:MixerVstView Plugin="{Binding}"
                                                             OpenPluginEditor="{Binding Source={StaticResource Proxy}, Path=Data.OpenPluginEditorCommand}"
+                                                            ReplacePlugin="{Binding Source={StaticResource Proxy}, Path=Data.ReplacePluginCommand}"
                                                             RemovePlugin="{Binding Source={StaticResource Proxy}, Path=Data.RemovePluginCommand}"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

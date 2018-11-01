@@ -9,6 +9,7 @@ namespace JUMO.UI.ViewModels
         private RelayCommand _soloCommand;
         private RelayCommand _addPluginCommand;
         private RelayCommand _removePluginCommand;
+        private RelayCommand _replacePluginCommand;
 
         public override string DisplayName => "믹서";
 
@@ -32,7 +33,9 @@ namespace JUMO.UI.ViewModels
         public RelayCommand SoloCommand
             => _soloCommand ?? (_soloCommand = new RelayCommand(current => MixerManager.Instance.ToggleSolo(current as MixerChannel)));
 
-        public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(ExecuteAddPlugin));
+        public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(_ => ExecuteAddPlugin()));
+
+        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(oldPlugin => ExecuteAddPlugin(true, oldPlugin as EffectPlugin)));
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
@@ -50,7 +53,7 @@ namespace JUMO.UI.ViewModels
             _currentChannel = MixerManager.Instance.MixerChannels[0];
         }
 
-        private void ExecuteAddPlugin(object _)
+        private void ExecuteAddPlugin(bool replace=false, EffectPlugin oldPlugin=null)
         {
             FileDialogViewModel fdvm = new FileDialogViewModel()
             {
@@ -63,7 +66,14 @@ namespace JUMO.UI.ViewModels
 
             if (fdvm.FileName != null)
             {
-                CurrentChannel.AddEffect(fdvm.FileName);
+                if(replace)
+                {
+                    CurrentChannel.ReplaceEffect(fdvm.FileName, oldPlugin);
+                }
+                else
+                {
+                    CurrentChannel.AddEffect(fdvm.FileName);
+                }
             }
         }
     }

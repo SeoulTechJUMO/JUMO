@@ -29,6 +29,9 @@
                               FontWeight="Bold"
                               Command="{Binding OpenPluginEditor}"
                               CommandParameter="{Binding Plugin}" />
+                    <MenuItem Header="다른 플러그인으로 대체(_R)"
+                              Command="{Binding ReplacePlugin}"
+                              CommandParameter="{Binding Plugin}" />
                     <MenuItem Header="제거(_D)"
                               Command="{Binding RemovePlugin}"
                               CommandParameter="{Binding Plugin}" />
