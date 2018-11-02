@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 
 namespace JUMO.UI
 {
@@ -10,6 +12,38 @@ namespace JUMO.UI
     {
         private Score _score;
         private readonly Dictionary<Note, NoteViewModel> _vmTable = new Dictionary<Note, NoteViewModel>();
+        private RelayCommand _cutCommand;
+        private RelayCommand _copyCommand;
+        private RelayCommand _pasteCommand;
+
+        #region Commands
+
+        public RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(_=> Cut(), _ => SelectedItems.Count > 0));
+        public RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(_ => Copy(), _ => SelectedItems.Count > 0));
+        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste()));
+
+        public void Cut()
+        {
+            Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
+            //
+        }
+
+        public void Copy()
+        {
+            Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
+        }
+
+        public void Paste()
+        {
+            var data = Clipboard.GetData("JUMO Notes");
+
+            if (data is IEnumerable<IMusicalItem> notes)
+            {
+                //
+            }
+        }
+
+        #endregion
 
         public Score Score
         {
