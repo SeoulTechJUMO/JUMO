@@ -191,6 +191,8 @@ namespace JUMO.UI.Controls
         {
             Point pt = e.GetPosition(this);
 
+            Focus();
+
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
                 OnSurfaceClick(pt);
