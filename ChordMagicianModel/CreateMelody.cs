@@ -17,6 +17,8 @@ namespace ChordMagicianModel
         {
             string fileName = Path.Combine(_startup, "improv_rnn_generate.exe");
 
+            Directory.CreateDirectory(_melodyPath);
+
             string args =
                 "--config=chord_pitches_improv " +
                 $"--bundle_file=\"{Path.Combine(_startup, "chord_pitches_improv.mag")}\" " +
