@@ -27,6 +27,7 @@ namespace JUMO.UI
 
         #endregion
 
+        private byte _chordCount;
         private string _key;
         private string _mode;
         private int _octave;
@@ -35,6 +36,7 @@ namespace JUMO.UI
         private Progress _currentChord;
         private bool _isClientBusy = false;
         private bool _isPlaying = false;
+        private bool _isInsertBusy = false;
 
         private RelayCommand _insertProgressCommand;
         private RelayCommand _resetCommand;
@@ -147,8 +149,30 @@ namespace JUMO.UI
             }
         }
 
+        // 코드 진행 삽입 중 인지 여부
+        public bool IsInsertBusy
+        {
+            get => _isInsertBusy;
+            set
+            {
+                _isInsertBusy = value;
+                OnPropertyChanged(nameof(IsInsertBusy));
+            }
+        }
+
         // 재생을 멈출 것을 요청받았는지 여부
         public bool StopRequested { get; private set; } = false;
+
+        //코드진행 반복 횟수
+        public byte ChordCount
+        {
+            get => _chordCount;
+            set
+            {
+                _chordCount = value;
+                OnPropertyChanged(nameof(ChordCount));
+            }
+        }
 
         #endregion
 
@@ -203,7 +227,7 @@ namespace JUMO.UI
         //코드 진행을 스코어에 삽입
         public RelayCommand InsertToPianorollCommand
             => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
-                _ => MakeNote(),
+                async _ => await MakeNote(),
                 _ => CurrentProgress?.Any() ?? false
             ));
 
@@ -236,6 +260,7 @@ namespace JUMO.UI
             _key = "C";
             _mode = "Major";
             _octave = 4;
+            _chordCount = 1;
         }
 
         public async Task ResetChords()
@@ -350,25 +375,32 @@ namespace JUMO.UI
             IsPlaying = false;
         }
 
-        private void MakeNote()
+        private async Task MakeNote()
         {
-            int start = 0;
+            IsInsertBusy = true;
+            await Task.Run(() => {
+                int start = 0;
 
-            foreach (Progress p in CurrentProgress)
-            {
-                foreach (byte i in p.ChordNotes)
+                for (int k = 0; k < ChordCount; k++)
                 {
-                    if (i == p.ChordNotes[0])
+                    foreach (Progress p in CurrentProgress)
                     {
-                        //근음 추가
-                        ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
+                        foreach (byte i in p.ChordNotes)
+                        {
+                            if (i == p.ChordNotes[0])
+                            {
+                                //근음 추가
+                                ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
+                            }
+
+                            ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
+                        }
+
+                        start += Song.Current.TimeResolution * 4;
                     }
-
-                    ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
                 }
-
-                start += Song.Current.TimeResolution * 4;
-            }
+            });
+            IsInsertBusy = false;
         }
 
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
