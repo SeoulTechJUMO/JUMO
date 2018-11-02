@@ -7,14 +7,21 @@
         xmlns:proj="clr-namespace:JUMO.UI"
         xmlns:view="clr-namespace:JUMO.UI.Views"
         mc:Ignorable="d"
+        Background="{DynamicResource LightBackgroundColor}"
         Title="JUMO 설정" Height="500" Width="650">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type proj:ProjectSettingsViewModel}">
-            <view:ProjectSettingsView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type proj:AudioSettingsViewModel}">
-            <view:AudioSettingsView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type proj:ProjectSettingsViewModel}">
+                <view:ProjectSettingsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type proj:AudioSettingsViewModel}">
+                <view:AudioSettingsView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
         <proj:SettingsViewModel />
@@ -23,16 +30,10 @@
         <Grid DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
-                        Margin="5">
-                <StackPanel.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="Margin" Value="5" />
-                        <Setter Property="Padding" Value="15,3" />
-                    </Style>
-                </StackPanel.Resources>
-                <Button Content="확인" Click="OnOKClick" />
-                <Button Content="취소" Click="OnCancelClick" />
-                <Button Content="적용" Click="OnApplyClick" />
+                        Margin="{StaticResource ControlMargin}">
+                <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" Click="OnOKClick" />
+                <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" Click="OnCancelClick" />
+                <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" Click="OnApplyClick" />
             </StackPanel>
         </Grid>
         <Grid>
