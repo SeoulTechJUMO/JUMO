@@ -49,6 +49,9 @@
 
                 <ListView Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                           Margin="{StaticResource ControlMargin}"
+                          Padding="{StaticResource ControlMargin}"
+                          Background="{StaticResource LightBackgroundColor}"
+                          BorderBrush="{StaticResource LightControlBorderColor}"
                           SelectionMode="Single"
                           ItemsSource="{Binding SettingsGroups}"
                           SelectedItem="{Binding CurrentGroup, Mode=TwoWay}">
@@ -57,6 +60,33 @@
                             <Label Content="{Binding DisplayName}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Margin="{StaticResource ControlMargin}"
+                                                Padding="{StaticResource ControlMargin}"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter />
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource LightControlFaceColor}" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource LightControlFaceColor}" />
+                                    <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                 </ListView>
 
                 <Border Grid.Row="0" Grid.Column="1"
