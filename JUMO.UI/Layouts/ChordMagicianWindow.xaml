@@ -156,6 +156,8 @@
                             <StackPanel Orientation="Horizontal">
                                 <Label Content="옥타브:" VerticalAlignment="Center"/>
                                 <ctrl:NumericUpDown Width="50" Minimum="0" Maximum="9" Value="{Binding Octave}" />
+                                <Label Content="코드 진행 반복 횟수 :" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <ctrl:NumericUpDown Width="50" Value="{Binding ChordCount}" Maximum="16" Minimum="1"/>
                             </StackPanel>
                             <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" SelectedItem="{Binding CurrentChord, Mode=TwoWay}" ItemTemplate="{StaticResource SelectedProgressItemTemplate}" Style="{StaticResource ListDisabledWhenBusy}" />
                             <DockPanel>
