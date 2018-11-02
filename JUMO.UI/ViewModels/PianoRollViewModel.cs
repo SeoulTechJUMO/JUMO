@@ -24,12 +24,14 @@ namespace JUMO.UI
 
         public void Cut()
         {
+            Clipboard.Clear();
             Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
             //
         }
 
         public void Copy()
         {
+            Clipboard.Clear();
             Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
         }
 

@@ -144,7 +144,7 @@ namespace JUMO.UI.Controls
         public override void MusicalViewLeftButtonDown(FrameworkElement view)
         {
             NoteView noteView = (NoteView)view;
-            Focus();
+
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
             }
@@ -176,6 +176,8 @@ namespace JUMO.UI.Controls
                 DeleteNoteRequested?.Invoke(this, new DeleteNoteRequestedEventArgs(note));
             }
         }
+
+        
 
         #endregion
 
