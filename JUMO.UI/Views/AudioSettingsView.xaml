@@ -10,7 +10,14 @@
              d:DesignHeight="450" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance Type=proj:AudioSettingsViewModel}">
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -42,8 +49,7 @@
                Style="{StaticResource SettingsItemHeader}"
                Content="지연 시간" />
 
-        <Label Grid.Row="0" Grid.Column="1"
-               Style="{StaticResource SettingsItem}">
+        <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
             <Label.Content>
                 <TextBlock Text="{Binding CurrentOutputDevice, TargetNullValue=현재 오디오 출력 장치를 사용하고 있지 않습니다.}">
                     <TextBlock.Style>
@@ -58,23 +64,23 @@
                 </TextBlock>
             </Label.Content>
         </Label>
-        <ComboBox Grid.Row="1" Grid.Column="1" Style="{StaticResource SettingsItem}"
+        <ComboBox Grid.Row="1" Grid.Column="1"
                   ItemsSource="{Binding OutputDevices}"
                   SelectedItem="{Binding SelectedOutputDevice, Mode=TwoWay}" />
         <Separator Grid.Row="2" Grid.Column="1"
                   Style="{StaticResource SettingsItemSeparator}" />
-        <ComboBox Grid.Row="3" Grid.Column="1"
+        <!--<ComboBox Grid.Row="3" Grid.Column="1"
                   Width="100" HorizontalAlignment="Left"
-                  IsEnabled="False"
-                  Style="{StaticResource SettingsItem}" />
-        <ComboBox Grid.Row="4" Grid.Column="1"
+                  IsEnabled="False" />-->
+        <Label Grid.Row="3" Grid.Column="1" Content="44100Hz" Foreground="{StaticResource LightSecondaryTextColor}" VerticalAlignment="Center" />
+        <!--<ComboBox Grid.Row="4" Grid.Column="1"
                   Width="100" HorizontalAlignment="Left"
-                  IsEnabled="False"
-                  Style="{StaticResource SettingsItem}" />
+                  IsEnabled="False" />-->
+        <Label Grid.Row="4" Grid.Column="1" Content="16비트" Foreground="{StaticResource LightSecondaryTextColor}" VerticalAlignment="Center" />
         <StackPanel Grid.Row="5" Grid.Column="1">
             <StackPanel Orientation="Horizontal">
-                <ctrl:NumericUpDown Width="100" IsEnabled="False" Style="{StaticResource SettingsItem}"/>
-                <Label Style="{StaticResource SettingsItem}" Content="밀리초" />
+                <ctrl:NumericUpDown Width="100" IsEnabled="False" />
+                <Label Content="밀리초" VerticalAlignment="Center" />
             </StackPanel>
             <TextBlock Style="{StaticResource SettingsItemHelpText}">
                 지연 시간을 너무 낮게 설정하면 재생 시 끊김 현상이 발생할 수 있습니다.

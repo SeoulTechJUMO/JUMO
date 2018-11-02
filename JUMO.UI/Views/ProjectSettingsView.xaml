@@ -62,25 +62,21 @@
                Content="박자" />
 
         <TextBox Grid.Row="0" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}"
                  Text="{Binding Title, Mode=TwoWay}" />
         <TextBox Grid.Row="1" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}"
                  Text="{Binding Artist, Mode=TwoWay}" />
         <TextBox Grid.Row="2" Grid.Column="1"
-                 Style="{StaticResource SettingsItem}"
                  Text="{Binding Genre, Mode=TwoWay}" />
         <TextBox Grid.Row="3" Grid.Column="1"
                  Height="80"
                  AcceptsReturn="True" TextWrapping="Wrap"
                  HorizontalScrollBarVisibility="Disabled"
                  VerticalScrollBarVisibility="Auto"
-                 Style="{StaticResource SettingsItem}"
                  Text="{Binding Description, Mode=TwoWay}" />
-        <Separator Grid.Row="4" Grid.Column="1"
-                   Style="{StaticResource SettingsItemSeparator}" />
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Style="{StaticResource SettingsItem}">
+        <Separator Grid.Row="4" Grid.Column="1" Style="{StaticResource SettingsItemSeparator}" />
+        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
             <ComboBox ItemsSource="{StaticResource TempoBeatOptions}"
+                      Margin="{StaticResource ControlMargin}"
                       SelectedValuePath="Value"
                       SelectedValue="{Binding TempoBeat}">
                 <ComboBox.ItemTemplate>
@@ -91,20 +87,17 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <Label Content="=" />
+            <Label Content="=" VerticalAlignment="Center" />
             <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" Minimum="10" Maximum="500" />
         </StackPanel>
-        <StackPanel Grid.Row="6" Grid.Column="1"
-                    Orientation="Horizontal"
-                    Style="{StaticResource SettingsItem}">
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Border Grid.Row="0"
-                        BorderBrush="Black" BorderThickness="0,0,0,2">
+                <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0,0,0,2">
                     <ctrl:NumericUpDown Margin="3" Width="40"
                                         Minimum="2" Maximum="32"
                                         Value="{Binding Numerator}" />

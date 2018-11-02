@@ -1,22 +1,24 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Skin.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <!-- Styles for the Settings Window -->
 
-    <Style x:Key="SettingsItem" TargetType="FrameworkElement">
-        <Setter Property="Margin" Value="0,0,0,5" />
-    </Style>
-
-    <Style x:Key="SettingsItemHeader" TargetType="Label" BasedOn="{StaticResource SettingsItem}">
+    <Style x:Key="SettingsItemHeader" TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+        <Setter Property="Margin" Value="0,3,0,0" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
-    <Style x:Key="SettingsItemHelpText" TargetType="TextBlock" BasedOn="{StaticResource SettingsItem}">
+    <Style x:Key="SettingsItemHelpText" TargetType="TextBlock">
+        <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
         <Setter Property="FontSize" Value="11" />
-        <Setter Property="Opacity" Value="0.8" />
+        <Setter Property="Foreground" Value="{StaticResource LightSecondaryTextColor}" />
         <Setter Property="TextWrapping" Value="WrapWithOverflow" />
     </Style>
 
-    <Style x:Key="SettingsItemSeparator" TargetType="Separator" BasedOn="{StaticResource SettingsItem}">
+    <Style x:Key="SettingsItemSeparator" TargetType="Separator">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
