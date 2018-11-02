@@ -2,6 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 using ChordMagicianModel;
 
 namespace JUMO.UI
@@ -227,7 +229,7 @@ namespace JUMO.UI
         //코드 진행을 스코어에 삽입
         public RelayCommand InsertToPianorollCommand
             => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
-                async _ => await MakeNote(),
+                _ => MakeNote(),
                 _ => CurrentProgress?.Any() ?? false
             ));
 
@@ -375,32 +377,28 @@ namespace JUMO.UI
             IsPlaying = false;
         }
 
-        private async Task MakeNote()
+        private void MakeNote()
         {
-            IsInsertBusy = true;
-            await Task.Run(() => {
-                int start = 0;
+            int start = 0;
 
-                for (int k = 0; k < ChordCount; k++)
+            for (int k = 0; k < ChordCount; k++)
+            {
+                foreach (Progress p in CurrentProgress)
                 {
-                    foreach (Progress p in CurrentProgress)
+                    foreach (byte i in p.ChordNotes)
                     {
-                        foreach (byte i in p.ChordNotes)
+                        if (i == p.ChordNotes[0])
                         {
-                            if (i == p.ChordNotes[0])
-                            {
-                                //근음 추가
-                                ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
-                            }
+                            //근음 추가
+                            ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
 
-                            ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
                         }
-
-                        start += Song.Current.TimeResolution * 4;
+                        ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
                     }
+
+                    start += Song.Current.TimeResolution * 4;
                 }
-            });
-            IsInsertBusy = false;
+            }
         }
 
         //컬렉션 프로퍼티 체인지 감지를 위한 코드네임 바꾸는 메소드
