@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:proj="clr-namespace:JUMO.UI"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Colors -->
+    <SolidColorBrush x:Key="LightBackgroundColor" Color="#ffced7e0" />
+    <SolidColorBrush x:Key="LightPrimaryTextColor" Color="#ff18003c" />
+    <SolidColorBrush x:Key="LightSecondaryTextColor" Color="#ff585a81" />
+    <SolidColorBrush x:Key="DarkBackgroundColor" Color="#ff18003c" />
+    <SolidColorBrush x:Key="DarkPrimaryTextColor" Color="#ffced7e0" />
+    <SolidColorBrush x:Key="DarkSecondaryTextColor" Color="#ff8498b1" />
+
+    <SolidColorBrush x:Key="LightControlFaceColor" Color="#ffbbc7d3" />
+    <SolidColorBrush x:Key="LightControlBorderColor" Color="#ff97a8bc" />
+    <SolidColorBrush x:Key="LightDisabledControlFaceColor" Color="#ffced7e0" />
+    <SolidColorBrush x:Key="LightDisabledControlBorderColor" Color="#ffbbc7d3" />
+    <SolidColorBrush x:Key="DarkControlFaceColor" Color="#ff28174e" />
+    <SolidColorBrush x:Key="DarkControlBorderColor" Color="#ff4a4472" />
+    <SolidColorBrush x:Key="DarkDisabledControlFaceColor" Color="#ff18003c" />
+    <SolidColorBrush x:Key="DarkDisabledControlBorderColor" Color="#ff28174e" />
+
+    <SolidColorBrush x:Key="IndicatorLightColor1" Color="#ffbae854" />
+    <SolidColorBrush x:Key="IndicatorLightColor2" Color="#ffffd66d" />
+    <SolidColorBrush x:Key="IndicatorLightColor3" Color="#ff54e8e6" />
+
+    <!-- Common UI Metrics -->
+    <sys:Double x:Key="UIFontSize">12.0</sys:Double>
+    <Thickness x:Key="ControlMargin">3</Thickness>
+    <Thickness x:Key="LeftSegmentControlMargin">3,3,0,3</Thickness>
+    <Thickness x:Key="CenterSegmentControlMargin">0,3</Thickness>
+    <Thickness x:Key="RightSegmentControlMargin">0,3,3,3</Thickness>
+    <Thickness x:Key="ControlBorderThickness">1,1,1,2</Thickness>
+    <Thickness x:Key="LeftSegmentControlBorderThickness">1,1,0,2</Thickness>
+    <Thickness x:Key="CenterSegmentControlBorderThickness">1,1,0,2</Thickness>
+    <Thickness x:Key="RightSegmentControlBorderThickness">1,1,1,2</Thickness>
+    <CornerRadius x:Key="ControlBorderRadius">2</CornerRadius>
+    <CornerRadius x:Key="LeftSegmentControlBorderRadius">2,0,0,2</CornerRadius>
+    <CornerRadius x:Key="CenterSegmentControlBorderRadius">0</CornerRadius>
+    <CornerRadius x:Key="RightSegmentControlBorderRadius">0,2,2,0</CornerRadius>
+
+    <!-- Segmented Control Styles -->
+    <Style x:Key="SegmentedControlStyle" TargetType="Control">
+        <Style.Triggers>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Left">
+                <Setter Property="Margin" Value="{StaticResource LeftSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource LeftSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource LeftSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Center">
+                <Setter Property="Margin" Value="{StaticResource CenterSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource CenterSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource CenterSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Right">
+                <Setter Property="Margin" Value="{StaticResource RightSegmentControlMargin}" />
+                <Setter Property="BorderThickness" Value="{StaticResource RightSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource RightSegmentControlBorderRadius}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>
