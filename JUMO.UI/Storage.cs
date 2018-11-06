@@ -18,15 +18,16 @@ namespace JUMO.UI
 
         #endregion
 
-        private IEnumerable<IMusicalItem> _currenClip;
-        public IEnumerable<IMusicalItem> CurrnetClip
+        private IEnumerable<IMusicalItem> _currentClip;
+
+        public IEnumerable<IMusicalItem> CurrentClip
         {
-            get => _currenClip;
+            get => _currentClip;
             set
             {
-                if (_currenClip != value)
+                if (_currentClip != value)
                 {
-                    _currenClip = value.OrderBy(note => note.Start);
+                    _currentClip = value.OrderBy(note => note.Start);
                 }  
             }
         }

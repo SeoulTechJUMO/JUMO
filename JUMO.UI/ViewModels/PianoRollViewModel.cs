@@ -20,11 +20,11 @@ namespace JUMO.UI
 
         public override RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(_=> Cut(), _ => SelectedItems.Count > 0));
         public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(_ => Copy(), _ => SelectedItems.Count > 0));
-        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste(), _ => Storage.Instance.CurrnetClip != null));
+        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste(), _ => Storage.Instance.CurrentClip != null));
 
         public void Cut()
         {
-            Storage.Instance.CurrnetClip = new ObservableCollection<IMusicalItem>(SelectedItems);
+            Storage.Instance.CurrentClip = new ObservableCollection<IMusicalItem>(SelectedItems);
             foreach (NoteViewModel note in SelectedItems)
             {
                 RemoveNote(note.Source);
@@ -33,7 +33,7 @@ namespace JUMO.UI
 
         public void Copy()
         {
-            Storage.Instance.CurrnetClip = new ObservableCollection<IMusicalItem>(SelectedItems);
+            Storage.Instance.CurrentClip = new ObservableCollection<IMusicalItem>(SelectedItems);
         }
 
         public void Paste()
@@ -42,9 +42,9 @@ namespace JUMO.UI
             int firstStart = 0;
 
             SelectedItems.Clear();
-            foreach(NoteViewModel note in Storage.Instance.CurrnetClip)
+            foreach(NoteViewModel note in Storage.Instance.CurrentClip)
             {
-                if (note == Storage.Instance.CurrnetClip.ElementAt(0)) { firstStart = note.Start; }
+                if (note == Storage.Instance.CurrentClip.ElementAt(0)) { firstStart = note.Start; }
                 Note Insert = new Note(note.Value, note.Velocity, note.Start - firstStart + start, note.Length);
                 AddNote(Insert);
                 SelectedItems.Add(Insert);
