@@ -33,5 +33,10 @@ namespace JUMO.UI.Layouts
         {
             new MixerWindow().Show();
         }
+
+        private void PatternAddClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
