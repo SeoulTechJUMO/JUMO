@@ -16,14 +16,14 @@ namespace JUMO.UI
 
         #endregion
 
-        public Type CurrentType { get; private set; }
+        public Type CurrentType { get; private set; } = typeof(object);
 
         public IEnumerable<IMusicalItem> CurrentClip { get; private set; }
 
         public void PutItems(Type typeId, IEnumerable<IMusicalItem> items)
         {
             CurrentType = typeId ?? throw new ArgumentNullException();
-            CurrentClip = items.OrderBy(item => item.Start).ToList();
+            CurrentClip = items.ToList();
         }
     }
 }

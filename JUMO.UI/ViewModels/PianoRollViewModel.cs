@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
 
 namespace JUMO.UI
 {
@@ -22,7 +21,7 @@ namespace JUMO.UI
         public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(Copy, _ => SelectedItems.Count > 0));
         public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(Paste, _ => Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)) && Storage.Instance.CurrentClip != null));
 
-        public void Cut()
+        private void Cut()
         {
             Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
 
@@ -32,23 +31,31 @@ namespace JUMO.UI
             }
         }
 
-        public void Copy()
+        private void Copy()
         {
             Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
         }
 
-        public void Paste()
+        private void Paste()
         {
-            int start = Sequencer.Position;
-            int firstStart = 0;
-
-            SelectedItems.Clear();
-            foreach(NoteViewModel note in Storage.Instance.CurrentClip)
+            if (!Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)))
             {
-                if (note == Storage.Instance.CurrentClip.ElementAt(0)) { firstStart = note.Start; }
-                Note Insert = new Note(note.Value, note.Velocity, note.Start - firstStart + start, note.Length);
-                AddNote(Insert);
-                SelectedItems.Add(Insert);
+                return;
+            }
+
+            ClearSelection();
+
+            int start = Sequencer.Position;
+            int clipStart = Storage.Instance.CurrentClip.Min(noteVm => noteVm.Start);
+
+            IEnumerable<Note> notesToInsert =
+                from NoteViewModel noteVm in Storage.Instance.CurrentClip
+                select new Note(noteVm.Value, noteVm.Velocity, noteVm.Start - clipStart + start, noteVm.Length);
+
+            foreach(Note note in notesToInsert)
+            {
+                AddNote(note);
+                SelectedItems.Add(_vmTable[note]);
             }
         }
 
