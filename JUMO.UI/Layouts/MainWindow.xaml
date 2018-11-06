@@ -15,14 +15,28 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="DisabledWhenCommandIsNull" TargetType="MenuItem">
+                <Style.Triggers>
+                    <Trigger Property="Command" Value="{x:Null}">
+                        <Setter Property="IsEnabled" Value="False" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
         <proj:MainViewModel />
     </Window.DataContext>
     <Window.InputBindings>
+        <!-- File -->
         <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenProjectCommand}" />
         <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
+
+        <!-- Edit -->
+        <KeyBinding Gesture="Ctrl+X" Command="{Binding CurrentWorkspace.CutCommand}" />
+        <KeyBinding Gesture="Ctrl+C" Command="{Binding CurrentWorkspace.CopyCommand}" />
+        <KeyBinding Gesture="Ctrl+V" Command="{Binding CurrentWorkspace.PasteCommand}" />
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top" Background="{StaticResource LightBackgroundColor}">
@@ -33,10 +47,10 @@
                 <MenuItem Header="설정" Click="MenuItem_Click" />
             </MenuItem>
             <MenuItem Header="편집(E)">
-                <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" />
-                <MenuItem Header="복사(_C)" InputGestureText="Ctrl+C" />
-                <MenuItem Header="붙여넣기(_P)" InputGestureText="Ctrl+V" />
-                <MenuItem Header="삭제(_L)" InputGestureText="Del" />
+                <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" Command="{Binding CurrentWorkspace.CutCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                <MenuItem Header="복사(_C)" InputGestureText="Ctrl+C" Command="{Binding CurrentWorkspace.CopyCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                <MenuItem Header="붙여넣기(_P)" InputGestureText="Ctrl+V" Command="{Binding CurrentWorkspace.PasteCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                <MenuItem Header="삭제(_L)" InputGestureText="Del" Style="{StaticResource DisabledWhenCommandIsNull}" />
             </MenuItem>
             <MenuItem Header=" 보기(V)" />
             <MenuItem Header=" 도구(T)" />

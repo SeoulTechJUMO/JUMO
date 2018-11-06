@@ -60,9 +60,6 @@
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
-            <Button Content="복사" Command="{Binding CopyCommand}" />
-            <Button Content="잘라내기" Command="{Binding CutCommand}" />
-            <Button Content="붙여넣기" Command="{Binding PasteCommand}" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -111,13 +108,7 @@
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
-                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel"
-                                      Focusable="True">
-                    <ctrl:PianoRollCanvas.InputBindings>
-                        <KeyBinding Modifiers="Control" Key="X" Command="{Binding CutCommand}"/>
-                        <KeyBinding Modifiers="Control" Key="C"  Command="{Binding CopyCommand}"/>
-                        <KeyBinding Modifiers="Control" Key="V"  Command="{Binding PasteCommand}"/>
-                    </ctrl:PianoRollCanvas.InputBindings>
+                                      PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
                     <ctrl:PianoRollCanvas.Style>
                         <Style TargetType="{x:Type ctrl:PianoRollCanvas}">
                             <Style.Triggers>
