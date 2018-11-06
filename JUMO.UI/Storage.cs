@@ -14,6 +14,8 @@ namespace JUMO.UI
 
         public static Storage Instance => _instance.Value;
 
+        private Storage() { }
+
         #endregion
 
         private IEnumerable<IMusicalItem> _currenClip;
