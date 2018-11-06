@@ -20,11 +20,12 @@ namespace JUMO.UI
 
         public override RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(Cut, _ => SelectedItems.Count > 0));
         public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(Copy, _ => SelectedItems.Count > 0));
-        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(Paste, _ => Storage.Instance.CurrentClip != null));
+        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(Paste, _ => Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)) && Storage.Instance.CurrentClip != null));
 
         public void Cut()
         {
-            Storage.Instance.CurrentClip = new ObservableCollection<IMusicalItem>(SelectedItems);
+            Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
+
             foreach (NoteViewModel note in SelectedItems)
             {
                 RemoveNote(note.Source);
@@ -33,7 +34,7 @@ namespace JUMO.UI
 
         public void Copy()
         {
-            Storage.Instance.CurrentClip = new ObservableCollection<IMusicalItem>(SelectedItems);
+            Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
         }
 
         public void Paste()

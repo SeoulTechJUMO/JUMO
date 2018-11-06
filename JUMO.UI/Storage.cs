@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace JUMO.UI
 {
@@ -18,18 +16,14 @@ namespace JUMO.UI
 
         #endregion
 
-        private IEnumerable<IMusicalItem> _currentClip;
+        public Type CurrentType { get; private set; }
 
-        public IEnumerable<IMusicalItem> CurrentClip
+        public IEnumerable<IMusicalItem> CurrentClip { get; private set; }
+
+        public void PutItems(Type typeId, IEnumerable<IMusicalItem> items)
         {
-            get => _currentClip;
-            set
-            {
-                if (_currentClip != value)
-                {
-                    _currentClip = value.OrderBy(note => note.Start);
-                }  
-            }
+            CurrentType = typeId ?? throw new ArgumentNullException();
+            CurrentClip = items.OrderBy(item => item.Start).ToList();
         }
     }
 }
