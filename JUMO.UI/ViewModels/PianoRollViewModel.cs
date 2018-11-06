@@ -18,9 +18,9 @@ namespace JUMO.UI
 
         #region Commands
 
-        public RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(_=> Cut(), _ => SelectedItems.Count > 0));
-        public RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(_ => Copy(), _ => SelectedItems.Count > 0));
-        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste(), _ => Storage.Instance.CurrnetClip != null));
+        public override RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(_=> Cut(), _ => SelectedItems.Count > 0));
+        public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(_ => Copy(), _ => SelectedItems.Count > 0));
+        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste(), _ => Storage.Instance.CurrnetClip != null));
 
         public void Cut()
         {

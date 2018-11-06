@@ -86,6 +86,12 @@ namespace JUMO.UI
                 ));
         }
 
+        public abstract RelayCommand CutCommand { get; }
+
+        public abstract RelayCommand CopyCommand { get; }
+
+        public abstract RelayCommand PasteCommand { get; }
+
         protected MusicalCanvasWorkspaceViewModel()
         {
             ZoomFactor = ZoomBase;

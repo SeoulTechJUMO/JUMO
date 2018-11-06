@@ -21,6 +21,10 @@ namespace JUMO.UI
 
         public ObservableCollection<PatternPlacementViewModel> PlacedPatterns { get; } = new ObservableCollection<PatternPlacementViewModel>();
 
+        public override RelayCommand CutCommand { get; } = new RelayCommand(_ => throw new System.NotImplementedException());
+        public override RelayCommand CopyCommand { get; } = new RelayCommand(_ => throw new System.NotImplementedException());
+        public override RelayCommand PasteCommand { get; } = new RelayCommand(_ => throw new System.NotImplementedException());
+
         public PlaylistViewModel()
         {
             _placedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
