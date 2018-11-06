@@ -46,7 +46,7 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        public RelayCommand AbortCommand => _AbortCommand ?? (_AbortCommand = new RelayCommand(_ => Reset()));
+        public RelayCommand AbortCommand => _AbortCommand ?? (_AbortCommand = new RelayCommand(Reset));
 
         public NoteToolsViewModel(PianoRollViewModel vm)
         {

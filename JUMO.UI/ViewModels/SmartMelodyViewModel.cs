@@ -106,7 +106,7 @@ namespace JUMO.UI
         #region Command Properties
 
         public RelayCommand GetMelodyCommand
-            => _getMelodyCommand ?? (_getMelodyCommand = new RelayCommand(_ => MakeMelody()));
+            => _getMelodyCommand ?? (_getMelodyCommand = new RelayCommand(MakeMelody));
 
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(_ => ChangeScore(CurrentMelody, true)));
@@ -115,10 +115,10 @@ namespace JUMO.UI
             => _insertCommand ?? (_insertCommand = new RelayCommand(_ => WillInsert = true));
 
         public RelayCommand MelodyPlayCommand
-            => _MelodyPlayCommand ?? (_MelodyPlayCommand = new RelayCommand(_ => MelodyPlay(), _ => _currentMelody != null));
+            => _MelodyPlayCommand ?? (_MelodyPlayCommand = new RelayCommand(MelodyPlay, _ => _currentMelody != null));
 
         public RelayCommand ToggleMelodyOnlyCommand
-            => _toggleMelodyOnlyCommand ?? (_toggleMelodyOnlyCommand = new RelayCommand(_ => ToggleMelodyOnly(), _ => _currentMelody != null));
+            => _toggleMelodyOnlyCommand ?? (_toggleMelodyOnlyCommand = new RelayCommand(ToggleMelodyOnly, _ => _currentMelody != null));
 
         #endregion
 
