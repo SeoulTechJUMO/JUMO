@@ -32,7 +32,12 @@
                 <Separator />
                 <MenuItem Header="설정" Click="MenuItem_Click" />
             </MenuItem>
-            <MenuItem Header=" 편집(E)" />
+            <MenuItem Header="편집(E)">
+                <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" />
+                <MenuItem Header="복사(_C)" InputGestureText="Ctrl+C" />
+                <MenuItem Header="붙여넣기(_P)" InputGestureText="Ctrl+V" />
+                <MenuItem Header="삭제(_L)" InputGestureText="Del" />
+            </MenuItem>
             <MenuItem Header=" 보기(V)" />
             <MenuItem Header=" 도구(T)" />
             <MenuItem Header=" 도움말(H)" />
