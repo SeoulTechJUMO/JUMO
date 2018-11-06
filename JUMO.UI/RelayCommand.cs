@@ -14,13 +14,21 @@ namespace JUMO.UI
             remove => CommandManager.RequerySuggested -= value;
         }
 
-        public RelayCommand(Action<object> execute) : this(execute, null) { }
+        public RelayCommand(Action<object> execute) : this(execute, (Predicate<object>)null) { }
+
+        public RelayCommand(Action execute) : this(_ => execute(), (Predicate<object>)null) { }
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
+
+        public RelayCommand(Action<object> execute, Func<bool> canExecute) : this(execute, _ => canExecute()) { }
+
+        public RelayCommand(Action execute, Predicate<object> canExecute) : this(_ => execute(), canExecute) { }
+
+        public RelayCommand(Action execute, Func<bool> canExecute) : this(_ => execute(), _ => canExecute()) { }
 
         public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
