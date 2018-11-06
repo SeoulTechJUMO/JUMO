@@ -20,28 +20,34 @@ namespace JUMO.UI
 
         public RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(_=> Cut(), _ => SelectedItems.Count > 0));
         public RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(_ => Copy(), _ => SelectedItems.Count > 0));
-        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste()));
+        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(_ => Paste(), _ => Storage.Instance.CurrnetClip != null));
 
         public void Cut()
         {
-            Clipboard.Clear();
-            Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
-            //
+            Storage.Instance.CurrnetClip = new ObservableCollection<IMusicalItem>(SelectedItems);
+            foreach (NoteViewModel note in SelectedItems)
+            {
+                RemoveNote(note.Source);
+            }
         }
 
         public void Copy()
         {
-            Clipboard.Clear();
-            Clipboard.SetData("JUMO Notes", SelectedItems.ToList());
+            Storage.Instance.CurrnetClip = new ObservableCollection<IMusicalItem>(SelectedItems);
         }
 
         public void Paste()
         {
-            var data = Clipboard.GetData("JUMO Notes");
+            int start = Sequencer.Position;
+            int firstStart = 0;
 
-            if (data is IEnumerable<IMusicalItem> notes)
+            SelectedItems.Clear();
+            foreach(NoteViewModel note in Storage.Instance.CurrnetClip)
             {
-                //
+                if (note == Storage.Instance.CurrnetClip.ElementAt(0)) { firstStart = note.Start; }
+                Note Insert = new Note(note.Value, note.Velocity, note.Start - firstStart + start, note.Length);
+                AddNote(Insert);
+                SelectedItems.Add(Insert);
             }
         }
 
