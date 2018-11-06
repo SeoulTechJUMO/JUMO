@@ -15,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
@@ -113,18 +114,18 @@
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
-                                        <MenuItem Header="패턴추가"/>
-                                        <MenuItem Header="이름바꾸기"/>
-                                        <MenuItem Header="패턴삭제"/>
-                                        <MenuItem Header="위로"/>
-                                        <MenuItem Header="아래로"/>
+                                        <MenuItem Header="패턴추가 (A)" Command="{Binding Data.AddPatternCommand, Source={StaticResource Proxy}}"/>
+                                        <MenuItem Header="이름바꾸기 (R)" />
+                                        <MenuItem Header="패턴삭제 (D)" Command="{Binding Data.RemovePatternCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="위로 (U)" Command="{Binding Data.MoveUpCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="아래로 (N)" Command="{Binding Data.MoveDownCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
-                <Button Content="+" Click="PatternAddClick" proj:SkinHelper.Segment="Right" />
+                <Button Content="+" Click="PatternAddClick" proj:SkinHelper.Segment="Right" Command="{Binding AddPatternCommand}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
