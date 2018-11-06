@@ -12,22 +12,6 @@ namespace JUMO.UI
         private readonly Dictionary<Note, NoteViewModel> _vmTable = new Dictionary<Note, NoteViewModel>();
 
         private Score _score;
-        private RelayCommand _cutCommand;
-        private RelayCommand _copyCommand;
-        private RelayCommand _pasteCommand;
-        private RelayCommand _deleteCommand;
-
-        #region Commands
-
-        public override RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(ExecuteCut, _ => SelectedItems.Count > 0));
-
-        public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(ExecuteCopy, _ => SelectedItems.Count > 0));
-
-        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)) && Storage.Instance.CurrentClip != null));
-
-        public override RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedItems.Count > 0));
-
-        #endregion
 
         #region Properties
 
@@ -110,18 +94,18 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteCut()
+        protected override void ExecuteCut()
         {
             ExecuteCopy();
             ExecuteDelete();
         }
 
-        private void ExecuteCopy()
+        protected override void ExecuteCopy()
         {
             Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
         }
 
-        private void ExecutePaste()
+        protected override void ExecutePaste()
         {
             if (!Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)))
             {
@@ -144,7 +128,7 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteDelete()
+        protected override void ExecuteDelete()
         {
             foreach (NoteViewModel note in SelectedItems)
             {

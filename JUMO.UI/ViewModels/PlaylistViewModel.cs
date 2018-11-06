@@ -10,23 +10,6 @@ namespace JUMO.UI
         private readonly ObservableCollection<PatternPlacement> _placedPatterns = Song.Current.PlacedPatterns;
         private readonly Dictionary<PatternPlacement, PatternPlacementViewModel> _vmTable = new Dictionary<PatternPlacement, PatternPlacementViewModel>();
 
-        private RelayCommand _cutCommand;
-        private RelayCommand _copyCommand;
-        private RelayCommand _pasteCommand;
-        private RelayCommand _deleteCommand;
-
-        #region Commands
-
-        public override RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(ExecuteCut, _ => SelectedItems.Count > 0));
-
-        public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(ExecuteCopy, _ => SelectedItems.Count > 0));
-
-        public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => Storage.Instance.CurrentType.Equals(typeof(PlaylistViewModel)) && Storage.Instance.CurrentClip != null));
-
-        public override RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedItems.Count > 0));
-
-        #endregion
-
         #region Properties
 
         protected override double ZoomBase => 4.0;
@@ -76,18 +59,18 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteCut()
+        protected override void ExecuteCut()
         {
             ExecuteCopy();
             ExecuteDelete();
         }
 
-        private void ExecuteCopy()
+        protected override void ExecuteCopy()
         {
             Storage.Instance.PutItems(typeof(PlaylistViewModel), SelectedItems);
         }
 
-        private void ExecutePaste()
+        protected override void ExecutePaste()
         {
             if (!Storage.Instance.CurrentType.Equals(typeof(PlaylistViewModel)))
             {
@@ -110,7 +93,7 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteDelete()
+        protected override void ExecuteDelete()
         {
             foreach (PatternPlacementViewModel pp in SelectedItems)
             {
