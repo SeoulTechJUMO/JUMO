@@ -13,6 +13,7 @@ namespace JUMO.UI
         private RelayCommand _cutCommand;
         private RelayCommand _copyCommand;
         private RelayCommand _pasteCommand;
+        private RelayCommand _deleteCommand;
 
         #region Commands
 
@@ -21,6 +22,8 @@ namespace JUMO.UI
         public override RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(ExecuteCopy, _ => SelectedItems.Count > 0));
 
         public override RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => Storage.Instance.CurrentType.Equals(typeof(PlaylistViewModel)) && Storage.Instance.CurrentClip != null));
+
+        public override RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedItems.Count > 0));
 
         #endregion
 
@@ -75,12 +78,8 @@ namespace JUMO.UI
 
         private void ExecuteCut()
         {
-            Storage.Instance.PutItems(typeof(PlaylistViewModel), SelectedItems);
-
-            foreach (PatternPlacementViewModel pp in SelectedItems)
-            {
-                RemovePattern(pp.Source);
-            }
+            ExecuteCopy();
+            ExecuteDelete();
         }
 
         private void ExecuteCopy()
@@ -108,6 +107,14 @@ namespace JUMO.UI
             {
                 PlacePattern(pp);
                 SelectedItems.Add(_vmTable[pp]);
+            }
+        }
+
+        private void ExecuteDelete()
+        {
+            foreach (PatternPlacementViewModel pp in SelectedItems)
+            {
+                RemovePattern(pp.Source);
             }
         }
 

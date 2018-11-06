@@ -92,6 +92,8 @@ namespace JUMO.UI
 
         public abstract RelayCommand PasteCommand { get; }
 
+        public abstract RelayCommand DeleteCommand { get; }
+
         protected MusicalCanvasWorkspaceViewModel()
         {
             ZoomFactor = ZoomBase;
