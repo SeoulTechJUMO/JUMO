@@ -77,17 +77,79 @@ namespace JUMO.UI
             Song.PropertyChanged += OnSongPropertyChanged;
         }
 
+        #region PatternHandleCommands
+
         private RelayCommand _addPatternCommand;
         private RelayCommand _removePatternCommand;
         private RelayCommand _changePatternNameCommand;
         private RelayCommand _moveUpCommand;
         private RelayCommand _moveDownCommand;
+        private string _currentName;
 
-        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => AddPattern()));
+        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => Song.AddPattern(CurrentName)));
         public RelayCommand RemovePatternCommand => _removePatternCommand ?? (_removePatternCommand = new RelayCommand(pattern => RemovePattern(pattern as Pattern),_ => Song.Patterns.Count > 1));
-        //public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand());
+        public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(pattern => ChangePatternName(pattern as Pattern)));
         public RelayCommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(pattern => MoveUp(pattern as Pattern)));
         public RelayCommand MoveDownCommand => _moveDownCommand ?? (_moveDownCommand = new RelayCommand(pattern => MoveDown(pattern as Pattern)));
+        
+        public string CurrentName
+        {
+            get => _currentName;
+            set
+            {
+                _currentName = value;
+                OnPropertyChanged(nameof(CurrentName));
+            }
+        }
+
+        private void RemovePattern(Pattern current)
+        {
+            int idx = Song.Patterns.IndexOf(current);
+
+            if (Song.Patterns.Count - 1 != idx)
+            {
+                Song.CurrentPattern = Song.Patterns[idx + 1];
+            }
+            else
+            {
+                Song.CurrentPattern = Song.Patterns[idx - 1];
+            }
+
+            Song.Patterns.Remove(current);
+        }
+
+        private void ChangePatternName(Pattern current)
+        {
+            current.Name = CurrentName;
+        }
+
+        private void MoveUp(Pattern current)
+        {
+            int oldidx = Song.Patterns.IndexOf(current);
+            if (oldidx - 1 > 0)
+            {
+                Song.Patterns.Move(oldidx, oldidx - 1);
+            }
+            else
+            {
+                Song.Patterns.Move(oldidx, Song.Patterns.Count - 1);
+            }
+        }
+
+        private void MoveDown(Pattern current)
+        {
+            int oldidx = Song.Patterns.IndexOf(current);
+            if (oldidx + 1 < Song.Patterns.Count)
+            {
+                Song.Patterns.Move(oldidx, oldidx + 1);
+            }
+            else
+            {
+                Song.Patterns.Move(oldidx, 0);
+            }
+        }
+
+        #endregion
 
         private void ExecuteOpenProject(object _)
         {
@@ -141,58 +203,6 @@ namespace JUMO.UI
                 Sequencer.Mode == Playback.PlaybackMode.Song
                 ? Playback.PlaybackMode.Pattern
                 : Playback.PlaybackMode.Song;
-        }
-
-        private void AddPattern()
-        {
-            Song.AddPattern();
-        }
-
-        private void RemovePattern(Pattern current)
-        {
-            int idx = Song.Patterns.IndexOf(current) ;
-
-            if (Song.Patterns.Count - 1 != idx)
-            {
-                Song.CurrentPattern = Song.Patterns[idx + 1];
-            }
-            else
-            {
-                Song.CurrentPattern = Song.Patterns[idx - 1];
-            }   
-
-            Song.Patterns.Remove(current);
-        }
-
-        private void ChangePatternName(Pattern current, string name)
-        {
-            
-        }
-
-        private void MoveUp(Pattern current)
-        {
-            int oldidx = Song.Patterns.IndexOf(current);
-            if (oldidx - 1 > 0)
-            {
-                Song.Patterns.Move(oldidx, oldidx - 1);
-            }
-            else
-            {
-                Song.Patterns.Move(oldidx, Song.Patterns.Count - 1);
-            }
-        }
-
-        private void MoveDown(Pattern current)
-        {
-            int oldidx = Song.Patterns.IndexOf(current);
-            if (oldidx + 1 < Song.Patterns.Count)
-            {
-                Song.Patterns.Move(oldidx, oldidx + 1);
-            }
-            else
-            {
-                Song.Patterns.Move(oldidx, 0);
-            }
         }
 
         private void WorkspaceManager_PropertyChanged(object sender, PropertyChangedEventArgs e)

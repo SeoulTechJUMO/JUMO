@@ -36,7 +36,12 @@ namespace JUMO.UI.Layouts
 
         private void PatternAddClick(object sender, RoutedEventArgs e)
         {
+            AddPopup.IsOpen = true;
+        }
 
+        private void PopupCancelButtonClick(object sender, RoutedEventArgs e)
+        {
+            AddPopup.IsOpen = false;
         }
     }
 }

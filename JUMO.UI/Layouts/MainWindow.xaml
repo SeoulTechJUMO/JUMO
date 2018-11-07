@@ -108,13 +108,13 @@
             </Grid>
 
             <StackPanel Grid.Row="0" Grid.Column="2" Margin="3" Orientation="Horizontal">
-                <ComboBox Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name">
+                <ComboBox x:Name="PatternBox" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ComboBoxItem}">
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
-                                        <MenuItem Header="패턴추가 (A)" Command="{Binding Data.AddPatternCommand, Source={StaticResource Proxy}}"/>
+                                        <MenuItem Header="패턴추가 (A)" />
                                         <MenuItem Header="이름바꾸기 (R)" />
                                         <MenuItem Header="패턴삭제 (D)" Command="{Binding Data.RemovePatternCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
                                         <MenuItem Header="위로 (U)" Command="{Binding Data.MoveUpCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
@@ -125,7 +125,15 @@
                         </Style>
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
-                <Button Content="+" Click="PatternAddClick" proj:SkinHelper.Segment="Right" Command="{Binding AddPatternCommand}"/>
+                <Button Content="+" Click="PatternAddClick" proj:SkinHelper.Segment="Right"/>
+                <Popup x:Name="AddPopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="패턴 이름 : "/>
+                        <TextBox x:Name="PatternName" Text="{Binding CurrentName, Mode=TwoWay}" Width="200" proj:SkinHelper.Segment="Left" />
+                        <Button Content="확인" proj:SkinHelper.Segment="Center" Command="{Binding AddPatternCommand}" Click="PopupCancelButtonClick"/>
+                        <Button Content="취소" proj:SkinHelper.Segment="Right" Click="PopupCancelButtonClick"/>
+                    </StackPanel>
+                </Popup>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
