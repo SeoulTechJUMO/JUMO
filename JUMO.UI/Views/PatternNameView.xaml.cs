@@ -14,8 +14,8 @@ namespace JUMO.UI.Views
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(PatternNameView));
 
-        public static readonly DependencyProperty ParameterProperty =
-            DependencyProperty.Register("Parameter", typeof(Pattern), typeof(PatternNameView));
+        public static readonly DependencyProperty IsOpenProperty =
+            DependencyProperty.Register("IsOpen", typeof(bool), typeof(PatternNameView));
 
         #endregion
 
@@ -33,18 +33,12 @@ namespace JUMO.UI.Views
             set => SetValue(CommandProperty, value);
         }
 
-        public Pattern Parameter
-        {
-            get => (Pattern)GetValue(ParameterProperty);
-            set => SetValue(ParameterProperty, value);
-        }
-
         public bool IsOpen
         {
-            get => Popup.IsOpen;
+            get => (bool)GetValue(IsOpenProperty);
             set
             {
-                Popup.IsOpen = value;
+                SetValue(IsOpenProperty, value);
             }
         }
 
@@ -60,7 +54,7 @@ namespace JUMO.UI.Views
 
         private void PopupCancelButtonClick(object sender, RoutedEventArgs e)
         {
-            Popup.IsOpen = false;
+            IsOpen = false;
         }
     }
 }

@@ -33,15 +33,5 @@ namespace JUMO.UI.Layouts
         {
             new MixerWindow().Show();
         }
-
-        private void PatternAddClick(object sender, RoutedEventArgs e)
-        {
-            AddPopup.IsOpen = true;
-        }
-
-        private void PopupCancelButtonClick(object sender, RoutedEventArgs e)
-        {
-            AddPopup.IsOpen = false;
-        }
     }
 }

@@ -114,26 +114,20 @@
                             <Setter Property="ContextMenu">
                                 <Setter.Value>
                                     <ContextMenu>
-                                        <MenuItem Header="패턴추가 (A)" />
-                                        <MenuItem Header="이름바꾸기 (R)" />
-                                        <MenuItem Header="패턴삭제 (D)" Command="{Binding Data.RemovePatternCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="위로 (U)" Command="{Binding Data.MoveUpCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
-                                        <MenuItem Header="아래로 (N)" Command="{Binding Data.MoveDownCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="패턴추가 (_A)" Command="{Binding Data.OpenAddCommand, Source={StaticResource Proxy}}" />
+                                        <MenuItem Header="이름바꾸기 (_R)" Command="{Binding Data.OpenRenameCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="패턴삭제 (_D)" Command="{Binding Data.RemovePatternCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="위로 (_U)" Command="{Binding Data.MoveUpCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
+                                        <MenuItem Header="아래로 (_N)" Command="{Binding Data.MoveDownCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}"/>
                                     </ContextMenu>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
-                <Button Content="+" Click="PatternAddClick" proj:SkinHelper.Segment="Right"/>
-                <Popup x:Name="AddPopup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="패턴 이름 : "/>
-                        <TextBox x:Name="PatternName" Text="{Binding CurrentName, Mode=TwoWay}" Width="200" proj:SkinHelper.Segment="Left" />
-                        <Button Content="확인" proj:SkinHelper.Segment="Center" Command="{Binding AddPatternCommand}" Click="PopupCancelButtonClick"/>
-                        <Button Content="취소" proj:SkinHelper.Segment="Right" Click="PopupCancelButtonClick"/>
-                    </StackPanel>
-                </Popup>
+                <Button Content="+" Command="{Binding OpenAddCommand}" proj:SkinHelper.Segment="Right"/>
+                <view:PatternNameView x:Name="AddPopup" PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding AddPatternCommand}" IsOpen="{Binding AddVisible, Mode=TwoWay}"/>
+                <view:PatternNameView x:Name="RenamePopup" PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding ChangePatternNameCommand}" IsOpen="{Binding RenameVisible, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">

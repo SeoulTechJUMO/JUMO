@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:proj="clr-namespace:JUMO.UI"
              mc:Ignorable="d" >
-    <Popup x:Name="Popup" Placement="Right" StaysOpen="False" AllowsTransparency="True">
+    <Popup x:Name="Popup" Placement="Right" StaysOpen="False" AllowsTransparency="True" IsOpen="{Binding IsOpen, Mode=TwoWay}">
         <StackPanel Orientation="Horizontal">
             <TextBlock Text="패턴 이름 : "/>
             <TextBox x:Name="Name" Text="{Binding PatternName, Mode=TwoWay}" Width="200" proj:SkinHelper.Segment="Left" />
-            <Button Content="확인" proj:SkinHelper.Segment="Center" Command="{Binding Command}" CommandParameter="{Binding Parameter}" Click="PopupCancelButtonClick"/>
+            <Button Content="확인" proj:SkinHelper.Segment="Center" Command="{Binding Command}" Click="PopupCancelButtonClick"/>
             <Button Content="취소" proj:SkinHelper.Segment="Right" Click="PopupCancelButtonClick"/>
         </StackPanel>
     </Popup>
