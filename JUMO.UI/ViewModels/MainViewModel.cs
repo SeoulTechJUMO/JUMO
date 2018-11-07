@@ -86,7 +86,7 @@ namespace JUMO.UI
         private RelayCommand _moveDownCommand;
         private string _currentName;
 
-        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => Song.AddPattern(CurrentName)));
+        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => { Song.AddPattern(CurrentName); CurrentName = ""; }));
         public RelayCommand RemovePatternCommand => _removePatternCommand ?? (_removePatternCommand = new RelayCommand(pattern => RemovePattern(pattern as Pattern),_ => Song.Patterns.Count > 1));
         public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(pattern => ChangePatternName(pattern as Pattern)));
         public RelayCommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(pattern => MoveUp(pattern as Pattern)));
@@ -121,6 +121,7 @@ namespace JUMO.UI
         private void ChangePatternName(Pattern current)
         {
             current.Name = CurrentName;
+            CurrentName = "";
         }
 
         private void MoveUp(Pattern current)
