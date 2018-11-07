@@ -322,13 +322,13 @@ namespace JUMO
 
         public void AddPattern(string name)
         {
-            if (name != "")
+            if (name == "" || name == null)
             {
-                Patterns.Add(new Pattern(this, name));
+                Patterns.Add(new Pattern(this, "패턴 " + (Patterns.Count + 1)));
             }
             else
             {
-                Patterns.Add(new Pattern(this, "패턴 " + (Patterns.Count + 1)));
+                Patterns.Add(new Pattern(this, name));
             }
         }
 
