@@ -320,9 +320,16 @@ namespace JUMO
             }
         }
 
-        public void AddPattern()
+        public void AddPattern(string name)
         {
-            Patterns.Add(new Pattern(this, "패턴 " + (Patterns.Count + 1)));
+            if (name != "")
+            {
+                Patterns.Add(new Pattern(this, name));
+            }
+            else
+            {
+                Patterns.Add(new Pattern(this, "패턴 " + (Patterns.Count + 1)));
+            }
         }
 
         private void OnPropertyChanged(string propertyName)
