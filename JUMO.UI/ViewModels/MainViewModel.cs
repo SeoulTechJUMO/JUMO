@@ -84,14 +84,20 @@ namespace JUMO.UI
         private RelayCommand _changePatternNameCommand;
         private RelayCommand _moveUpCommand;
         private RelayCommand _moveDownCommand;
+        private RelayCommand _openRenameCommand;
+        private RelayCommand _openAddCommand;
         private string _currentName;
+        private bool _addVisible = false;
+        private bool _renameVisible = false;
 
         public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => { Song.AddPattern(CurrentName); CurrentName = ""; }));
         public RelayCommand RemovePatternCommand => _removePatternCommand ?? (_removePatternCommand = new RelayCommand(pattern => RemovePattern(pattern as Pattern),_ => Song.Patterns.Count > 1));
-        public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(pattern => ChangePatternName(pattern as Pattern)));
+        public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(_ => ChangePatternName()));
         public RelayCommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(pattern => MoveUp(pattern as Pattern)));
         public RelayCommand MoveDownCommand => _moveDownCommand ?? (_moveDownCommand = new RelayCommand(pattern => MoveDown(pattern as Pattern)));
-        
+        public RelayCommand OpenRenameCommand => _openRenameCommand ?? (_openRenameCommand = new RelayCommand(pattern => OpenRenameView(pattern as Pattern)));
+        public RelayCommand OpenAddCommand => _openAddCommand ?? (_openAddCommand = new RelayCommand(_ => AddVisible = true));
+
         public string CurrentName
         {
             get => _currentName;
@@ -99,6 +105,26 @@ namespace JUMO.UI
             {
                 _currentName = value;
                 OnPropertyChanged(nameof(CurrentName));
+            }
+        }
+
+        public bool AddVisible
+        {
+            get => _addVisible;
+            set
+            {
+                _addVisible = value;
+                OnPropertyChanged(nameof(AddVisible));
+            }
+        }
+
+        public bool RenameVisible
+        {
+            get => _renameVisible;
+            set
+            {
+                _renameVisible = value;
+                OnPropertyChanged(nameof(RenameVisible));
             }
         }
 
@@ -118,9 +144,19 @@ namespace JUMO.UI
             Song.Patterns.Remove(current);
         }
 
-        private void ChangePatternName(Pattern current)
+        private void OpenRenameView(Pattern current)
         {
-            current.Name = CurrentName;
+            RenameVisible = true;
+            Song.CurrentPattern = current;
+            CurrentName = current.Name;
+        }
+
+        private void ChangePatternName()
+        {
+            if (CurrentName != "")
+            {
+                Song.CurrentPattern.Name = CurrentName;
+            }
             CurrentName = "";
         }
 
