@@ -32,7 +32,7 @@ namespace JUMO
 
         protected override void OnExit(ExitEventArgs e)
         {
-            Audio.AudioManager.Instance.CurrentOutputDevice = null;
+            Audio.AudioManager.Instance.Dispose();
             Vst.PluginManager.Instance.Dispose();
             Playback.MasterSequencer.Instance.Dispose();
 

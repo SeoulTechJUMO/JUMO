@@ -5,7 +5,7 @@ using NAudio.Wave;
 
 namespace JUMO.Audio
 {
-    public sealed class AudioManager : INotifyPropertyChanged
+    public sealed class AudioManager : INotifyPropertyChanged, IDisposable
     {
         #region Singleton
 
@@ -13,7 +13,15 @@ namespace JUMO.Audio
 
         public static AudioManager Instance => _instance.Value;
 
-        private AudioManager() => PopulateAudioOutputDevices();
+        private AudioManager()
+        {
+            PopulateAudioOutputDevices();
+
+            int defaultDeviceIndex = Math.Max(0, Math.Min(Properties.Settings.Default.AudioDeviceIndex, _outputDevices.Count - 1));
+
+            CurrentOutputDevice = _outputDevices[defaultDeviceIndex];
+            _isInitialized = true;
+        }
 
         #endregion
 
@@ -86,14 +94,15 @@ namespace JUMO.Audio
             {
                 _outputDevices.Add(new AsioOutputDevice(asio));
             }
-
-            int defaultDeviceIndex = Math.Max(0, Math.Min(Properties.Settings.Default.AudioDeviceIndex, _outputDevices.Count - 1));
-
-            CurrentOutputDevice = _outputDevices[defaultDeviceIndex];
-            _isInitialized = true;
         }
 
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public void Dispose()
+        {
+            _isInitialized = false;
+            CurrentOutputDevice = null;
+        }
     }
 }
