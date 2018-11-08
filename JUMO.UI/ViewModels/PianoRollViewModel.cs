@@ -136,6 +136,12 @@ namespace JUMO.UI
             }
         }
 
+        protected override void ExecuteSelectAll()
+        {
+            ClearSelection();
+            SelectItems(Notes);
+        }
+
         private void CurrentSong_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             OnPropertyChanged(e.PropertyName);

@@ -101,6 +101,12 @@ namespace JUMO.UI
             }
         }
 
+        protected override void ExecuteSelectAll()
+        {
+            ClearSelection();
+            SelectItems(PlacedPatterns);
+        }
+
         private void OnPlacedPatternsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
