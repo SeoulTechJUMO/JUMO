@@ -48,8 +48,8 @@ namespace JUMO.UI.Views
         {
             InitializeComponent();
             Popup.DataContext = this;
-            Name.Focus();
-            Name.SelectAll();
+            nameTextBox.Focus();
+            nameTextBox.SelectAll();
         }
 
         private void PopupCancelButtonClick(object sender, RoutedEventArgs e)

@@ -134,8 +134,8 @@
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
                 <Button Content="+" Command="{Binding OpenAddCommand}" proj:SkinHelper.Segment="Right"/>
-                <view:PatternNameView x:Name="AddPopup" PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding AddPatternCommand}" IsOpen="{Binding AddVisible, Mode=TwoWay}"/>
-                <view:PatternNameView x:Name="RenamePopup" PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding ChangePatternNameCommand}" IsOpen="{Binding RenameVisible, Mode=TwoWay}"/>
+                <view:PatternNameView PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding AddPatternCommand}" IsOpen="{Binding AddVisible, Mode=TwoWay}"/>
+                <view:PatternNameView PatternName="{Binding CurrentName, Mode=TwoWay}" Command="{Binding ChangePatternNameCommand}" IsOpen="{Binding RenameVisible, Mode=TwoWay}"/>
             </StackPanel>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
