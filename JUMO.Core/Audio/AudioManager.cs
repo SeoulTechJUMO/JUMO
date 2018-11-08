@@ -20,6 +20,7 @@ namespace JUMO.Audio
         private readonly List<AudioOutputDevice> _outputDevices = new List<AudioOutputDevice>();
         private AudioOutputDevice _currentOutputDevice = null;
         private AudioOutputEngine _outputEngine = null;
+        private bool _isInitialized = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler OutputDeviceChanged;
@@ -45,6 +46,12 @@ namespace JUMO.Audio
                     _currentOutputDevice = value;
                     _outputEngine?.Dispose();
                     _outputEngine = value == null ? null : new AudioOutputEngine(value);
+
+                    if (_isInitialized)
+                    {
+                        Properties.Settings.Default.AudioDeviceIndex = _outputDevices.IndexOf(value);
+                        Properties.Settings.Default.Save();
+                    }
 
                     OnPropertyChanged(nameof(CurrentOutputDevice));
                     OutputDeviceChanged?.Invoke(this, EventArgs.Empty);
@@ -80,7 +87,10 @@ namespace JUMO.Audio
                 _outputDevices.Add(new AsioOutputDevice(asio));
             }
 
-            CurrentOutputDevice = _outputDevices?[0];
+            int defaultDeviceIndex = Math.Max(0, Math.Min(Properties.Settings.Default.AudioDeviceIndex, _outputDevices.Count - 1));
+
+            CurrentOutputDevice = _outputDevices[defaultDeviceIndex];
+            _isInitialized = true;
         }
 
         private void OnPropertyChanged(string propertyName)
