@@ -5,11 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Layouts"
         mc:Ignorable="d"
-        Title="SplashWindow" Height="260" Width="260"
+        Title="SplashWindow" Height="410" Width="410"
         WindowStyle="None" AllowsTransparency="True"
         WindowStartupLocation="CenterScreen"
         Background="Transparent">
     <Grid>
-        <Image Source="/JUMO.UI;component/Resources/Logo.png" />
+        <Image Source="/JUMO.UI;component/Resources/Logo.png" Width="260" Height="260">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="75" ShadowDepth="0" />
+            </Image.Effect>
+        </Image>
     </Grid>
 </Window>
