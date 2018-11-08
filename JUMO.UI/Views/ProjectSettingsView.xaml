@@ -30,6 +30,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -44,37 +45,53 @@
 
         <Label Grid.Row="0" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="제목" />
+               Content="파일 경로"/>
         <Label Grid.Row="1" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="작곡가" />
+               Content="제목" />
         <Label Grid.Row="2" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
-               Content="장르" />
+               Content="작곡가" />
         <Label Grid.Row="3" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
+               Content="장르" />
+        <Label Grid.Row="4" Grid.Column="0"
+               Style="{StaticResource SettingsItemHeader}"
                Content="설명" />
-        <Label Grid.Row="5" Grid.Column="0"
+        <Label Grid.Row="6" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
                Content="템포" />
-        <Label Grid.Row="6" Grid.Column="0"
+        <Label Grid.Row="7" Grid.Column="0"
                Style="{StaticResource SettingsItemHeader}"
                Content="박자" />
 
-        <TextBox Grid.Row="0" Grid.Column="1"
-                 Text="{Binding Title, Mode=TwoWay}" />
+        <TextBox Grid.Row="0" Grid.Column="1" IsReadOnly="True">
+            <TextBox.Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="Text" Value="{Binding FilePath, Mode=OneWay}" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FilePath}" Value="{x:Null}">
+                            <Setter Property="Text" Value="(이 프로젝트는 아직 저장되지 않았습니다)" />
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
         <TextBox Grid.Row="1" Grid.Column="1"
-                 Text="{Binding Artist, Mode=TwoWay}" />
+                 Text="{Binding Title, Mode=TwoWay}" />
         <TextBox Grid.Row="2" Grid.Column="1"
-                 Text="{Binding Genre, Mode=TwoWay}" />
+                 Text="{Binding Artist, Mode=TwoWay}" />
         <TextBox Grid.Row="3" Grid.Column="1"
+                 Text="{Binding Genre, Mode=TwoWay}" />
+        <TextBox Grid.Row="4" Grid.Column="1"
                  Height="80"
                  AcceptsReturn="True" TextWrapping="Wrap"
                  HorizontalScrollBarVisibility="Disabled"
                  VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Description, Mode=TwoWay}" />
-        <Separator Grid.Row="4" Grid.Column="1" Style="{StaticResource SettingsItemSeparator}" />
-        <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+                 Text="{Binding Description, Mode=TwoWay}" Margin="3,4,3,3" />
+        <Separator Grid.Row="5" Grid.Column="1" Style="{StaticResource SettingsItemSeparator}" Margin="0,1" />
+        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
             <ComboBox ItemsSource="{StaticResource TempoBeatOptions}"
                       Margin="{StaticResource ControlMargin}"
                       SelectedValuePath="Value"
@@ -90,7 +107,7 @@
             <Label Content="=" VerticalAlignment="Center" />
             <ctrl:NumericUpDown Width="60" Value="{Binding Tempo}" Minimum="10" Maximum="500" />
         </StackPanel>
-        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
+        <StackPanel Grid.Row="7" Grid.Column="1" Orientation="Horizontal">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JUMO.UI
+﻿namespace JUMO.UI
 {
     public class ProjectSettingsViewModel : SettingsGroupViewModel
     {
@@ -13,6 +7,7 @@ namespace JUMO.UI
 
         public override string DisplayName => "프로젝트 정보";
 
+        public string FilePath { get; } = Song.Current.FilePath;
         public string Title { get; set; } = Song.Current.Title;
         public string Artist { get; set; } = Song.Current.Artist;
         public string Genre { get; set; } = Song.Current.Genre;
