@@ -126,67 +126,14 @@
                 </ContentControl>
             </Grid>
 
-            <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                <StackPanel.DataContext>
-                    <proj:PatternManagerViewModel />
-                </StackPanel.DataContext>
-                <StackPanel.Resources>
-                    <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
-                </StackPanel.Resources>
-                <ComboBox Width="100"
-                          proj:SkinHelper.Segment="Left"
-                          ItemsSource="{Binding Song.Patterns}"
-                          SelectedItem="{Binding Song.CurrentPattern}"
-                          DisplayMemberPath="Name">
-                    <ComboBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ComboBoxItem}">
-                            <Setter Property="ContextMenu">
-                                <Setter.Value>
-                                    <ContextMenu>
-                                        <MenuItem Header="{Binding Name}" IsEnabled="False" />
-                                        <Separator />
-                                        <MenuItem Header="위로 이동(_U)" Command="{Binding Data.MoveUpCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}" />
-                                        <MenuItem Header="아래로 이동(_N)" Command="{Binding Data.MoveDownCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}" />
-                                        <MenuItem Header="이름 바꾸기(_R)" Command="{Binding Data.OpenRenameCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}" />
-                                        <MenuItem Header="패턴 삭제(_D)" Command="{Binding Data.RemovePatternCommand, Source={StaticResource Proxy}}" CommandParameter="{Binding}" />
-                                        <Separator />
-                                        <MenuItem Header="패턴 추가(_A)" Command="{Binding Data.OpenAddCommand, Source={StaticResource Proxy}}" />
-                                    </ContextMenu>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ComboBox.ItemContainerStyle>
-                </ComboBox>
-                <Button x:Name="addPatternButton" Content="+" Command="{Binding OpenAddCommand}" proj:SkinHelper.Segment="Right" />
-                <Popup IsOpen="{Binding IsPopupVisible, Mode=TwoWay}" StaysOpen="False" PlacementTarget="{Binding ElementName=addPatternButton}" Placement="Bottom" HorizontalOffset="6" VerticalOffset="6">
-                    <Border Padding="{StaticResource ControlMargin}"
-                            Background="{StaticResource LightControlFaceColor}"
-                            BorderBrush="{StaticResource LightControlBorderColor}" BorderThickness="1"
-                            SnapsToDevicePixels="True">
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="패턴 이름:" VerticalAlignment="Center" />
-                            <TextBox Width="200" Text="{Binding CurrentName}" proj:SkinHelper.Segment="Left" />
-                            <Button proj:SkinHelper.Segment="Center">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentStatus}" Value="Adding">
-                                                <Setter Property="Command" Value="{Binding AddPatternCommand}" />
-                                                <Setter Property="Content" Value="추가" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentStatus}" Value="Renaming">
-                                                <Setter Property="Command" Value="{Binding RenamePatternCommand}" />
-                                                <Setter Property="Content" Value="변경" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                            <Button Content="취소" Command="{Binding CloseCommand}" proj:SkinHelper.Segment="Right" />
-                        </StackPanel>
-                    </Border>
-                </Popup>
-            </StackPanel>
+            <ContentControl Grid.Row="0" Grid.Column="2">
+                <ContentControl.ContentTemplate>
+                    <DataTemplate DataType="{x:Type proj:PatternManagerViewModel}">
+                        <view:PatternManagerView />
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+                <proj:PatternManagerViewModel />
+            </ContentControl>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
                 <Button Content="MX" Click="Mixer_Click"  proj:SkinHelper.Segment="Left" />
