@@ -132,14 +132,14 @@
                         </Label>
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                             <Label Content="현재 조성:" VerticalAlignment="Center" />
-                            <ComboBox Margin="{StaticResource ControlMargin}" Width="50" Height="20" ItemsSource="{x:Static local:Naming.NoteName}" SelectedValuePath="Key" SelectedValue="{Binding Key}">
+                            <ComboBox Margin="{StaticResource ControlMargin}" Width="50" ItemsSource="{x:Static local:Naming.NoteName}" SelectedValuePath="Key" SelectedValue="{Binding Key}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Key}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <ComboBox Margin="{StaticResource ControlMargin}" Width="70" Height="20" ItemsSource="{x:Static local:Naming.ShowMode}" SelectedValuePath="Key" SelectedValue="{Binding Mode}">
+                            <ComboBox Margin="{StaticResource ControlMargin}" Width="70" ItemsSource="{x:Static local:Naming.ShowMode}" SelectedValuePath="Key" SelectedValue="{Binding Mode}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Key}"/>

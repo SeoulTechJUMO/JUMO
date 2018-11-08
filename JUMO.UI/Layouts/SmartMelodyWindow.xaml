@@ -112,7 +112,7 @@
                             </Label>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Label Content="생성된 패턴: " VerticalAlignment="Center" />
-                                <ComboBox Margin="{StaticResource ControlMargin}" Width="90" Height="20" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
+                                <ComboBox Margin="{StaticResource ControlMargin}" Width="90" SelectedValuePath="Key" ItemsSource="{Binding GeneratedMelody}" SelectedValue="{Binding CurrentMelody}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding Key}"/>
