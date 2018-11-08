@@ -147,16 +147,94 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-            </Trigger>
-            <Trigger Property="ToggleButton.IsChecked" Value="True">
-                <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
-            </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource LightDisabledControlFaceColor}" />
                 <Setter Property="BorderBrush" Value="{StaticResource LightDisabledControlBorderColor}" />
             </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Left">
+                <Setter Property="BorderThickness" Value="{StaticResource LeftSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource LeftSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Center">
+                <Setter Property="BorderThickness" Value="{StaticResource CenterSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource CenterSegmentControlBorderRadius}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Right">
+                <Setter Property="BorderThickness" Value="{StaticResource RightSegmentControlBorderThickness}" />
+                <Setter Property="proj:SkinHelper.BorderRadius" Value="{StaticResource RightSegmentControlBorderRadius}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="None" />
+                    <Condition Property="IsPressed" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Left" />
+                    <Condition Property="IsPressed" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedLeftSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Center" />
+                    <Condition Property="IsPressed" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedCenterSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Right" />
+                    <Condition Property="IsPressed" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedRightSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="None" />
+                    <Condition Property="ToggleButton.IsChecked" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Left" />
+                    <Condition Property="ToggleButton.IsChecked" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedLeftSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Center" />
+                    <Condition Property="ToggleButton.IsChecked" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedCenterSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="proj:SkinHelper.Segment" Value="Right" />
+                    <Condition Property="ToggleButton.IsChecked" Value="True" />
+                </MultiTrigger.Conditions>
+                <MultiTrigger.Setters>
+                    <Setter Property="BorderThickness" Value="{StaticResource PressedRightSegmentButtonBorderThickness}" />
+                </MultiTrigger.Setters>
+            </MultiTrigger>
         </Style.Triggers>
     </Style>
 
@@ -174,7 +252,10 @@
                     </ScrollViewer>
                 </Border>
             </Popup>
-            <ToggleButton Style="{StaticResource ComboBoxToggleButtonStyle}" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+            <ToggleButton
+                Style="{StaticResource ComboBoxToggleButtonStyle}"
+                proj:SkinHelper.Segment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(proj:SkinHelper.Segment)}"
+                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
                 <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Content="{TemplateBinding SelectionBoxItem}" ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" IsHitTestVisible="false" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
             </ToggleButton>
         </Grid>
@@ -260,6 +341,15 @@
                 <Setter Property="IsTabStop" Value="false"/>
                 <Setter Property="Padding" Value="{StaticResource TextBoxPadding}"/>
                 <Setter Property="Template" Value="{StaticResource ComboBoxEditableTemplate}"/>
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Left">
+                <Setter Property="Margin" Value="{StaticResource LeftSegmentControlMargin}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Right">
+                <Setter Property="Margin" Value="{StaticResource RightSegmentControlMargin}" />
+            </Trigger>
+            <Trigger Property="proj:SkinHelper.Segment" Value="Center">
+                <Setter Property="Margin" Value="{StaticResource CenterSegmentControlMargin}" />
             </Trigger>
         </Style.Triggers>
     </Style>

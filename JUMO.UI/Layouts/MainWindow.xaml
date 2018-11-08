@@ -108,7 +108,12 @@
             </Grid>
 
             <StackPanel Grid.Row="0" Grid.Column="2" Orientation="Horizontal">
-                <ComboBox x:Name="PatternBox" Width="100" ItemsSource="{Binding Song.Patterns}" SelectedItem="{Binding Song.CurrentPattern}" DisplayMemberPath="Name">
+                <ComboBox x:Name="PatternBox"
+                          Width="100"
+                          proj:SkinHelper.Segment="Left"
+                          ItemsSource="{Binding Song.Patterns}"
+                          SelectedItem="{Binding Song.CurrentPattern}"
+                          DisplayMemberPath="Name">
                     <ComboBox.ItemContainerStyle>
                         <Style TargetType="{x:Type ComboBoxItem}">
                             <Setter Property="ContextMenu">
