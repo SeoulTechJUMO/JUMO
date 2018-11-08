@@ -11,18 +11,27 @@ namespace JUMO
         private volatile Playback.MasterSequencer masterSequencer;
         private volatile MixerManager mixerManager;
 
+#if !DEBUG
         protected override async void OnStartup(StartupEventArgs e)
+#else
+        protected override void OnStartup(StartupEventArgs e)
+#endif
         {
             MainWindow mainWindow = new MainWindow();
+
+#if !DEBUG
             SplashWindow splashWindow = new SplashWindow();
 
             splashWindow.Show();
 
             await Task.Delay(2000);
+#endif
 
             PrepareApp();
             mainWindow.Show();
+#if !DEBUG
             splashWindow.Close();
+#endif
 
             base.OnStartup(e);
         }
