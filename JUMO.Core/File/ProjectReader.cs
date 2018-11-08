@@ -30,6 +30,8 @@ namespace JUMO.File
                         ProjectFile file = (ProjectFile)formatter.Deserialize(stream);
 
                         DoLoadFile(file);
+
+                        _song.FilePath = path;
                     }
                     else
                     {

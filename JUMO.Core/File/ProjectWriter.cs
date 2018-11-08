@@ -27,6 +27,8 @@ namespace JUMO.File
                     formatter.Serialize(stream, file);
                 }
 
+                _song.FilePath = path;
+
                 return true;
             }
             catch

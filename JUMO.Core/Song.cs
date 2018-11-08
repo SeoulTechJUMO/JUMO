@@ -45,6 +45,7 @@ namespace JUMO
         /// </summary>
         public const int NumOfTracks = 64;
 
+        private string _filePath = null;
         private string _title = "제목 없음";
         private string _artist = "";
         private string _genre = "";
@@ -58,6 +59,16 @@ namespace JUMO
         private int _tempoBeat = 6;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string FilePath
+        {
+            get => _filePath;
+            internal set
+            {
+                _filePath = value;
+                OnPropertyChanged(nameof(FilePath));
+            }
+        }
 
         /// <summary>
         /// 음악 프로젝트의 제목을 가져오거나 설정합니다.
