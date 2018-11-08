@@ -229,7 +229,7 @@ namespace JUMO.UI
         //코드 진행을 스코어에 삽입
         public RelayCommand InsertToPianorollCommand
             => _insertToPianoRollCommand ?? (_insertToPianoRollCommand = new RelayCommand(
-                _ => MakeNote(),
+                MakeNote,
                 _ => CurrentProgress?.Any() ?? false
             ));
 

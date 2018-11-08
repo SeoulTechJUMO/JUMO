@@ -124,6 +124,7 @@
     <Compile Include="Layouts\SkinTestWindow.xaml.cs">
       <DependentUpon>SkinTestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Storage.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\AudioSettingsViewModel.cs" />

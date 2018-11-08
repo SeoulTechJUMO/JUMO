@@ -177,6 +177,8 @@ namespace JUMO.UI.Controls
             }
         }
 
+        
+
         #endregion
 
         private void CalculateAffectedNotes(FrameworkElement view)

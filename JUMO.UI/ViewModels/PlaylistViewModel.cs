@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace JUMO.UI
 {
@@ -8,6 +9,8 @@ namespace JUMO.UI
     {
         private readonly ObservableCollection<PatternPlacement> _placedPatterns = Song.Current.PlacedPatterns;
         private readonly Dictionary<PatternPlacement, PatternPlacementViewModel> _vmTable = new Dictionary<PatternPlacement, PatternPlacementViewModel>();
+
+        #region Properties
 
         protected override double ZoomBase => 4.0;
 
@@ -21,6 +24,8 @@ namespace JUMO.UI
 
         public ObservableCollection<PatternPlacementViewModel> PlacedPatterns { get; } = new ObservableCollection<PatternPlacementViewModel>();
 
+        #endregion
+
         public PlaylistViewModel()
         {
             _placedPatterns.CollectionChanged += OnPlacedPatternsCollectionChanged;
@@ -32,6 +37,8 @@ namespace JUMO.UI
         }
 
         public void PlacePattern(Pattern pattern, int trackIndex, int start) => _placedPatterns.Add(new PatternPlacement(pattern, trackIndex, start));
+
+        private void PlacePattern(PatternPlacement pp) => _placedPatterns.Add(pp);
 
         public void RemovePattern(PatternPlacement pp) => _placedPatterns.Remove(pp);
 
@@ -49,6 +56,48 @@ namespace JUMO.UI
             {
                 PlacedPatterns.Remove(vm);
                 _vmTable.Remove(pp);
+            }
+        }
+
+        protected override void ExecuteCut()
+        {
+            ExecuteCopy();
+            ExecuteDelete();
+        }
+
+        protected override void ExecuteCopy()
+        {
+            Storage.Instance.PutItems(typeof(PlaylistViewModel), SelectedItems);
+        }
+
+        protected override void ExecutePaste()
+        {
+            if (!Storage.Instance.CurrentType.Equals(typeof(PlaylistViewModel)))
+            {
+                return;
+            }
+
+            ClearSelection();
+
+            int start = Sequencer.Position;
+            int clipStart = Storage.Instance.CurrentClip.Min(ppVm => ppVm.Start);
+
+            IEnumerable<PatternPlacement> patternsToPlace =
+                from PatternPlacementViewModel ppVm in Storage.Instance.CurrentClip
+                select new PatternPlacement(ppVm.Pattern, ppVm.TrackIndex, ppVm.Start - clipStart + start);
+
+            foreach(PatternPlacement pp in patternsToPlace)
+            {
+                PlacePattern(pp);
+                SelectedItems.Add(_vmTable[pp]);
+            }
+        }
+
+        protected override void ExecuteDelete()
+        {
+            foreach (PatternPlacementViewModel pp in SelectedItems)
+            {
+                RemovePattern(pp.Source);
             }
         }
 

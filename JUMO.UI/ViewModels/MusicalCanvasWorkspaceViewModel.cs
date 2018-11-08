@@ -19,6 +19,10 @@ namespace JUMO.UI
         private RelayCommand _zoomInCommand;
         private RelayCommand _zoomOutCommand;
         private RelayCommand _resetZoomCommand;
+        private RelayCommand _cutCommand;
+        private RelayCommand _copyCommand;
+        private RelayCommand _pasteCommand;
+        private RelayCommand _deleteCommand;
 
         public Song Song => Song.Current;
         public Playback.MasterSequencer Sequencer => Playback.MasterSequencer.Instance;
@@ -86,6 +90,14 @@ namespace JUMO.UI
                 ));
         }
 
+        public RelayCommand CutCommand => _cutCommand ?? (_cutCommand = new RelayCommand(ExecuteCut, _ => SelectedItems.Count > 0));
+
+        public RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(ExecuteCopy, _ => SelectedItems.Count > 0));
+
+        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => Storage.Instance.CurrentType.Equals(GetType()) && Storage.Instance.CurrentClip != null));
+
+        public RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedItems.Count > 0));
+
         protected MusicalCanvasWorkspaceViewModel()
         {
             ZoomFactor = ZoomBase;
@@ -112,6 +124,11 @@ namespace JUMO.UI
                 }
             }
         }
+
+        protected abstract void ExecuteCut();
+        protected abstract void ExecuteCopy();
+        protected abstract void ExecutePaste();
+        protected abstract void ExecuteDelete();
 
         public void ClearSelection()
         {
