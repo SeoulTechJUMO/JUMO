@@ -18,12 +18,9 @@ namespace JUMO
 
             splashWindow.Show();
 
-            Task loadTask = PrepareApp();
-            Task delayTask = Task.Delay(3000);
+            await Task.Delay(2000);
 
-            await loadTask;
-            await delayTask;
-
+            PrepareApp();
             mainWindow.Show();
             splashWindow.Close();
 
@@ -39,15 +36,12 @@ namespace JUMO
             base.OnExit(e);
         }
 
-        private async Task PrepareApp()
+        private void PrepareApp()
         {
-            await Task.Run(() =>
-            {
-                Dispatcher.Invoke(() => audioManager = Audio.AudioManager.Instance);
-                Dispatcher.Invoke(() => pluginManager = Vst.PluginManager.Instance);
-                Dispatcher.Invoke(() => masterSequencer = Playback.MasterSequencer.Instance);
-                Dispatcher.Invoke(() => mixerManager = MixerManager.Instance);
-            });
+            audioManager = Audio.AudioManager.Instance;
+            pluginManager = Vst.PluginManager.Instance;
+            masterSequencer = Playback.MasterSequencer.Instance;
+            mixerManager = MixerManager.Instance;
         }
     }
 }

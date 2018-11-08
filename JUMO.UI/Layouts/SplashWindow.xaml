@@ -10,9 +10,23 @@
         WindowStartupLocation="CenterScreen"
         Background="Transparent">
     <Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard Duration="0:0:2">
+                        <DoubleAnimation Storyboard.TargetName="blur"
+                                         Storyboard.TargetProperty="Radius"
+                                         From="50" To="0" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="75" ShadowDepth="0" />
+        </Grid.Effect>
         <Image Source="/JUMO.UI;component/Resources/Logo.png" Width="260" Height="260">
             <Image.Effect>
-                <DropShadowEffect BlurRadius="75" ShadowDepth="0" />
+                <BlurEffect x:Name="blur" Radius="0" />
             </Image.Effect>
         </Image>
     </Grid>
