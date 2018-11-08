@@ -90,12 +90,12 @@ namespace JUMO.UI
         private bool _addVisible = false;
         private bool _renameVisible = false;
 
-        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(_ => { Song.AddPattern(CurrentName); CurrentName = ""; }));
-        public RelayCommand RemovePatternCommand => _removePatternCommand ?? (_removePatternCommand = new RelayCommand(pattern => RemovePattern(pattern as Pattern),_ => Song.Patterns.Count > 1));
-        public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(_ => ChangePatternName()));
-        public RelayCommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(pattern => MoveUp(pattern as Pattern)));
-        public RelayCommand MoveDownCommand => _moveDownCommand ?? (_moveDownCommand = new RelayCommand(pattern => MoveDown(pattern as Pattern)));
-        public RelayCommand OpenRenameCommand => _openRenameCommand ?? (_openRenameCommand = new RelayCommand(pattern => OpenRenameView(pattern as Pattern)));
+        public RelayCommand AddPatternCommand => _addPatternCommand ?? (_addPatternCommand = new RelayCommand(ExecuteAddPattern));
+        public RelayCommand RemovePatternCommand => _removePatternCommand ?? (_removePatternCommand = new RelayCommand(ExecuteRemovePattern, _ => Song.Patterns.Count > 1));
+        public RelayCommand ChangePatternNameCommand => _changePatternNameCommand ?? (_changePatternNameCommand = new RelayCommand(ExecuteChangePatternName));
+        public RelayCommand MoveUpCommand => _moveUpCommand ?? (_moveUpCommand = new RelayCommand(ExecuteMoveUp));
+        public RelayCommand MoveDownCommand => _moveDownCommand ?? (_moveDownCommand = new RelayCommand(ExecuteMoveDown));
+        public RelayCommand OpenRenameCommand => _openRenameCommand ?? (_openRenameCommand = new RelayCommand(ExecuteOpenRenameView));
         public RelayCommand OpenAddCommand => _openAddCommand ?? (_openAddCommand = new RelayCommand(_ => AddVisible = true));
 
         public string CurrentName
@@ -128,8 +128,17 @@ namespace JUMO.UI
             }
         }
 
-        private void RemovePattern(Pattern current)
+        private void ExecuteAddPattern()
         {
+            Song.AddPattern(CurrentName);
+
+            CurrentName = "";
+        }
+
+        private void ExecuteRemovePattern(object parameter)
+        {
+            Pattern current = parameter as Pattern;
+
             int idx = Song.Patterns.IndexOf(current);
 
             if (Song.Patterns.Count - 1 != idx)
@@ -144,14 +153,16 @@ namespace JUMO.UI
             Song.Patterns.Remove(current);
         }
 
-        private void OpenRenameView(Pattern current)
+        private void ExecuteOpenRenameView(object parameter)
         {
+            Pattern current = parameter as Pattern;
+
             RenameVisible = true;
             Song.CurrentPattern = current;
             CurrentName = current.Name;
         }
 
-        private void ChangePatternName()
+        private void ExecuteChangePatternName()
         {
             if (CurrentName != "")
             {
@@ -160,8 +171,10 @@ namespace JUMO.UI
             CurrentName = "";
         }
 
-        private void MoveUp(Pattern current)
+        private void ExecuteMoveUp(object parameter)
         {
+            Pattern current = parameter as Pattern;
+
             int oldidx = Song.Patterns.IndexOf(current);
             if (oldidx - 1 > 0)
             {
@@ -173,8 +186,10 @@ namespace JUMO.UI
             }
         }
 
-        private void MoveDown(Pattern current)
+        private void ExecuteMoveDown(object parameter)
         {
+            Pattern current = parameter as Pattern;
+
             int oldidx = Song.Patterns.IndexOf(current);
             if (oldidx + 1 < Song.Patterns.Count)
             {
