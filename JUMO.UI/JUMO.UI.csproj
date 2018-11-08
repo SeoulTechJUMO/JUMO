@@ -124,6 +124,9 @@
     <Compile Include="Layouts\SkinTestWindow.xaml.cs">
       <DependentUpon>SkinTestWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\SplashWindow.xaml.cs">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Storage.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
@@ -237,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Layouts\SkinTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Layouts\SplashWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -392,6 +399,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Hooktheory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
