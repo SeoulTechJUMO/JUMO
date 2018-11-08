@@ -14,9 +14,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/SettingsViewStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="ComboBox">
-                <Setter Property="Margin" Value="{StaticResource ControlMargin}" />
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
