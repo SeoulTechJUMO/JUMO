@@ -52,6 +52,11 @@ namespace JUMO.UI
         public RelayCommand OpenProjectCommand { get; }
 
         /// <summary>
+        /// 현재 열려 있는 프로젝트를 저장하도록 하는 명령을 가져옵니다.
+        /// </summary>
+        public RelayCommand SaveProjectCommand { get; }
+
+        /// <summary>
         /// 현재 열려 있는 프로젝트를 다른 이름으로 저장하도록 하는 명령을 가져옵니다.
         /// </summary>
         public RelayCommand SaveProjectAsCommand { get; }
@@ -69,6 +74,7 @@ namespace JUMO.UI
         public MainViewModel()
         {
             OpenProjectCommand = new RelayCommand(ExecuteOpenProject);
+            SaveProjectCommand = new RelayCommand(ExecuteSaveProject);
             SaveProjectAsCommand = new RelayCommand(ExecuteSaveProjectAs);
             TogglePlaybackCommand = new RelayCommand(ExecuteTogglePlayback);
             TogglePlaybackModeCommand = new RelayCommand(ExecuteTogglePlaybackMode);
@@ -77,7 +83,7 @@ namespace JUMO.UI
             Song.PropertyChanged += OnSongPropertyChanged;
         }
 
-        private void ExecuteOpenProject(object _)
+        private void ExecuteOpenProject()
         {
             FileDialogViewModel fdvm = new FileDialogViewModel()
             {
@@ -94,7 +100,19 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteSaveProjectAs(object _)
+        private void ExecuteSaveProject()
+        {
+            if (string.IsNullOrEmpty(Song.FilePath))
+            {
+                ExecuteSaveProjectAs();
+            }
+            else
+            {
+                new File.ProjectWriter().SaveFile(Song.FilePath);
+            }
+        }
+
+        private void ExecuteSaveProjectAs()
         {
             FileDialogViewModel fdvm = new FileDialogViewModel()
             {
@@ -111,7 +129,7 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteTogglePlayback(object _)
+        private void ExecuteTogglePlayback()
         {
             if (Sequencer.IsPlaying)
             {
@@ -123,7 +141,7 @@ namespace JUMO.UI
             }
         }
 
-        private void ExecuteTogglePlaybackMode(object _)
+        private void ExecuteTogglePlaybackMode()
         {
             Sequencer.Mode =
                 Sequencer.Mode == Playback.PlaybackMode.Song

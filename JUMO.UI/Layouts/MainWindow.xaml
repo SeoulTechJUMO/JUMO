@@ -47,6 +47,7 @@
     <Window.InputBindings>
         <!-- File -->
         <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenProjectCommand}" />
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveProjectCommand}" />
         <KeyBinding Gesture="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
 
         <!-- Edit -->
@@ -59,6 +60,7 @@
         <Menu DockPanel.Dock="Top" Background="{StaticResource LightBackgroundColor}">
             <MenuItem Header="파일(F)">
                 <MenuItem Header="열기(_O)..." InputGestureText="Ctrl+O" Command="{Binding OpenProjectCommand}" />
+                <MenuItem Header="저장(_S)" InputGestureText="Ctrl+S" Command="{Binding SaveProjectCommand}" />
                 <MenuItem Header="다른 이름으로 저장(_A)..." InputGestureText="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
                 <Separator />
                 <MenuItem Header="설정" Click="MenuItem_Click" />
