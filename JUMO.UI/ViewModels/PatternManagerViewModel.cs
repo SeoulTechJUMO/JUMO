@@ -9,6 +9,7 @@
             Renaming
         }
 
+        private bool _isPopupVisible = false;
         private string _currentName;
         private Status _currentStatus = Status.Normal;
 
@@ -35,6 +36,16 @@
             {
                 _currentStatus = value;
                 OnPropertyChanged(nameof(CurrentStatus));
+            }
+        }
+
+        public bool IsPopupVisible
+        {
+            get => _isPopupVisible;
+            set
+            {
+                _isPopupVisible = value;
+                OnPropertyChanged(nameof(IsPopupVisible));
             }
         }
 
@@ -131,6 +142,7 @@
         private void ExecuteOpenAdd()
         {
             CurrentStatus = Status.Adding;
+            IsPopupVisible = true;
         }
 
         private void ExecuteOpenRename(object parameter)
@@ -140,12 +152,14 @@
             Song.CurrentPattern = current;
             CurrentName = current.Name;
             CurrentStatus = Status.Renaming;
+            IsPopupVisible = true;
         }
 
         private void ExecuteClose()
         {
             CurrentName = "";
             CurrentStatus = Status.Normal;
+            IsPopupVisible = false;
         }
     }
 }
