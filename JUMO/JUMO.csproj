@@ -120,12 +120,6 @@
       <Name>JUMO.UI</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Page Include="ViewModelTemplates.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(SolutionDir)improv_rnn_generate" "tools\improv_rnn_generate" /E /I /F /Y</PostBuildEvent>

@@ -16,6 +16,22 @@
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
+            <DataTemplate DataType="{x:Type proj:ChannelRackViewModel}">
+                <view:ChannelRackView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type proj:PianoRollViewModel}">
+                <view:PianoRollView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type proj:PlaylistViewModel}">
+                <view:PlaylistView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type proj:PatternManagerViewModel}">
+                <view:PatternManagerView />
+            </DataTemplate>
+
             <Style x:Key="DisabledWhenCommandIsNull" TargetType="MenuItem">
                 <Style.Triggers>
                     <Trigger Property="Command" Value="{x:Null}">
@@ -127,11 +143,6 @@
             </Grid>
 
             <ContentControl Grid.Row="0" Grid.Column="2">
-                <ContentControl.ContentTemplate>
-                    <DataTemplate DataType="{x:Type proj:PatternManagerViewModel}">
-                        <view:PatternManagerView />
-                    </DataTemplate>
-                </ContentControl.ContentTemplate>
                 <proj:PatternManagerViewModel />
             </ContentControl>
 
