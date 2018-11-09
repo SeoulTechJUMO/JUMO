@@ -42,7 +42,7 @@
                     <Path x:Name="Glyph" Data="{StaticResource MenuItemCheckMarkGeometry}" Fill="#FF212121" FlowDirection="LeftToRight" Height="11" Width="10"/>
                 </Border>
                 <ContentPresenter x:Name="menuHeaderContainer" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="2" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="Left" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
-                <TextBlock x:Name="menuGestureText" Grid.Column="4" Margin="{TemplateBinding Padding}" Opacity="0.7" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center"/>
+                <TextBlock x:Name="menuGestureText" Grid.Column="4" Margin="{TemplateBinding Padding}" Foreground="{StaticResource LightSecondaryTextColor}" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center"/>
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
@@ -54,12 +54,12 @@
                 <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
             </Trigger>
             <Trigger Property="IsHighlighted" Value="True">
-                <Setter Property="Background" TargetName="templateRoot" Value="#3D26A0DA"/>
-                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF26A0DA"/>
+                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource LightControlBorderColor}"/>
+                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource LightControlBorderColor}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="#FF707070"/>
-                <Setter Property="Fill" TargetName="Glyph" Value="#FF707070"/>
+                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{StaticResource LightSecondaryTextColor}"/>
+                <Setter Property="Fill" TargetName="Glyph" Value="{StaticResource LightSecondaryTextColor}"/>
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -145,7 +145,7 @@
                 </Border>
                 <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="2" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" HorizontalAlignment="Left" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
                 <TextBlock Grid.Column="4" Margin="{TemplateBinding Padding}" Opacity="0.7" Text="{TemplateBinding InputGestureText}" VerticalAlignment="Center"/>
-                <Path x:Name="RightArrow" Grid.Column="5" Data="M0,0L4,3.5 0,7z" Fill="#FF212121" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                <Path x:Name="RightArrow" Grid.Column="5" Data="M0,0L4,3.5 0,7z" Fill="{TemplateBinding Foreground}" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 <Popup x:Name="PART_Popup" AllowsTransparency="True" Focusable="False" HorizontalOffset="-2" IsOpen="{Binding IsSubmenuOpen, RelativeSource={RelativeSource TemplatedParent}}" PopupAnimation="{DynamicResource {x:Static SystemParameters.MenuPopupAnimationKey}}" Placement="Right" VerticalOffset="-3">
                     <Border x:Name="SubMenuBorder" BorderBrush="#FF999999" BorderThickness="1" Background="#FFF0F0F0" Padding="2">
                         <ScrollViewer x:Name="SubMenuScrollViewer" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
@@ -173,13 +173,14 @@
                 <Setter Property="Visibility" TargetName="Icon" Value="Collapsed"/>
             </Trigger>
             <Trigger Property="IsHighlighted" Value="True">
-                <Setter Property="Background" TargetName="templateRoot" Value="Transparent"/>
-                <Setter Property="BorderBrush" TargetName="templateRoot" Value="#FF26A0DA"/>
+                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource LightControlBorderColor}"/>
+                <Setter Property="BorderBrush" TargetName="templateRoot" Value="{StaticResource LightControlBorderColor}"/>
+                <Setter Property="Fill" TargetName="RightArrow" Value="{StaticResource IndicatorLightColor2}"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="#FF707070"/>
-                <Setter Property="Fill" TargetName="Glyph" Value="#FF707070"/>
-                <Setter Property="Fill" TargetName="RightArrow" Value="#FF707070"/>
+                <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="{StaticResource LightPrimaryTextColor}"/>
+                <Setter Property="Fill" TargetName="Glyph" Value="{StaticResource LightPrimaryTextColor}"/>
+                <Setter Property="Fill" TargetName="RightArrow" Value="{StaticResource LightPrimaryTextColor}"/>
             </Trigger>
             <Trigger Property="CanContentScroll" SourceName="SubMenuScrollViewer" Value="False">
                 <Setter Property="Canvas.Top" TargetName="OpaqueRect" Value="{Binding VerticalOffset, ElementName=SubMenuScrollViewer}"/>
