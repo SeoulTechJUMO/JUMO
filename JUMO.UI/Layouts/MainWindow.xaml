@@ -32,7 +32,7 @@
                 <view:PatternManagerView />
             </DataTemplate>
 
-            <Style x:Key="DisabledWhenCommandIsNull" TargetType="MenuItem">
+            <Style x:Key="DisabledWhenCommandIsNull" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
                 <Style.Triggers>
                     <Trigger Property="Command" Value="{x:Null}">
                         <Setter Property="IsEnabled" Value="False" />
@@ -74,9 +74,9 @@
                 <Separator />
                 <MenuItem Header="모두 선택(_A)" InputGestureText="Ctrl+A" Command="{Binding CurrentWorkspace.SelectAllCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
             </MenuItem>
-            <MenuItem Header=" 보기(V)" />
-            <MenuItem Header=" 도구(T)" />
-            <MenuItem Header=" 도움말(H)" />
+            <MenuItem Header="보기(V)" />
+            <MenuItem Header="도구(T)" />
+            <MenuItem Header="도움말(H)" />
         </Menu>
         <Grid DockPanel.Dock="Top" Margin="3">
             <Grid.RowDefinitions>
