@@ -17,7 +17,7 @@ namespace JUMO.Playback
 
         #endregion
 
-        public PatternSequencer(MasterSequencer masterSequencer, Pattern pattern)
+        public PatternSequencer(MasterSequencer masterSequencer, Pattern pattern, int startPosition)
         {
             _masterSequencer = masterSequencer ?? throw new ArgumentNullException(nameof(masterSequencer));
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
@@ -27,7 +27,7 @@ namespace JUMO.Playback
 
             foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
             {
-                _enumerators.Add(GetTickIterator(Pattern[plugin].MidiTrack, plugin, 0).GetEnumerator());
+                _enumerators.Add(GetTickIterator(Pattern[plugin].MidiTrack, plugin, startPosition).GetEnumerator());
                 _numOfPlayingScores++;
             }
         }

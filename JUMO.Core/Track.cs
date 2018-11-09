@@ -56,14 +56,18 @@ namespace JUMO
             IEnumerator<PatternPlacement> enumerator = this.OrderBy(pp => pp.Start).GetEnumerator();
 
             bool hasNext;
+            PatternPlacement previous = null;
 
             for (hasNext = enumerator.MoveNext();
                  hasNext && enumerator.Current.Start < startPosition;
-                 hasNext = enumerator.MoveNext()) { }
-
-            // TODO: chase
+                 previous = enumerator.Current, hasNext = enumerator.MoveNext()) ;
 
             int ticks = startPosition;
+
+            if (previous != null && previous.Start + previous.Length >= ticks)
+            {
+                masterSequener.EnqueuePattern(previous.Pattern, ticks - previous.Start);
+            }
 
             while (hasNext)
             {
@@ -79,7 +83,7 @@ namespace JUMO
                 while (hasNext && enumerator.Current.Start == ticks)
                 {
                     System.Diagnostics.Debug.WriteLine($"[{ticks,-8}] Track({Name}): 이번에 재생할 패턴은 '{enumerator.Current.Pattern.Name}");
-                    masterSequener.EnqueuePattern(enumerator.Current.Pattern);
+                    masterSequener.EnqueuePattern(enumerator.Current.Pattern, 0);
 
                     hasNext = enumerator.MoveNext();
                 }
