@@ -12,7 +12,7 @@
         F1M10,1.2L4.7,9.1 4.5,9.1 0,5.2 1.3,3.5 4.3,6.1 8.3,0 10,1.2z
     </StreamGeometry>
 
-    <DropShadowEffect x:Key="MenuShadowEffect" Opacity="0.375" BlurRadius="3" ShadowDepth="3" />
+    <DropShadowEffect x:Key="MenuShadowEffect" Opacity="0.8" BlurRadius="4" ShadowDepth="1" />
 
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="Separator">
         <Setter Property="Background" Value="{StaticResource LightControlBorderColor}"/>
@@ -217,5 +217,43 @@
                 <Setter Property="Template" Value="{StaticResource SubmenuHeaderTemplate}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type ContextMenu}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Background" Value="{StaticResource LightControlFaceColor}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+        <Setter Property="HasDropShadow" Value="{DynamicResource {x:Static SystemParameters.DropShadowKey}}"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border>
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Tag" Value="{DynamicResource {x:Static SystemParameters.DropShadowKey}}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="True">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Padding" Value="0,0,5,5"/>
+                                        <Setter Property="Effect" Value="{StaticResource MenuShadowEffect}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <ScrollViewer CanContentScroll="True" Style="{DynamicResource {ComponentResourceKey ResourceId=MenuScrollViewer, TypeInTargetAssembly={x:Type FrameworkElement}}}">
+                                <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Cycle" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>
