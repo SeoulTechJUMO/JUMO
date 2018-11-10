@@ -1,15 +1,16 @@
-﻿<Window x:Class="JUMO.UI.Layouts.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:JUMO.UI.Layouts"
-        xmlns:proj="clr-namespace:JUMO.UI"
-        xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
-        xmlns:view="clr-namespace:JUMO.UI.Views"
-        mc:Ignorable="d"
-        Background="{DynamicResource LightBackgroundColor}"
-        Title="{Binding DisplayName}" Height="600" Width="900">
+﻿<ctrl:WindowBase
+    x:Class="JUMO.UI.Layouts.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:JUMO.UI.Layouts"
+    xmlns:proj="clr-namespace:JUMO.UI"
+    xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+    xmlns:view="clr-namespace:JUMO.UI.Views"
+    mc:Ignorable="d"
+    Background="{DynamicResource LightBackgroundColor}"
+    Title="{Binding DisplayName}" Height="600" Width="900">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -183,4 +184,4 @@
             </Grid>
         </Border>
     </DockPanel>
-</Window>
+</ctrl:WindowBase>
