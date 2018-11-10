@@ -60,27 +60,43 @@
         <KeyBinding Gesture="Ctrl+A" Command="{Binding CurrentWorkspace.SelectAllCommand}" />
     </Window.InputBindings>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Margin="48,1,0,1" Background="{StaticResource LightBackgroundColor}" HorizontalAlignment="Left" WindowChrome.IsHitTestVisibleInChrome="True">
-            <MenuItem Header="파일(F)">
-                <MenuItem Header="열기(_O)..." InputGestureText="Ctrl+O" Command="{Binding OpenProjectCommand}" />
-                <MenuItem Header="저장(_S)" InputGestureText="Ctrl+S" Command="{Binding SaveProjectCommand}" />
-                <MenuItem Header="다른 이름으로 저장(_A)..." InputGestureText="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
-                <Separator />
-                <MenuItem Header="설정" Click="MenuItem_Click" />
-            </MenuItem>
-            <MenuItem Header="편집(E)">
-                <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" Command="{Binding CurrentWorkspace.CutCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
-                <MenuItem Header="복사(_C)" InputGestureText="Ctrl+C" Command="{Binding CurrentWorkspace.CopyCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
-                <MenuItem Header="붙여넣기(_P)" InputGestureText="Ctrl+V" Command="{Binding CurrentWorkspace.PasteCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
-                <MenuItem Header="삭제(_L)" InputGestureText="Del" Command="{Binding CurrentWorkspace.DeleteCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
-                <Separator />
-                <MenuItem Header="모두 선택(_A)" InputGestureText="Ctrl+A" Command="{Binding CurrentWorkspace.SelectAllCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
-            </MenuItem>
-            <MenuItem Header="보기(V)" />
-            <MenuItem Header="도구(T)" />
-            <MenuItem Header="도움말(H)" />
-        </Menu>
-        <Grid DockPanel.Dock="Top" Margin="3">
+        <Grid DockPanel.Dock="Top" Margin="3,3,3,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="23" />
+                <RowDefinition Height="23" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+                <ColumnDefinition MinWidth="160" Width="0" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="1" Margin="7,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Run Text="{Binding Song.Title}" FontWeight="Bold" Foreground="{StaticResource LightPrimaryTextColor}" />
+                <Run Foreground="{StaticResource LightSecondaryTextColor}"> - JUMO Uncomplicated Music studiO</Run>
+            </TextBlock>
+            <Image Grid.RowSpan="2" Margin="3" Width="40" Source="/JUMO.UI;component/Resources/Logo.png" RenderOptions.BitmapScalingMode="Fant" />
+            <Menu Grid.Row="2" Grid.Column="1" Background="{StaticResource LightBackgroundColor}" HorizontalAlignment="Left" VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True">
+                <MenuItem Header="파일(F)">
+                    <MenuItem Header="열기(_O)..." InputGestureText="Ctrl+O" Command="{Binding OpenProjectCommand}" />
+                    <MenuItem Header="저장(_S)" InputGestureText="Ctrl+S" Command="{Binding SaveProjectCommand}" />
+                    <MenuItem Header="다른 이름으로 저장(_A)..." InputGestureText="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
+                    <Separator />
+                    <MenuItem Header="설정" Click="MenuItem_Click" />
+                </MenuItem>
+                <MenuItem Header="편집(E)">
+                    <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" Command="{Binding CurrentWorkspace.CutCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                    <MenuItem Header="복사(_C)" InputGestureText="Ctrl+C" Command="{Binding CurrentWorkspace.CopyCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                    <MenuItem Header="붙여넣기(_P)" InputGestureText="Ctrl+V" Command="{Binding CurrentWorkspace.PasteCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                    <MenuItem Header="삭제(_L)" InputGestureText="Del" Command="{Binding CurrentWorkspace.DeleteCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                    <Separator />
+                    <MenuItem Header="모두 선택(_A)" InputGestureText="Ctrl+A" Command="{Binding CurrentWorkspace.SelectAllCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
+                </MenuItem>
+                <MenuItem Header="보기(V)" />
+                <MenuItem Header="도구(T)" />
+                <MenuItem Header="도움말(H)" />
+            </Menu>
+        </Grid>
+        <Grid DockPanel.Dock="Top" Margin="3,0,3,3">
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />

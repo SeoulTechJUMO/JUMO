@@ -136,7 +136,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource LightSecondaryTextColor}" />
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
-                <WindowChrome GlassFrameThickness="-1" UseAeroCaptionButtons="False" ResizeBorderThickness="4" CaptionHeight="52" />
+                <WindowChrome GlassFrameThickness="-1" UseAeroCaptionButtons="False" CaptionHeight="48" />
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -146,42 +146,31 @@
                         <Grid x:Name="grid">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="26" />
-                                <RowDefinition Height="26" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Margin="55,0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" />
-                                <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                    <StackPanel.Resources>
-                                        <Style TargetType="Button" BasedOn="{StaticResource MainWindowCommandButtonStyle}" />
-                                        <Style TargetType="Path">
-                                            <Setter Property="SnapsToDevicePixels" Value="True" />
-                                            <Setter Property="UseLayoutRounding" Value="True" />
-                                            <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
-                                        </Style>
-                                    </StackPanel.Resources>
-                                    <Button x:Name="minimizeButton" Width="40" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
-                                        <Path Data="{StaticResource MinimizeWindowGlyphGeometry}" />
-                                    </Button>
-                                    <Button x:Name="maximizeButton" Width="40" Command="{x:Static SystemCommands.MaximizeWindowCommand}">
-                                        <Path Data="{StaticResource MaximizeWindowGlyphGeometry}" />
-                                    </Button>
-                                    <Button x:Name="restoreButton" Width="40" Command="{x:Static SystemCommands.RestoreWindowCommand}">
-                                        <Path Data="{StaticResource RestoreWindowGlyphGeometry}" />
-                                    </Button>
-                                    <Button Width="40" Command="{x:Static SystemCommands.CloseWindowCommand}">
-                                        <Path Data="{StaticResource CloseWindowGlyphGeometry}" />
-                                    </Button>
-                                </StackPanel>
-                            </Grid>
-                            <Grid Grid.Row="0" Grid.RowSpan="2" Margin="6" Width="40" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                <Image Source="/JUMO.UI;component/Resources/Logo.png" RenderOptions.BitmapScalingMode="Fant" />
-                            </Grid>
-                            <ContentPresenter Grid.Row="1" Grid.RowSpan="2" />
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                <StackPanel.Resources>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MainWindowCommandButtonStyle}" />
+                                    <Style TargetType="Path">
+                                        <Setter Property="SnapsToDevicePixels" Value="True" />
+                                        <Setter Property="UseLayoutRounding" Value="True" />
+                                        <Setter Property="Fill" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}" />
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Button x:Name="minimizeButton" Width="40" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
+                                    <Path Data="{StaticResource MinimizeWindowGlyphGeometry}" />
+                                </Button>
+                                <Button x:Name="maximizeButton" Width="40" Command="{x:Static SystemCommands.MaximizeWindowCommand}">
+                                    <Path Data="{StaticResource MaximizeWindowGlyphGeometry}" />
+                                </Button>
+                                <Button x:Name="restoreButton" Width="40" Command="{x:Static SystemCommands.RestoreWindowCommand}">
+                                    <Path Data="{StaticResource RestoreWindowGlyphGeometry}" />
+                                </Button>
+                                <Button Width="40" Command="{x:Static SystemCommands.CloseWindowCommand}">
+                                    <Path Data="{StaticResource CloseWindowGlyphGeometry}" />
+                                </Button>
+                            </StackPanel>
+                            <ContentPresenter Grid.Row="0" Grid.RowSpan="2" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
