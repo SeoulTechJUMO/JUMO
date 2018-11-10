@@ -9,6 +9,7 @@
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
     xmlns:view="clr-namespace:JUMO.UI.Views"
     mc:Ignorable="d"
+    Style="{DynamicResource MainWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
     Title="{Binding DisplayName}" Height="600" Width="900">
     <Window.Resources>
@@ -59,7 +60,7 @@
         <KeyBinding Gesture="Ctrl+A" Command="{Binding CurrentWorkspace.SelectAllCommand}" />
     </Window.InputBindings>
     <DockPanel>
-        <Menu DockPanel.Dock="Top" Background="{StaticResource LightBackgroundColor}">
+        <Menu DockPanel.Dock="Top" Margin="48,1,0,1" Background="{StaticResource LightBackgroundColor}" HorizontalAlignment="Left" WindowChrome.IsHitTestVisibleInChrome="True">
             <MenuItem Header="파일(F)">
                 <MenuItem Header="열기(_O)..." InputGestureText="Ctrl+O" Command="{Binding OpenProjectCommand}" />
                 <MenuItem Header="저장(_S)" InputGestureText="Ctrl+S" Command="{Binding SaveProjectCommand}" />
