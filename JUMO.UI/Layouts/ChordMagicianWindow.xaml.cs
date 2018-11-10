@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using JUMO.UI.Controls;
 using ChordMagicianModel;
 
 namespace JUMO.UI.Layouts
@@ -6,7 +7,7 @@ namespace JUMO.UI.Layouts
     /// <summary>
     /// CodeMagic.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ChordMagicianWindow : Window
+    public partial class ChordMagicianWindow : WindowBase
     {
         private readonly GetAPI _api = new GetAPI();
         private readonly ChordMagicianViewModel _viewModel;
