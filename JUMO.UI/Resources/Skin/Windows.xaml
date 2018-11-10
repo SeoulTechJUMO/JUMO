@@ -80,13 +80,13 @@
                                             <Setter Property="Fill" Value="{StaticResource LightPrimaryTextColor}" />
                                         </Style>
                                     </StackPanel.Resources>
-                                    <Button Width="40" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
+                                    <Button x:Name="minimizeButton" Width="40" Command="{x:Static SystemCommands.MinimizeWindowCommand}">
                                         <Path Data="{StaticResource MinimizeWindowGlyphGeometry}" />
                                     </Button>
-                                    <Button Width="40" Command="{x:Static SystemCommands.MaximizeWindowCommand}">
+                                    <Button x:Name="maximizeButton" Width="40" Command="{x:Static SystemCommands.MaximizeWindowCommand}">
                                         <Path Data="{StaticResource MaximizeWindowGlyphGeometry}" />
                                     </Button>
-                                    <Button Width="40" Command="{x:Static SystemCommands.RestoreWindowCommand}">
+                                    <Button x:Name="restoreButton" Width="40" Command="{x:Static SystemCommands.RestoreWindowCommand}">
                                         <Path Data="{StaticResource RestoreWindowGlyphGeometry}" />
                                     </Button>
                                     <Button Width="40" Command="{x:Static SystemCommands.CloseWindowCommand}">
@@ -100,6 +100,11 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">
                             <Setter Property="Margin" TargetName="grid" Value="7" />
+                        </Trigger>
+                        <Trigger Property="ResizeMode" Value="NoResize">
+                            <Setter Property="Visibility" TargetName="minimizeButton" Value="Collapsed" />
+                            <Setter Property="Visibility" TargetName="maximizeButton" Value="Collapsed" />
+                            <Setter Property="Visibility" TargetName="restoreButton" Value="Collapsed" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

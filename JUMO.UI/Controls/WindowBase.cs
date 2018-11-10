@@ -41,12 +41,12 @@ namespace JUMO.UI.Controls
 
         protected virtual void CanExecuteMaximizeWindow(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = WindowState != WindowState.Maximized;
+            e.CanExecute = ResizeMode > ResizeMode.CanMinimize && WindowState != WindowState.Maximized;
         }
 
         protected virtual void CanExecuteRestoreWindow(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = WindowState != WindowState.Normal;
+            e.CanExecute = ResizeMode > ResizeMode.CanMinimize && WindowState != WindowState.Normal;
         }
 
         protected virtual void CanExecuteCloseWindow(object sender, CanExecuteRoutedEventArgs e)
