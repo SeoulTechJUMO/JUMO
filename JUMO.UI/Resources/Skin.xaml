@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Skin/Common.xaml" />
         <ResourceDictionary Source="Skin/Buttons.xaml" />
-        <ResourceDictionary Source="Skin/ChildWindows.xaml" />
+        <ResourceDictionary Source="Skin/Windows.xaml" />
         <ResourceDictionary Source="Skin/Menus.xaml" />
         <ResourceDictionary Source="Skin/ScrollBars.xaml" />
         <ResourceDictionary Source="Skin/Sliders.xaml" />
