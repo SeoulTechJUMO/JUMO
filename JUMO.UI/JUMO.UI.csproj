@@ -100,6 +100,7 @@
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
     <Compile Include="Controls\VolumeMeter.cs" />
+    <Compile Include="Controls\WindowBase.cs" />
     <Compile Include="Data\BinaryPartition.cs" />
     <Compile Include="Controls\MusicalCanvasBase.cs" />
     <Compile Include="Controls\PianoRollKeyboard.cs" />
