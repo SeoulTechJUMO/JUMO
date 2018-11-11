@@ -21,8 +21,7 @@ namespace JUMO.Vst
         {
             try
             {
-                HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
-                Plugin plugin = new Plugin(pluginPath, hostCmdStub);
+                Plugin plugin = new Plugin(pluginPath);
 
                 Plugins.Add(plugin);
 
@@ -42,7 +41,7 @@ namespace JUMO.Vst
 
             try
             {
-                Plugin plugin = new Plugin(pluginPath, new HostCommandStub())
+                Plugin plugin = new Plugin(pluginPath)
                 {
                     ChannelNum = oldPlugin.ChannelNum,
                     Volume = oldPlugin.Volume,

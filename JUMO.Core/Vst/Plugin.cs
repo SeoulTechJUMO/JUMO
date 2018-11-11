@@ -57,7 +57,7 @@ namespace JUMO.Vst
 
         public ISampleProvider SampleProvider { get; }
 
-        public Plugin(string pluginPath, IVstHostCommandStub hostCmdStub) : base(pluginPath, hostCmdStub)
+        public Plugin(string pluginPath) : base(pluginPath)
         {
             _volume = new VolumePanningSampleProvider(new VstSampleProvider(this));
             Volume = 0.8f;

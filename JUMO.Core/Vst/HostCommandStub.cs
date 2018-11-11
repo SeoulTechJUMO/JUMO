@@ -26,6 +26,9 @@ namespace JUMO.Vst
             { "sendVstMidiEventFlagIsRealtime", VstCanDoResult.Yes }, //< Host supports flags for #VstMidiEvent
         };
 
+        private IVstPluginContext _pluginContext;
+        private bool _isInitialized = false;
+
         #region IVstHostCommands10 Members
 
         public int GetCurrentPluginID() => PluginContext.PluginInfo.PluginID;
@@ -41,7 +44,20 @@ namespace JUMO.Vst
 
         #region IVstHostCommands20 Members
 
-        public IVstPluginContext PluginContext { get; set; }
+        public IVstPluginContext PluginContext
+        {
+            get => _pluginContext;
+            set
+            {
+                if (_isInitialized)
+                {
+                    throw new InvalidOperationException($"{nameof(PluginContext)} has already been set.");
+                }
+
+                _pluginContext = value;
+                _isInitialized = true;
+            }
+        }
 
         // Parameter automation is not yet supported.
         public bool BeginEdit(int index) => true;

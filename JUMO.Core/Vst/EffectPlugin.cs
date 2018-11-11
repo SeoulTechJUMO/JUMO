@@ -21,7 +21,7 @@ namespace JUMO.Vst
 
         #endregion
 
-        public EffectPlugin(string pluginPath, IVstHostCommandStub hostCmdStub) : base(pluginPath, hostCmdStub) { }
+        public EffectPlugin(string pluginPath) : base(pluginPath) { }
 
         public void ProcessEffect(VstAudioBuffer[] inBuffer, VstAudioBuffer[] outBuffer, int samplesPerBuffer)
         {

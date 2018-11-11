@@ -12,8 +12,7 @@ namespace JUMO.Vst
         {
             try
             {
-                HostCommandStub hostCmdStub = new HostCommandStub(); // TODO
-                EffectPlugin plugin = new EffectPlugin(pluginPath, hostCmdStub);
+                EffectPlugin plugin = new EffectPlugin(pluginPath);
 
                 lock (((ICollection)Plugins).SyncRoot)
                 {
@@ -36,7 +35,7 @@ namespace JUMO.Vst
 
             try
             {
-                EffectPlugin plugin = new EffectPlugin(pluginPath, new HostCommandStub())
+                EffectPlugin plugin = new EffectPlugin(pluginPath)
                 {
                     EffectMix = oldPlugin.EffectMix
                 };

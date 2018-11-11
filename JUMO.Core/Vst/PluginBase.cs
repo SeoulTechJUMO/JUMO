@@ -42,11 +42,11 @@ namespace JUMO.Vst
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler Disposed;
 
-        public PluginBase(string pluginPath, IVstHostCommandStub hostCmdStub)
+        public PluginBase(string pluginPath)
         {
             PluginPath = pluginPath;
 
-            _ctx = VstPluginContext.Create(PluginPath, hostCmdStub);
+            _ctx = VstPluginContext.Create(PluginPath, new HostCommandStub());
             PluginCommandStub = _ctx.PluginCommandStub;
             PluginCommandStub.Open();
             PluginCommandStub.SetSampleRate(44100.0f);
