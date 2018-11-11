@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
 using JUMO.UI.Layouts;
 
 namespace JUMO.UI
@@ -15,10 +17,17 @@ namespace JUMO.UI
 
         public static PluginEditorManager Instance => _instance.Value;
 
-        private PluginEditorManager() { }
+        private PluginEditorManager()
+        {
+            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(25), DispatcherPriority.Input, OnTimerTick, Application.Current.Dispatcher)
+            {
+                IsEnabled = false
+            };
+        }
 
         #endregion
 
+        private readonly DispatcherTimer _timer;
         private readonly IDictionary<Vst.PluginBase, PluginEditorWindow> _table = new Dictionary<Vst.PluginBase, PluginEditorWindow>();
 
         /// <summary>
@@ -40,6 +49,12 @@ namespace JUMO.UI
                 PluginEditorWindow newWindow = new PluginEditorWindow(plugin);
                 newWindow.Closed += PluginWindow_Closed;
                 plugin.Disposed += OnPluginDisposed;
+
+                if (_table.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("PluginEditorManager::OpenEditor Starting the timer.");
+                    _timer.Start();
+                }
 
                 _table.Add(plugin, newWindow);
                 newWindow.Show();
@@ -66,6 +81,20 @@ namespace JUMO.UI
             if (sender is PluginEditorWindow window)
             {
                 _table.Remove(window.Plugin);
+
+                if (_table.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("PluginEditorManager::PluginWindow_Closed Stopping the timer.");
+                    _timer.Stop();
+                }
+            }
+        }
+
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            foreach (Vst.PluginBase plugin in _table.Keys)
+            {
+                plugin.PluginCommandStub.EditorIdle();
             }
         }
 
