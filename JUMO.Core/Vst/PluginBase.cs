@@ -47,7 +47,7 @@ namespace JUMO.Vst
         {
             PluginPath = pluginPath;
 
-            _ctx = VstPluginContext.Create(PluginPath, new HostCommandStub());
+            _ctx = VstPluginContext.Create(PluginPath, new HostCommandStub(this));
             PluginCommandStub = _ctx.PluginCommandStub;
             PluginCommandStub.Open();
             PluginCommandStub.SetSampleRate(44100.0f);

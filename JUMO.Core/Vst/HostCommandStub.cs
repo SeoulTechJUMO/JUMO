@@ -26,8 +26,15 @@ namespace JUMO.Vst
             { "sendVstMidiEventFlagIsRealtime", VstCanDoResult.Yes }, //< Host supports flags for #VstMidiEvent
         };
 
+        private readonly PluginBase _plugin;
+
         private IVstPluginContext _pluginContext;
         private bool _isInitialized = false;
+
+        public HostCommandStub(PluginBase plugin)
+        {
+            _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+        }
 
         #region IVstHostCommands10 Members
 
@@ -187,7 +194,9 @@ namespace JUMO.Vst
 
         public bool UpdateDisplay()
         {
-            //throw new NotImplementedException();
+            Debug.WriteLine($"{PluginContext.PluginCommandStub?.GetEffectName()}: UpdateDisplay");
+            _plugin.RequestUpdateDisplay();
+
             return true;
         }
 
