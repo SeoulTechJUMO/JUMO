@@ -40,6 +40,7 @@ namespace JUMO.Vst
         #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler UpdateDisplayRequested;
         public event EventHandler Disposed;
 
         public PluginBase(string pluginPath)
@@ -91,6 +92,11 @@ namespace JUMO.Vst
 
                 return true;
             }
+        }
+
+        internal void RequestUpdateDisplay()
+        {
+            UpdateDisplayRequested?.Invoke(this, EventArgs.Empty);
         }
 
         internal float[] DumpParameters()
