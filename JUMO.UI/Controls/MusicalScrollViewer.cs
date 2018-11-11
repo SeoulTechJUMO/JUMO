@@ -32,16 +32,9 @@ namespace JUMO.UI.Controls
                 new FrameworkPropertyMetadata(2.0)
             );
 
-        public static readonly DependencyProperty BarIndicatorBackgroundProperty =
+        public static readonly DependencyProperty BarIndicatorProperty =
             DependencyProperty.Register(
-                "BarIndicatorBackground", typeof(Brush), typeof(MusicalScrollViewer),
-                new FrameworkPropertyMetadata(SystemColors.ControlBrush)
-            );
-
-        public static readonly DependencyProperty BarIndicatorForegroundProperty =
-            DependencyProperty.Register(
-                "BarIndicatorForeground", typeof(Brush), typeof(MusicalScrollViewer),
-                new FrameworkPropertyMetadata(Brushes.Black)
+                "BarIndicator", typeof(FrameworkElement), typeof(MusicalScrollViewer)
             );
 
         public static readonly DependencyProperty ShouldDrawHorizontalGridProperty =
@@ -96,16 +89,10 @@ namespace JUMO.UI.Controls
             set => SetValue(BarGridThicknessProperty, value);
         }
 
-        public Brush BarIndicatorBackground
+        public FrameworkElement BarIndicator
         {
-            get => (Brush)GetValue(BarIndicatorBackgroundProperty);
-            set => SetValue(BarIndicatorBackgroundProperty, value);
-        }
-
-        public Brush BarIndicatorForeground
-        {
-            get => (Brush)GetValue(BarIndicatorForegroundProperty);
-            set => SetValue(BarIndicatorForegroundProperty, value);
+            get => (FrameworkElement)GetValue(BarIndicatorProperty);
+            set => SetValue(BarIndicatorProperty, value);
         }
 
         public bool ShouldDrawHorizontalGrid

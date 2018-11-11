@@ -94,11 +94,17 @@
                                       BeatGridBrush="{x:Null}"
                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                       BarGridThickness="1"
-                                      BarIndicatorBackground="{StaticResource LightControlFaceColor}"
-                                      BarIndicatorForeground="{StaticResource LightPrimaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
                                       CanContentScroll="True">
+                <ctrl:MusicalScrollViewer.BarIndicator>
+                    <ctrl:BarIndicator ClipToBounds="True" SnapsToDevicePixels="True"
+                                       BarGridThickness="1"
+                                       ScrollOffset="{Binding ElementName=MainScrollViewer, Path=HorizontalOffset}"
+                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
+                                       Background="{StaticResource LightControlFaceColor}"
+                                       Foreground="{StaticResource LightPrimaryTextColor}" />
+                </ctrl:MusicalScrollViewer.BarIndicator>
                 <ctrl:PlaylistCanvas Items="{Binding PlacedPatterns}"
                                      SelectedItems="{Binding SelectedItems}"
                                      GridStep="{Binding GridStep}"

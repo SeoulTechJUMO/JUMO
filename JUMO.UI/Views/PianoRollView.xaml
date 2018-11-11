@@ -94,11 +94,16 @@
                                       SmallGridBrush="{StaticResource LightControlBorderColor}"
                                       BeatGridBrush="{StaticResource LightSecondaryTextColor}"
                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
-                                      BarIndicatorBackground="{StaticResource LightControlFaceColor}"
-                                      BarIndicatorForeground="{StaticResource LightPrimaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="20"
                                       CanContentScroll="True">
+                <ctrl:MusicalScrollViewer.BarIndicator>
+                    <ctrl:BarIndicator ClipToBounds="True" SnapsToDevicePixels="True"
+                                       ScrollOffset="{Binding ElementName=MainScrollViewer, Path=HorizontalOffset}"
+                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
+                                       Background="{StaticResource LightControlFaceColor}"
+                                       Foreground="{StaticResource LightPrimaryTextColor}" />
+                </ctrl:MusicalScrollViewer.BarIndicator>
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
                                       SelectedItems="{Binding SelectedItems}"
                                       ExtentHeightOverride="2560"

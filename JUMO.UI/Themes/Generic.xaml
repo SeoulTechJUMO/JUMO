@@ -51,15 +51,11 @@
                                    Maximum="{TemplateBinding ScrollableWidth}"
                                    ViewportSize="{TemplateBinding ViewportWidth}"
                                    Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
-                        <ctrl:BarIndicator Grid.Row="1" Grid.Column="0"
-                                           ClipToBounds="True"
-                                           BarGridBrush="{TemplateBinding BarGridBrush}"
-                                           BarGridThickness="{TemplateBinding BarGridThickness}"
-                                           ScrollOffset="{TemplateBinding HorizontalOffset}"
-                                           Background="{TemplateBinding BarIndicatorBackground}"
-                                           Foreground="{TemplateBinding BarIndicatorForeground}"
-                                           Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
-                                           Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
+                        <ContentControl Grid.Row="1" Grid.Column="0"
+                                        MinHeight="{x:Static SystemParameters.HorizontalScrollBarHeight}"
+                                        MaxHeight="{x:Static SystemParameters.HorizontalScrollBarHeight}"
+                                        Content="{TemplateBinding BarIndicator}"
+                                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
                         <ScrollBar x:Name="PART_VerticalScrollBar"
                                    Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
                                    Orientation="Vertical"
