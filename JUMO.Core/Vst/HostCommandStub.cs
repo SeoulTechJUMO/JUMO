@@ -8,7 +8,7 @@ namespace JUMO.Vst
 {
     class HostCommandStub : IVstHostCommandStub
     {
-        private readonly Dictionary<string, VstCanDoResult> _canDoAnswers = new Dictionary<string, VstCanDoResult>()
+        private static readonly Dictionary<string, VstCanDoResult> _canDoAnswers = new Dictionary<string, VstCanDoResult>()
         {
             { "sendVstEvents", VstCanDoResult.Unknown }, //< Host supports send of Vst events to plug-in
             { "sendVstMidiEvent", VstCanDoResult.Yes }, //< Host supports send of MIDI events to plug-in
@@ -45,7 +45,11 @@ namespace JUMO.Vst
         public void ProcessIdle() { }
 
         // Parameter automation is not yet supported.
-        public void SetParameterAutomated(int index, float value) { }
+        public void SetParameterAutomated(int index, float value)
+        {
+            Debug.WriteLine($"{PluginContext.PluginCommandStub?.GetEffectName()}: SetParameterAutomated index = {index}, value = {value}");
+            _plugin.RequestUpdateDisplay();
+        }
 
         #endregion
 
@@ -189,7 +193,7 @@ namespace JUMO.Vst
 
         public bool SizeWindow(int width, int height)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool UpdateDisplay()
