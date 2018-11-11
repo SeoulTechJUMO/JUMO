@@ -69,10 +69,7 @@ namespace JUMO.Vst
             throw new NotImplementedException();
         }
 
-        public int GetBlockSize()
-        {
-            throw new NotImplementedException();
-        }
+        public int GetBlockSize() => PluginBase.PluginBlockSize;
 
         public string GetDirectory()
         {

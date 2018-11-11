@@ -10,6 +10,8 @@ namespace JUMO.Vst
 {
     public abstract class PluginBase : IDisposable, INotifyPropertyChanged
     {
+        public const int PluginBlockSize = 256;
+
         private readonly IVstPluginContext _ctx;
         private readonly List<VstMidiEvent> _pendingEvents = new List<VstMidiEvent>();
 
@@ -48,7 +50,7 @@ namespace JUMO.Vst
             PluginCommandStub = _ctx.PluginCommandStub;
             PluginCommandStub.Open();
             PluginCommandStub.SetSampleRate(44100.0f);
-            PluginCommandStub.SetBlockSize(256);
+            PluginCommandStub.SetBlockSize(PluginBlockSize);
             PluginCommandStub.MainsChanged(true);
             PluginCommandStub.StartProcess();
 
