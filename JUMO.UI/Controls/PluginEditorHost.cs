@@ -12,7 +12,8 @@ namespace JUMO.UI.Controls
     /// </summary>
     public class PluginEditorHost : HwndHost
     {
-        private IVstPluginCommandStub _pluginCmdStub;
+        private readonly Vst.PluginBase _plugin;
+        private readonly IVstPluginCommandStub _pluginCmdStub;
 
         /// <summary>
         /// 새로운 PluginEditorHost 인스턴스를 생성합니다.
@@ -20,6 +21,7 @@ namespace JUMO.UI.Controls
         /// <param name="plugin">편집기를 열 VST 플러그인</param>
         public PluginEditorHost(Vst.PluginBase plugin)
         {
+            _plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
             _pluginCmdStub = plugin.PluginCommandStub;
         }
 
@@ -46,6 +48,8 @@ namespace JUMO.UI.Controls
                         return 0;
                     }, IntPtr.Zero);
 
+                    _plugin.UpdateDisplayRequested += OnUpdateDisplayRequested;
+
                     return new HandleRef(this, childrenHWnd[0]);
                 }
 
@@ -58,11 +62,20 @@ namespace JUMO.UI.Controls
         protected override void DestroyWindowCore(HandleRef hwnd)
         {
             System.Diagnostics.Debug.WriteLine("PluginEditorHost::DestroyWindowCore called");
+            _plugin.UpdateDisplayRequested -= OnUpdateDisplayRequested;
             _pluginCmdStub.EditorClose();
+        }
+
+        private void OnUpdateDisplayRequested(object sender, EventArgs e)
+        {
+            InvalidateRect(Handle, IntPtr.Zero, 0);
         }
 
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
         private static extern int EnumChildWindows(IntPtr hWndParent, EnumChildProc callback, IntPtr lParam);
+
+        [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall)]
+        private static extern int InvalidateRect(IntPtr hWnd, IntPtr lpRect, int bErase);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate int EnumChildProc(IntPtr hWnd, IntPtr lParam);
