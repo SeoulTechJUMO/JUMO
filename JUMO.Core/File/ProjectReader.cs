@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace JUMO.File
 {
-    public class ProjectReader
+    public class ProjectReader : IProjectReader
     {
         public const uint MinimumSupportedVersion = 0;
         public const uint MaximumSupportedVersion = 1;
@@ -33,13 +33,13 @@ namespace JUMO.File
                         {
                             case 0U:
                                 System.Diagnostics.Debug.WriteLine("ProjectReader::LoadFile Version 0 format detected.");
-                                new ProjectReader().LoadFile(stream, path);
+                                new ProjectReader().DoLoadFile(stream, path);
 
                                 break;
 
                             case 1U:
                                 System.Diagnostics.Debug.WriteLine("ProjectReader::LoadFile Version 1 format detected.");
-                                new V1.ProjectReader().LoadFile(stream, path);
+                                new V1.ProjectReader().DoLoadFile(stream, path);
 
                                 break;
 
@@ -61,7 +61,7 @@ namespace JUMO.File
             }
         }
 
-        public void LoadFile(Stream stream, string path)
+        public void DoLoadFile(Stream stream, string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             ProjectFile file = (ProjectFile)formatter.Deserialize(stream);

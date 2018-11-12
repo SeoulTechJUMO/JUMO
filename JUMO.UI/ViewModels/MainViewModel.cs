@@ -108,7 +108,7 @@ namespace JUMO.UI
             }
             else
             {
-                new File.ProjectWriter().SaveFile(Song.FilePath);
+                File.ProjectWriter.SaveFile(Song.FilePath);
             }
         }
 
@@ -125,7 +125,7 @@ namespace JUMO.UI
 
             if (fdvm.FileName != null)
             {
-                new File.ProjectWriter().SaveFile(fdvm.FileName);
+                File.ProjectWriter.SaveFile(fdvm.FileName);
             }
         }
 

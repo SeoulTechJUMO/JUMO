@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace JUMO.File.V1
 {
-    public class ProjectReader
+    public class ProjectReader : IProjectReader
     {
         private const uint Version = 1;
 
@@ -15,7 +15,7 @@ namespace JUMO.File.V1
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
         private readonly MixerManager _mixerManager = MixerManager.Instance;
 
-        public void LoadFile(Stream stream, string path)
+        public void DoLoadFile(Stream stream, string path)
         {
             BinaryFormatter formatter = new BinaryFormatter();
             ProjectFile file = (ProjectFile)formatter.Deserialize(stream);

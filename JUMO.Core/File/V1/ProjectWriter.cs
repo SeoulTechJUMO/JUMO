@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace JUMO.File.V1
 {
-    public class ProjectWriter
+    public class ProjectWriter : IProjectWriter
     {
         private static readonly byte[] MagicBytes = new byte[4] { 75, 73, 65, 126 };
         private static readonly byte[] VersionData = new byte[4] { 1, 0, 0, 0 };
@@ -13,7 +13,7 @@ namespace JUMO.File.V1
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
         private readonly MixerManager _mixerManager = MixerManager.Instance;
 
-        public bool SaveFile(string path)
+        public bool DoSaveFile(string path)
         {
             ProjectFile file = PrepareFile();
             BinaryFormatter formatter = new BinaryFormatter();

@@ -90,6 +90,7 @@
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
     <Compile Include="File\EffectPlugin.cs" />
+    <Compile Include="File\Interfaces.cs" />
     <Compile Include="File\MixerChannel.cs" />
     <Compile Include="File\Note.cs" />
     <Compile Include="File\Pattern.cs" />
