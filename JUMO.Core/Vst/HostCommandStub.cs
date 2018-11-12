@@ -88,31 +88,36 @@ namespace JUMO.Vst
 
         public bool CloseFileSelector(VstFileSelect fileSelect)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return false;
         }
 
         public VstAutomationStates GetAutomationState()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return VstAutomationStates.Unsupported;
         }
 
         public int GetBlockSize() => PluginBase.PluginBlockSize;
 
         public string GetDirectory()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return null;
         }
 
         public int GetInputLatency()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return 0;
         }
 
         public VstHostLanguage GetLanguage() => VstHostLanguage.English;
 
         public int GetOutputLatency()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return 0;
         }
 
         public VstProcessLevels GetProcessLevel() => VstProcessLevels.Unknown;
@@ -178,22 +183,25 @@ namespace JUMO.Vst
 
         public bool IoChanged()
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return false;
         }
 
         public bool OpenFileSelector(VstFileSelect fileSelect)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return false;
         }
 
         public bool ProcessEvents(VstEvent[] events)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            return false;
         }
 
         public bool SizeWindow(int width, int height)
         {
-            return true;
+            return false;
         }
 
         public bool UpdateDisplay()
