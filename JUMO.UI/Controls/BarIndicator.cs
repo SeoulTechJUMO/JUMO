@@ -60,6 +60,18 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty CurrentPositionProperty =
+            DependencyProperty.Register(
+                "CurrentPosition", typeof(int), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
+
+        public static readonly DependencyProperty ShouldDrawCurrentPositionProperty =
+            DependencyProperty.Register(
+                "ShouldDrawCurrentPosition", typeof(bool), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
+
         #endregion
 
         #region Properties
@@ -97,6 +109,18 @@ namespace JUMO.UI.Controls
         {
             get => (double)GetValue(ScrollOffsetProperty);
             set => SetValue(ScrollOffsetProperty, value);
+        }
+
+        public int CurrentPosition
+        {
+            get => (int)GetValue(CurrentPositionProperty);
+            set => SetValue(CurrentPositionProperty, value);
+        }
+
+        public bool ShouldDrawCurrentPosition
+        {
+            get => (bool)GetValue(ShouldDrawCurrentPositionProperty);
+            set => SetValue(ShouldDrawCurrentPositionProperty, value);
         }
 
         #endregion
