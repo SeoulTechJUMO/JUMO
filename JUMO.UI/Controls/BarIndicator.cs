@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace JUMO.UI.Controls
@@ -31,32 +27,28 @@ namespace JUMO.UI.Controls
                 )
             );
 
-        public static readonly DependencyProperty BarGridBrushProperty =
-            DependencyProperty.Register(
-                "BarGridBrush", typeof(Brush), typeof(BarIndicator),
-                new FrameworkPropertyMetadata(
-                    Brushes.Black,
-                    FrameworkPropertyMetadataOptions.AffectsRender,
-                    GridBrushPropertyChangedCallback
-                )
-            );
-
-        public static readonly DependencyProperty BarGridThicknessProperty =
-            DependencyProperty.Register(
-                "BarGridThickness", typeof(double), typeof(BarIndicator),
-                new FrameworkPropertyMetadata(
-                    2.0,
-                    FrameworkPropertyMetadataOptions.AffectsRender,
-                    GridBrushPropertyChangedCallback
-                )
-            );
-
         public static readonly DependencyProperty ScrollOffsetProperty =
             DependencyProperty.Register(
                 "ScrollOffset", typeof(double), typeof(BarIndicator),
                 new FrameworkPropertyMetadata(
                     0.0,
                     FrameworkPropertyMetadataOptions.AffectsRender
+                )
+            );
+
+        public static readonly DependencyProperty CurrentPositionProperty =
+            DependencyProperty.Register(
+                "CurrentPosition", typeof(int), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(0, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
+
+        public static readonly DependencyProperty ShouldDrawCurrentPositionProperty =
+            DependencyProperty.Register(
+                "ShouldDrawCurrentPosition", typeof(bool), typeof(BarIndicator),
+                new FrameworkPropertyMetadata(
+                    false,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    ShouldDrawCurrentPositionPropertyChangedCallback
                 )
             );
 
@@ -81,43 +73,75 @@ namespace JUMO.UI.Controls
             set => SetValue(ForegroundProperty, value);
         }
 
-        public Brush BarGridBrush
-        {
-            get => (Brush)GetValue(BarGridBrushProperty);
-            set => SetValue(BarGridBrushProperty, value);
-        }
-
-        public double BarGridThickness
-        {
-            get => (double)GetValue(BarGridThicknessProperty);
-            set => SetValue(BarGridThicknessProperty, value);
-        }
-
         public double ScrollOffset
         {
             get => (double)GetValue(ScrollOffsetProperty);
             set => SetValue(ScrollOffsetProperty, value);
         }
 
+        public int CurrentPosition
+        {
+            get => (int)GetValue(CurrentPositionProperty);
+            set => SetValue(CurrentPositionProperty, value);
+        }
+
+        public bool ShouldDrawCurrentPosition
+        {
+            get => (bool)GetValue(ShouldDrawCurrentPositionProperty);
+            set => SetValue(ShouldDrawCurrentPositionProperty, value);
+        }
+
         #endregion
 
-        private Pen _barGridPen;
+        private static readonly Typeface _typeface = new Typeface("Segoe UI");
+
+        private readonly VisualCollection _children;
+        private readonly BarIndicatorGrip _grip;
+
+        private double _tickWidth;
         private double _barWidth;
 
-        protected override void OnInitialized(EventArgs e)
+        protected override int VisualChildrenCount => _children.Count;
+
+        public BarIndicator()
         {
-            UpdatePen();
-            base.OnInitialized(e);
+            _grip = new BarIndicatorGrip()
+            {
+                Background = new SolidColorBrush(Color.FromArgb(0xff, 0xba, 0xe8, 0x54)),
+                BorderBrush = new SolidColorBrush(Color.FromArgb(0xff, 0x58, 0x5a, 0x81))
+            };
+
+            _children = new VisualCollection(this);
         }
+
+        protected override Visual GetVisualChild(int index) => _children[index];
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double tickWidth = ZoomFactor * 4 / TimeResolution;
+            Size desiredSize = base.MeasureOverride(availableSize);
+
+            _tickWidth = ZoomFactor * 4 / TimeResolution;
             int ticksPerBar = (TimeResolution * Numerator * 4) / Denominator;
+            _barWidth = ticksPerBar * _tickWidth;
 
-            _barWidth = ticksPerBar * tickWidth;
+            if (ShouldDrawCurrentPosition)
+            {
+                _grip.Measure(new Size(16, 16));
+            }
 
-            return base.MeasureOverride(availableSize);
+            return desiredSize;
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            Size size = base.ArrangeOverride(finalSize);
+
+            if (ShouldDrawCurrentPosition)
+            {
+                _grip.Arrange(new Rect(new Point(CurrentPosition * _tickWidth - ScrollOffset - 8, 0), new Size(16, 16)));
+            }
+
+            return size;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -129,31 +153,65 @@ namespace JUMO.UI.Controls
 
             while (nextBarPos <= RenderSize.Width)
             {
-                dc.DrawLine(_barGridPen, new Point(nextBarPos, 0), new Point(nextBarPos, RenderSize.Height));
-                dc.DrawText(
-                    new FormattedText(
-                        $"{nextBar + 1}",
-                        CultureInfo.CurrentUICulture,
-                        FlowDirection.LeftToRight,
-                        new Typeface("Segoe UI"),
-                        12.0,
-                        Foreground
-                    ),
-                    new Point(nextBarPos + 3, 0)
+                FormattedText barNumberText = new FormattedText(
+                    $"{nextBar + 1}",
+                    CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    _typeface,
+                    10.0,
+                    Foreground
                 );
+
+                dc.DrawText(barNumberText, new Point(nextBarPos + 2, RenderSize.Height - barNumberText.Height));
                 nextBar += 1;
                 nextBarPos += _barWidth;
             }
         }
 
-        private void UpdatePen()
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            _barGridPen = new Pen(BarGridBrush, BarGridThickness);
+            CaptureMouse();
+            SetPosition(e.GetPosition(this));
         }
 
-        private static void GridBrushPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            (d as BarIndicator)?.UpdatePen();
+            ReleaseMouseCapture();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                SetPosition(e.GetPosition(this));
+            }
+        }
+
+        private void SetPosition(Point pt)
+        {
+            if (ShouldDrawCurrentPosition)
+            {
+                CurrentPosition = (int)((pt.X + ScrollOffset) / _tickWidth);
+            }
+        }
+
+        private static void ShouldDrawCurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue == (bool)e.OldValue)
+            {
+                return;
+            }
+
+            BarIndicator that = (BarIndicator)d;
+
+            if ((bool)e.NewValue)
+            {
+                that._children.Add(that._grip);
+            }
+            else
+            {
+                that._children.Remove(that._grip);
+            }
         }
     }
 }

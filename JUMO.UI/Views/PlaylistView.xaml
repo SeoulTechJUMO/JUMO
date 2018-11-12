@@ -94,11 +94,29 @@
                                       BeatGridBrush="{x:Null}"
                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                       BarGridThickness="1"
-                                      BarIndicatorBackground="{StaticResource LightControlFaceColor}"
-                                      BarIndicatorForeground="{StaticResource LightPrimaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="60"
                                       CanContentScroll="True">
+                <ctrl:MusicalScrollViewer.BarIndicator>
+                    <ctrl:BarIndicator ClipToBounds="True" SnapsToDevicePixels="True"
+                                       ScrollOffset="{Binding ElementName=MainScrollViewer, Path=HorizontalOffset}"
+                                       CurrentPosition="{Binding Sequencer.Position, Mode=TwoWay}"
+                                       Background="{StaticResource LightControlFaceColor}"
+                                       Foreground="{StaticResource LightPrimaryTextColor}">
+                        <ctrl:BarIndicator.Style>
+                            <Style TargetType="{x:Type ctrl:BarIndicator}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
+                                        <Setter Property="ShouldDrawCurrentPosition" Value="True" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
+                                        <Setter Property="ShouldDrawCurrentPosition" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ctrl:BarIndicator.Style>
+                    </ctrl:BarIndicator>
+                </ctrl:MusicalScrollViewer.BarIndicator>
                 <ctrl:PlaylistCanvas Items="{Binding PlacedPatterns}"
                                      SelectedItems="{Binding SelectedItems}"
                                      GridStep="{Binding GridStep}"
