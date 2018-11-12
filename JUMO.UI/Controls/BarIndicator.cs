@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
@@ -93,6 +88,8 @@ namespace JUMO.UI.Controls
 
         #endregion
 
+        private static readonly Typeface _typeface = new Typeface("Segoe UI");
+
         private double _barWidth;
 
         protected override Size MeasureOverride(Size availableSize)
@@ -114,17 +111,16 @@ namespace JUMO.UI.Controls
 
             while (nextBarPos <= RenderSize.Width)
             {
-                dc.DrawText(
-                    new FormattedText(
-                        $"{nextBar + 1}",
-                        CultureInfo.CurrentUICulture,
-                        FlowDirection.LeftToRight,
-                        new Typeface("Segoe UI"),
-                        12.0,
-                        Foreground
-                    ),
-                    new Point(nextBarPos + 3, 0)
+                FormattedText barNumberText = new FormattedText(
+                    $"{nextBar + 1}",
+                    CultureInfo.CurrentUICulture,
+                    FlowDirection.LeftToRight,
+                    _typeface,
+                    10.0,
+                    Foreground
                 );
+
+                dc.DrawText(barNumberText, new Point(nextBarPos + 2, RenderSize.Height - barNumberText.Height));
                 nextBar += 1;
                 nextBarPos += _barWidth;
             }
