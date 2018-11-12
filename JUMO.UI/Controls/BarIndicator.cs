@@ -45,7 +45,11 @@ namespace JUMO.UI.Controls
         public static readonly DependencyProperty ShouldDrawCurrentPositionProperty =
             DependencyProperty.Register(
                 "ShouldDrawCurrentPosition", typeof(bool), typeof(BarIndicator),
-                new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.AffectsRender)
+                new FrameworkPropertyMetadata(
+                    false,
+                    FrameworkPropertyMetadataOptions.AffectsRender,
+                    ShouldDrawCurrentPositionPropertyChangedCallback
+                )
             );
 
         #endregion
@@ -91,17 +95,53 @@ namespace JUMO.UI.Controls
 
         private static readonly Typeface _typeface = new Typeface("Segoe UI");
 
+        private readonly VisualCollection _children;
+        private readonly BarIndicatorGrip _grip;
+
         private double _tickWidth;
         private double _barWidth;
 
+        protected override int VisualChildrenCount => _children.Count;
+
+        public BarIndicator()
+        {
+            _grip = new BarIndicatorGrip()
+            {
+                Background = new SolidColorBrush(Color.FromArgb(0xff, 0xba, 0xe8, 0x54)),
+                BorderBrush = new SolidColorBrush(Color.FromArgb(0xff, 0x58, 0x5a, 0x81))
+            };
+
+            _children = new VisualCollection(this);
+        }
+
+        protected override Visual GetVisualChild(int index) => _children[index];
+
         protected override Size MeasureOverride(Size availableSize)
         {
+            Size desiredSize = base.MeasureOverride(availableSize);
+
             _tickWidth = ZoomFactor * 4 / TimeResolution;
             int ticksPerBar = (TimeResolution * Numerator * 4) / Denominator;
-
             _barWidth = ticksPerBar * _tickWidth;
 
-            return base.MeasureOverride(availableSize);
+            if (ShouldDrawCurrentPosition)
+            {
+                _grip.Measure(new Size(16, 16));
+            }
+
+            return desiredSize;
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            Size size = base.ArrangeOverride(finalSize);
+
+            if (ShouldDrawCurrentPosition)
+            {
+                _grip.Arrange(new Rect(new Point(CurrentPosition * _tickWidth - ScrollOffset - 8, 0), new Size(16, 16)));
+            }
+
+            return size;
         }
 
         protected override void OnRender(DrawingContext dc)
@@ -152,6 +192,25 @@ namespace JUMO.UI.Controls
             if (ShouldDrawCurrentPosition)
             {
                 CurrentPosition = (int)((pt.X + ScrollOffset) / _tickWidth);
+            }
+        }
+
+        private static void ShouldDrawCurrentPositionPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((bool)e.NewValue == (bool)e.OldValue)
+            {
+                return;
+            }
+
+            BarIndicator that = (BarIndicator)d;
+
+            if ((bool)e.NewValue)
+            {
+                that._children.Add(that._grip);
+            }
+            else
+            {
+                that._children.Remove(that._grip);
             }
         }
     }
