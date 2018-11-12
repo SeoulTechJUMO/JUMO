@@ -7,6 +7,9 @@ namespace JUMO.File
 {
     public class ProjectReader
     {
+        public const uint MinimumSupportedVersion = 0;
+        public const uint MaximumSupportedVersion = 1;
+
         private const uint Version = 0;
 
         private static readonly byte[] MagicBytes = new byte[4] { 75, 73, 65, 126 };
@@ -15,23 +18,36 @@ namespace JUMO.File
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
         private readonly MixerManager _mixerManager = MixerManager.Instance;
 
-        public void LoadFile(string path)
+        public static void LoadFile(string path)
         {
             try
             {
                 using (Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
                     bool magicOK = CheckMagic(stream);
-                    bool versionOK = CheckVersion(stream);
+                    bool versionOK = CheckVersion(stream, out uint version);
 
                     if (magicOK && versionOK)
                     {
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        ProjectFile file = (ProjectFile)formatter.Deserialize(stream);
+                        switch (version)
+                        {
+                            case 0U:
+                                System.Diagnostics.Debug.WriteLine("ProjectReader::LoadFile Version 0 format detected.");
+                                new ProjectReader().LoadFile(stream, path);
 
-                        DoLoadFile(file);
+                                break;
 
-                        _song.FilePath = path;
+                            case 1U:
+                                System.Diagnostics.Debug.WriteLine("ProjectReader::LoadFile Version 1 format detected.");
+                                new V1.ProjectReader().LoadFile(stream, path);
+
+                                break;
+
+                            default:
+                                System.Diagnostics.Debug.WriteLine("ProjectReader::LoadFile Unsupported file format.");
+                                // Fail
+                                break;
+                        }
                     }
                     else
                     {
@@ -45,7 +61,17 @@ namespace JUMO.File
             }
         }
 
-        private bool CheckMagic(Stream stream)
+        public void LoadFile(Stream stream, string path)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            ProjectFile file = (ProjectFile)formatter.Deserialize(stream);
+
+            DoLoadFile(file);
+
+            _song.FilePath = path;
+        }
+
+        private static bool CheckMagic(Stream stream)
         {
             byte[] buf = new byte[4];
 
@@ -57,16 +83,18 @@ namespace JUMO.File
             return false;
         }
 
-        private bool CheckVersion(Stream stream)
+        private static bool CheckVersion(Stream stream, out uint version)
         {
             byte[] buf = new byte[4];
 
             if (stream.Read(buf, 0, 4) == 4)
             {
-                uint parsedVersion = BitConverter.ToUInt32(buf, 0);
+                version = BitConverter.ToUInt32(buf, 0);
 
-                return parsedVersion == Version;
+                return true;
             }
+
+            version = 0;
 
             return false;
         }

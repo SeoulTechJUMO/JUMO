@@ -96,7 +96,7 @@ namespace JUMO.UI
 
             if (fdvm.FileName != null)
             {
-                new File.ProjectReader().LoadFile(fdvm.FileName);
+                File.ProjectReader.LoadFile(fdvm.FileName);
             }
         }
 

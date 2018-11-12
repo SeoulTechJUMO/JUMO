@@ -15,34 +15,14 @@ namespace JUMO.File.V1
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
         private readonly MixerManager _mixerManager = MixerManager.Instance;
 
-        public void LoadFile(string path)
+        public void LoadFile(Stream stream, string path)
         {
-            try
-            {
-                using (Stream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
-                {
-                    bool magicOK = CheckMagic(stream);
-                    bool versionOK = CheckVersion(stream);
+            BinaryFormatter formatter = new BinaryFormatter();
+            ProjectFile file = (ProjectFile)formatter.Deserialize(stream);
 
-                    if (magicOK && versionOK)
-                    {
-                        BinaryFormatter formatter = new BinaryFormatter();
-                        ProjectFile file = (ProjectFile)formatter.Deserialize(stream);
+            DoLoadFile(file);
 
-                        DoLoadFile(file);
-
-                        _song.FilePath = path;
-                    }
-                    else
-                    {
-                        // Fail
-                    }
-                }
-            }
-            catch
-            {
-                // Fail
-            }
+            _song.FilePath = path;
         }
 
         private bool CheckMagic(Stream stream)
