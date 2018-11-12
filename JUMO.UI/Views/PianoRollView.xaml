@@ -9,7 +9,28 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources/Skin.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Skin.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="{x:Type ctrl:MusicalScrollViewer}">
+                <Setter Property="SmallGridBrush" Value="{StaticResource LightControlBorderColor}" />
+                <Setter Property="BeatGridBrush" Value="{StaticResource LightSecondaryTextColor}" />
+                <Setter Property="BarGridBrush" Value="{StaticResource LightSecondaryTextColor}" />
+            </Style>
+
+            <Style x:Key="CanvasStyle" TargetType="{x:Type ctrl:MusicalCanvasBase}">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
+                        <Setter Property="ShouldDrawCurrentPosition" Value="True" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
+                        <Setter Property="ShouldDrawCurrentPosition" Value="False" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid proj:MusicalProps.Numerator="{Binding Song.Numerator}"
           proj:MusicalProps.Denominator="{Binding Song.Denominator}"
@@ -75,8 +96,7 @@
             <Rectangle Grid.Row="0" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
             <Rectangle Grid.Row="1" Grid.Column="0" Height="{x:Static SystemParameters.HorizontalScrollBarHeight}" />
             <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"></Grid>
-            <ScrollViewer x:Name="KeyScrollViewer"
-                          Grid.Row="2" Grid.Column="0"
+            <ScrollViewer Grid.Row="2" Grid.Column="0"
                           proj:ScrollViewerHelper.SyncGroup="{Binding}"
                           proj:ScrollViewerHelper.SyncDirection="Vertical"
                           HorizontalScrollBarVisibility="Hidden"
@@ -91,9 +111,6 @@
                                       proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                       HorizontalScrollBarVisibility="Visible"
                                       VerticalScrollBarVisibility="Visible"
-                                      SmallGridBrush="{StaticResource LightControlBorderColor}"
-                                      BeatGridBrush="{StaticResource LightSecondaryTextColor}"
-                                      BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                       GridStep="{Binding GridStep}"
                                       GridHeight="20"
                                       CanContentScroll="True">
@@ -110,54 +127,28 @@
                                       GridStep="{Binding GridStep}"
                                       SnapToGrid="{Binding SnapToGrid}"
                                       CurrentPosition="{Binding Sequencer.Position, Mode=OneWay}"
+                                      Style="{StaticResource CanvasStyle}"
                                       AddNoteRequested="PianoRollCanvas_AddNoteRequested"
                                       DeleteNoteRequested="PianoRollCanvas_DeleteNoteRequested"
                                       SelectionChanged="PianoRollCanvas_SelectionChanged"
                                       PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
-                    <ctrl:PianoRollCanvas.Style>
-                        <Style TargetType="{x:Type ctrl:PianoRollCanvas}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
-                                    <Setter Property="ShouldDrawCurrentPosition" Value="True" />
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
-                                    <Setter Property="ShouldDrawCurrentPosition" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ctrl:PianoRollCanvas.Style>
                 </ctrl:PianoRollCanvas>
             </ctrl:MusicalScrollViewer>
             <Border Grid.Row="3" Grid.Column="1" BorderBrush="{StaticResource LightSecondaryTextColor}" BorderThickness="0,1,0,0">
-                <ctrl:MusicalScrollViewer x:Name="VelocityScrollViewer"
-                                          Grid.Row="3" Grid.Column="1"
+                <ctrl:MusicalScrollViewer Grid.Row="3" Grid.Column="1"
                                           proj:ScrollViewerHelper.SyncGroup="{Binding}"
                                           proj:ScrollViewerHelper.SyncDirection="Horizontal"
                                           proj:ScrollViewerHelper.ShiftWheelScrollsHorizontally="True"
                                           HorizontalScrollBarVisibility="Hidden"
                                           VerticalScrollBarVisibility="Visible"
-                                          SmallGridBrush="{StaticResource LightControlBorderColor}"
-                                          BeatGridBrush="{StaticResource LightSecondaryTextColor}"
-                                          BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                           GridStep="{Binding GridStep}"
                                           CanContentScroll="True"
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
                                          SelectedItems="{Binding SelectedItems}"
                                          CurrentPosition="{Binding Sequencer.Position}"
+                                         Style="{StaticResource CanvasStyle}"
                                          PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">
-                        <ctrl:VelocityCanvas.Style>
-                            <Style TargetType="{x:Type ctrl:VelocityCanvas}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
-                                        <Setter Property="ShouldDrawCurrentPosition" Value="True" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
-                                        <Setter Property="ShouldDrawCurrentPosition" Value="False" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ctrl:VelocityCanvas.Style>
                     </ctrl:VelocityCanvas>
                 </ctrl:MusicalScrollViewer>
             </Border>
