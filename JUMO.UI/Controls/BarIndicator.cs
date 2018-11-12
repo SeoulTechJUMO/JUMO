@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace JUMO.UI.Controls
@@ -90,14 +91,15 @@ namespace JUMO.UI.Controls
 
         private static readonly Typeface _typeface = new Typeface("Segoe UI");
 
+        private double _tickWidth;
         private double _barWidth;
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            double tickWidth = ZoomFactor * 4 / TimeResolution;
+            _tickWidth = ZoomFactor * 4 / TimeResolution;
             int ticksPerBar = (TimeResolution * Numerator * 4) / Denominator;
 
-            _barWidth = ticksPerBar * tickWidth;
+            _barWidth = ticksPerBar * _tickWidth;
 
             return base.MeasureOverride(availableSize);
         }
@@ -123,6 +125,33 @@ namespace JUMO.UI.Controls
                 dc.DrawText(barNumberText, new Point(nextBarPos + 2, RenderSize.Height - barNumberText.Height));
                 nextBar += 1;
                 nextBarPos += _barWidth;
+            }
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            CaptureMouse();
+            SetPosition(e.GetPosition(this));
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            ReleaseMouseCapture();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                SetPosition(e.GetPosition(this));
+            }
+        }
+
+        private void SetPosition(Point pt)
+        {
+            if (ShouldDrawCurrentPosition)
+            {
+                CurrentPosition = (int)((pt.X + ScrollOffset) / _tickWidth);
             }
         }
     }

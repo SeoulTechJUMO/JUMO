@@ -106,7 +106,7 @@ namespace JUMO.Playback
                     wasPlaying = IsPlaying;
 
                     Stop();
-                    _clock.SetTicks(value);
+                    _clock.SetTicks(Math.Max(0, value));
                     if (wasPlaying)
                     {
                         Continue();
