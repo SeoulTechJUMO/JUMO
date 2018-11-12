@@ -118,7 +118,6 @@
                     <ctrl:BarIndicator ClipToBounds="True" SnapsToDevicePixels="True"
                                        ScrollOffset="{Binding ElementName=MainScrollViewer, Path=HorizontalOffset}"
                                        CurrentPosition="{Binding Sequencer.Position, Mode=TwoWay}"
-                                       BarGridBrush="{StaticResource LightSecondaryTextColor}"
                                        Background="{StaticResource LightControlFaceColor}"
                                        Foreground="{StaticResource LightPrimaryTextColor}">
                         <ctrl:BarIndicator.Style>
