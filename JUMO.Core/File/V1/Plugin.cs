@@ -17,7 +17,10 @@ namespace JUMO.File.V1
         public float Panning { get; }
         public bool Mute { get; }
 
+        public int ProgramIndex { get; }
         public float[] Parameters { get; }
+        public int ChunkSize { get; }
+        public byte[] Chunk { get; }
 
         public Plugin(int id, Vst.Plugin source)
         {
@@ -28,7 +31,10 @@ namespace JUMO.File.V1
             Volume = source.Volume;
             Panning = source.Panning;
             Mute = source.Mute;
+            source.PluginCommandStub.GetProgram();
             Parameters = source.DumpParameters();
+            Chunk = source.PluginCommandStub.GetChunk(false);
+            ChunkSize = Chunk.Length;
         }
 
         public void Restore(Vst.Plugin target)
@@ -39,6 +45,10 @@ namespace JUMO.File.V1
             target.Panning = Panning;
             target.Mute = Mute;
 
+            target.PluginCommandStub.SetChunk(Chunk, false);
+            target.PluginCommandStub.BeginSetProgram();
+            target.PluginCommandStub.SetProgram(ProgramIndex);
+            target.PluginCommandStub.EndSetProgram();
             target.LoadParameters(Parameters);
         }
     }

@@ -13,6 +13,8 @@ namespace JUMO.File.V1
         public float EffectMix { get; }
 
         public float[] Parameters { get; }
+        public int ChunkSize { get; }
+        public byte[] Chunk { get; }
 
         public EffectPlugin(Vst.EffectPlugin source)
         {
@@ -20,6 +22,8 @@ namespace JUMO.File.V1
             PluginPath = source.PluginPath;
             EffectMix = source.EffectMix;
             Parameters = source.DumpParameters();
+            Chunk = source.PluginCommandStub.GetChunk(false);
+            ChunkSize = Chunk.Length;
         }
 
         public void Restore(Vst.EffectPlugin target)
@@ -27,6 +31,7 @@ namespace JUMO.File.V1
             target.Name = Name;
             target.EffectMix = EffectMix;
 
+            target.PluginCommandStub.SetChunk(Chunk, false);
             target.LoadParameters(Parameters);
         }
     }
