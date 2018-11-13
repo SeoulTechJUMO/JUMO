@@ -60,6 +60,12 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty FollowCurrentPositionProperty =
+            DependencyProperty.Register(
+                "FollowCurrentPosition", typeof(bool), typeof(MusicalCanvasBase),
+                new FrameworkPropertyMetadata(false)
+            );
+
         #endregion
 
         #region Dependency Property Accessors
@@ -89,6 +95,12 @@ namespace JUMO.UI.Controls
         {
             get => (bool)GetValue(ShouldDrawCurrentPositionProperty);
             set => SetValue(ShouldDrawCurrentPositionProperty, value);
+        }
+
+        public bool FollowCurrentPosition
+        {
+            get => (bool)GetValue(FollowCurrentPositionProperty);
+            set => SetValue(FollowCurrentPositionProperty, value);
         }
 
         #endregion
