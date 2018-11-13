@@ -5,6 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:JUMO.UI.Controls"
+    Background="Black"
+    Foreground="LightBlue"
+    Content="Hello, world!"
     mc:Ignorable="d"
     d:DesignHeight="400" d:DesignWidth="400">
     <ContentControl.Template>
@@ -24,7 +27,7 @@
                     <Grid>
                         <Rectangle RadiusX="5" RadiusY="2147483647" Fill="{TemplateBinding Background}" />
                         <StackPanel Margin="15,3">
-                            <Label Margin="0,0,0,3" Foreground="{TemplateBinding Foreground}" Content="{TemplateBinding Content}">
+                            <Label Margin="0,0,0,3" Padding="3" Foreground="{TemplateBinding Foreground}" Content="{TemplateBinding Content}">
                                 <Label.Style>
                                     <Style TargetType="Label">
                                         <Style.Triggers>
@@ -35,7 +38,59 @@
                                     </Style>
                                 </Label.Style>
                             </Label>
-                            <ProgressBar Height="20" Margin="0,3" IsIndeterminate="True" />
+                            <Canvas Width="50" Height="50" Opacity="0.75" Margin="3,3,3,6">
+                                <Canvas.Resources>
+                                    <VisualBrush x:Key="mask">
+                                        <VisualBrush.Visual>
+                                            <Canvas>
+                                                <Path Width="50" Height="50" Fill="#FF000000" Data="M0,0 L25,0 L25,50 L50,50Z" />
+                                                <Path Width="50" Height="50" Fill="#80000000" Data="M50,0 L50,25 L0,25 L0,50Z" />
+                                            </Canvas>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+
+                                    <Style x:Key="PathStyle" TargetType="Path">
+                                        <Setter Property="Width" Value="50" />
+                                        <Setter Property="Height" Value="50" />
+                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                                        <Setter Property="OpacityMask" Value="{StaticResource mask}" />
+                                    </Style>
+                                </Canvas.Resources>
+
+                                <Canvas.Triggers>
+                                    <EventTrigger RoutedEvent="Loaded">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="outerRingTransform"
+                                                                 Storyboard.TargetProperty="Angle"
+                                                                 From="0" To="180" Duration="0:0:1.5" RepeatBehavior="Forever" />
+                                                <DoubleAnimation Storyboard.TargetName="middleRingTransform"
+                                                                 Storyboard.TargetProperty="Angle"
+                                                                 From="0" To="-180" Duration="0:0:1.375" RepeatBehavior="Forever" />
+                                                <DoubleAnimation Storyboard.TargetName="innerRingTransform"
+                                                                 Storyboard.TargetProperty="Angle"
+                                                                 From="0" To="180" Duration="0:0:1.25" RepeatBehavior="Forever" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Canvas.Triggers>
+
+                                <Path Fill="{TemplateBinding Foreground}" Data="M25,0 A25,25,0,0,1,25,50 A25,25,0,0,1,25,0Z M25,3 A22,22,0,0,1,25,47 A22,22,0,0,1,25,3Z" Style="{StaticResource PathStyle}">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="outerRingTransform" Angle="0" />
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Fill="{TemplateBinding Foreground}" Data="M25,7 A18,18,0,0,1,25,43 A18,18,0,0,1,25,7Z M25,9 A16,16,0,0,1,25,41 A16,16,0,0,1,25,9Z" Opacity="0.75" Style="{StaticResource PathStyle}">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="middleRingTransform" Angle="0" />
+                                    </Path.RenderTransform>
+                                </Path>
+                                <Path Fill="{TemplateBinding Foreground}" Data="M25,12 A13,13,0,0,1,25,38 A13,13,0,0,1,25,12Z M25,13 A12,12,0,0,1,25,37 A10,10,0,0,1,25,13Z" Opacity="0.5" Style="{StaticResource PathStyle}">
+                                    <Path.RenderTransform>
+                                        <RotateTransform x:Name="innerRingTransform" Angle="0" />
+                                    </Path.RenderTransform>
+                                </Path>
+                            </Canvas>
                         </StackPanel>
                     </Grid>
                 </Border>
