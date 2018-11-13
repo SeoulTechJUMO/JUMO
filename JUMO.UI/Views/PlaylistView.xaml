@@ -51,8 +51,8 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
-            <CheckBox Content="자동 스크롤" IsChecked="{Binding FollowPosition}" VerticalAlignment="Center" />
+            <ToggleButton Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" Style="{StaticResource BulletToggleButtonStyle1}" proj:SkinHelper.Segment="Left" />
+            <ToggleButton Content="자동 스크롤" IsChecked="{Binding FollowPosition}" Style="{StaticResource BulletToggleButtonStyle2}" proj:SkinHelper.Segment="Right" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>

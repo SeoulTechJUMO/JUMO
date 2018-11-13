@@ -80,8 +80,8 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
-            <CheckBox Content="자동 스크롤" IsChecked="{Binding FollowPosition}" VerticalAlignment="Center" />
+            <ToggleButton Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" Style="{StaticResource BulletToggleButtonStyle1}" proj:SkinHelper.Segment="Left" />
+            <ToggleButton Content="자동 스크롤" IsChecked="{Binding FollowPosition}" Style="{StaticResource BulletToggleButtonStyle2}" proj:SkinHelper.Segment="Right" />
             <Button Content="코드 진행 추천" Click="ExcuteChordMagician" proj:SkinHelper.Segment="Left" />
             <Button x:Name="Toolbox" Content="▼" Click="NoteToolboxButtonClick" proj:SkinHelper.Segment="Right">
                 <Button.ContextMenu>
