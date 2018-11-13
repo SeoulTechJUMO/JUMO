@@ -37,7 +37,7 @@ namespace JUMO.UI.ViewModels
 
         public RelayCommand AddPluginCommand => _addPluginCommand ?? (_addPluginCommand = new RelayCommand(_ => ExecuteAddPlugin()));
 
-        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(oldPlugin => ExecuteAddPlugin(true, oldPlugin as EffectPlugin)));
+        public RelayCommand ReplacePluginCommand => _replacePluginCommand ?? (_replacePluginCommand = new RelayCommand(oldPlugin => ExecuteReplacePlugin(oldPlugin as EffectPlugin)));
 
         public RelayCommand MoveUpPluginCommand => _moveUpPluginCommand ?? (_moveUpPluginCommand = new RelayCommand(idx => MoveUp((int)idx)));
         public RelayCommand MoveDownPluginCommand => _moveDownPluginCommand ?? (_moveDownPluginCommand = new RelayCommand(idx => MoveDown((int)idx)));
@@ -68,7 +68,7 @@ namespace JUMO.UI.ViewModels
             CurrentChannel.MoveDown(current);
         }
 
-        private void ExecuteAddPlugin(bool replace=false, EffectPlugin oldPlugin=null)
+        private string ShowOpenFileDialog()
         {
             FileDialogViewModel fdvm = new FileDialogViewModel()
             {
@@ -79,16 +79,26 @@ namespace JUMO.UI.ViewModels
 
             fdvm.ShowOpenCommand.Execute(null);
 
-            if (fdvm.FileName != null)
+            return fdvm.FileName;
+        }
+
+        private void ExecuteAddPlugin()
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (!string.IsNullOrEmpty(fileName))
             {
-                if(replace)
-                {
-                    CurrentChannel.ReplaceEffect(fdvm.FileName, oldPlugin);
-                }
-                else
-                {
-                    CurrentChannel.AddEffect(fdvm.FileName);
-                }
+                CurrentChannel.AddEffect(fileName);
+            }
+        }
+
+        private void ExecuteReplacePlugin(EffectPlugin oldPlugin)
+        {
+            string fileName = ShowOpenFileDialog();
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                CurrentChannel.ReplaceEffect(fileName, oldPlugin);
             }
         }
     }

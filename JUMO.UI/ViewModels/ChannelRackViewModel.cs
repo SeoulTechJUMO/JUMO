@@ -91,7 +91,7 @@ namespace JUMO.UI
         {
             string fileName = ShowOpenFileDialog();
 
-            if (fileName != null)
+            if (!string.IsNullOrEmpty(fileName))
             {
                 IsLoading = true;
 
@@ -105,7 +105,7 @@ namespace JUMO.UI
         {
             string fileName = ShowOpenFileDialog();
 
-            if (fileName != null)
+            if (!string.IsNullOrEmpty(fileName))
             {
                 IsLoading = true;
 
