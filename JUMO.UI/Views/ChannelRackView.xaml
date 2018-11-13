@@ -8,7 +8,8 @@
              xmlns:view="clr-namespace:JUMO.UI.Views"
              xmlns:proj="clr-namespace:JUMO.UI"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="450">
+             d:DataContext="{d:DesignInstance Type={x:Type proj:ChannelRackViewModel}}"
+             d:DesignHeight="450" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,26 +18,50 @@
             <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
-            <Button Content="플러그인 추가" Command="{Binding AddPluginCommand}" />
-        </StackPanel>
-        <ScrollViewer VerticalScrollBarVisibility="Visible">
-            <ScrollViewer.Resources>
-                <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
-            </ScrollViewer.Resources>
-            <ItemsControl ItemsSource="{Binding Plugins}" Margin="{StaticResource ControlMargin}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <view:ChannelRackItemView Plugin="{Binding Key}"
+    <Grid>
+        <DockPanel>
+            <StackPanel DockPanel.Dock="Bottom" Margin="{StaticResource ControlMargin}" Orientation="Horizontal">
+                <Button Content="플러그인 추가" Command="{Binding AddPluginCommand}" />
+            </StackPanel>
+            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                <ScrollViewer.Resources>
+                    <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
+                </ScrollViewer.Resources>
+                <ItemsControl ItemsSource="{Binding Plugins}" Margin="{StaticResource ControlMargin}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <view:ChannelRackItemView Plugin="{Binding Key}"
                                                   Score="{Binding Value}"
                                                   OpenPluginEditor="{Binding Data.OpenPluginEditorCommand, Source={StaticResource Proxy}}"
                                                   OpenPianoRoll="{Binding Data.OpenPianoRollCommand, Source={StaticResource Proxy}}"
                                                   ReplacePlugin="{Binding Data.ReplacePluginCommand, Source={StaticResource Proxy}}"
                                                   RemovePlugin="{Binding Data.RemovePluginCommand, Source={StaticResource Proxy}}"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
-    </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <Grid Background="Transparent">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid>
+                    <Rectangle RadiusX="5" RadiusY="2147483647" Fill="{StaticResource LightSecondaryTextColor}" />
+                    <StackPanel Margin="{StaticResource DialogButtonPadding}">
+                        <Label Margin="0,0,0,3" Foreground="{StaticResource DarkPrimaryTextColor}" Content="플러그인을 불러오고 있습니다..." />
+                        <ProgressBar Height="20" Margin="0,3" IsIndeterminate="True" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
 </UserControl>
