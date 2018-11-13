@@ -93,6 +93,9 @@
     <Compile Include="Controls\IMusicalViewCallback.cs" />
     <Compile Include="Controls\InteractiveMusicalCanvas.cs" />
     <Compile Include="Controls\Knob.cs" />
+    <Compile Include="Controls\ModalThrobber.xaml.cs">
+      <DependentUpon>ModalThrobber.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\MusicalScrollViewer.cs" />
     <Compile Include="Controls\NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
@@ -219,6 +222,10 @@
     <Compile Include="WorkspaceKey.cs" />
     <Compile Include="WorkspaceManager.cs" />
     <Page Include="Controls\BarIndicatorGrip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ModalThrobber.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
