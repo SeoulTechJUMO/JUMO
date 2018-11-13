@@ -13,6 +13,7 @@ namespace JUMO.UI
         private readonly ObservableCollection<Plugin> _plugins = PluginManager.Instance.Plugins;
         private RelayCommand _addPluginCommand;
         private RelayCommand _replacePluginCommand;
+        private bool _isLoading = false;
 
         public override string DisplayName => $"패턴: {Pattern.Name}";
 
@@ -29,6 +30,16 @@ namespace JUMO.UI
                         yield return new KeyValuePair<Plugin, Score>(p, Pattern[p]);
                     }
                 }
+            }
+        }
+
+        public bool IsLoading
+        {
+            get => _isLoading;
+            private set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
             }
         }
 
@@ -82,7 +93,11 @@ namespace JUMO.UI
 
             if (fileName != null)
             {
+                IsLoading = true;
+
                 await Task.Run(() => PluginManager.Instance.AddPlugin(fileName, null));
+
+                IsLoading = false;
             }
         }
 
@@ -92,7 +107,11 @@ namespace JUMO.UI
 
             if (fileName != null)
             {
+                IsLoading = true;
+
                 await Task.Run(() => PluginManager.Instance.ReplacePlugin(fileName, null, oldPlugin));
+
+                IsLoading = false;
             }
         }
 
