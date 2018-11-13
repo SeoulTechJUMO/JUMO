@@ -28,6 +28,15 @@
                     <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Song">
                         <Setter Property="ShouldDrawCurrentPosition" Value="False" />
                     </DataTrigger>
+                    <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding FollowPosition}" Value="True" />
+                            <Condition Binding="{Binding Sequencer.IsPlaying}" Value="True" />
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="FollowCurrentPosition" Value="True" />
+                        </MultiDataTrigger.Setters>
+                    </MultiDataTrigger>
                 </Style.Triggers>
             </Style>
         </ResourceDictionary>
@@ -72,6 +81,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+            <CheckBox Content="자동 스크롤" IsChecked="{Binding FollowPosition}" VerticalAlignment="Center" />
             <Button Content="코드 진행 추천" Click="ExcuteChordMagician" proj:SkinHelper.Segment="Left" />
             <Button x:Name="Toolbox" Content="▼" Click="NoteToolboxButtonClick" proj:SkinHelper.Segment="Right">
                 <Button.ContextMenu>

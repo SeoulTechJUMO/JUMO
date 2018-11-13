@@ -52,6 +52,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
             <CheckBox Content="눈금에 맞춤" IsChecked="{Binding SnapToGrid}" VerticalAlignment="Center" />
+            <CheckBox Content="자동 스크롤" IsChecked="{Binding FollowPosition}" VerticalAlignment="Center" />
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -136,6 +137,15 @@
                                 <DataTrigger Binding="{Binding Sequencer.Mode}" Value="Pattern">
                                     <Setter Property="ShouldDrawCurrentPosition" Value="False" />
                                 </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding FollowPosition}" Value="True" />
+                                        <Condition Binding="{Binding Sequencer.IsPlaying}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="FollowCurrentPosition" Value="True" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
                     </ctrl:PlaylistCanvas.Style>

@@ -603,6 +603,11 @@ namespace JUMO.UI.Controls
         private void OnCurrentPositionChanged(int newPosition)
         {
             _playbackBarAdorner.PixelPosition = newPosition * WidthPerTick;
+
+            if (FollowCurrentPosition)
+            {
+                SetHorizontalOffset(newPosition * WidthPerTick - ViewportWidth / 5);
+            }
         }
 
         private void OnShouldDrawCurrentPositionChanged(bool newFlag)
