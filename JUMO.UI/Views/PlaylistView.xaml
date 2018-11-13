@@ -141,6 +141,7 @@
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding FollowPosition}" Value="True" />
                                         <Condition Binding="{Binding Sequencer.IsPlaying}" Value="True" />
+                                        <Condition Binding="{Binding Sequencer.Mode}" Value="Song" />
                                     </MultiDataTrigger.Conditions>
                                     <MultiDataTrigger.Setters>
                                         <Setter Property="FollowCurrentPosition" Value="True" />
