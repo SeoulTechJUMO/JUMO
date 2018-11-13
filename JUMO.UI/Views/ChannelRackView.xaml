@@ -42,17 +42,6 @@
             </ScrollViewer>
         </DockPanel>
 
-        <ctrl:ModalThrobber Content="플러그인을 불러오고 있습니다..." Background="{StaticResource LightSecondaryTextColor}" Foreground="{StaticResource DarkPrimaryTextColor}">
-            <ctrl:ModalThrobber.Style>
-                <Style TargetType="{x:Type ctrl:ModalThrobber}">
-                    <Setter Property="Visibility" Value="Collapsed" />
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
-                            <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </ctrl:ModalThrobber.Style>
-        </ctrl:ModalThrobber>
+        <ctrl:ModalThrobber Content="플러그인을 불러오고 있습니다..." Background="{StaticResource LightSecondaryTextColor}" Foreground="{StaticResource DarkPrimaryTextColor}" IsActive="{Binding IsLoading}" />
     </Grid>
 </UserControl>

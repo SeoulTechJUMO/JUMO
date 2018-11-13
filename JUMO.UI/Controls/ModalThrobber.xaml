@@ -10,6 +10,16 @@
     <ContentControl.Template>
         <ControlTemplate TargetType="ContentControl">
             <Grid Background="Transparent">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsActive}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Border HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Grid>
                         <Rectangle RadiusX="5" RadiusY="2147483647" Fill="{TemplateBinding Background}" />
