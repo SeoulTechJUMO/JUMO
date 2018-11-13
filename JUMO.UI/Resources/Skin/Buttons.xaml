@@ -16,11 +16,11 @@
     <Thickness x:Key="PressedRightSegmentButtonBorderThickness">1</Thickness>
     <sys:Double x:Key="ButtonIconWidth">20</sys:Double>
     <sys:Double x:Key="ButtonIconHeight">20</sys:Double>
-    <Thickness x:Key="BulletToggleButtonPadding">11,3,6,3</Thickness>
+    <Thickness x:Key="BulletToggleButtonPadding">1,3,6,3</Thickness>
     <Thickness x:Key="BarToggleButtonPadding">8,3,8,5</Thickness>
     <Thickness x:Key="BulletIconToggleButtonPadding">11,3,3,3</Thickness>
     <Thickness x:Key="BarIconToggleButtonPadding">3,3,3,7</Thickness>
-    <Thickness x:Key="ToggleButtonBulletMargin">2</Thickness>
+    <Thickness x:Key="ToggleButtonBulletMargin">5,3</Thickness>
     <Thickness x:Key="ToggleButtonBarMargin">9,2</Thickness>
 
     <!-- Button Styles -->
@@ -166,10 +166,14 @@
                     <Border x:Name="pushEffectBorder">
                         <Border x:Name="border" CornerRadius="{Binding Path=(proj:SkinHelper.BorderRadius), RelativeSource={RelativeSource TemplatedParent}}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                             <Grid>
-                                <Grid HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0" HorizontalAlignment="Left" Margin="{StaticResource ToggleButtonBulletMargin}" Width="7" Height="7">
                                     <Ellipse x:Name="indicatorLight" Stroke="{StaticResource LightSecondaryTextColor}" StrokeThickness="1" Fill="{StaticResource LightSecondaryTextColor}" />
                                 </Grid>
-                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <ContentPresenter Grid.Column="1" x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                             </Grid>
                         </Border>
                     </Border>
