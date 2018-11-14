@@ -333,14 +333,19 @@ namespace JUMO
 
         public void AddPattern(string name)
         {
+            Pattern newPattern;
+
             if (name == "" || name == null)
             {
-                Patterns.Add(new Pattern(this, "패턴 " + (Patterns.Count + 1)));
+                newPattern = new Pattern(this, "패턴 " + (Patterns.Count + 1));
             }
             else
             {
-                Patterns.Add(new Pattern(this, name));
+                newPattern = new Pattern(this, name);
             }
+
+            Patterns.Add(newPattern);
+            CurrentPattern = newPattern;
         }
 
         private void OnPropertyChanged(string propertyName)
