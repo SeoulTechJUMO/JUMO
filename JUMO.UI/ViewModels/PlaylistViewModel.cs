@@ -107,6 +107,16 @@ namespace JUMO.UI
             SelectItems(PlacedPatterns);
         }
 
+        protected override void OnLastPressedItemChanged()
+        {
+            if (LastPressedItem is PatternPlacementViewModel ppvm)
+            {
+                Song.CurrentPattern = ppvm.Pattern;
+            }
+
+            base.OnLastPressedItemChanged();
+        }
+
         private void OnPlacedPatternsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)

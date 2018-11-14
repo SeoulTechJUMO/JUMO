@@ -85,7 +85,7 @@ namespace JUMO.UI
             set
             {
                 _lastPressedItem = value;
-                OnPropertyChanged(nameof(LastPressedItem));
+                OnLastPressedItemChanged();
             }
         }
 
@@ -155,6 +155,11 @@ namespace JUMO.UI
         protected abstract void ExecutePaste();
         protected abstract void ExecuteDelete();
         protected abstract void ExecuteSelectAll();
+
+        protected virtual void OnLastPressedItemChanged()
+        {
+            OnPropertyChanged(nameof(LastPressedItem));
+        }
 
         public void ClearSelection()
         {
