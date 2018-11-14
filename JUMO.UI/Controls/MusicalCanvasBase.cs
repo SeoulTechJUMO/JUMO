@@ -583,6 +583,7 @@ namespace JUMO.UI.Controls
             foreach (var ve in _table.Values)
             {
                 ve.BoundsChanged -= OnVirtualElementBoundsChanged;
+                ve.DisposeVisual();
             }
 
             Children.Clear();
