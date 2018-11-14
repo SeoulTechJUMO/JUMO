@@ -160,6 +160,7 @@ namespace JUMO.UI.Controls
             }
 
             _affectedItems = null;
+            LastPressedItem = (PatternPlacementViewModel)view.DataContext;
         }
 
         private void MovePattern(PatternPlacementViewModel pp, int deltaStart, int deltaIndex)

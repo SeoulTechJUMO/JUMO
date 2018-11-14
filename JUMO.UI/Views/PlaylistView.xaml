@@ -120,6 +120,7 @@
                 </ctrl:MusicalScrollViewer.BarIndicator>
                 <ctrl:PlaylistCanvas Items="{Binding PlacedPatterns}"
                                      SelectedItems="{Binding SelectedItems}"
+                                     LastPressedItem="{Binding LastPressedItem}"
                                      GridStep="{Binding GridStep}"
                                      SnapToGrid="{Binding SnapToGrid}"
                                      CurrentPosition="{Binding Sequencer.Position}"
