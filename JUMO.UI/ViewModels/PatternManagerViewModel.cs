@@ -1,4 +1,6 @@
-﻿namespace JUMO.UI
+﻿using System.Collections.ObjectModel;
+
+namespace JUMO.UI
 {
     class PatternManagerViewModel : ViewModelBase
     {
@@ -67,14 +69,16 @@
         public PatternManagerViewModel()
         {
             AddPatternCommand = new RelayCommand(ExecuteAddPattern);
-            RemovePatternCommand = new RelayCommand(ExecuteRemovePattern, _ => Song.Patterns.Count > 1);
+            RemovePatternCommand = new RelayCommand(ExecuteRemovePattern, MoreThanOnePatterns);
             RenamePatternCommand = new RelayCommand(ExecuteRenamePattern);
-            MoveUpCommand = new RelayCommand(ExecuteMoveUp);
-            MoveDownCommand = new RelayCommand(ExecuteMoveDown);
+            MoveUpCommand = new RelayCommand(ExecuteMoveUp, MoreThanOnePatterns);
+            MoveDownCommand = new RelayCommand(ExecuteMoveDown, MoreThanOnePatterns);
             OpenAddCommand = new RelayCommand(ExecuteOpenAdd);
             OpenRenameCommand = new RelayCommand(ExecuteOpenRename);
             CloseCommand = new RelayCommand(ExecuteClose);
         }
+
+        private bool MoreThanOnePatterns() => Song.Patterns.Count > 1;
 
         private void ExecuteAddPattern()
         {
@@ -112,30 +116,34 @@
         private void ExecuteMoveUp(object parameter)
         {
             Pattern current = parameter as Pattern;
-            int oldidx = Song.Patterns.IndexOf(current);
+            ObservableCollection<Pattern> patterns = Song.Patterns;
+            int oldIdx = patterns.IndexOf(current);
 
-            if (oldidx - 1 > 0)
+            if (oldIdx <= 0)
             {
-                Song.Patterns.Move(oldidx, oldidx - 1);
+                // Wrap-around
+                patterns.Move(oldIdx, patterns.Count - 1);
             }
             else
             {
-                Song.Patterns.Move(oldidx, Song.Patterns.Count - 1);
+                patterns.Move(oldIdx, oldIdx - 1);
             }
         }
 
         private void ExecuteMoveDown(object parameter)
         {
             Pattern current = parameter as Pattern;
-            int oldidx = Song.Patterns.IndexOf(current);
+            ObservableCollection<Pattern> patterns = Song.Patterns;
+            int oldIdx = patterns.IndexOf(current);
 
-            if (oldidx + 1 < Song.Patterns.Count)
+            if (oldIdx >= patterns.Count - 1)
             {
-                Song.Patterns.Move(oldidx, oldidx + 1);
+                // Wrap-around
+                patterns.Move(oldIdx, 0);
             }
             else
             {
-                Song.Patterns.Move(oldidx, 0);
+                patterns.Move(oldIdx, oldIdx + 1);
             }
         }
 
