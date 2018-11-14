@@ -16,6 +16,7 @@ namespace JUMO.UI
         private int _gridStep = 1;
         private bool _snapToGrid = true;
         private bool _followPosition = true;
+        private IMusicalItem _lastPressedItem;
 
         private RelayCommand _zoomInCommand;
         private RelayCommand _zoomOutCommand;
@@ -77,6 +78,16 @@ namespace JUMO.UI
         }
 
         public ObservableCollection<IMusicalItem> SelectedItems { get; } = new ObservableCollection<IMusicalItem>();
+
+        public IMusicalItem LastPressedItem
+        {
+            get => _lastPressedItem;
+            set
+            {
+                _lastPressedItem = value;
+                OnPropertyChanged(nameof(LastPressedItem));
+            }
+        }
 
         public RelayCommand ZoomInCommand
         {

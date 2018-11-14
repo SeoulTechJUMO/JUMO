@@ -41,6 +41,12 @@ namespace JUMO.UI.Controls
                 )
             );
 
+        public static readonly DependencyProperty LastPressedItemProperty =
+            DependencyProperty.Register(
+                "LastPressedItem", typeof(IMusicalItem), typeof(InteractiveMusicalCanvas),
+                new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
+            );
+
         #endregion
 
         #region Properties
@@ -61,6 +67,12 @@ namespace JUMO.UI.Controls
         {
             get => (IEnumerable)GetValue(SelectedItemsProperty);
             set => SetValue(SelectedItemsProperty, value);
+        }
+
+        public IMusicalItem LastPressedItem
+        {
+            get => (IMusicalItem)GetValue(LastPressedItemProperty);
+            set => SetValue(LastPressedItemProperty, value);
         }
 
         #endregion
