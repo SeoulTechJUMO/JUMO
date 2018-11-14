@@ -13,21 +13,6 @@ namespace JUMO.UI.Controls
         private IEnumerable<NoteViewModel> _affectedNotes;
         private NoteViewModel _minTick;
         private NoteViewModel _minValue, _maxValue;
-        private int _lastLength = -1;
-
-        private int LastLength
-        {
-            get
-            {
-                if (_lastLength < 0)
-                {
-                    _lastLength = TimeResolution;
-                }
-
-                return _lastLength;
-            }
-            set => _lastLength = value;
-        }
 
         #region Events
 
@@ -84,11 +69,14 @@ namespace JUMO.UI.Controls
 
         protected override void OnSurfaceClick(Point pt)
         {
+            NoteViewModel lastPressedNote = LastPressedItem as NoteViewModel;
             byte value = (byte)FromVerticalPosition(pt.Y);
+            byte velocity = lastPressedNote?.Velocity ?? 100;
             int pos = PixelToTick(pt.X);
             int snap = SnapToGridInternal(pos);
+            int length = lastPressedNote?.Length ?? TimeResolution;
 
-            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, 100, snap, LastLength)));
+            AddNoteRequested?.Invoke(this, new AddNoteRequestedEventArgs(new Note(value, velocity, snap, length)));
         }
 
         #endregion
@@ -177,8 +165,6 @@ namespace JUMO.UI.Controls
             }
         }
 
-        
-
         #endregion
 
         private void CalculateAffectedNotes(FrameworkElement view)
@@ -204,7 +190,7 @@ namespace JUMO.UI.Controls
             }
 
             _affectedNotes = null;
-            LastLength = ((NoteViewModel)view.DataContext).Length;
+            LastPressedItem = (NoteViewModel)view.DataContext;
         }
 
         private void ResizeNote(NoteViewModel note, double delta)

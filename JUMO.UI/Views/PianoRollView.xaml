@@ -147,6 +147,7 @@
                 </ctrl:MusicalScrollViewer.BarIndicator>
                 <ctrl:PianoRollCanvas Items="{Binding Notes}"
                                       SelectedItems="{Binding SelectedItems}"
+                                      LastPressedItem="{Binding LastPressedItem}"
                                       ExtentHeightOverride="2560"
                                       GridStep="{Binding GridStep}"
                                       SnapToGrid="{Binding SnapToGrid}"
@@ -170,6 +171,7 @@
                                           ShouldDrawHorizontalGrid="False">
                     <ctrl:VelocityCanvas Items="{Binding Notes}"
                                          SelectedItems="{Binding SelectedItems}"
+                                         LastPressedItem="{Binding LastPressedItem}"
                                          CurrentPosition="{Binding Sequencer.Position}"
                                          Style="{StaticResource CanvasStyle}"
                                          PreviewMouseWheel="MusicalCanvas_PreviewMouseWheel">

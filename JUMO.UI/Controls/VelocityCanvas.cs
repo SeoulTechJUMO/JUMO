@@ -108,6 +108,7 @@ namespace JUMO.UI.Controls
             }
 
             _affectedNotes = null;
+            LastPressedItem = (NoteViewModel)view.DataContext;
         }
 
         private void AdjustVelocity(NoteViewModel note, int deltaVelocity)
