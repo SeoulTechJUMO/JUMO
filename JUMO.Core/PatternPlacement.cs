@@ -10,6 +10,8 @@ namespace JUMO
     {
         private int _trackIndex = -1;
         private int _start;
+        private int _length;
+        private bool _useAutoLength = false;
 
         /// <summary>
         /// 배치된 패턴 인스턴스를 가져옵니다.
@@ -52,9 +54,46 @@ namespace JUMO
         }
 
         /// <summary>
-        /// 배치된 패턴의 길이를 가져옵니다. PPQN에 의한 상대적인 단위를 사용합니다.
+        /// 배치된 패턴의 길이를 가져오거나 설정합니다. PPQN에 의한 상대적인 단위를 사용합니다.
+        /// 이 값을 수동으로 설정할 경우 UseAutoLength 속성이 자동으로 해제됩니다.
         /// </summary>
-        public int Length => Pattern.Length;
+        public int Length
+        {
+            get => _length;
+            set
+            {
+                if (_length != value)
+                {
+                    SetLength(value);
+                    UseAutoLength = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 배치된 패턴의 길이를 원본 패턴의 길이로 자동 설정할 것인지 여부를 가져오거나 설정합니다.
+        /// </summary>
+        public bool UseAutoLength
+        {
+            get => _useAutoLength;
+            set
+            {
+                if (_useAutoLength != value)
+                {
+                    if (_useAutoLength = value)
+                    {
+                        Pattern.PropertyChanged += OnPatternPropertyChanged;
+                        SetLength(Pattern.Length);
+                    }
+                    else
+                    {
+                        Pattern.PropertyChanged -= OnPatternPropertyChanged;
+                    }
+
+                    OnPropertyChanged(nameof(UseAutoLength));
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,15 +108,20 @@ namespace JUMO
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
             TrackIndex = trackIndex;
             Start = start;
+            UseAutoLength = true;
+        }
 
-            pattern.PropertyChanged += OnPatternPropertyChanged;
+        private void SetLength(int newLength)
+        {
+            _length = newLength;
+            OnPropertyChanged(nameof(Length));
         }
 
         private void OnPatternPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Pattern.Length))
+            if (UseAutoLength && e.PropertyName == nameof(Pattern.Length))
             {
-                OnPropertyChanged(nameof(Length));
+                SetLength(Pattern.Length);
             }
         }
 
