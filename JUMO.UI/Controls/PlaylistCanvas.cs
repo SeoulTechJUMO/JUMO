@@ -70,8 +70,20 @@ namespace JUMO.UI.Controls
 
         #region IMusicalViewCallback Members
 
+        public override void MusicalViewResizeStarted(FrameworkElement view) => CalculateAffectedItems(view);
         public override void MusicalViewMoveStarted(FrameworkElement view) => CalculateAffectedItems(view);
+        public override void MusicalViewResizeComplete(FrameworkElement view) => ViewEditComplete(view);
         public override void MusicalViewMoveComplete(FrameworkElement view) => ViewEditComplete(view);
+
+        public override void MusicalViewResizing(FrameworkElement view, double delta)
+        {
+            foreach (PatternPlacementViewModel pp in _affectedItems)
+            {
+                ResizePattern(pp, delta);
+            }
+
+            FollowMouse();
+        }
 
         public override void MusicalViewMoving(FrameworkElement view, double deltaX, double deltaY)
         {
@@ -161,6 +173,17 @@ namespace JUMO.UI.Controls
 
             _affectedItems = null;
             LastPressedItem = (PatternPlacementViewModel)view.DataContext;
+        }
+
+        private void ResizePattern(PatternPlacementViewModel pp, double delta)
+        {
+            int end = pp.Start + pp.Length;
+            int newEnd = SnapToGridInternal(end + PixelToTick(delta));
+
+            if (newEnd > pp.Start)
+            {
+                pp.Length = newEnd - pp.Start;
+            }
         }
 
         private void MovePattern(PatternPlacementViewModel pp, int deltaStart, int deltaIndex)

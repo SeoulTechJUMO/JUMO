@@ -72,8 +72,7 @@ namespace JUMO.UI
             _updating = true;
 
             Source.Start = Start;
-            // 플레이리스트에 배치된 패턴의 길이를 변경하는 것은 아직 구현되지 않음.
-            // Source.Length = Length;
+            Source.Length = Length;
             Source.TrackIndex = TrackIndex;
 
             _updating = false;
