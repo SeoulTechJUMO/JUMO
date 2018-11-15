@@ -1,13 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Controls.Primitives;
+﻿using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using JUMO.UI.Controls;
 
 namespace JUMO.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for PatternPlacementView.xaml
-    /// </summary>
     public partial class PatternPlacementView : SelectableView
     {
         public PatternPlacementView()
@@ -38,6 +34,21 @@ namespace JUMO.UI.Views
         private void Thumb_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             (VisualParent as IMusicalViewCallback)?.MusicalViewRightButtonDown(this);
+        }
+
+        private void ResizeHandle_DragStarted(object sender, DragStartedEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeStarted(this);
+        }
+
+        private void ResizeHandle_DragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizeComplete(this);
+        }
+
+        private void ResizeHandle_DragDelta(object sender, DragDeltaEventArgs e)
+        {
+            (VisualParent as IMusicalViewCallback)?.MusicalViewResizing(this, e.HorizontalChange);
         }
     }
 }

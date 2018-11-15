@@ -4,9 +4,6 @@ using JUMO.UI.Controls;
 
 namespace JUMO.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for NoteView.xaml
-    /// </summary>
     public partial class NoteView : SelectableView
     {
         public NoteView()

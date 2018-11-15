@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="60" d:DesignWidth="80">
     <UserControl.Resources>
-        <Style TargetType="{x:Type Thumb}">
+        <Style TargetType="Thumb">
             <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -40,7 +40,11 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Border Grid.Row="0"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="0" Grid.ColumnSpan="2"
                     CornerRadius="2.5,2.5,0,0">
                 <Border.Background>
                     <SolidColorBrush x:Name="PatternHeaderBackgroundBrush" Color="MediumSpringGreen" />
@@ -50,8 +54,7 @@
                            FontSize="10"
                            Margin="3,1"/>
             </Border>
-            <view:PatternThumbnailView Grid.Row="1"
-                                       Margin="0,2"
+            <view:PatternThumbnailView Grid.Row="1" Grid.ColumnSpan="2" Margin="0,2"
                                        Background="Transparent" Foreground="Black"
                                        Pattern="{Binding Pattern}" />
             <Thumb Grid.RowSpan="2"
@@ -61,6 +64,12 @@
                    PreviewMouseLeftButtonDown="Thumb_PreviewMouseLeftButtonDown"
                    PreviewMouseRightButtonDown="Thumb_PreviewMouseRightButtonDown"
                    Cursor="Hand" />
+            <Thumb x:Name="ResizeHandle"
+                   Grid.Column="1" Grid.RowSpan="2"
+                   DragStarted="ResizeHandle_DragStarted"
+                   DragCompleted="ResizeHandle_DragCompleted"
+                   DragDelta="ResizeHandle_DragDelta"
+                   Cursor="SizeWE" />
         </Grid>
     </Border>
 </local:SelectableView>
