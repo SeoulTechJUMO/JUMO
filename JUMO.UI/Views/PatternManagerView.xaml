@@ -101,7 +101,7 @@
                                                 proj:SkinHelper.Segment="Center">
                                                 <Path Data="{StaticResource MoveDownGlyph}" />
                                             </Button>
-                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.RenamePatternCommand}"
+                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.OpenRenameCommand}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource PatternOptionButtonStyle}"
                                                 ToolTip="이름 바꾸기"
