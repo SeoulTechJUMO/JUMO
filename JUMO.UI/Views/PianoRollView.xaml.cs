@@ -1,48 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using JUMO.UI.Controls;
 using JUMO.UI.Layouts;
 using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for PianoRollView.xaml
-    /// </summary>
     public partial class PianoRollView : UserControl
     {
-        private int Octave = 48;
-
-        List<Key> UpKeyboardKeys = new List<Key>
-        {
-            Key.Q, Key.D2, Key.W, Key.D3, Key.E, Key.R, Key.D5, Key.T, Key.D6, Key.Y, Key.D7, Key.U, Key.I, Key.D9, Key.O, Key.D0, Key.P, Key.OemOpenBrackets, Key.OemPlus, Key.OemCloseBrackets
-        };
-
-        List<Key> DownKeyboardKeys = new List<Key>
-        {
-            Key.Z, Key.S, Key.X, Key.D, Key.C, Key.V, Key.G, Key.B, Key.H, Key.N, Key.J, Key.M, Key.OemComma, Key.L, Key.OemPeriod, Key.OemSemicolon, Key.OemQuestion
-        };
-
-        private bool[] UpKeyState;
-        private bool[] DownKeyState;
-
         public PianoRollView()
         {
-            UpKeyState = new bool[UpKeyboardKeys.Count];
-            DownKeyState = new bool[DownKeyboardKeys.Count];
             InitializeComponent();
         }
 
@@ -133,44 +103,6 @@ namespace JUMO.UI.Views
             NoteChopperWindow ncv = new NoteChopperWindow { DataContext = ntvm };
 
             ncv.Show();
-        }
-
-        private void KeyPress(object sender, KeyEventArgs e)
-        {
-            if (UpKeyboardKeys.Contains(e.Key))
-            {
-                int idx = UpKeyboardKeys.IndexOf(e.Key);
-                if (!UpKeyState[idx])
-                {
-                    UpKeyState[idx] = true;
-                    (DataContext as PianoRollViewModel).Plugin.NoteOn((byte)(UpKeyboardKeys.IndexOf(e.Key) + Octave + 12), 100);
-                }
-            }
-            else if(DownKeyboardKeys.Contains(e.Key))
-            {
-                int idx = DownKeyboardKeys.IndexOf(e.Key);
-                if (!DownKeyState[idx])
-                {
-                    DownKeyState[idx] = true;
-                    (DataContext as PianoRollViewModel).Plugin.NoteOn((byte)(DownKeyboardKeys.IndexOf(e.Key) + Octave), 100);
-                }
-            }
-        }
-
-        private void KeyRelease(object sender, KeyEventArgs e)
-        {
-            if (UpKeyboardKeys.Contains(e.Key))
-            {
-                int idx = UpKeyboardKeys.IndexOf(e.Key);
-                UpKeyState[idx] = false;
-                (DataContext as PianoRollViewModel).Plugin.NoteOff((byte)(UpKeyboardKeys.IndexOf(e.Key) + Octave + 12));
-            }
-            else if(DownKeyboardKeys.Contains(e.Key))
-            {
-                int idx = DownKeyboardKeys.IndexOf(e.Key);
-                DownKeyState[idx] = false;
-                (DataContext as PianoRollViewModel).Plugin.NoteOff((byte)(DownKeyboardKeys.IndexOf(e.Key) + Octave));
-            }
         }
     }
 }
