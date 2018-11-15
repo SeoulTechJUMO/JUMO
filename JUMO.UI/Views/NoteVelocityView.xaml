@@ -24,15 +24,15 @@
             <VisualStateGroup x:Name="SelectionStates">
                 <VisualState x:Name="Selected">
                     <Storyboard>
-                        <ColorAnimation Storyboard.TargetName="BorderBrush"
+                        <ColorAnimation Storyboard.TargetName="borderBrush"
                                         Storyboard.TargetProperty="Color"
                                         To="Orange"
                                         Duration="0:0:0.0" />
-                        <ColorAnimation Storyboard.TargetName="CircleBorderBrush"
+                        <ColorAnimation Storyboard.TargetName="circleBorderBrush"
                                         Storyboard.TargetProperty="Color"
                                         To="Orange"
                                         Duration="0:0:0.0" />
-                        <ColorAnimation Storyboard.TargetName="BackgroundBrush"
+                        <ColorAnimation Storyboard.TargetName="backgroundBrush"
                                         Storyboard.TargetProperty="Color"
                                         To="Orange"
                                         Duration="0:0:0.0" />
@@ -43,10 +43,10 @@
         </VisualStateManager.VisualStateGroups>
         <Border BorderThickness="1,1.5,0,0" SnapsToDevicePixels="False" IsHitTestVisible="False">
             <Border.BorderBrush>
-                <SolidColorBrush x:Name="BorderBrush" Color="Green" />
+                <SolidColorBrush x:Name="borderBrush" Color="Green" />
             </Border.BorderBrush>
             <Border.Background>
-                <SolidColorBrush x:Name="BackgroundBrush" Color="Green" Opacity="0.125" />
+                <SolidColorBrush x:Name="backgroundBrush" Color="Green" Opacity="0.125" />
             </Border.Background>
         </Border>
         <Grid Width="7" Height="7"
@@ -56,7 +56,7 @@
               SnapsToDevicePixels="False" >
             <Ellipse Fill="White" StrokeThickness="1.5" SnapsToDevicePixels="False">
                 <Ellipse.Stroke>
-                    <SolidColorBrush x:Name="CircleBorderBrush" Color="Green" />
+                    <SolidColorBrush x:Name="circleBorderBrush" Color="Green" />
                 </Ellipse.Stroke>
             </Ellipse>
             <Thumb Cursor="SizeNS"
