@@ -45,13 +45,13 @@
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="{StaticResource LightBackgroundColor}" />
+                        <Setter Property="Opacity" Value="0.8" />
                     </Trigger>
                     <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Opacity" Value="0.75" />
+                        <Setter Property="Opacity" Value="0.6" />
                     </Trigger>
                     <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="0.25" />
+                        <Setter Property="Opacity" Value="0.2" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -66,54 +66,58 @@
                   DisplayMemberPath="Name">
             <ComboBox.ItemContainerStyle>
                 <Style TargetType="ComboBoxItem">
+                    <Setter Property="Margin" Value="1" />
+                    <Setter Property="BorderThickness" Value="1" />
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ComboBoxItem">
-                                <Grid Background="Transparent">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition SharedSizeGroup="PatternNameGroup" />
-                                        <ColumnDefinition Width="15" />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding Name}" />
-                                    <StackPanel x:Name="optionButtons" Grid.Column="2" Orientation="Horizontal" Visibility="Hidden">
-                                        <StackPanel.Resources>
-                                            <Style TargetType="Path">
-                                                <Setter Property="UseLayoutRounding" Value="True" />
-                                                <Setter Property="SnapsToDevicePixels" Value="True" />
-                                                <Setter Property="Fill" Value="{StaticResource LightSecondaryTextColor}" />
-                                            </Style>
-                                        </StackPanel.Resources>
-                                        <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.MoveUpCommand}"
+                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                                    <Grid Margin="0,0,2,0" Background="Transparent">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition SharedSizeGroup="PatternNameGroup" />
+                                            <ColumnDefinition Width="15" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="{Binding Name}" />
+                                        <StackPanel x:Name="optionButtons" Grid.Column="2" Orientation="Horizontal" Visibility="Hidden">
+                                            <StackPanel.Resources>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="UseLayoutRounding" Value="True" />
+                                                    <Setter Property="SnapsToDevicePixels" Value="True" />
+                                                    <Setter Property="Fill" Value="{StaticResource LightSecondaryTextColor}" />
+                                                </Style>
+                                            </StackPanel.Resources>
+                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.MoveUpCommand}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource PatternOptionButtonStyle}"
                                                 ToolTip="위로 이동"
                                                 proj:SkinHelper.Segment="Left">
-                                            <Path Data="{StaticResource MoveUpGlyph}" />
-                                        </Button>
-                                        <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.MoveDownCommand}"
+                                                <Path Data="{StaticResource MoveUpGlyph}" />
+                                            </Button>
+                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.MoveDownCommand}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource PatternOptionButtonStyle}"
                                                 ToolTip="아래로 이동"
                                                 proj:SkinHelper.Segment="Center">
-                                            <Path Data="{StaticResource MoveDownGlyph}" />
-                                        </Button>
-                                        <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.RenamePatternCommand}"
+                                                <Path Data="{StaticResource MoveDownGlyph}" />
+                                            </Button>
+                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.RenamePatternCommand}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource PatternOptionButtonStyle}"
                                                 ToolTip="이름 바꾸기"
                                                 proj:SkinHelper.Segment="Center">
-                                            <Path Data="{StaticResource RenameGlyph}" />
-                                        </Button>
-                                        <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.RemovePatternCommand}"
+                                                <Path Data="{StaticResource RenameGlyph}" />
+                                            </Button>
+                                            <Button Command="{Binding Source={StaticResource Proxy}, Path=Data.RemovePatternCommand}"
                                                 CommandParameter="{Binding}"
                                                 Style="{StaticResource PatternOptionButtonStyle}"
                                                 ToolTip="삭제"
                                                 proj:SkinHelper.Segment="Right">
-                                            <Path Data="{StaticResource RemoveGlyph}" />
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
+                                                <Path Data="{StaticResource RemoveGlyph}" />
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Visibility" TargetName="optionButtons" Value="Visible" />
@@ -122,6 +126,12 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource LightDisabledControlBorderColor}" />
+                            <Setter Property="Background" Value="{StaticResource LightDisabledControlFaceColor}" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ComboBox.ItemContainerStyle>
         </ComboBox>
