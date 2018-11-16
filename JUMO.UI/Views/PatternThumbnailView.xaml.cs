@@ -12,8 +12,14 @@ namespace JUMO.UI.Views
 
         public static readonly DependencyProperty PatternProperty =
             DependencyProperty.Register(
-                "Pattern", typeof(Pattern), typeof(PatternThumbnailView),
+                nameof(Pattern), typeof(Pattern), typeof(PatternThumbnailView),
                 new FrameworkPropertyMetadata(PatternPropertyChangedCallback)
+            );
+
+        public static readonly DependencyProperty CropLengthProperty =
+            DependencyProperty.Register(
+                nameof(CropLength), typeof(int), typeof(PatternThumbnailView),
+                new FrameworkPropertyMetadata(-1, CropLengthPropertyChangedCallback)
             );
 
         #endregion
@@ -24,6 +30,12 @@ namespace JUMO.UI.Views
         {
             get => (Pattern)GetValue(PatternProperty);
             set => SetValue(PatternProperty, value);
+        }
+
+        public int CropLength
+        {
+            get => (int)GetValue(CropLengthProperty);
+            set => SetValue(CropLengthProperty, value);
         }
 
         #endregion
@@ -37,7 +49,7 @@ namespace JUMO.UI.Views
 
         private void UpdateViewbox()
         {
-            Rect bounds = _geometry.Bounds;
+            Rect bounds = _geometry?.Bounds ?? new Rect(0, 0, 0, 0);
             int viewBoxTop = (int)bounds.Top;
             int viewBoxHeight = (int)bounds.Height;
 
@@ -47,7 +59,7 @@ namespace JUMO.UI.Views
                 viewBoxHeight = 10;
             }
 
-            contentBrush.Viewbox = new Rect(0, viewBoxTop, Pattern.Length, viewBoxHeight);
+            contentBrush.Viewbox = new Rect(0, viewBoxTop, Pattern?.Length ?? 0, viewBoxHeight);
         }
 
         #region Callbacks
@@ -62,7 +74,7 @@ namespace JUMO.UI.Views
 
         private void OnGeometryChanged(object sender, EventArgs e) => UpdateViewbox();
 
-        private void OnPatternDependencyPropertyChanged(Pattern oldPattern, Pattern newPattern)
+        private void OnPatternPropertyChanged(Pattern oldPattern, Pattern newPattern)
         {
             if (oldPattern != null)
             {
@@ -82,7 +94,15 @@ namespace JUMO.UI.Views
 
         private static void PatternPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((PatternThumbnailView)d).OnPatternDependencyPropertyChanged(e.OldValue as Pattern, e.NewValue as Pattern);
+            ((PatternThumbnailView)d).OnPatternPropertyChanged(e.OldValue as Pattern, e.NewValue as Pattern);
+        }
+
+        private static void CropLengthPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if ((int)e.OldValue != (int)e.NewValue)
+            {
+                ((PatternThumbnailView)d).UpdateViewbox();
+            }
         }
 
         #endregion
