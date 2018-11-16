@@ -52,6 +52,7 @@ namespace JUMO.UI.Views
             Rect bounds = _geometry?.Bounds ?? new Rect(0, 0, 0, 0);
             int viewBoxTop = (int)bounds.Top;
             int viewBoxHeight = (int)bounds.Height;
+            int viewBoxWidth = CropLength < 0 ? Pattern.Length : CropLength;
 
             if (viewBoxHeight < 10)
             {
@@ -59,7 +60,7 @@ namespace JUMO.UI.Views
                 viewBoxHeight = 10;
             }
 
-            contentBrush.Viewbox = new Rect(0, viewBoxTop, Pattern?.Length ?? 0, viewBoxHeight);
+            contentBrush.Viewbox = new Rect(0, viewBoxTop, viewBoxWidth, viewBoxHeight);
         }
 
         #region Callbacks

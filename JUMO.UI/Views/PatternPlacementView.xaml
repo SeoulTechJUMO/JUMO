@@ -51,7 +51,7 @@
                 </Border.Background>
                 <TextBlock Text="{Binding Pattern.Name, FallbackValue=패턴}" FontFamily="Segoe UI" FontSize="10" Margin="3,1" />
             </Border>
-            <local:PatternThumbnailView Grid.Row="1" Grid.ColumnSpan="2" Margin="0,2"
+            <local:PatternThumbnailView Grid.Row="1" Grid.ColumnSpan="2" Margin="-1,2"
                                         Background="Transparent" Foreground="Black"
                                         Pattern="{Binding Pattern}" CropLength="{Binding Length}" />
             <Thumb Grid.RowSpan="2"
