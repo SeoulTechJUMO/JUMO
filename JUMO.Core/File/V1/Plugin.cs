@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jacobi.Vst.Core;
+using System;
 
 namespace JUMO.File.V1
 {
@@ -33,8 +34,17 @@ namespace JUMO.File.V1
             Mute = source.Mute;
             source.PluginCommandStub.GetProgram();
             Parameters = source.DumpParameters();
-            Chunk = source.PluginCommandStub.GetChunk(false);
-            ChunkSize = Chunk.Length;
+
+            if (source.PluginCommandStub.PluginContext.PluginInfo.Flags.HasFlag(VstPluginFlags.ProgramChunks))
+            {
+                Chunk = source.PluginCommandStub.GetChunk(false);
+                ChunkSize = Chunk.Length;
+            }
+            else
+            {
+                Chunk = new byte[0];
+                ChunkSize = 0;
+            }
         }
 
         public void Restore(Vst.Plugin target)
@@ -45,7 +55,11 @@ namespace JUMO.File.V1
             target.Panning = Panning;
             target.Mute = Mute;
 
-            target.PluginCommandStub.SetChunk(Chunk, false);
+            if (target.PluginCommandStub.PluginContext.PluginInfo.Flags.HasFlag(VstPluginFlags.ProgramChunks))
+            {
+                target.PluginCommandStub.SetChunk(Chunk, false);
+            }
+
             target.PluginCommandStub.BeginSetProgram();
             target.PluginCommandStub.SetProgram(ProgramIndex);
             target.PluginCommandStub.EndSetProgram();
