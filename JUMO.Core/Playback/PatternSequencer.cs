@@ -8,6 +8,7 @@ namespace JUMO.Playback
     {
         private readonly MasterSequencer _masterSequencer;
         private readonly List<IEnumerator<int>> _enumerators = new List<IEnumerator<int>>();
+        private readonly bool[] _pressedNotes = new bool[128];
         private readonly int _length;
         private int _numOfPlayingScores = 0;
         private int _position = 0;
@@ -42,6 +43,7 @@ namespace JUMO.Playback
             IEnumerator<MidiToolkit.MidiEvent> enumerator = track.Iterator().GetEnumerator();
 
             bool hasNext;
+            bool breakLoop = false;
 
             for (hasNext = enumerator.MoveNext();
                  hasNext && enumerator.Current.AbsoluteTicks < startPosition;
@@ -53,9 +55,20 @@ namespace JUMO.Playback
             {
                 while (ticks < enumerator.Current.AbsoluteTicks)
                 {
+                    if (ticks >= _length)
+                    {
+                        breakLoop = true;
+                        break;
+                    }
+
                     yield return ticks;
 
                     ticks++;
+                }
+
+                if (breakLoop)
+                {
+                    break;
                 }
 
                 yield return ticks;
@@ -67,10 +80,12 @@ namespace JUMO.Playback
                         if (cm.Command == MidiToolkit.ChannelCommand.NoteOn)
                         {
                             _masterSequencer.SendNoteOn(plugin, (byte)cm.Data1, (byte)cm.Data2);
+                            _pressedNotes[cm.Data1] = true;
                         }
                         else if (cm.Command == MidiToolkit.ChannelCommand.NoteOff)
                         {
                             _masterSequencer.SendNoteOff(plugin, (byte)cm.Data1);
+                            _pressedNotes[cm.Data1] = false;
                         }
                     }
 
@@ -78,6 +93,14 @@ namespace JUMO.Playback
                 }
 
                 ticks++;
+            }
+
+            for (byte i = 0; i < 128; i++)
+            {
+                if (_pressedNotes[i])
+                {
+                    _masterSequencer.SendNoteOff(plugin, i);
+                }
             }
 
             _numOfPlayingScores--;
