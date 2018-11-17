@@ -2,24 +2,16 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace JUMO.File
+namespace JUMO.File.V1
 {
     public class ProjectWriter : IProjectWriter
     {
-        public const uint MinimumSupportedVersion = 0;
-        public const uint MaximumSupportedVersion = 1;
-
         private static readonly byte[] MagicBytes = new byte[4] { 75, 73, 65, 126 };
-        private static readonly byte[] VersionData = new byte[4] { 0, 0, 0, 0 };
+        private static readonly byte[] VersionData = new byte[4] { 1, 0, 0, 0 };
 
         private readonly JUMO.Song _song = JUMO.Song.Current;
         private readonly Vst.PluginManager _pluginManager = Vst.PluginManager.Instance;
         private readonly MixerManager _mixerManager = MixerManager.Instance;
-
-        public static bool SaveFile(string path)
-        {
-            return new V1.ProjectWriter().DoSaveFile(path);
-        }
 
         public bool DoSaveFile(string path)
         {

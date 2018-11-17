@@ -90,6 +90,7 @@
     <Compile Include="Audio\AudioOutputDevice.cs" />
     <Compile Include="Audio\AudioOutputEngine.cs" />
     <Compile Include="File\EffectPlugin.cs" />
+    <Compile Include="File\Interfaces.cs" />
     <Compile Include="File\MixerChannel.cs" />
     <Compile Include="File\Note.cs" />
     <Compile Include="File\Pattern.cs" />
@@ -99,6 +100,16 @@
     <Compile Include="File\ProjectWriter.cs" />
     <Compile Include="File\Score.cs" />
     <Compile Include="File\Song.cs" />
+    <Compile Include="File\V1\EffectPlugin.cs" />
+    <Compile Include="File\V1\MixerChannel.cs" />
+    <Compile Include="File\V1\Note.cs" />
+    <Compile Include="File\V1\Pattern.cs" />
+    <Compile Include="File\V1\Plugin.cs" />
+    <Compile Include="File\V1\ProjectFile.cs" />
+    <Compile Include="File\V1\ProjectReader.cs" />
+    <Compile Include="File\V1\ProjectWriter.cs" />
+    <Compile Include="File\V1\Score.cs" />
+    <Compile Include="File\V1\Song.cs" />
     <Compile Include="MixerChannel.cs" />
     <Compile Include="IMusicalItem.cs" />
     <Compile Include="MakeNote.cs" />
