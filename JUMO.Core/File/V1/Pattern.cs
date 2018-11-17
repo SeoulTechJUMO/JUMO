@@ -23,6 +23,7 @@ namespace JUMO.File.V1
         public int PatternId { get; }
         public int Start { get; }
         public int Length { get; }
+        public bool UseAutoLength { get; }
 
         public PatternPlacement(int patternId, JUMO.PatternPlacement source)
         {
@@ -30,6 +31,7 @@ namespace JUMO.File.V1
             PatternId = patternId;
             Start = source.Start;
             Length = source.Length;
+            UseAutoLength = source.UseAutoLength;
         }
     }
 }

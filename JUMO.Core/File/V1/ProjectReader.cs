@@ -141,8 +141,18 @@ namespace JUMO.File.V1
 
             foreach (PatternPlacement pp in file.PlacedPatterns)
             {
-                _song.PlacedPatterns.Add(new JUMO.PatternPlacement(patternTable[pp.PatternId], pp.TrackId, pp.Start));
-                // Cannot set the Length property for now.
+                JUMO.PatternPlacement loaded = new JUMO.PatternPlacement(patternTable[pp.PatternId], pp.TrackId, pp.Start);
+
+                if (pp.UseAutoLength)
+                {
+                    loaded.UseAutoLength = true;
+                }
+                else
+                {
+                    loaded.Length = pp.Length;
+                }
+
+                _song.PlacedPatterns.Add(loaded);
             }
         }
 
