@@ -243,7 +243,10 @@ namespace JUMO.Playback
             });
         }
 
-        internal void PlayPattern(Pattern pattern, int startPosition) => new PatternSequencer(this, pattern, startPosition);
+        internal void PlayPattern(PatternPlacement placedPattern, int startPosition)
+        {
+            new PatternSequencer(this, placedPattern, startPosition);
+        }
 
         internal void HandleFinishedTrack()
         {

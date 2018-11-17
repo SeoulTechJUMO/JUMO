@@ -8,26 +8,31 @@ namespace JUMO.Playback
     {
         private readonly MasterSequencer _masterSequencer;
         private readonly List<IEnumerator<int>> _enumerators = new List<IEnumerator<int>>();
+        private readonly int _length;
         private int _numOfPlayingScores = 0;
         private int _position = 0;
 
         #region Properties
 
+        public PatternPlacement PlacedPattern { get; }
         public Pattern Pattern { get; }
 
         #endregion
 
-        public PatternSequencer(MasterSequencer masterSequencer, Pattern pattern, int startPosition)
+        public PatternSequencer(MasterSequencer masterSequencer, PatternPlacement placedPattern, int startPosition)
         {
             _masterSequencer = masterSequencer ?? throw new ArgumentNullException(nameof(masterSequencer));
-            Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
+            _length = placedPattern.Length;
+            PlacedPattern = placedPattern ?? throw new ArgumentNullException(nameof(placedPattern));
 
             _masterSequencer.Tick += OnMasterClockTick;
-            _masterSequencer.Stopped += (s, e) => Dispose();
+            _masterSequencer.Stopped += OnMasterSequencerStopped;
+
+            Pattern pattern = placedPattern.Pattern;
 
             foreach (Vst.Plugin plugin in Vst.PluginManager.Instance.Plugins)
             {
-                _enumerators.Add(GetTickIterator(Pattern[plugin].MidiTrack, plugin, startPosition).GetEnumerator());
+                _enumerators.Add(GetTickIterator(pattern[plugin].MidiTrack, plugin, startPosition).GetEnumerator());
                 _numOfPlayingScores++;
             }
         }
@@ -94,6 +99,8 @@ namespace JUMO.Playback
                 enumerator.MoveNext();
             }
         }
+
+        private void OnMasterSequencerStopped(object sender, EventArgs e) => Dispose();
 
         public void Dispose()
         {
