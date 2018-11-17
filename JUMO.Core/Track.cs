@@ -66,7 +66,7 @@ namespace JUMO
 
             if (previous != null && previous.Start + previous.Length >= ticks)
             {
-                masterSequener.EnqueuePattern(previous.Pattern, ticks - previous.Start);
+                masterSequener.PlayPattern(previous.Pattern, ticks - previous.Start);
             }
 
             while (hasNext)
@@ -83,7 +83,7 @@ namespace JUMO
                 while (hasNext && enumerator.Current.Start == ticks)
                 {
                     System.Diagnostics.Debug.WriteLine($"[{ticks,-8}] Track({Name}): 이번에 재생할 패턴은 '{enumerator.Current.Pattern.Name}");
-                    masterSequener.EnqueuePattern(enumerator.Current.Pattern, 0);
+                    masterSequener.PlayPattern(enumerator.Current.Pattern, 0);
 
                     hasNext = enumerator.MoveNext();
                 }
