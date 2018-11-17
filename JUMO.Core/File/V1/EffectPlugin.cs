@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jacobi.Vst.Core;
+using System;
 
 namespace JUMO.File.V1
 {
@@ -22,8 +23,17 @@ namespace JUMO.File.V1
             PluginPath = source.PluginPath;
             EffectMix = source.EffectMix;
             Parameters = source.DumpParameters();
-            Chunk = source.PluginCommandStub.GetChunk(false);
-            ChunkSize = Chunk.Length;
+
+            if (source.PluginCommandStub.PluginContext.PluginInfo.Flags.HasFlag(VstPluginFlags.ProgramChunks))
+            {
+                Chunk = source.PluginCommandStub.GetChunk(false);
+                ChunkSize = Chunk.Length;
+            }
+            else
+            {
+                Chunk = new byte[0];
+                ChunkSize = 0;
+            }
         }
 
         public void Restore(Vst.EffectPlugin target)
@@ -31,7 +41,11 @@ namespace JUMO.File.V1
             target.Name = Name;
             target.EffectMix = EffectMix;
 
-            target.PluginCommandStub.SetChunk(Chunk, false);
+            if (target.PluginCommandStub.PluginContext.PluginInfo.Flags.HasFlag(VstPluginFlags.ProgramChunks))
+            {
+                target.PluginCommandStub.SetChunk(Chunk, false);
+            }
+
             target.LoadParameters(Parameters);
         }
     }
