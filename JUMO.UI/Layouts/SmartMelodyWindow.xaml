@@ -85,7 +85,7 @@
             <DockPanel.Style>
                 <Style TargetType="DockPanel">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding ProgressVisible}" Value="Visible">
+                        <DataTrigger Binding="{Binding IsBusy}" Value="True">
                             <Setter Property="Effect">
                                 <Setter.Value>
                                     <BlurEffect Radius="30" />
@@ -170,7 +170,17 @@
             </Border>
         </DockPanel>
 
-        <Grid Background="Transparent" Visibility="{Binding ProgressVisible}">
+        <Grid Background="Transparent">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <StackPanel VerticalAlignment="Center">
                 <Label HorizontalAlignment="Center" Content="코드진행을 기반으로 멜로디를 생성하고 있습니다." />
                 <ProgressBar Margin="{StaticResource ControlMargin}" Width="400" Height="20" IsIndeterminate="True"/>

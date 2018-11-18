@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using ChordMagicianModel;
 
 namespace JUMO.UI
@@ -12,7 +11,7 @@ namespace JUMO.UI
     {
         private readonly ChordMagicianViewModel _chordMagicianViewModel;
 
-        private Visibility _progressVisible;
+        private bool _isBusy = false;
         private string _currentMelody;
         private byte _melodyCount;
         private byte _chordCount;
@@ -37,14 +36,14 @@ namespace JUMO.UI
 
         public IList<Progress> CurrentProgress => _chordMagicianViewModel.CurrentProgress;
 
-        //프로그래스 이미지 표시유무
-        public Visibility ProgressVisible
+        //현재 멜로디 생성 작업이 진행 중인지 여부
+        public bool IsBusy
         {
-            get => _progressVisible;
-            set
+            get => _isBusy;
+            private set
             {
-                _progressVisible = value;
-                OnPropertyChanged(nameof(ProgressVisible));
+                _isBusy = value;
+                OnPropertyChanged(nameof(IsBusy));
             }
         }
 
@@ -110,7 +109,7 @@ namespace JUMO.UI
         #region Command Properties
 
         public RelayCommand GetMelodyCommand
-            => _getMelodyCommand ?? (_getMelodyCommand = new RelayCommand(MakeMelody));
+            => _getMelodyCommand ?? (_getMelodyCommand = new RelayCommand(async _ => await MakeMelody()));
 
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(_ => ChangeScore(CurrentMelody, true)));
@@ -131,36 +130,21 @@ namespace JUMO.UI
         public SmartMelodyViewModel(ChordMagicianViewModel vm)
         {
             _chordMagicianViewModel = vm ?? throw new ArgumentNullException(nameof(vm));
-            _progressVisible = Visibility.Hidden;
             _melodyCount = 5;
             _chordCount = 1;
             Sequencer.Mode = Playback.PlaybackMode.Pattern;
         }
 
-        public void MakeMelody()
+        public async Task MakeMelody()
         {
-            ProgressVisible = Visibility.Visible;
-            string chord = "";
+            IsBusy = true;
+            string chord = string.Join(" ", Enumerable.Repeat(CurrentProgress.Select(progress => progress.Chord), ChordCount).SelectMany(x => x));
 
-            Dispatcher dispatcher = Application.Current.Dispatcher;
+            await Task.Run(() => CreateMelody.RunMagenta(chord, MelodyCount));
 
-            for (int i = 0; i < ChordCount; i++)
-            {
-                foreach (Progress progress in _chordMagicianViewModel.CurrentProgress)
-                {
-                    chord += progress.Chord;
-                    chord += " ";
-                }
-            }
+            MakeScore(CreateMelody.MelodyPath);
 
-            Task.Run(() => {
-                CreateMelody.RunMagenta(chord, MelodyCount);
-                dispatcher.BeginInvoke((Action)(() =>
-                {
-                    MakeScore(CreateMelody.MelodyPath);
-                }));
-                ProgressVisible = Visibility.Hidden;
-            });
+            IsBusy = false;
         }
 
         private void MakeScore(string[] files)
