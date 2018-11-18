@@ -63,9 +63,11 @@
     <Compile Include="AudioSettingsViewModel.cs" />
     <Compile Include="ChannelRackViewModel.cs" />
     <Compile Include="FileDialogViewModel.cs" />
+    <Compile Include="HooktheoryLoginViewModel.cs" />
     <Compile Include="Internal\WorkspaceKey.cs" />
     <Compile Include="Internal\WorkspaceManager.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="MixerViewModel.cs" />
     <Compile Include="MusicalCanvasWorkspaceViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
     <Compile Include="PatternManagerViewModel.cs" />

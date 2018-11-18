@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using ChordMagicianModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    class HooktheoryLoginViewModel : ViewModelBase
+    public class HooktheoryLoginViewModel : ViewModelBase
     {
         private readonly GetAPI _api;
         private bool _isBusy = false;

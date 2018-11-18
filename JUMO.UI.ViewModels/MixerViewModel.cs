@@ -1,5 +1,5 @@
-﻿using JUMO.Vst;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using JUMO.Vst;
 
 namespace JUMO.UI.ViewModels
 {
@@ -44,7 +44,7 @@ namespace JUMO.UI.ViewModels
 
         public RelayCommand OpenPluginEditorCommand { get; } =
             new RelayCommand(
-                plugin => PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
+                plugin => { }, //PluginEditorManager.Instance.OpenEditor(plugin as PluginBase),
                 plugin => true // TODO: VST 플러그인이 에디터 UI를 제공하는지 확인해야 함. (Flag, CanDo 등을 조사)
             );
 

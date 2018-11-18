@@ -1,6 +1,7 @@
-﻿using System.Windows;
-using System.Net;
+﻿using System.Net;
+using System.Windows;
 using ChordMagicianModel;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Layouts
 {
