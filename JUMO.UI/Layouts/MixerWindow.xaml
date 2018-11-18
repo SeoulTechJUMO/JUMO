@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JUMO.UI.Views"
-        xmlns:proj="clr-namespace:JUMO.UI"
+        xmlns:uiCore="clr-namespace:JUMO.UI;assembly=JUMO.UI.Core"
         mc:Ignorable="d"
         Background="{DynamicResource LightControlFaceColor}"
         Width="1200"
@@ -82,7 +82,7 @@
                         <ScrollViewer>
                             <ScrollViewer.Resources>
                                 <Style TargetType="ScrollBar" BasedOn="{StaticResource MinimalScrollBarStyle}" />
-                                <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+                                <uiCore:BindingProxy x:Key="Proxy" Data="{Binding}" />
                             </ScrollViewer.Resources>
                             <ItemsControl Grid.Row="0" Margin="{StaticResource ControlMargin}" ItemsSource="{Binding CurrentChannel.Plugins}" AlternationCount="100">
                                 <ItemsControl.ItemTemplate>
@@ -93,8 +93,7 @@
                                                             ReplacePlugin="{Binding Source={StaticResource Proxy}, Path=Data.ReplacePluginCommand}"
                                                             RemovePlugin="{Binding Source={StaticResource Proxy}, Path=Data.RemovePluginCommand}"
                                                             MoveUp="{Binding Source={StaticResource Proxy}, Path=Data.MoveUpPluginCommand}"
-                                                            MoveDown="{Binding Source={StaticResource Proxy}, Path=Data.MoveDownPluginCommand}"
-                                                            />
+                                                            MoveDown="{Binding Source={StaticResource Proxy}, Path=Data.MoveDownPluginCommand}" />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

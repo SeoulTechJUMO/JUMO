@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:JUMO.UI.Views"
+             xmlns:uiCore="clr-namespace:JUMO.UI;assembly=JUMO.UI.Core"
              xmlns:proj="clr-namespace:JUMO.UI"
              d:DataContext="{d:DesignInstance Type={x:Type proj:PatternManagerViewModel}}"
              mc:Ignorable="d">
@@ -14,7 +14,7 @@
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <proj:BindingProxy x:Key="Proxy" Data="{Binding}" />
+            <uiCore:BindingProxy x:Key="Proxy" Data="{Binding}" />
 
             <StreamGeometry x:Key="MoveUpGlyph">
                 M0,5 L5,0 L10,5 L10,7 L5,2 L0,7Z

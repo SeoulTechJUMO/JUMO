@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO", "JUMO\JUMO.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChordMagicianModel", "ChordMagicianModel\ChordMagicianModel.csproj", "{BC746A92-1979-42F7-924E-FBDB62C6AD85}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JUMO.UI.Core", "JUMO.UI.Core\JUMO.UI.Core.csproj", "{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{BC746A92-1979-42F7-924E-FBDB62C6AD85}.Release|x64.Build.0 = Release|x64
 		{BC746A92-1979-42F7-924E-FBDB62C6AD85}.Release|x86.ActiveCfg = Release|x86
 		{BC746A92-1979-42F7-924E-FBDB62C6AD85}.Release|x86.Build.0 = Release|x86
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Debug|x64.ActiveCfg = Debug|x64
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Debug|x64.Build.0 = Debug|x64
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Debug|x86.ActiveCfg = Debug|x86
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Debug|x86.Build.0 = Debug|x86
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Release|x64.ActiveCfg = Release|x64
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Release|x64.Build.0 = Release|x64
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Release|x86.ActiveCfg = Release|x86
+		{F939A809-4976-4FAA-9D1F-00D5E6C85BCB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

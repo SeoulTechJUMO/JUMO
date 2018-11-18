@@ -83,7 +83,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BindingProxy.cs" />
     <Compile Include="Controls\BarIndicator.cs" />
     <Compile Include="Controls\BarIndicatorGrip.xaml.cs">
       <DependentUpon>BarIndicatorGrip.xaml</DependentUpon>
@@ -152,7 +151,6 @@
     <Compile Include="ViewModels\PatternPlacementViewModel.cs" />
     <Compile Include="ViewModels\PianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaybackTimeViewModel.cs" />
@@ -418,6 +416,10 @@
     <ProjectReference Include="..\JUMO.Core\JUMO.Core.csproj">
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JUMO.UI.Core\JUMO.UI.Core.csproj">
+      <Project>{f939a809-4976-4faa-9d1f-00d5e6c85bcb}</Project>
+      <Name>JUMO.UI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
