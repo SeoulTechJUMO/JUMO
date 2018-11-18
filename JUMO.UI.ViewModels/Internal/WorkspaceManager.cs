@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Data;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     sealed class WorkspaceManager : INotifyPropertyChanged
     {
@@ -14,10 +14,7 @@ namespace JUMO.UI
 
         public static WorkspaceManager Instance => _instance.Value;
 
-        private WorkspaceManager()
-        {
-            Workspaces = CollectionViewSource.GetDefaultView(_workspaces);
-        }
+        private WorkspaceManager() { }
 
         #endregion
 
@@ -26,7 +23,7 @@ namespace JUMO.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ICollectionView Workspaces { get; }
+        public IList<WorkspaceViewModel> Workspaces => _workspaces;
 
         public WorkspaceViewModel CurrentWorkspace
         {

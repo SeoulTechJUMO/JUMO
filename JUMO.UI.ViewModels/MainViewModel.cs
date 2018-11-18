@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.ComponentModel;
-using JUMO.UI.ViewModels;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         private const string FileDialogDefaultExt = ".jumo";
         private const string FileDialogFilter = "JUMO 프로젝트 (.jumo)|*.jumo|모든 파일|*.*";

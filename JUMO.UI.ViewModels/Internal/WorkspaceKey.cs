@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    public abstract class WorkspaceKey
+    abstract class WorkspaceKey
     {
         protected object data;
 
@@ -12,7 +12,7 @@ namespace JUMO.UI
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    public class PianoRollWorkspaceKey : WorkspaceKey
+    class PianoRollWorkspaceKey : WorkspaceKey
     {
         public PianoRollWorkspaceKey(Vst.Plugin plugin) : base(plugin) { }
 
@@ -29,7 +29,7 @@ namespace JUMO.UI
         public override int GetHashCode() => base.GetHashCode();
     }
 
-    public class PlaylistWorkspaceKey : WorkspaceKey
+    class PlaylistWorkspaceKey : WorkspaceKey
     {
         private static readonly Lazy<PlaylistWorkspaceKey> _instance = new Lazy<PlaylistWorkspaceKey>(() => new PlaylistWorkspaceKey());
 

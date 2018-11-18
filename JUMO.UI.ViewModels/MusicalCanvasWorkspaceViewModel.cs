@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using JUMO.UI.Services;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public abstract class MusicalCanvasWorkspaceViewModel : WorkspaceViewModel
     {

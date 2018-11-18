@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace JUMO.UI
 {
@@ -11,16 +10,5 @@ namespace JUMO.UI
 
         protected void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public abstract class WorkspaceViewModel : ViewModelBase
-    {
-        private RelayCommand _closeCommand;
-
-        public event EventHandler CloseRequested;
-
-        public abstract WorkspaceKey Key { get; }
-
-        public RelayCommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(_ => CloseRequested?.Invoke(this, EventArgs.Empty)));
     }
 }

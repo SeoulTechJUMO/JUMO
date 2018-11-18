@@ -136,19 +136,15 @@
     <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
-    <Compile Include="ViewModels\MusicalCanvasWorkspaceViewModel.cs" />
     <Compile Include="ViewModels\NoteToolsViewModel.cs" />
     <Compile Include="ViewModels\PatternManagerViewModel.cs" />
-    <Compile Include="ViewModels\PianoRollViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaybackTimeViewModel.cs" />
-    <Compile Include="ViewModels\PlaylistViewModel.cs" />
     <Compile Include="ViewModels\SmartMelodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AudioSettingsView.xaml.cs">
@@ -209,8 +205,6 @@
     <Compile Include="Layouts\SmartMelodyWindow.xaml.cs">
       <DependentUpon>SmartMelodyWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WorkspaceKey.cs" />
-    <Compile Include="WorkspaceManager.cs" />
     <Page Include="Controls\BarIndicatorGrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -227,7 +221,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Compile Include="ViewModels\ChannelRackViewModel.cs" />
     <Page Include="Layouts\NoteChopperWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

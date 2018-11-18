@@ -7,8 +7,9 @@
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
              xmlns:view="clr-namespace:JUMO.UI.Views"
              xmlns:proj="clr-namespace:JUMO.UI"
+             xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type={x:Type proj:ChannelRackViewModel}}"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:ChannelRackViewModel}}"
              d:DesignHeight="450" d:DesignWidth="300">
     <UserControl.Resources>
         <ResourceDictionary>

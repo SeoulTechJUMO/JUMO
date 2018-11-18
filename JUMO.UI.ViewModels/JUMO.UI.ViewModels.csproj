@@ -61,9 +61,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioSettingsViewModel.cs" />
+    <Compile Include="ChannelRackViewModel.cs" />
     <Compile Include="FileDialogViewModel.cs" />
+    <Compile Include="Internal\WorkspaceKey.cs" />
+    <Compile Include="Internal\WorkspaceManager.cs" />
+    <Compile Include="MainViewModel.cs" />
+    <Compile Include="MusicalCanvasWorkspaceViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
     <Compile Include="PatternPlacementViewModel.cs" />
+    <Compile Include="PianoRollViewModel.cs" />
+    <Compile Include="PlaylistViewModel.cs" />
     <Compile Include="ProjectSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsViewModel.cs" />

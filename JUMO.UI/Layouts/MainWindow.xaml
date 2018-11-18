@@ -8,6 +8,7 @@
     xmlns:proj="clr-namespace:JUMO.UI"
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
     xmlns:view="clr-namespace:JUMO.UI.Views"
+    xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
     mc:Ignorable="d"
     Style="{DynamicResource MainWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
@@ -20,15 +21,15 @@
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <DataTemplate DataType="{x:Type proj:ChannelRackViewModel}">
+            <DataTemplate DataType="{x:Type vm:ChannelRackViewModel}">
                 <view:ChannelRackView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type proj:PianoRollViewModel}">
+            <DataTemplate DataType="{x:Type vm:PianoRollViewModel}">
                 <view:PianoRollView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type proj:PlaylistViewModel}">
+            <DataTemplate DataType="{x:Type vm:PlaylistViewModel}">
                 <view:PlaylistView />
             </DataTemplate>
 
@@ -46,7 +47,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Window.DataContext>
-        <proj:MainViewModel />
+        <vm:MainViewModel />
     </Window.DataContext>
     <Window.InputBindings>
         <!-- File -->
@@ -186,7 +187,7 @@
                 <TabControl Grid.Column="0" Margin="{StaticResource ControlMargin}">
                     <TabItem Header="{Binding Song.CurrentPattern.Name}">
                         <ContentControl>
-                            <proj:ChannelRackViewModel />
+                            <vm:ChannelRackViewModel />
                         </ContentControl>
                     </TabItem>
                 </TabControl>

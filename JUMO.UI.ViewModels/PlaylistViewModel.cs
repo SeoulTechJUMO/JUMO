@@ -3,9 +3,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using JUMO.UI.Services;
-using JUMO.UI.ViewModels;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class PlaylistViewModel : MusicalCanvasWorkspaceViewModel
     {
@@ -16,7 +15,7 @@ namespace JUMO.UI
 
         protected override double ZoomBase => 4.0;
 
-        public override WorkspaceKey Key => PlaylistWorkspaceKey.Instance;
+        internal override WorkspaceKey Key => PlaylistWorkspaceKey.Instance;
 
         public override string DisplayName { get; } = "플레이리스트";
 

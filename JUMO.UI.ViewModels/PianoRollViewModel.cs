@@ -5,9 +5,8 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using JUMO.UI.Services;
-using JUMO.UI.ViewModels;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class PianoRollViewModel : MusicalCanvasWorkspaceViewModel
     {
@@ -51,7 +50,7 @@ namespace JUMO.UI
 
         protected override double ZoomBase => 24.0;
 
-        public override WorkspaceKey Key { get; }
+        internal override WorkspaceKey Key { get; }
 
         public override string DisplayName => $"피아노 롤: {Plugin.Name}";
 
