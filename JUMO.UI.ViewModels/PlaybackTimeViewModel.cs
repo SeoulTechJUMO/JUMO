@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    class PlaybackTimeViewModel : INotifyPropertyChanged
+    public class PlaybackTimeViewModel : INotifyPropertyChanged
     {
         private readonly Song _song = Song.Current;
         private readonly Playback.MasterSequencer _sequencer = Playback.MasterSequencer.Instance;

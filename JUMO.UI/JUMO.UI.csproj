@@ -143,7 +143,6 @@
     <Compile Include="Data\Segment.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
-    <Compile Include="ViewModels\PlaybackTimeViewModel.cs" />
     <Compile Include="ViewModels\SmartMelodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AudioSettingsView.xaml.cs">

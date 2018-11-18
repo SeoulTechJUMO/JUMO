@@ -71,6 +71,7 @@
     <Compile Include="PatternManagerViewModel.cs" />
     <Compile Include="PatternPlacementViewModel.cs" />
     <Compile Include="PianoRollViewModel.cs" />
+    <Compile Include="PlaybackTimeViewModel.cs" />
     <Compile Include="PlaylistViewModel.cs" />
     <Compile Include="ProjectSettingsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

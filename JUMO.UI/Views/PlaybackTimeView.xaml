@@ -4,10 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:JUMO.UI.Views"
-             xmlns:proj="clr-namespace:JUMO.UI"
+             xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance Type=proj:PlaybackTimeViewModel}"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:PlaybackTimeViewModel}}"
              d:DesignWidth="240" d:DesignHeight="150">
     <Grid>
         <Grid Margin="20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
