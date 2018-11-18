@@ -30,7 +30,7 @@ namespace JUMO.UI.ViewModels
                 if (MinRange <= value && value <= MaxRange)
                 {
                     _startAdjustRange = value;
-                    AdjustStart(StartInterval);
+                    AdjustValue(StartInterval, value, DoAdjustStart);
                     OnPropertyChanged(nameof(StartAdjustRange));
                 }
             }
@@ -44,7 +44,7 @@ namespace JUMO.UI.ViewModels
                 if (MinRange <= value && value <= MaxRange)
                 {
                     _velocityAdjustRange = value;
-                    AdjustVelocity(VelocityInterval);
+                    AdjustValue(VelocityInterval, value, DoAdjustVelocity);
                     OnPropertyChanged(nameof(VelocityAdjustRange));
                 }
             }
@@ -58,7 +58,7 @@ namespace JUMO.UI.ViewModels
                 if (MinRange <= value && value <= MaxRange)
                 {
                     _lengthAdjustRange = value;
-                    AdjustLength(LengthInterval);
+                    AdjustValue(LengthInterval, value, DoAdjustLength);
                     OnPropertyChanged(nameof(LengthAdjustRange));
                 }
             }
@@ -72,7 +72,7 @@ namespace JUMO.UI.ViewModels
                 if (MinInterval <= value && value <= MaxInterval)
                 {
                     _startInterval = value;
-                    AdjustStart(value);
+                    AdjustValue(value, StartAdjustRange, DoAdjustStart);
                     OnPropertyChanged(nameof(StartInterval));
                 }
             }
@@ -86,7 +86,7 @@ namespace JUMO.UI.ViewModels
                 if (MinInterval <= value && value <= MaxInterval)
                 {
                     _velocityInterval = value;
-                    AdjustVelocity(value);
+                    AdjustValue(value, VelocityAdjustRange, DoAdjustVelocity);
                     OnPropertyChanged(nameof(VelocityInterval));
                 }
             }
@@ -100,7 +100,7 @@ namespace JUMO.UI.ViewModels
                 if (MinInterval <= value && value <= MaxInterval)
                 {
                     _lengthInterval = value;
-                    AdjustLength(value);
+                    AdjustValue(value, LengthAdjustRange, DoAdjustLength);
                     OnPropertyChanged(nameof(LengthInterval));
                 }
             }
@@ -110,100 +110,54 @@ namespace JUMO.UI.ViewModels
 
         public SofterViewModel(PianoRollViewModel vm) : base(vm) { }
 
-        private void AdjustStart(double interval)
+        private void AdjustValue(double interval, int adjustRange, Action<NoteViewModel, Note, int> transform)
         {
-            bool IsDesc = false;
+            bool isDesc = false;
 
             if (interval < 0)
             {
-                IsDesc = true;
+                isDesc = true;
                 interval = -interval;
             }
 
-            int delta = (int)(interval * StartAdjustRange);
+            int delta = (int)(interval * adjustRange);
             var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
 
             foreach ((var group, var origGroup) in zipped)
             {
-                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
-                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
-                int startDelta = 0;
-                var z = g.Zip(og, (note, origNote) => (note, origNote));
-
-                foreach((NoteViewModel note, Note origNote) in z)
-                {
-                    note.Start = Math.Max(origNote.Start + startDelta, origNote.Start);
-                    startDelta += delta;
-
-                    note.UpdateSource();
-                }
-            }
-        }
-
-        private void AdjustVelocity(double interval)
-        {
-            bool IsDesc = false;
-
-            if (interval < 0)
-            {
-                IsDesc = true;
-                interval = -interval;
-            }
-
-            int delta = (int)(interval * VelocityAdjustRange);
-            var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
-
-            foreach ((var group, var origGroup) in zipped)
-            {
-                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
-                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
-                int veloDelta = 0;
+                IEnumerable<NoteViewModel> g = isDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
+                IEnumerable<Note> og = isDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
+                int valueDelta = 0;
                 var z = g.Zip(og, (note, origNote) => (note, origNote));
 
                 foreach ((NoteViewModel note, Note origNote) in z)
                 {
-                    note.Velocity = (byte)(origNote.Velocity - veloDelta);
-
-                    if (note.Velocity > 127)
-                    {
-                        note.Velocity = 0;
-                    }
-
-                    veloDelta += delta;
-
+                    transform(note, origNote, valueDelta);
                     note.UpdateSource();
+
+                    valueDelta += delta;
                 }
             }
         }
 
-        private void AdjustLength(double interval)
+        private void DoAdjustStart(NoteViewModel note, Note origNote, int delta)
         {
-            bool IsDesc = false;
+            note.Start = Math.Max(origNote.Start + delta, origNote.Start);
+        }
 
-            if (interval < 0)
+        private void DoAdjustVelocity(NoteViewModel note, Note origNote, int delta)
+        {
+            note.Velocity = (byte)(origNote.Velocity - delta);
+
+            if (note.Velocity > 127)
             {
-                IsDesc = true;
-                interval = -interval;
+                note.Velocity = 0;
             }
+        }
 
-            int delta = (int)(interval * LengthAdjustRange);
-            var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
-
-            foreach ((var group, var origGroup) in zipped)
-            {
-                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
-                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
-                int lenDelta = 0;
-                var z = g.Zip(og, (note, origNote) => (note, origNote));
-
-                foreach ((NoteViewModel note, Note origNote) in z)
-                {
-                    note.Length = Math.Max(origNote.Length - lenDelta, 10);
-                    lenDelta += delta;
-
-                    note.UpdateSource();
-                }
-            }
+        private void DoAdjustLength(NoteViewModel note, Note origNote, int delta)
+        {
+            note.Length = Math.Max(origNote.Length - delta, 10);
         }
     }
 }
