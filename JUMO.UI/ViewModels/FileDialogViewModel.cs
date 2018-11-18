@@ -1,4 +1,6 @@
-﻿namespace JUMO.UI
+﻿using JUMO.UI.Services;
+
+namespace JUMO.UI
 {
     class FileDialogViewModel : ViewModelBase
     {
@@ -20,12 +22,12 @@
 
         private void ExecuteShowOpen(object _)
         {
-            FileName = new FileDialogService().ShowOpenFileDialog(Title, Extension, Filter);
+            FileName = FileDialogService.ShowOpenFileDialog(Title, Extension, Filter);
         }
 
         private void ExecuteShowSave(object _)
         {
-            FileName = new FileDialogService().ShowSaveFileDialog(Title, Extension, Filter);
+            FileName = FileDialogService.ShowSaveFileDialog(Title, Extension, Filter);
         }
     }
 }

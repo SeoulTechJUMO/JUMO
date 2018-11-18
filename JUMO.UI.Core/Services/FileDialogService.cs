@@ -1,10 +1,10 @@
 ﻿using Microsoft.Win32;
 
-namespace JUMO.UI
+namespace JUMO.UI.Services
 {
-    class FileDialogService
+    public static class FileDialogService
     {
-        public string ShowOpenFileDialog(string title, string extension, string filter)
+        public static string ShowOpenFileDialog(string title, string extension, string filter)
         {
             OpenFileDialog dlg = new OpenFileDialog()
             {
@@ -21,7 +21,7 @@ namespace JUMO.UI
             return null;
         }
 
-        public string ShowSaveFileDialog(string title, string extension, string filter)
+        public static string ShowSaveFileDialog(string title, string extension, string filter)
         {
             SaveFileDialog dlg = new SaveFileDialog()
             {
