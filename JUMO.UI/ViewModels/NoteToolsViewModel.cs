@@ -10,24 +10,9 @@ namespace JUMO.UI.ViewModels
 
         private RelayCommand _abortCommand;
 
-        public struct OldNotes
-        {
-            public byte Value;
-            public byte Velocity;
-            public int Start;
-            public int Length;
+        protected readonly List<List<NoteViewModel>> OrderedNotes = new List<List<NoteViewModel>>();
+        protected readonly List<List<Note>> OriginalNotes = new List<List<Note>>();
 
-            public OldNotes(byte value, byte velocity, int start, int length)
-            {
-                Value = value;
-                Velocity = velocity;
-                Start = start;
-                Length = length;
-            }
-        }
-
-        public List<List<NoteViewModel>> OrderedNotes = new List<List<NoteViewModel>>();
-        public List<List<OldNotes>> OriginalNotes = new List<List<OldNotes>>();
         public bool WillInsert;
 
         public PianoRollViewModel ViewModel { get; }
@@ -55,37 +40,15 @@ namespace JUMO.UI.ViewModels
         //시작점으로 그룹화, 노트 피치 순으로 정렬
         private void OrderByStart()
         {
-            var orderedElements = _selectedNotes.OrderBy(note => note.Start);
-            int currentStart = orderedElements.Select(note => note.Start).FirstOrDefault();
-            List<NoteViewModel> tempNotes = new List<NoteViewModel>();
-            List<OldNotes> tempOld = new List<OldNotes>();
+            var sortedAndGrouped =
+                from note in _selectedNotes
+                orderby note.Start, note.Value
+                group note by note.Start;
 
-            foreach (NoteViewModel item in orderedElements)
+            foreach (var group in sortedAndGrouped)
             {
-                if (currentStart == item.Start)
-                {
-                    tempNotes.Add(item);
-                    tempOld.Add(new OldNotes(item.Value, item.Velocity, item.Start, item.Length));
-                }
-                else
-                {
-                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes.OrderBy(note => note.Value).ToList()));
-                    OriginalNotes.Add(new List<OldNotes>(tempOld.OrderBy(note => note.Value).ToList()));
-
-                    currentStart = item.Start;
-
-                    tempNotes.Clear();
-                    tempOld.Clear();
-
-                    tempNotes.Add(item);
-                    tempOld.Add(new OldNotes(item.Value, item.Velocity, item.Start, item.Length));
-                }
-
-                if (item == orderedElements.ElementAt(orderedElements.Count() - 1))
-                {
-                    OrderedNotes.Add(new List<NoteViewModel>(tempNotes.OrderBy(note => note.Value).ToList()));
-                    OriginalNotes.Add(new List<OldNotes>(tempOld.OrderBy(note => note.Value).ToList()));
-                }
+                OrderedNotes.Add(group.ToList());
+                OriginalNotes.Add(group.Select(note => new Note(note.Value, note.Velocity, note.Start, note.Length)).ToList());
             }
         }
 
