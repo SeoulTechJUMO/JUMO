@@ -1,8 +1,8 @@
 ﻿using JUMO.UI.Services;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    class FileDialogViewModel : ViewModelBase
+    public class FileDialogViewModel : ViewModelBase
     {
         public override string DisplayName => "";
 

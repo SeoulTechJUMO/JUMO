@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioSettingsViewModel.cs" />
+    <Compile Include="FileDialogViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
     <Compile Include="PatternPlacementViewModel.cs" />
     <Compile Include="ProjectSettingsViewModel.cs" />
@@ -76,6 +77,10 @@
     <ProjectReference Include="..\JUMO.Core\JUMO.Core.csproj">
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JUMO.UI.Core\JUMO.UI.Core.csproj">
+      <Project>{f939a809-4976-4faa-9d1f-00d5e6c85bcb}</Project>
+      <Name>JUMO.UI.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

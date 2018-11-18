@@ -135,7 +135,6 @@
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
-    <Compile Include="ViewModels\FileDialogViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MusicalProps.cs" />

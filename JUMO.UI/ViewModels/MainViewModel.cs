@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI
 {
