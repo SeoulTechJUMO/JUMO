@@ -33,7 +33,7 @@
                 <view:PlaylistView />
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type proj:PatternManagerViewModel}">
+            <DataTemplate DataType="{x:Type vm:PatternManagerViewModel}">
                 <view:PatternManagerView />
             </DataTemplate>
 
@@ -169,7 +169,7 @@
             </Grid>
 
             <ContentControl Grid.Row="0" Grid.Column="2">
-                <proj:PatternManagerViewModel />
+                <vm:PatternManagerViewModel />
             </ContentControl>
 
             <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">

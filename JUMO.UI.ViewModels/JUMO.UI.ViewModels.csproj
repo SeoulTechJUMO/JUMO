@@ -68,6 +68,7 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MusicalCanvasWorkspaceViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
+    <Compile Include="PatternManagerViewModel.cs" />
     <Compile Include="PatternPlacementViewModel.cs" />
     <Compile Include="PianoRollViewModel.cs" />
     <Compile Include="PlaylistViewModel.cs" />

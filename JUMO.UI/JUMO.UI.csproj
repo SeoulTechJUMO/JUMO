@@ -140,7 +140,6 @@
     <Compile Include="PluginEditorManager.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="ViewModels\NoteToolsViewModel.cs" />
-    <Compile Include="ViewModels\PatternManagerViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />

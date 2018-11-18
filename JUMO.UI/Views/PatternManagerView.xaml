@@ -5,8 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:uiCore="clr-namespace:JUMO.UI;assembly=JUMO.UI.Core"
+             xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
              xmlns:proj="clr-namespace:JUMO.UI"
-             d:DataContext="{d:DesignInstance Type={x:Type proj:PatternManagerViewModel}}"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:PatternManagerViewModel}}"
              mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>

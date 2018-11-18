@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
-    class PatternManagerViewModel : ViewModelBase
+    public class PatternManagerViewModel : ViewModelBase
     {
         public enum Status
         {
