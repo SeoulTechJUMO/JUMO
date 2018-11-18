@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using JUMO.UI.Services;
 using JUMO.UI.ViewModels;
 
 namespace JUMO.UI

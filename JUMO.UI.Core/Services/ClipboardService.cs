@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JUMO.UI
+namespace JUMO.UI.Services
 {
     public sealed class ClipboardService
     {
