@@ -6,6 +6,10 @@ namespace JUMO.UI.ViewModels
 {
     public abstract class NoteToolsViewModel : ViewModelBase
     {
+        private readonly ObservableCollection<NoteViewModel> _selectedNotes = new ObservableCollection<NoteViewModel>();
+
+        private RelayCommand _abortCommand;
+
         public struct OldNotes
         {
             public byte Value;
@@ -22,41 +26,28 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        private ObservableCollection<NoteViewModel> SelectedNotes = new ObservableCollection<NoteViewModel>();
-        private PianoRollViewModel _ViewModel;
-
-        private RelayCommand _AbortCommand;
-
         public List<List<NoteViewModel>> OrderedNotes = new List<List<NoteViewModel>>();
         public List<List<OldNotes>> OriginalNotes = new List<List<OldNotes>>();
         public bool WillInsert;
 
-        public PianoRollViewModel ViewModel
-        {
-            get => _ViewModel;
-            set
-            {
-                _ViewModel = value;
-                OnPropertyChanged(nameof(ViewModel));
-            }
-        }
+        public PianoRollViewModel ViewModel { get; }
 
-        public RelayCommand AbortCommand => _AbortCommand ?? (_AbortCommand = new RelayCommand(Reset));
+        public RelayCommand AbortCommand => _abortCommand ?? (_abortCommand = new RelayCommand(Reset));
 
         public NoteToolsViewModel(PianoRollViewModel vm)
         {
-            _ViewModel = vm;
+            ViewModel = vm;
             WillInsert = false;
-            if (_ViewModel.SelectedItems.Count() != 0)
+            if (ViewModel.SelectedItems.Count() != 0)
             {
-                foreach (IMusicalItem item in _ViewModel.SelectedItems)
+                foreach (IMusicalItem item in ViewModel.SelectedItems)
                 {
-                    SelectedNotes.Add((NoteViewModel)item);
+                    _selectedNotes.Add((NoteViewModel)item);
                 }
             }
             else
             {
-                SelectedNotes = _ViewModel.Notes;
+                _selectedNotes = ViewModel.Notes;
             }
             OrderByStart();
         }
@@ -64,18 +55,17 @@ namespace JUMO.UI.ViewModels
         //시작점으로 그룹화, 노트 피치 순으로 정렬
         private void OrderByStart()
         {
-            var OrderedElement = SelectedNotes.OrderBy(note => note.Start);
-            int currentStart = 0;
+            var orderedElements = _selectedNotes.OrderBy(note => note.Start);
+            int currentStart = orderedElements.Select(note => note.Start).FirstOrDefault();
             List<NoteViewModel> tempNotes = new List<NoteViewModel>();
             List<OldNotes> tempOld = new List<OldNotes>();
 
-            foreach (NoteViewModel item in OrderedElement)
+            foreach (NoteViewModel item in orderedElements)
             {
-                if (item == OrderedElement.ElementAt(0)) { currentStart = item.Start; }
                 if (currentStart == item.Start)
                 {
                     tempNotes.Add(item);
-                    tempOld.Add(new OldNotes(item.Value,item.Velocity,item.Start,item.Length));
+                    tempOld.Add(new OldNotes(item.Value, item.Velocity, item.Start, item.Length));
                 }
                 else
                 {
@@ -90,7 +80,8 @@ namespace JUMO.UI.ViewModels
                     tempNotes.Add(item);
                     tempOld.Add(new OldNotes(item.Value, item.Velocity, item.Start, item.Length));
                 }
-                if (item == OrderedElement.ElementAt(OrderedElement.Count() - 1))
+
+                if (item == orderedElements.ElementAt(orderedElements.Count() - 1))
                 {
                     OrderedNotes.Add(new List<NoteViewModel>(tempNotes.OrderBy(note => note.Value).ToList()));
                     OriginalNotes.Add(new List<OldNotes>(tempOld.OrderBy(note => note.Value).ToList()));
@@ -100,9 +91,9 @@ namespace JUMO.UI.ViewModels
 
         public void Reset()
         {
-            for(int i=0;i<OrderedNotes.Count();i++)
+            for (int i = 0; i < OrderedNotes.Count(); i++)
             {
-                for(int j=0;j<OrderedNotes[i].Count();j++)
+                for (int j = 0; j < OrderedNotes[i].Count(); j++)
                 {
                     OrderedNotes[i][j].Value = OriginalNotes[i][j].Value;
                     OrderedNotes[i][j].Velocity = OriginalNotes[i][j].Velocity;

@@ -4,27 +4,23 @@ namespace JUMO.UI.ViewModels
 {
     public class ChopperViewModel : NoteToolsViewModel
     {
+        private int _addCount;
+        private int _chopInterval;
+
+        #region Properties
+
         public override string DisplayName => "자르기";
 
-        public ChopperViewModel(PianoRollViewModel vm) : base(vm)
-        {
-            _ChopInterval = 0;
-            addCount = 0;
-        }
-
-        private int addCount;
-
-        private int _ChopInterval;
         public int ChopInterval
         {
-            get => _ChopInterval;
+            get => _chopInterval;
             set
             {
-                if (value != _ChopInterval)
+                if (value != _chopInterval)
                 {
                     if (value >= 0 && value <= 16 && value % 2 == 0)
                     {
-                        _ChopInterval = value;
+                        _chopInterval = value;
                         Chopping(value);
                         OnPropertyChanged(nameof(ChopInterval));
                     }
@@ -32,17 +28,25 @@ namespace JUMO.UI.ViewModels
             }
         }
 
+        #endregion
+
+        public ChopperViewModel(PianoRollViewModel vm) : base(vm)
+        {
+            _chopInterval = 0;
+            _addCount = 0;
+        }
+
         private void Chopping(int interval)
         {
             int currentChopLength = 0;
             if (interval != 0) { currentChopLength = Song.Current.TimeResolution / interval; }
 
-            for (int i = 0; i < addCount; i++)
+            for (int i = 0; i < _addCount; i++)
             {
                 ViewModel.RemoveNote(ViewModel.Notes?.ElementAt(ViewModel.Notes.Count - 1).Source);
             }
 
-            addCount = 0;
+            _addCount = 0;
 
             if (currentChopLength == 0)
             {
@@ -70,14 +74,14 @@ namespace JUMO.UI.ViewModels
 
                         int lengthHandle = OriginalNotes[i][j].Length - firstLength;
                         int startHandle = OriginalNotes[i][j].Start + firstLength;
-                        while(lengthHandle > currentChopLength)
+                        while (lengthHandle > currentChopLength)
                         {
                             ViewModel.AddNote(new Note(OriginalNotes[i][j].Value, OriginalNotes[i][j].Velocity, startHandle, currentChopLength));
-                            addCount++;
+                            _addCount++;
                             lengthHandle -= currentChopLength;
                             startHandle += currentChopLength;
                         }
-                        if (lengthHandle != 0) { ViewModel.AddNote(new Note(OriginalNotes[i][j].Value, OriginalNotes[i][j].Velocity, startHandle, lengthHandle)); addCount++; }
+                        if (lengthHandle != 0) { ViewModel.AddNote(new Note(OriginalNotes[i][j].Value, OriginalNotes[i][j].Velocity, startHandle, lengthHandle)); _addCount++; }
                     }
                 }
             }

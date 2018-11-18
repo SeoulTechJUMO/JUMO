@@ -4,66 +4,54 @@ namespace JUMO.UI.ViewModels
 {
     public class SofterViewModel : NoteToolsViewModel
     {
+        private int _startAdjustRange;
+        private int _velocityAdjustRange;
+        private int _lengthAdjustRange;
+
+        private double _startInterval;
+        private double _velocityInterval;
+        private double _lengthInterval;
+
+        #region Properties
+
         public override string DisplayName => "부드럽게";
-
-        public SofterViewModel(PianoRollViewModel vm) : base(vm)
-        {
-            _StartInterval = 0.0;
-            _VelocityInterval = 0.0;
-            _LengthInterval = 0.0;
-            _StartAdjustRange = 30;
-            _VelocityAdjustRange = 30;
-            _LengthAdjustRange = 30;
-        }
-
-        #region Attributes
-
-        private int _StartAdjustRange;
-        private int _VelocityAdjustRange;
-        private int _LengthAdjustRange;
-
-        private double _StartInterval;
-        private double _VelocityInterval;
-        private double _LengthInterval;
-
-        #endregion
-
-        #region Property
 
         public int StartAdjustRange
         {
-            get => _StartAdjustRange;
+            get => _startAdjustRange;
             set
             {
                 if (0 <= value && value <= 100)
                 {
-                    _StartAdjustRange = value;
+                    _startAdjustRange = value;
                     AdjustStart(StartInterval);
                     OnPropertyChanged(nameof(StartAdjustRange));
                 }
             }
         }
+
         public int VelocityAdjustRange
         {
-            get => _VelocityAdjustRange;
+            get => _velocityAdjustRange;
             set
             {
                 if (0 <= value && value <= 100)
                 {
-                    _VelocityAdjustRange = value;
+                    _velocityAdjustRange = value;
                     AdjustVelocity(VelocityInterval);
                     OnPropertyChanged(nameof(VelocityAdjustRange));
                 }
             }
         }
+
         public int LengthAdjustRange
         {
-            get => _LengthAdjustRange;
+            get => _lengthAdjustRange;
             set
             {
                 if (0 <= value && value <= 100)
                 {
-                    _LengthAdjustRange = value;
+                    _lengthAdjustRange = value;
                     AdjustLength(LengthInterval);
                     OnPropertyChanged(nameof(LengthAdjustRange));
                 }
@@ -72,38 +60,40 @@ namespace JUMO.UI.ViewModels
 
         public double StartInterval
         {
-            get => _StartInterval;
+            get => _startInterval;
             set
             {
                 if (-1.0 <= value && value <= 1.0)
                 {
-                    _StartInterval = value;
+                    _startInterval = value;
                     AdjustStart(value);
                     OnPropertyChanged(nameof(StartInterval));
                 }
             }
         }
+
         public double VelocityInterval
         {
-            get => _VelocityInterval;
+            get => _velocityInterval;
             set
             {
                 if (-1.0 <= value && value <= 1.0)
                 {
-                    _VelocityInterval = value;
+                    _velocityInterval = value;
                     AdjustVelocity(value);
                     OnPropertyChanged(nameof(VelocityInterval));
                 }
             }
         }
+
         public double LengthInterval
         {
-            get => _LengthInterval;
+            get => _lengthInterval;
             set
             {
                 if (-1.0 <= value && value <= 1.0)
                 {
-                    _LengthInterval = value;
+                    _lengthInterval = value;
                     AdjustLength(value);
                     OnPropertyChanged(nameof(LengthInterval));
                 }
@@ -112,19 +102,29 @@ namespace JUMO.UI.ViewModels
 
         #endregion
 
+        public SofterViewModel(PianoRollViewModel vm) : base(vm)
+        {
+            _startInterval = 0.0;
+            _velocityInterval = 0.0;
+            _lengthInterval = 0.0;
+            _startAdjustRange = 30;
+            _velocityAdjustRange = 30;
+            _lengthAdjustRange = 30;
+        }
+
         private void AdjustStart(double interval)
         {
             bool IsDesc = false;
-            if (interval < 0) { IsDesc = true; interval = - (interval); }
+            if (interval < 0) { IsDesc = true; interval = -(interval); }
             int startDelta = 0;
             int delta = (int)(interval * StartAdjustRange);
 
-            for(int i=0;i<OrderedNotes.Count();i++)
+            for (int i = 0; i < OrderedNotes.Count(); i++)
             {
                 startDelta = 0;
                 if (IsDesc)
                 {
-                    for(int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
+                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
                     {
                         OrderedNotes[i][j].Start = OriginalNotes[i][j].Start + startDelta;
                         if (OrderedNotes[i][j].Start < OriginalNotes[i][j].Start)
@@ -150,6 +150,7 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
+
         private void AdjustVelocity(double interval)
         {
             bool IsDesc = false;
@@ -182,6 +183,7 @@ namespace JUMO.UI.ViewModels
                 }
             }
         }
+
         private void AdjustLength(double interval)
         {
             bool IsDesc = false;
