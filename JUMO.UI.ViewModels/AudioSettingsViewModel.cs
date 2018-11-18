@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JUMO.Audio;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class AudioSettingsViewModel : SettingsGroupViewModel
     {

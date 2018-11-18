@@ -136,7 +136,6 @@
     <Compile Include="Storage.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
-    <Compile Include="ViewModels\AudioSettingsViewModel.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
     <Compile Include="ViewModels\FileDialogViewModel.cs" />
     <Compile Include="ViewModels\HooktheoryLoginViewModel.cs" />
@@ -155,8 +154,6 @@
     <Compile Include="SelfThrottlingWorker.cs" />
     <Compile Include="ViewModels\PlaybackTimeViewModel.cs" />
     <Compile Include="ViewModels\PlaylistViewModel.cs" />
-    <Compile Include="ViewModels\ProjectSettingsViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\SmartMelodyViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AudioSettingsView.xaml.cs">
@@ -420,6 +417,10 @@
     <ProjectReference Include="..\JUMO.UI.Core\JUMO.UI.Core.csproj">
       <Project>{f939a809-4976-4faa-9d1f-00d5e6c85bcb}</Project>
       <Name>JUMO.UI.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JUMO.UI.ViewModels\JUMO.UI.ViewModels.csproj">
+      <Project>{8D362FE9-EC68-4F78-8C22-CC290EA2B35D}</Project>
+      <Name>JUMO.UI.ViewModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

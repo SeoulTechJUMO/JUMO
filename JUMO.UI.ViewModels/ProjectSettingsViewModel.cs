@@ -1,4 +1,4 @@
-﻿namespace JUMO.UI
+﻿namespace JUMO.UI.ViewModels
 {
     public class ProjectSettingsViewModel : SettingsGroupViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class SettingsViewModel : ViewModelBase
     {

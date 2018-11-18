@@ -23,9 +23,4 @@ namespace JUMO.UI
 
         public RelayCommand CloseCommand => _closeCommand ?? (_closeCommand = new RelayCommand(_ => CloseRequested?.Invoke(this, EventArgs.Empty)));
     }
-
-    public abstract class SettingsGroupViewModel : ViewModelBase
-    {
-        public abstract void SaveSettings();
-    }
 }

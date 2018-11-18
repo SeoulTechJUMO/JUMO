@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:JUMO.UI.Views"
-             xmlns:proj="clr-namespace:JUMO.UI"
              xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+             xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="600"
-             d:DataContext="{d:DesignInstance Type=proj:AudioSettingsViewModel}">
+             d:DataContext="{d:DesignInstance Type={x:Type vm:AudioSettingsViewModel}}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
