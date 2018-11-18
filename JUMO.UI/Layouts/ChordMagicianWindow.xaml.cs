@@ -1,23 +1,19 @@
 ﻿using System.Windows;
 using ChordMagicianModel;
 using JUMO.UI.Controls;
-using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Layouts
 {
-    /// <summary>
-    /// CodeMagic.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class ChordMagicianWindow : WindowBase
     {
         private readonly GetAPI _api = new GetAPI();
         private readonly ChordMagicianViewModel _viewModel;
 
-        public ChordMagicianWindow(PianoRollViewModel pianoRollVM)
+        public ChordMagicianWindow(Vst.Plugin plugin, Score score)
         {
             InitializeComponent();
 
-            DataContext = _viewModel = new ChordMagicianViewModel(_api, pianoRollVM);
+            DataContext = _viewModel = new ChordMagicianViewModel(_api, plugin, score);
             _viewModel.ChordChanged += OnChordChanged;
         }
 

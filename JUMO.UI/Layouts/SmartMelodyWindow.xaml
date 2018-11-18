@@ -10,7 +10,7 @@
     xmlns:chord="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
     mc:Ignorable="d"
     x:Name="window"
-    d:DataContext="{x:Type proj:SmartMelodyViewModel}"
+    d:DataContext="{d:DesignInstance Type={x:Type proj:SmartMelodyViewModel}}"
     Style="{DynamicResource ChildWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
     Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">
@@ -75,7 +75,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Width="60" Content="{Binding}" Foreground="{StaticResource DarkPrimaryTextColor}" VerticalAlignment="Center" />
-                    <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.ViewModel.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Variant="Dark" />
+                    <Button Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Content="▶" Padding="0,3" Command="{Binding ElementName=window, Path=DataContext.PlayChordCommand}" CommandParameter="{Binding}" proj:SkinHelper.Variant="Dark" />
                 </Grid>
             </DataTemplate>
         </ResourceDictionary>
@@ -109,7 +109,7 @@
                             <Label DockPanel.Dock="Left" VerticalAlignment="Center">
                                 <TextBlock>
                                     <Run>선택한 패턴: </Run>
-                                    <Run Text="{Binding ViewModel.ViewModel.Plugin.Name}" />
+                                    <Run Text="{Binding Plugin.Name}" />
                                 </TextBlock>
                             </Label>
                             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -133,7 +133,7 @@
                                     BorderThickness="1"
                                     CornerRadius="{StaticResource ControlBorderRadius}"
                                     SnapsToDevicePixels="True">
-                                <local:ScoreThumbnailView Margin="{StaticResource ControlMargin}" Score="{Binding ViewModel.ViewModel.Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}"/>
+                                <local:ScoreThumbnailView Margin="{StaticResource ControlMargin}" Score="{Binding Score}" Background="{StaticResource LightControlFaceColor}" Foreground="{StaticResource LightSecondaryTextColor}"/>
                             </Border>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <ToggleButton Style="{StaticResource BulletToggleButtonStyle1}" Content="멜로디만" IsChecked="{Binding IsMelodyOnly}" Command="{Binding ToggleMelodyOnlyCommand}"/>
@@ -149,7 +149,7 @@
                                     스마트 멜로디 생성 버튼을 눌러 주세요.
                                 </TextBlock>
                             </Label>
-                            <ListBox x:Name="SelectedChords" ItemsSource="{Binding ViewModel.CurrentProgress}" Height="100" ItemTemplate="{StaticResource ProgressItemTemplate}"/>
+                            <ListBox x:Name="SelectedChords" ItemsSource="{Binding CurrentProgress}" Height="100" ItemTemplate="{StaticResource ProgressItemTemplate}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />

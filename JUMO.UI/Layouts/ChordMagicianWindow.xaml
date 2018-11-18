@@ -11,7 +11,7 @@
     Style="{DynamicResource ChildWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type=proj:ChordMagicianViewModel}"
+    d:DataContext="{d:DesignInstance Type={x:Type proj:ChordMagicianViewModel}}"
     x:Name="window"
     Loaded="OnLoaded"
     Title="코드 마법사" Height="580" Width="550" ResizeMode="NoResize">
@@ -129,7 +129,7 @@
                         <Label DockPanel.Dock="Left" VerticalAlignment="Center">
                             <TextBlock>
                             <Run>선택한 패턴: </Run>
-                            <Run Text="{Binding ViewModel.Plugin.Name}" />
+                            <Run Text="{Binding Plugin.Name}" />
                             </TextBlock>
                         </Label>
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">

@@ -10,7 +10,8 @@ namespace JUMO.UI
 {
     public class SmartMelodyViewModel : ViewModelBase
     {
-        // TODO
+        private readonly ChordMagicianViewModel _chordMagicianViewModel;
+
         private Visibility _progressVisible;
         private string _currentMelody;
         private byte _melodyCount;
@@ -27,11 +28,14 @@ namespace JUMO.UI
 
         public override string DisplayName => "스마트 멜로디 생성";
 
-        //코드진행 뷰모델
-        public ChordMagicianViewModel ViewModel { get; }
-
         //멜로디 재생용 마스터 시퀀서
         public Playback.MasterSequencer Sequencer { get; } = Playback.MasterSequencer.Instance;
+
+        public Vst.Plugin Plugin => _chordMagicianViewModel.Plugin;
+
+        public Score Score => _chordMagicianViewModel.Score;
+
+        public IList<Progress> CurrentProgress => _chordMagicianViewModel.CurrentProgress;
 
         //프로그래스 이미지 표시유무
         public Visibility ProgressVisible
@@ -120,11 +124,13 @@ namespace JUMO.UI
         public RelayCommand ToggleMelodyOnlyCommand
             => _toggleMelodyOnlyCommand ?? (_toggleMelodyOnlyCommand = new RelayCommand(ToggleMelodyOnly, _ => _currentMelody != null));
 
+        public RelayCommand PlayChordCommand => _chordMagicianViewModel.PlayChordCommand;
+
         #endregion
 
         public SmartMelodyViewModel(ChordMagicianViewModel vm)
         {
-            ViewModel = vm;
+            _chordMagicianViewModel = vm ?? throw new ArgumentNullException(nameof(vm));
             _progressVisible = Visibility.Hidden;
             _melodyCount = 5;
             _chordCount = 1;
@@ -140,7 +146,7 @@ namespace JUMO.UI
 
             for (int i = 0; i < ChordCount; i++)
             {
-                foreach (Progress progress in ViewModel.CurrentProgress)
+                foreach (Progress progress in _chordMagicianViewModel.CurrentProgress)
                 {
                     chord += progress.Chord;
                     chord += " ";
@@ -198,19 +204,19 @@ namespace JUMO.UI
 
             if (shouldRemove)
             {
-                foreach (Note i in notes)
+                foreach (Note note in notes)
                 {
-                    ViewModel.ViewModel.RemoveNote(i);
+                    _chordMagicianViewModel.Score.Remove(note);
                 }
             }
             else
             {
-                foreach (Note i in notes)
+                foreach (Note note in notes)
                 {
-                    if (IsMelodyOnly && i.Velocity == 90) { continue; }
+                    if (IsMelodyOnly && note.Velocity == 90) { continue; }
                     else
                     {
-                        ViewModel.ViewModel.AddNote(i);
+                        _chordMagicianViewModel.Score.Add(note);
                     }
                 }
             }

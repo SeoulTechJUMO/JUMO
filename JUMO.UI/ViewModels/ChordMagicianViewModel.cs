@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using ChordMagicianModel;
-using JUMO.UI.ViewModels;
 
 namespace JUMO.UI
 {
@@ -56,8 +55,9 @@ namespace JUMO.UI
         //사용중인 API Bearer
         public GetAPI API { get; }
 
-        //현재 피아노롤 뷰모델
-        public PianoRollViewModel ViewModel { get; }
+        public Vst.Plugin Plugin { get; }
+
+        public Score Score { get; }
 
         //선택된 조성의 키값
         public string Key
@@ -253,10 +253,11 @@ namespace JUMO.UI
 
         #endregion
 
-        public ChordMagicianViewModel(GetAPI api, PianoRollViewModel pianoRollVM)
+        public ChordMagicianViewModel(GetAPI api, Vst.Plugin plugin, Score score)
         {
             API = api;
-            ViewModel = pianoRollVM;
+            Plugin = plugin ?? throw new ArgumentNullException(nameof(plugin));
+            Score = score ?? throw new ArgumentNullException(nameof(score));
 
             _key = "C";
             _mode = "Major";
@@ -338,10 +339,10 @@ namespace JUMO.UI
                 //근음 추가
                 if (i == p.ChordNotes[0])
                 {
-                    ViewModel.Plugin.NoteOn((byte)(i + 12 * (Octave - 1)), 100);
+                    Plugin.NoteOn((byte)(i + 12 * (Octave - 1)), 100);
                 }
 
-                ViewModel.Plugin.NoteOn((byte)(i + 12 * Octave), 100);
+                Plugin.NoteOn((byte)(i + 12 * Octave), 100);
             }
 
             await Task.Delay(1000);
@@ -350,10 +351,10 @@ namespace JUMO.UI
             {
                 if (i == p.ChordNotes[0])
                 {
-                    ViewModel.Plugin.NoteOff((byte)(i + 12 * (Octave - 1)));
+                    Plugin.NoteOff((byte)(i + 12 * (Octave - 1)));
                 }
 
-                ViewModel.Plugin.NoteOff((byte)(i + 12 * Octave));
+                Plugin.NoteOff((byte)(i + 12 * Octave));
             }
         }
 
@@ -389,10 +390,10 @@ namespace JUMO.UI
                         if (i == p.ChordNotes[0])
                         {
                             //근음 추가
-                            ViewModel.AddNote(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
+                            Score.Add(new Note((byte)(i + 12 * (Octave - 1)), 100, start, Song.Current.TimeResolution * 4));
 
                         }
-                        ViewModel.AddNote(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
+                        Score.Add(new Note((byte)(i + 12 * Octave), 100, start, Song.Current.TimeResolution * 4));
                     }
 
                     start += Song.Current.TimeResolution * 4;
