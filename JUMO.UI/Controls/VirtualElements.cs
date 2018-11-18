@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using JUMO.UI.Data;
+using JUMO.UI.ViewModels;
 using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls

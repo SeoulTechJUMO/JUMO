@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class NoteViewModel : IMusicalItem, INotifyPropertyChanged
     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using JUMO.UI.Data;
+using JUMO.UI.ViewModels;
 using JUMO.UI.Views;
 
 namespace JUMO.UI.Controls

@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class PatternPlacementViewModel : IMusicalItem, INotifyPropertyChanged
     {
