@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChordMagicianModel;
 
-namespace JUMO.UI
+namespace JUMO.UI.ViewModels
 {
     public class ChordMagicianViewModel : ViewModelBase
     {

@@ -8,9 +8,10 @@
     xmlns:proj="clr-namespace:JUMO.UI"
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
     xmlns:chord="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
+    xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
     mc:Ignorable="d"
     x:Name="window"
-    d:DataContext="{d:DesignInstance Type={x:Type proj:SmartMelodyViewModel}}"
+    d:DataContext="{d:DesignInstance Type={x:Type vm:SmartMelodyViewModel}}"
     Style="{DynamicResource ChildWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
     Title="스마트 멜로디 생성" Height="600" Width="550" ResizeMode="NoResize">

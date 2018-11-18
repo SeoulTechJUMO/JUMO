@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using JUMO.UI.Controls;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Layouts
 {

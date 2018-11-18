@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using ChordMagicianModel;
 using JUMO.UI.Controls;
+using JUMO.UI.ViewModels;
 
 namespace JUMO.UI.Layouts
 {

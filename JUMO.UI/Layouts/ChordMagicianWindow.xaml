@@ -8,10 +8,11 @@
     xmlns:proj="clr-namespace:JUMO.UI"
     xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
     xmlns:chord="clr-namespace:ChordMagicianModel;assembly=ChordMagicianModel"
+    xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
     Style="{DynamicResource ChildWindowStyle}"
     Background="{DynamicResource LightBackgroundColor}"
     mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance Type={x:Type proj:ChordMagicianViewModel}}"
+    d:DataContext="{d:DesignInstance Type={x:Type vm:ChordMagicianViewModel}}"
     x:Name="window"
     Loaded="OnLoaded"
     Title="코드 마법사" Height="580" Width="550" ResizeMode="NoResize">
