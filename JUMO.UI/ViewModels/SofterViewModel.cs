@@ -1,16 +1,22 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace JUMO.UI.ViewModels
 {
     public class SofterViewModel : NoteToolsViewModel
     {
-        private int _startAdjustRange;
-        private int _velocityAdjustRange;
-        private int _lengthAdjustRange;
+        private const int MinRange = 0;
+        private const int MaxRange = 100;
+        private const double MinInterval = -1.0;
+        private const double MaxInterval = 1.0;
 
-        private double _startInterval;
-        private double _velocityInterval;
-        private double _lengthInterval;
+        private int _startAdjustRange = 30;
+        private int _velocityAdjustRange = 30;
+        private int _lengthAdjustRange = 30;
+        private double _startInterval = 0.0;
+        private double _velocityInterval = 0.0;
+        private double _lengthInterval = 0.0;
 
         #region Properties
 
@@ -21,7 +27,7 @@ namespace JUMO.UI.ViewModels
             get => _startAdjustRange;
             set
             {
-                if (0 <= value && value <= 100)
+                if (MinRange <= value && value <= MaxRange)
                 {
                     _startAdjustRange = value;
                     AdjustStart(StartInterval);
@@ -35,7 +41,7 @@ namespace JUMO.UI.ViewModels
             get => _velocityAdjustRange;
             set
             {
-                if (0 <= value && value <= 100)
+                if (MinRange <= value && value <= MaxRange)
                 {
                     _velocityAdjustRange = value;
                     AdjustVelocity(VelocityInterval);
@@ -49,7 +55,7 @@ namespace JUMO.UI.ViewModels
             get => _lengthAdjustRange;
             set
             {
-                if (0 <= value && value <= 100)
+                if (MinRange <= value && value <= MaxRange)
                 {
                     _lengthAdjustRange = value;
                     AdjustLength(LengthInterval);
@@ -63,7 +69,7 @@ namespace JUMO.UI.ViewModels
             get => _startInterval;
             set
             {
-                if (-1.0 <= value && value <= 1.0)
+                if (MinInterval <= value && value <= MaxInterval)
                 {
                     _startInterval = value;
                     AdjustStart(value);
@@ -77,7 +83,7 @@ namespace JUMO.UI.ViewModels
             get => _velocityInterval;
             set
             {
-                if (-1.0 <= value && value <= 1.0)
+                if (MinInterval <= value && value <= MaxInterval)
                 {
                     _velocityInterval = value;
                     AdjustVelocity(value);
@@ -91,7 +97,7 @@ namespace JUMO.UI.ViewModels
             get => _lengthInterval;
             set
             {
-                if (-1.0 <= value && value <= 1.0)
+                if (MinInterval <= value && value <= MaxInterval)
                 {
                     _lengthInterval = value;
                     AdjustLength(value);
@@ -102,51 +108,34 @@ namespace JUMO.UI.ViewModels
 
         #endregion
 
-        public SofterViewModel(PianoRollViewModel vm) : base(vm)
-        {
-            _startInterval = 0.0;
-            _velocityInterval = 0.0;
-            _lengthInterval = 0.0;
-            _startAdjustRange = 30;
-            _velocityAdjustRange = 30;
-            _lengthAdjustRange = 30;
-        }
+        public SofterViewModel(PianoRollViewModel vm) : base(vm) { }
 
         private void AdjustStart(double interval)
         {
             bool IsDesc = false;
-            if (interval < 0) { IsDesc = true; interval = -(interval); }
-            int startDelta = 0;
-            int delta = (int)(interval * StartAdjustRange);
 
-            for (int i = 0; i < OrderedNotes.Count(); i++)
+            if (interval < 0)
             {
-                startDelta = 0;
-                if (IsDesc)
+                IsDesc = true;
+                interval = -interval;
+            }
+
+            int delta = (int)(interval * StartAdjustRange);
+            var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
+
+            foreach ((var group, var origGroup) in zipped)
+            {
+                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
+                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
+                int startDelta = 0;
+                var z = g.Zip(og, (note, origNote) => (note, origNote));
+
+                foreach((NoteViewModel note, Note origNote) in z)
                 {
-                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
-                    {
-                        OrderedNotes[i][j].Start = OriginalNotes[i][j].Start + startDelta;
-                        if (OrderedNotes[i][j].Start < OriginalNotes[i][j].Start)
-                        {
-                            OrderedNotes[i][j].Start = OriginalNotes[i][j].Start;
-                        }
-                        startDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
-                    }
-                }
-                else
-                {
-                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
-                    {
-                        OrderedNotes[i][j].Start = OriginalNotes[i][j].Start + startDelta;
-                        if (OrderedNotes[i][j].Start < OriginalNotes[i][j].Start)
-                        {
-                            OrderedNotes[i][j].Start = OriginalNotes[i][j].Start;
-                        }
-                        startDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
-                    }
+                    note.Start = Math.Max(origNote.Start + startDelta, origNote.Start);
+                    startDelta += delta;
+
+                    note.UpdateSource();
                 }
             }
         }
@@ -154,32 +143,35 @@ namespace JUMO.UI.ViewModels
         private void AdjustVelocity(double interval)
         {
             bool IsDesc = false;
-            if (interval < 0) { IsDesc = true; interval = -(interval); }
-            int veloDelta = 0;
-            int delta = (int)(interval * VelocityAdjustRange);
 
-            for (int i = 0; i < OrderedNotes.Count(); i++)
+            if (interval < 0)
             {
-                veloDelta = 0;
-                if (IsDesc)
+                IsDesc = true;
+                interval = -interval;
+            }
+
+            int delta = (int)(interval * VelocityAdjustRange);
+            var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
+
+            foreach ((var group, var origGroup) in zipped)
+            {
+                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
+                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
+                int veloDelta = 0;
+                var z = g.Zip(og, (note, origNote) => (note, origNote));
+
+                foreach ((NoteViewModel note, Note origNote) in z)
                 {
-                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
+                    note.Velocity = (byte)(origNote.Velocity - veloDelta);
+
+                    if (note.Velocity > 127)
                     {
-                        OrderedNotes[i][j].Velocity = (byte)(OriginalNotes[i][j].Velocity - veloDelta);
-                        if (OrderedNotes[i][j].Velocity > 127) { OrderedNotes[i][j].Velocity = 0; }
-                        veloDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
+                        note.Velocity = 0;
                     }
-                }
-                else
-                {
-                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
-                    {
-                        OrderedNotes[i][j].Velocity = (byte)(OriginalNotes[i][j].Velocity - veloDelta);
-                        if (OrderedNotes[i][j].Velocity > 127) { OrderedNotes[i][j].Velocity = 0; }
-                        veloDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
-                    }
+
+                    veloDelta += delta;
+
+                    note.UpdateSource();
                 }
             }
         }
@@ -187,32 +179,29 @@ namespace JUMO.UI.ViewModels
         private void AdjustLength(double interval)
         {
             bool IsDesc = false;
-            if (interval < 0) { IsDesc = true; interval = -(interval); }
-            int lenDelta = 0;
-            int delta = (int)(interval * LengthAdjustRange);
 
-            for (int i = 0; i < OrderedNotes.Count(); i++)
+            if (interval < 0)
             {
-                lenDelta = 0;
-                if (IsDesc)
+                IsDesc = true;
+                interval = -interval;
+            }
+
+            int delta = (int)(interval * LengthAdjustRange);
+            var zipped = OrderedNotes.Zip(OriginalNotes, (group, origGroup) => (group, origGroup));
+
+            foreach ((var group, var origGroup) in zipped)
+            {
+                IEnumerable<NoteViewModel> g = IsDesc ? ((IEnumerable<NoteViewModel>)group).Reverse() : group;
+                IEnumerable<Note> og = IsDesc ? ((IEnumerable<Note>)origGroup).Reverse() : origGroup;
+                int lenDelta = 0;
+                var z = g.Zip(og, (note, origNote) => (note, origNote));
+
+                foreach ((NoteViewModel note, Note origNote) in z)
                 {
-                    for (int j = OrderedNotes[i].Count() - 1; j >= 0; j--)
-                    {
-                        if (OriginalNotes[i][j].Length - lenDelta < 10) { OrderedNotes[i][j].Length = 10; }
-                        else { OrderedNotes[i][j].Length = OriginalNotes[i][j].Length - lenDelta; }
-                        lenDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
-                    }
-                }
-                else
-                {
-                    for (int j = 0; j < OrderedNotes[i].Count(); j++)
-                    {
-                        if (OriginalNotes[i][j].Length - lenDelta < 10) { OrderedNotes[i][j].Length = 10; }
-                        else { OrderedNotes[i][j].Length = OriginalNotes[i][j].Length - lenDelta; }
-                        lenDelta += delta;
-                        OrderedNotes[i][j].UpdateSource();
-                    }
+                    note.Length = Math.Max(origNote.Length - lenDelta, 10);
+                    lenDelta += delta;
+
+                    note.UpdateSource();
                 }
             }
         }
