@@ -117,7 +117,7 @@ namespace JUMO.UI
 
         public RelayCommand CopyCommand => _copyCommand ?? (_copyCommand = new RelayCommand(ExecuteCopy, _ => SelectedItems.Count > 0));
 
-        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => Storage.Instance.CurrentType.Equals(GetType()) && Storage.Instance.CurrentClip != null));
+        public RelayCommand PasteCommand => _pasteCommand ?? (_pasteCommand = new RelayCommand(ExecutePaste, _ => ClipboardService.Instance.CurrentType.Equals(GetType()) && ClipboardService.Instance.CurrentItems != null));
 
         public RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(ExecuteDelete, _ => SelectedItems.Count > 0));
 

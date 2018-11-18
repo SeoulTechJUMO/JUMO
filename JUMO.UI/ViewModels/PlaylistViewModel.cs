@@ -68,12 +68,12 @@ namespace JUMO.UI
 
         protected override void ExecuteCopy()
         {
-            Storage.Instance.PutItems(typeof(PlaylistViewModel), SelectedItems);
+            ClipboardService.Instance.PutItems(typeof(PlaylistViewModel), SelectedItems);
         }
 
         protected override void ExecutePaste()
         {
-            if (!Storage.Instance.CurrentType.Equals(typeof(PlaylistViewModel)))
+            if (!ClipboardService.Instance.CurrentType.Equals(typeof(PlaylistViewModel)))
             {
                 return;
             }
@@ -81,10 +81,10 @@ namespace JUMO.UI
             ClearSelection();
 
             int start = Sequencer.Position;
-            int clipStart = Storage.Instance.CurrentClip.Min(ppVm => ppVm.Start);
+            int clipStart = ClipboardService.Instance.CurrentItems.Min(ppVm => ppVm.Start);
 
             IEnumerable<PatternPlacement> patternsToPlace =
-                from PatternPlacementViewModel ppVm in Storage.Instance.CurrentClip
+                from PatternPlacementViewModel ppVm in ClipboardService.Instance.CurrentItems
                 select new PatternPlacement(ppVm.Pattern, ppVm.TrackIndex, ppVm.Start - clipStart + start);
 
             foreach(PatternPlacement pp in patternsToPlace)

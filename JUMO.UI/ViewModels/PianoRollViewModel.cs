@@ -103,12 +103,12 @@ namespace JUMO.UI
 
         protected override void ExecuteCopy()
         {
-            Storage.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
+            ClipboardService.Instance.PutItems(typeof(PianoRollViewModel), SelectedItems);
         }
 
         protected override void ExecutePaste()
         {
-            if (!Storage.Instance.CurrentType.Equals(typeof(PianoRollViewModel)))
+            if (!ClipboardService.Instance.CurrentType.Equals(typeof(PianoRollViewModel)))
             {
                 return;
             }
@@ -116,10 +116,10 @@ namespace JUMO.UI
             ClearSelection();
 
             int start = Sequencer.Position;
-            int clipStart = Storage.Instance.CurrentClip.Min(noteVm => noteVm.Start);
+            int clipStart = ClipboardService.Instance.CurrentItems.Min(noteVm => noteVm.Start);
 
             IEnumerable<Note> notesToInsert =
-                from NoteViewModel noteVm in Storage.Instance.CurrentClip
+                from NoteViewModel noteVm in ClipboardService.Instance.CurrentItems
                 select new Note(noteVm.Value, noteVm.Velocity, noteVm.Start - clipStart + start, noteVm.Length);
 
             foreach(Note note in notesToInsert)

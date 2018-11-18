@@ -133,7 +133,7 @@
     <Compile Include="Layouts\SplashWindow.xaml.cs">
       <DependentUpon>SplashWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Storage.cs" />
+    <Compile Include="ClipboardService.cs" />
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
     <Compile Include="ViewModels\ChordMagicianViewModel.cs" />
