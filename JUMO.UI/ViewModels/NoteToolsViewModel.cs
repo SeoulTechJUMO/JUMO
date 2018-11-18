@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace JUMO.UI.ViewModels
 {
     public abstract class NoteToolsViewModel : ViewModelBase
     {
-        private readonly ObservableCollection<NoteViewModel> _selectedNotes = new ObservableCollection<NoteViewModel>();
-
         private RelayCommand _abortCommand;
 
         protected readonly List<List<NoteViewModel>> OrderedNotes = new List<List<NoteViewModel>>();
         protected readonly List<List<Note>> OriginalNotes = new List<List<Note>>();
 
-        public bool WillInsert;
+        public bool WillInsert = false;
 
         public PianoRollViewModel ViewModel { get; }
 
@@ -21,27 +19,23 @@ namespace JUMO.UI.ViewModels
 
         public NoteToolsViewModel(PianoRollViewModel vm)
         {
-            ViewModel = vm;
-            WillInsert = false;
+            ViewModel = vm ?? throw new ArgumentNullException(nameof(vm));
+
             if (ViewModel.SelectedItems.Count() != 0)
             {
-                foreach (IMusicalItem item in ViewModel.SelectedItems)
-                {
-                    _selectedNotes.Add((NoteViewModel)item);
-                }
+                OrderByStart(ViewModel.SelectedItems.Cast<NoteViewModel>());
             }
             else
             {
-                _selectedNotes = ViewModel.Notes;
+                OrderByStart(ViewModel.Notes);
             }
-            OrderByStart();
         }
 
         //시작점으로 그룹화, 노트 피치 순으로 정렬
-        private void OrderByStart()
+        private void OrderByStart(IEnumerable<NoteViewModel> notes)
         {
             var sortedAndGrouped =
-                from note in _selectedNotes
+                from note in notes
                 orderby note.Start, note.Value
                 group note by note.Start;
 
