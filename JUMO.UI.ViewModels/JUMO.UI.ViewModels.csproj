@@ -86,7 +86,7 @@
     <Compile Include="SettingsViewModel.cs" />
     <Compile Include="SmartMelodyViewModel.cs" />
     <Compile Include="SofterViewModel.cs" />
-    <Compile Include="ViewModelBase.cs" />
+    <Compile Include="AbstractViewModels.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ChordMagicianModel\ChordMagicianModel.csproj">

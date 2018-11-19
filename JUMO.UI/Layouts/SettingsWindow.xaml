@@ -59,7 +59,7 @@
                           ItemsSource="{Binding SettingsGroups}"
                           SelectedItem="{Binding CurrentGroup, Mode=TwoWay}">
                     <ListView.ItemTemplate>
-                        <DataTemplate DataType="{x:Type vm:ViewModelBase}">
+                        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
                             <Label Content="{Binding DisplayName}" />
                         </DataTemplate>
                     </ListView.ItemTemplate>
