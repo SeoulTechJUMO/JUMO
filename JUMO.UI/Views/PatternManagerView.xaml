@@ -164,7 +164,7 @@
                             </Style>
                         </Button.Style>
                     </Button>
-                    <Button Content="취소" Command="{Binding CloseCommand}" proj:SkinHelper.Segment="Right" />
+                    <Button Content="취소" Command="{Binding ClosePopupCommand}" proj:SkinHelper.Segment="Right" />
                 </StackPanel>
             </Border>
         </Popup>

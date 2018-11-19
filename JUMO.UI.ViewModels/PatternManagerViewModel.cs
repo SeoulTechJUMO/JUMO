@@ -62,7 +62,7 @@ namespace JUMO.UI.ViewModels
         public RelayCommand MoveDownCommand { get; }
         public RelayCommand OpenAddCommand { get; }
         public RelayCommand OpenRenameCommand { get; }
-        public RelayCommand CloseCommand { get; }
+        public RelayCommand ClosePopupCommand { get; }
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace JUMO.UI.ViewModels
             MoveDownCommand = new RelayCommand(ExecuteMoveDown, MoreThanOnePatterns);
             OpenAddCommand = new RelayCommand(ExecuteOpenAdd);
             OpenRenameCommand = new RelayCommand(ExecuteOpenRename);
-            CloseCommand = new RelayCommand(ExecuteClose);
+            ClosePopupCommand = new RelayCommand(ExecuteClosePopup);
         }
 
         private bool MoreThanOnePatterns() => Song.Patterns.Count > 1;
@@ -83,7 +83,7 @@ namespace JUMO.UI.ViewModels
         private void ExecuteAddPattern()
         {
             Song.AddPattern(CurrentName);
-            ExecuteClose();
+            ExecuteClosePopup();
         }
 
         private void ExecuteRemovePattern(object parameter)
@@ -110,7 +110,7 @@ namespace JUMO.UI.ViewModels
                 Song.CurrentPattern.Name = CurrentName;
             }
 
-            ExecuteClose();
+            ExecuteClosePopup();
         }
 
         private void ExecuteMoveUp(object parameter)
@@ -163,7 +163,7 @@ namespace JUMO.UI.ViewModels
             IsPopupVisible = true;
         }
 
-        private void ExecuteClose()
+        private void ExecuteClosePopup()
         {
             CurrentName = "";
             CurrentStatus = Status.Normal;
