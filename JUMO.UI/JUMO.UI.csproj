@@ -120,9 +120,6 @@
     <Compile Include="Layouts\NoteSofterWindow.xaml.cs">
       <DependentUpon>NoteSofterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Layouts\SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\SkinTestWindow.xaml.cs">
       <DependentUpon>SkinTestWindow.xaml</DependentUpon>
     </Compile>
@@ -193,6 +190,9 @@
     <Compile Include="Layouts\SmartMelodyWindow.xaml.cs">
       <DependentUpon>SmartMelodyWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\BarIndicatorGrip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -214,10 +214,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Layouts\NoteSofterWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Layouts\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,6 +345,10 @@
     <Page Include="Layouts\SmartMelodyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

@@ -1,18 +1,16 @@
-﻿<ctrl:WindowBase
-    x:Class="JUMO.UI.Layouts.SettingsWindow"
+﻿<UserControl
+    x:Class="JUMO.UI.Views.SettingsView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
-    xmlns:proj="clr-namespace:JUMO.UI"
     xmlns:view="clr-namespace:JUMO.UI.Views"
     xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
     mc:Ignorable="d"
-    Style="{DynamicResource ChildWindowStyle}"
+    d:DataContext="{d:DesignInstance Type={x:Type vm:SettingsViewModel}}"
     Background="{DynamicResource LightBackgroundColor}"
-    Title="JUMO 설정" Height="500" Width="650">
-    <Window.Resources>
+    Height="500" Width="650">
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Skin.xaml" />
@@ -25,18 +23,15 @@
                 <view:AudioSettingsView />
             </DataTemplate>
         </ResourceDictionary>
-    </Window.Resources>
-    <Window.DataContext>
-        <vm:SettingsViewModel />
-    </Window.DataContext>
+    </UserControl.Resources>
     <DockPanel>
         <Grid DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right"
                         Margin="{StaticResource ControlMargin}">
-                <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" Click="OnOKClick" />
-                <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" Click="OnCancelClick" />
-                <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" Click="OnApplyClick" />
+                <Button Content="확인(_O)" Style="{StaticResource DialogButtonStyle}" Command="{Binding SaveAndCloseCommand}" />
+                <Button Content="취소(_C)" Style="{StaticResource DialogButtonStyle}" Command="{Binding CloseCommand}" />
+                <Button Content="적용(_A)" Style="{StaticResource DialogButtonStyle}" Command="{Binding SaveCommand}" />
             </StackPanel>
         </Grid>
         <Border Padding="{StaticResource ControlMargin}" Background="{StaticResource LightControlFaceColor}">
@@ -119,4 +114,4 @@
             </Grid>
         </Border>
     </DockPanel>
-</ctrl:WindowBase>
+</UserControl>

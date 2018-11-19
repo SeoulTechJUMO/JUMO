@@ -6,6 +6,8 @@ namespace JUMO.UI.ViewModels
     {
         private SettingsGroupViewModel _currentGroup;
 
+        #region Properties
+
         public override string DisplayName => "JUMO 설정";
 
         public List<SettingsGroupViewModel> SettingsGroups { get; } = new List<SettingsGroupViewModel>()
@@ -24,8 +26,29 @@ namespace JUMO.UI.ViewModels
             }
         }
 
-        public SettingsViewModel() => CurrentGroup = SettingsGroups[0];
+        #endregion
 
-        public void SaveSettings() => SettingsGroups.ForEach(vm => vm.SaveSettings());
+        #region Command Properties
+
+        public RelayCommand SaveCommand { get; }
+        public RelayCommand SaveAndCloseCommand { get; }
+
+        #endregion
+
+        public SettingsViewModel()
+        {
+            SaveCommand = new RelayCommand(ExecuteSave);
+            SaveAndCloseCommand = new RelayCommand(ExecuteSaveAndClose);
+
+            CurrentGroup = SettingsGroups[0];
+        }
+
+        private void ExecuteSave() => SettingsGroups.ForEach(vm => vm.SaveSettings());
+
+        private void ExecuteSaveAndClose()
+        {
+            SaveCommand.Execute(null);
+            CloseCommand.Execute(null);
+        }
     }
 }
