@@ -24,6 +24,11 @@
                 <Setter Property="BorderBrush" Value="{StaticResource LightControlBorderColor}" />
                 <Setter Property="BorderThickness" Value="1" />
             </Style>
+            <Style TargetType="{x:Type ctrl:Knob}" BasedOn="{StaticResource {x:Type ctrl:Knob}}">
+                <Setter Property="TrackPadding" Value="5" />
+                <Setter Property="TrackLength" Value="2" />
+                <Setter Property="KnobRadius" Value="13" />
+            </Style>
         </DockPanel.Resources>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="{StaticResource ControlMargin}">
             <Button Content="확인(_O)" Click="CheckButtonClick" IsDefault="True" Style="{StaticResource DialogButtonStyle}"/>
@@ -50,8 +55,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartInterval}"/>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding StartAdjustRange}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" Value="{Binding StartInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding StartAdjustRange}"/>
                         <Label Grid.Row="1" Grid.Column="0" Content="시작" />
                         <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
                     </Grid>
@@ -67,8 +72,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthInterval}"/>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding LengthAdjustRange}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" Value="{Binding LengthInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding LengthAdjustRange}"/>
                         <Label Grid.Row="1" Grid.Column="0" Content="길이" />
                         <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
                     </Grid>
@@ -84,8 +89,8 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityInterval}"/>
-                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" TrackPadding="5" TrackLength="2" KnobRadius="13" Value="{Binding VelocityAdjustRange}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="0" Minimum="-1.0" Maximum="1.0" Value="{Binding VelocityInterval}"/>
+                        <ctrl:Knob Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding VelocityAdjustRange}"/>
                         <Label Grid.Row="1" Grid.Column="0" Content="강약" />
                         <Label Grid.Row="1" Grid.Column="1" Content="조정간격" />
                     </Grid>
