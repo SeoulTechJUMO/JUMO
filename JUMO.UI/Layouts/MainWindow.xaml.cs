@@ -10,11 +10,6 @@ namespace JUMO.UI.Layouts
             InitializeComponent();
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            new SettingsWindow().Show();
-        }
-
         private void Mixer_Click(object sender, RoutedEventArgs e)
         {
             new MixerWindow().Show();

@@ -115,6 +115,14 @@
       <Project>{ee59e781-b315-4cdb-9b61-46922349298f}</Project>
       <Name>JUMO.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JUMO.UI.Core\JUMO.UI.Core.csproj">
+      <Project>{f939a809-4976-4faa-9d1f-00d5e6c85bcb}</Project>
+      <Name>JUMO.UI.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JUMO.UI.ViewModels\JUMO.UI.ViewModels.csproj">
+      <Project>{8d362fe9-ec68-4f78-8c22-cc290ea2b35d}</Project>
+      <Name>JUMO.UI.ViewModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\JUMO.UI\JUMO.UI.csproj">
       <Project>{b6171fe8-9e92-4b7a-80e6-59ccabd78cc4}</Project>
       <Name>JUMO.UI</Name>

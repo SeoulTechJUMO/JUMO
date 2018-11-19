@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.ComponentModel;
 
 namespace JUMO.UI.ViewModels
@@ -7,6 +8,8 @@ namespace JUMO.UI.ViewModels
     {
         private const string FileDialogDefaultExt = ".jumo";
         private const string FileDialogFilter = "JUMO 프로젝트 (.jumo)|*.jumo|모든 파일|*.*";
+
+        private readonly Lazy<SettingsViewModel> _settingsViewModel = new Lazy<SettingsViewModel>(() => new SettingsViewModel());
 
         public override string DisplayName => $"{Song.Title} - JUMO";
 
@@ -71,6 +74,11 @@ namespace JUMO.UI.ViewModels
         /// </summary>
         public RelayCommand TogglePlaybackModeCommand { get; }
 
+        /// <summary>
+        /// 프로그램 설정 창을 여는 명령을 가져옵니다.
+        /// </summary>
+        public RelayCommand OpenSettingsCommand { get; }
+
         public MainViewModel()
         {
             OpenProjectCommand = new RelayCommand(ExecuteOpenProject);
@@ -78,6 +86,7 @@ namespace JUMO.UI.ViewModels
             SaveProjectAsCommand = new RelayCommand(ExecuteSaveProjectAs);
             TogglePlaybackCommand = new RelayCommand(ExecuteTogglePlayback);
             TogglePlaybackModeCommand = new RelayCommand(ExecuteTogglePlaybackMode);
+            OpenSettingsCommand = new RelayCommand(ExecuteOpenSettings);
 
             WorkspaceManager.Instance.PropertyChanged += WorkspaceManager_PropertyChanged;
             Song.PropertyChanged += OnSongPropertyChanged;
@@ -147,6 +156,11 @@ namespace JUMO.UI.ViewModels
                 Sequencer.Mode == Playback.PlaybackMode.Song
                 ? Playback.PlaybackMode.Pattern
                 : Playback.PlaybackMode.Song;
+        }
+
+        private void ExecuteOpenSettings()
+        {
+            Services.WindowManagerService.Instance.ShowWindowModal(_settingsViewModel.Value);
         }
 
         private void WorkspaceManager_PropertyChanged(object sender, PropertyChangedEventArgs e)

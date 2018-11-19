@@ -84,7 +84,7 @@
                     <MenuItem Header="저장(_S)" InputGestureText="Ctrl+S" Command="{Binding SaveProjectCommand}" />
                     <MenuItem Header="다른 이름으로 저장(_A)..." InputGestureText="Ctrl+Shift+S" Command="{Binding SaveProjectAsCommand}" />
                     <Separator />
-                    <MenuItem Header="설정" Click="MenuItem_Click" />
+                    <MenuItem Header="설정" Command="{Binding OpenSettingsCommand}" />
                 </MenuItem>
                 <MenuItem Header="편집(E)">
                     <MenuItem Header="잘라내기(_X)" InputGestureText="Ctrl+X" Command="{Binding CurrentWorkspace.CutCommand}" Style="{StaticResource DisabledWhenCommandIsNull}" />
