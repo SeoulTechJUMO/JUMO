@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Controls\PlaybackBarAdorner.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
+    <Compile Include="Controls\PluginEditorHostContainer.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
