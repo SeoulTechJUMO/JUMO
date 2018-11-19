@@ -4,8 +4,8 @@ namespace JUMO.UI.ViewModels
 {
     public class ChopperViewModel : NoteToolsViewModel
     {
-        private int _addCount;
-        private int _chopInterval;
+        private int _addCount = 0;
+        private int _chopInterval = 0;
 
         #region Properties
 
@@ -30,16 +30,16 @@ namespace JUMO.UI.ViewModels
 
         #endregion
 
-        public ChopperViewModel(PianoRollViewModel vm) : base(vm)
-        {
-            _chopInterval = 0;
-            _addCount = 0;
-        }
+        public ChopperViewModel(PianoRollViewModel vm) : base(vm) { }
 
         private void Chopping(int interval)
         {
             int currentChopLength = 0;
-            if (interval != 0) { currentChopLength = Song.Current.TimeResolution / interval; }
+
+            if (interval != 0)
+            {
+                currentChopLength = Song.Current.TimeResolution / interval;
+            }
 
             for (int i = 0; i < _addCount; i++)
             {
@@ -58,30 +58,29 @@ namespace JUMO.UI.ViewModels
                 {
                     for (int j = 0; j < OrderedNotes[i].Count(); j++)
                     {
-                        int firstLength = 0;
-                        while (true)
-                        {
-                            if ((OrderedNotes[i][j].Start + firstLength) % currentChopLength == 0)
-                            {
-                                if (firstLength != 0)
-                                {
-                                    break;
-                                }
-                            }
-                            firstLength++;
-                        }
-                        OrderedNotes[i][j].Length = firstLength;
+                        NoteViewModel note = OrderedNotes[i][j];
+                        Note origNote = OriginalNotes[i][j];
+                        int firstLength = (note.Start / currentChopLength + 1) * currentChopLength - note.Start;
 
-                        int lengthHandle = OriginalNotes[i][j].Length - firstLength;
-                        int startHandle = OriginalNotes[i][j].Start + firstLength;
+                        note.Length = firstLength;
+                        note.UpdateSource();
+
+                        int lengthHandle = origNote.Length - firstLength;
+                        int startHandle = origNote.Start + firstLength;
+
                         while (lengthHandle > currentChopLength)
                         {
-                            ViewModel.AddNote(new Note(OriginalNotes[i][j].Value, OriginalNotes[i][j].Velocity, startHandle, currentChopLength));
+                            ViewModel.AddNote(new Note(origNote.Value, origNote.Velocity, startHandle, currentChopLength));
                             _addCount++;
                             lengthHandle -= currentChopLength;
                             startHandle += currentChopLength;
                         }
-                        if (lengthHandle != 0) { ViewModel.AddNote(new Note(OriginalNotes[i][j].Value, OriginalNotes[i][j].Velocity, startHandle, lengthHandle)); _addCount++; }
+
+                        if (lengthHandle != 0)
+                        {
+                            ViewModel.AddNote(new Note(origNote.Value, origNote.Velocity, startHandle, lengthHandle));
+                            _addCount++;
+                        }
                     }
                 }
             }
