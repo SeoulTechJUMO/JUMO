@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ctrl="clr-namespace:JUMO.UI.Controls"
+        xmlns:vm="clr-namespace:JUMO.UI.ViewModels;assembly=JUMO.UI.ViewModels"
         Background="{DynamicResource LightBackgroundColor}"
         ResizeMode="NoResize"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:SofterViewModel}}"
         Title="부드럽게" Height="240" Width="320" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <ResourceDictionary Source="../Resources/Skin.xaml" />

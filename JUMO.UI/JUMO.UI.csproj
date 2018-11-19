@@ -136,13 +136,9 @@
     <Compile Include="SkinHelper.cs" />
     <Compile Include="MusicalProps.cs" />
     <Compile Include="PluginEditorManager.cs" />
-    <Compile Include="ViewModels\ChopperViewModel.cs" />
-    <Compile Include="ViewModels\NoteToolsViewModel.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
-    <Compile Include="ViewModels\SofterViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AudioSettingsView.xaml.cs">
       <DependentUpon>AudioSettingsView.xaml</DependentUpon>
     </Compile>

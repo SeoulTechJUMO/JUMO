@@ -52,6 +52,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AudioSettingsViewModel.cs" />
     <Compile Include="ChannelRackViewModel.cs" />
+    <Compile Include="ChopperViewModel.cs" />
     <Compile Include="ChordMagicianViewModel.cs" />
     <Compile Include="FileDialogViewModel.cs" />
     <Compile Include="HooktheoryLoginViewModel.cs" />
@@ -70,6 +74,7 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="MixerViewModel.cs" />
     <Compile Include="MusicalCanvasWorkspaceViewModel.cs" />
+    <Compile Include="NoteToolsViewModel.cs" />
     <Compile Include="NoteViewModel.cs" />
     <Compile Include="PatternManagerViewModel.cs" />
     <Compile Include="PatternPlacementViewModel.cs" />
@@ -80,6 +85,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsViewModel.cs" />
     <Compile Include="SmartMelodyViewModel.cs" />
+    <Compile Include="SofterViewModel.cs" />
     <Compile Include="ViewModelBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +101,9 @@
       <Project>{f939a809-4976-4faa-9d1f-00d5e6c85bcb}</Project>
       <Name>JUMO.UI.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
