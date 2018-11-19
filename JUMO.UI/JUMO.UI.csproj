@@ -101,7 +101,6 @@
     </Compile>
     <Compile Include="Controls\PlaybackBarAdorner.cs" />
     <Compile Include="Controls\PlaylistCanvas.cs" />
-    <Compile Include="Controls\PluginEditorHostContainer.cs" />
     <Compile Include="Controls\VelocityCanvas.cs" />
     <Compile Include="Controls\PianoRollCanvas.cs" />
     <Compile Include="Controls\VirtualElements.cs" />
@@ -121,9 +120,6 @@
     <Compile Include="Layouts\NoteSofterWindow.xaml.cs">
       <DependentUpon>NoteSofterWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Layouts\PluginEditorWindow.xaml.cs">
-      <DependentUpon>PluginEditorWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Layouts\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -136,7 +132,6 @@
     <Compile Include="ThumbnailManager.cs" />
     <Compile Include="SkinHelper.cs" />
     <Compile Include="MusicalProps.cs" />
-    <Compile Include="PluginEditorManager.cs" />
     <Compile Include="Data\Segment.cs" />
     <Compile Include="ScrollViewerHelper.cs" />
     <Compile Include="SelfThrottlingWorker.cs" />
@@ -222,10 +217,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Layouts\PluginEditorWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Layouts\SettingsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -283,7 +274,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Controls\MusicalGrid.cs" />
-    <Compile Include="Controls\PluginEditorHost.cs" />
     <Page Include="Views\AudioSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

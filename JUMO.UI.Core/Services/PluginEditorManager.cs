@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Threading;
-using JUMO.UI.Layouts;
+using JUMO.UI.Controls;
 
 namespace JUMO.UI
 {
     /// <summary>
     /// 열려 있는 VST 플러그인 편집기 창을 관리합니다.
     /// </summary>
-    sealed class PluginEditorManager
+    public sealed class PluginEditorManager
     {
         #region Signleton
 
-        private static Lazy<PluginEditorManager> _instance = new Lazy<PluginEditorManager>(() => new PluginEditorManager());
+        private static readonly Lazy<PluginEditorManager> _instance = new Lazy<PluginEditorManager>(() => new PluginEditorManager());
 
         public static PluginEditorManager Instance => _instance.Value;
 
